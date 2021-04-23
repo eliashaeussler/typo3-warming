@@ -1,0 +1,18 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  EliasHaeussler\Typo3CacheWarmup\:
+    resource: '../Classes/*'
+
+  EliasHaeussler\Typo3CacheWarmup\Backend\ToolbarItems\CacheWarmupToolbarItem:
+    public: true
+  EliasHaeussler\Typo3CacheWarmup\Controller\CacheWarmupController:
+    public: true
+
+  EliasHaeussler\Typo3CacheWarmup\Command\WarmupCommand:
+    tags:
+      - name: console.command
+        command: cachewarmup:warmup
