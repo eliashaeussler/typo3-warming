@@ -28,12 +28,11 @@ use EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface;
 use EliasHaeussler\Typo3CacheWarmup\Configuration\Extension;
 use EliasHaeussler\Typo3CacheWarmup\Exception\UnsupportedConfigurationException;
 use EliasHaeussler\Typo3CacheWarmup\Exception\UnsupportedSiteException;
-use EliasHaeussler\Typo3CacheWarmup\Utility\SitemapUtility;
+use EliasHaeussler\Typo3CacheWarmup\Sitemap\SitemapLocator;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
-use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -55,6 +54,11 @@ class CacheWarmupService implements LoggerAwareInterface
     protected $siteFinder;
 
     /**
+     * @var SitemapLocator
+     */
+    protected $sitemapLocator;
+
+    /**
      * @var int
      */
     protected $limit;
@@ -66,14 +70,18 @@ class CacheWarmupService implements LoggerAwareInterface
 
     /**
      * @param SiteFinder $siteFinder
+     * @param SitemapLocator $sitemapLocator
      * @param ExtensionConfiguration $extensionConfiguration
+     * @throws Exception
      * @throws UnsupportedConfigurationException
-     * @throws ExtensionConfigurationExtensionNotConfiguredException
-     * @throws ExtensionConfigurationPathDoesNotExistException
      */
-    public function __construct(SiteFinder $siteFinder, ExtensionConfiguration $extensionConfiguration)
-    {
+    public function __construct(
+        SiteFinder $siteFinder,
+        SitemapLocator $sitemapLocator,
+        ExtensionConfiguration $extensionConfiguration
+    ) {
         $this->siteFinder = $siteFinder;
+        $this->sitemapLocator = $sitemapLocator;
         $this->limit = abs((int)$extensionConfiguration->get(Extension::KEY, 'limit'));
         $this->crawler = $this->initializeCrawler($extensionConfiguration->get(Extension::KEY, 'crawler'));
     }
@@ -90,12 +98,8 @@ class CacheWarmupService implements LoggerAwareInterface
         $cacheWarmer->setLimit($this->limit);
 
         foreach ($sites as $site) {
-            if (!SitemapUtility::siteProvidesValidSitemap($site)) {
-                throw UnsupportedSiteException::forMissingSitemap($site);
-            }
-
-            $sitemapUrl = SitemapUtility::buildSitemapUrl($site);
-            $cacheWarmer->addSitemaps((string)$sitemapUrl);
+            $sitemap = $this->sitemapLocator->locateBySite($site);
+            $cacheWarmer->addSitemaps($sitemap);
         }
 
         return $cacheWarmer->run($this->crawler);

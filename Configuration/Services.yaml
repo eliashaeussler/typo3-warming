@@ -9,10 +9,24 @@ services:
 
   EliasHaeussler\Typo3CacheWarmup\Backend\ToolbarItems\CacheWarmupToolbarItem:
     public: true
+  EliasHaeussler\Typo3CacheWarmup\Cache\CacheManager:
+    arguments:
+      $cache: '@cache.core'
   EliasHaeussler\Typo3CacheWarmup\Controller\CacheWarmupController:
     public: true
+  EliasHaeussler\Typo3CacheWarmup\Sitemap\SitemapLocator:
+    public: true
+    arguments:
+      $providers:
+        - '@EliasHaeussler\Typo3CacheWarmup\Sitemap\Provider\SiteProvider'
+        - '@EliasHaeussler\Typo3CacheWarmup\Sitemap\Provider\RobotsTxtProvider'
+        - '@EliasHaeussler\Typo3CacheWarmup\Sitemap\Provider\DefaultProvider'
 
   EliasHaeussler\Typo3CacheWarmup\Command\WarmupCommand:
     tags:
       - name: console.command
         command: cachewarmup:warmup
+
+  cache.core:
+    factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
+    arguments: ['core']

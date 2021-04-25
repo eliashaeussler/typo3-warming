@@ -24,9 +24,11 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3CacheWarmup\Backend\ToolbarItems;
 
 use EliasHaeussler\Typo3CacheWarmup\Configuration\Extension;
+use EliasHaeussler\Typo3CacheWarmup\Exception\UnsupportedConfigurationException;
+use EliasHaeussler\Typo3CacheWarmup\Exception\UnsupportedSiteException;
+use EliasHaeussler\Typo3CacheWarmup\Sitemap\SitemapLocator;
 use EliasHaeussler\Typo3CacheWarmup\Traits\TranslatableTrait;
 use EliasHaeussler\Typo3CacheWarmup\Utility\AccessUtility;
-use EliasHaeussler\Typo3CacheWarmup\Utility\SitemapUtility;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -50,16 +52,32 @@ class CacheWarmupToolbarItem implements ToolbarItemInterface
      */
     protected $actions;
 
+    /**
+     * @param PageRenderer $pageRenderer
+     * @param SiteFinder $siteFinder
+     * @param IconFactory $iconFactory
+     * @param SitemapLocator $sitemapLocator
+     * @throws UnsupportedConfigurationException
+     * @throws UnsupportedSiteException
+     */
     public function __construct(
         PageRenderer $pageRenderer,
         SiteFinder $siteFinder,
-        IconFactory $iconFactory
+        IconFactory $iconFactory,
+        SitemapLocator $sitemapLocator
     ) {
         $this->actions = [];
 
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/CacheWarmup/Backend/Toolbar/CacheWarmupMenu');
-        $pageRenderer->addInlineLanguageLabel('cacheWarmup.error.title', static::translate('notification.error.title'));
-        $pageRenderer->addInlineLanguageLabel('cacheWarmup.error.message', static::translate('notification.error.message'));
+        $pageRenderer->addInlineLanguageLabelArray([
+            'cacheWarmup.notification.error.title' => static::translate('notification.error.title'),
+            'cacheWarmup.notification.error.message' => static::translate('notification.error.message'),
+            'cacheWarmup.notification.action.showReport' => static::translate('notification.action.showReport'),
+            'cacheWarmup.modal.title' => static::translate('modal.title'),
+            'cacheWarmup.modal.panel.failed' => static::translate('modal.panel.failed'),
+            'cacheWarmup.modal.panel.successful' => static::translate('modal.panel.successful'),
+            'cacheWarmup.modal.action.view' => static::translate('modal.action.view'),
+        ]);
 
         foreach (array_filter($siteFinder->getAllSites(), [AccessUtility::class, 'canWarmupCacheOfSite']) as $site) {
             $row = BackendUtility::getRecord('pages', $site->getRootPageId());
@@ -69,16 +87,16 @@ class CacheWarmupToolbarItem implements ToolbarItemInterface
                 continue;
             }
 
-            $hasValidSitemap = SitemapUtility::siteProvidesValidSitemap($site);
             $action = [
-                'title' => BackendUtility::getRecordTitle('pages', $row),
+                'title' => $site->getConfiguration()['websiteTitle'] ?: BackendUtility::getRecordTitle('pages', $row),
                 'pageId' => $site->getRootPageId(),
                 'iconIdentifier' => $iconFactory->getIconForRecord('pages', $row)->getIdentifier(),
-                'unsupported' => !$hasValidSitemap,
             ];
 
-            if ($hasValidSitemap) {
-                $action['sitemapUrl'] = SitemapUtility::buildSitemapUrl($site);
+            if ($sitemapLocator->siteContainsSitemap($site)) {
+                $action['sitemapUrl'] = $sitemapLocator->locateBySite($site)->getUri();
+            } else {
+                $action['missing'] = true;
             }
 
             $this->actions[] = $action;

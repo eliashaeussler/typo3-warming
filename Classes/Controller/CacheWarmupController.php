@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3CacheWarmup\Controller;
 
 use EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface;
+use EliasHaeussler\CacheWarmup\CrawlingState;
 use EliasHaeussler\Typo3CacheWarmup\Exception\MissingPageIdException;
 use EliasHaeussler\Typo3CacheWarmup\Exception\UnsupportedConfigurationException;
 use EliasHaeussler\Typo3CacheWarmup\Exception\UnsupportedSiteException;
@@ -147,6 +148,10 @@ class CacheWarmupController
         $data = [
             'state' => $state,
             'title' => static::translate('notification.title.' . $state),
+            'urls' => [
+                'failed' => array_map([$this, 'decorateCrawlingState'], $crawler->getFailedUrls()),
+                'successful' => array_map([$this, 'decorateCrawlingState'], $crawler->getSuccessfulUrls()),
+            ],
         ];
 
         switch ($mode) {
@@ -183,5 +188,10 @@ class CacheWarmupController
         }
 
         return self::STATE_UNKNOWN;
+    }
+
+    public function decorateCrawlingState(CrawlingState $crawlingState): string
+    {
+        return (string)$crawlingState->getUri();
     }
 }

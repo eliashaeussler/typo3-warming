@@ -29,8 +29,8 @@ $GLOBALS['SiteConfiguration']['site']['columns']['xml_sitemap_path'] = [
         'valuePicker' => [
             'items' => [
                 [
-                    \EliasHaeussler\Typo3CacheWarmup\Utility\SitemapUtility::DEFAULT_XML_SITEMAP_PATH,
-                    \EliasHaeussler\Typo3CacheWarmup\Utility\SitemapUtility::DEFAULT_XML_SITEMAP_PATH,
+                    \EliasHaeussler\Typo3CacheWarmup\Sitemap\Provider\DefaultProvider::DEFAULT_PATH,
+                    \EliasHaeussler\Typo3CacheWarmup\Sitemap\Provider\DefaultProvider::DEFAULT_PATH,
                 ],
             ],
         ],

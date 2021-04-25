@@ -12,9 +12,13 @@
 <div class="dropdown-table">
     <f:for each="{actions}" as="action">
         <div class="dropdown-table-row">
-            <f:if condition="{action.unsupported}">
+            <f:if condition="{action.missing}">
                 <f:then>
-                    <div class="toolbar-cache-warmup-action text-muted" data-page-id="{action.pageId}" title="{action.title}">
+                    <div class="toolbar-cache-warmup-action text-muted"
+                         data-page-id="{action.pageId}"
+                         title="{action.title}"
+                         style="pointer-events: none"
+                    >
                         <f:render section="item-icon" arguments="{
                             identifier: action.iconIdentifier,
                             overlay: 'overlay-warning'
@@ -27,7 +31,10 @@
                     </div>
                 </f:then>
                 <f:else>
-                    <a href="#" class="toolbar-cache-warmup-action" data-page-id="{action.pageId}" title="{action.title}">
+                    <a href="#" class="toolbar-cache-warmup-action"
+                       data-page-id="{action.pageId}"
+                       title="{action.title}"
+                    >
                         <f:render section="item-icon" arguments="{
                             identifier: action.iconIdentifier
                         }" />

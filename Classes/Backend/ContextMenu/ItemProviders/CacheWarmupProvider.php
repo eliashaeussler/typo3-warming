@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3CacheWarmup\Backend\ContextMenu\ItemProviders;
 
+use EliasHaeussler\Typo3CacheWarmup\Sitemap\SitemapLocator;
 use EliasHaeussler\Typo3CacheWarmup\Utility\AccessUtility;
 use TYPO3\CMS\Backend\ContextMenu\ItemProviders\PageProvider;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
@@ -104,10 +105,14 @@ class CacheWarmupProvider extends PageProvider
     protected function canWarmupCachesOfSite(): bool
     {
         $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+        $sitemapLocator = GeneralUtility::makeInstance(SitemapLocator::class);
 
         try {
             $site = $siteFinder->getSiteByPageId((int)$this->identifier);
-            return $site->getRootPageId() === (int)$this->identifier && AccessUtility::canWarmupCacheOfSite($site);
+
+            return $site->getRootPageId() === (int)$this->identifier
+                && AccessUtility::canWarmupCacheOfSite($site)
+                && $sitemapLocator->siteContainsSitemap($site);
         } catch (SiteNotFoundException $e) {
             return false;
         }
