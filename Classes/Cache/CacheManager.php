@@ -56,10 +56,10 @@ class CacheManager
         $cacheData = $this->cache->require(self::CACHE_IDENTIFIER);
 
         if ($site !== null) {
-            return $cacheData['sites'][$site->getIdentifier()] ?? null;
+            return $cacheData['sitemaps'][$site->getIdentifier()] ?? null;
         }
 
-        return $cacheData['sites'] ?? [];
+        return $cacheData['sitemaps'] ?? [];
     }
 
     public function set(Site $site, Sitemap $sitemap): void
@@ -69,7 +69,7 @@ class CacheManager
 
         $this->cache->set(
             self::CACHE_IDENTIFIER,
-            sprintf('return %s;', var_export(['sites' => $cacheData], true))
+            sprintf('return %s;', var_export(['sitemaps' => $cacheData], true))
         );
     }
 }
