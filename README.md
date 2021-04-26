@@ -23,14 +23,10 @@ be used for cache warmup.
 **Note: The toolbar item is only visible for admins and permitted users.**
 
 As soon as the extension is installed, a new toolbar item in your TYPO3 backend
-should appear.
+should appear. You can click on the toolbar item to get a list of all sites. If a
+site does not provide a XML sitemap, it cannot be used to warm up caches.
 
-![Toolbar item](Resources/Public/Images/Documentation/toolbar-item.png)
-
-You can click on the toolbar item to get a list of all sites. If a site does not
-provide a XML sitemap, it cannot be used to warm up caches.
-
-![Toolbar item dropdown menu](Resources/Public/Images/Documentation/toolbar-item-dropdown.png)
+![Toolbar item dropdown menu](Resources/Public/Images/Documentation/toolbar-item.png)
 
 ### Context menu
 
