@@ -84,6 +84,8 @@ The path to a XML sitemap is determined in three steps:
 3. Default path: If none of the above methods are successful, the default path
    `sitemap.xml` is used.
 
+![Sitemap XML path in site configuration](Resources/Public/Images/Documentation/site-configuration.png)
+
 In order to be able to locate the sitemap path, all mentioned methods are bundled
 in so-called `providers`. You are free to implement custom providers or remove ones
 using a custom `Services.yaml` file. See the section
