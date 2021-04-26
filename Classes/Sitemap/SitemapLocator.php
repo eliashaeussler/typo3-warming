@@ -64,6 +64,7 @@ class SitemapLocator
         $this->requestFactory = $requestFactory;
         $this->cacheManager = $cacheManager;
         $this->providers = $providers;
+        ksort($this->providers);
     }
 
     /**
