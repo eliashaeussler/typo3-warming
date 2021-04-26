@@ -6,6 +6,8 @@
 
 > Extension for TYPO3 CMS which warms up Frontend caches based on a XML sitemap.
 
+![Extension icon](Resources/Public/Icons/Extension.svg)
+
 ## Installation
 
 ```bash
