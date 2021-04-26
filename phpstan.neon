@@ -1,3 +1,5 @@
+includes:
+	- .Build/vendor/jangregor/phpstan-prophecy/extension.neon
 parameters:
     bootstrapFiles:
         - .Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTestsBootstrap.php
@@ -5,4 +7,4 @@ parameters:
     paths:
         - Classes
         - Configuration
-#        - Tests
+        - Tests

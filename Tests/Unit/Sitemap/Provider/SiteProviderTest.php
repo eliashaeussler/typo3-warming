@@ -21,55 +21,54 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3CacheWarmup\Cache;
+namespace EliasHaeussler\Typo3CacheWarmup\Tests\Unit\Sitemap\Provider;
 
 use EliasHaeussler\CacheWarmup\Sitemap;
-use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use EliasHaeussler\Typo3CacheWarmup\Sitemap\Provider\SiteProvider;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * CacheManager
+ * SiteProviderTest
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class CacheManager
+class SiteProviderTest extends UnitTestCase
 {
-    public const CACHE_IDENTIFIER = 'tx_cachewarmup';
-
     /**
-     * @var PhpFrontend
+     * @var SiteProvider
      */
-    protected $cache;
+    protected $subject;
 
-    public function __construct(PhpFrontend $cache)
+    protected function setUp(): void
     {
-        $this->cache = $cache;
+        parent::setUp();
+        $this->subject = new SiteProvider();
     }
 
     /**
-     * @param Site|null $site
-     * @return array<string, string>|string|null
+     * @test
      */
-    public function get(Site $site = null)
+    public function getReturnsNullIfSitemapPathIsNotConfiguredInSite(): void
     {
-        $cacheData = $this->cache->require(self::CACHE_IDENTIFIER);
+        $site = new Site('foo', 1, []);
 
-        if ($site !== null) {
-            return $cacheData['sitemaps'][$site->getIdentifier()] ?? null;
-        }
-
-        return $cacheData['sitemaps'] ?? [];
+        self::assertNull($this->subject->get($site));
     }
 
-    public function set(Site $site, Sitemap $sitemap): void
+    /**
+     * @test
+     */
+    public function getReturnsSitemapWithUrlPathFromSite(): void
     {
-        $cacheData = $this->get();
-        $cacheData[$site->getIdentifier()] = (string)$sitemap->getUri();
+        $site = new Site('foo', 1, [
+            'base' => 'https://www.example.com/',
+            'xml_sitemap_path' => 'baz.xml',
+        ]);
+        $expected = new Sitemap(new Uri('https://www.example.com/baz.xml'));
 
-        $this->cache->set(
-            self::CACHE_IDENTIFIER,
-            sprintf('return %s;', var_export(['sitemaps' => $cacheData], true))
-        );
+        self::assertEquals($expected, $this->subject->get($site));
     }
 }

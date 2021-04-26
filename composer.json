@@ -24,6 +24,7 @@
 	"require-dev": {
 		"ergebnis/composer-normalize": "^2.8",
 		"helmich/typo3-typoscript-lint": "^1.5 || ^2.0",
+		"jangregor/phpstan-prophecy": "^0.8.1",
 		"saschaegerer/phpstan-typo3": "^0.13.1",
 		"typo3/coding-standards": "^0.3.0",
 		"typo3/testing-framework": "^6.8"
