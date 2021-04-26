@@ -109,7 +109,7 @@ The path to XML sitemaps is located using various path providers. All providers
 implement the [`ProviderInterface`](Classes/Sitemap/Provider/ProviderInterface.php).
 
 The [`SitemapLocator`](Classes/Sitemap/SitemapLocator.php) is fed by a list of
-providers. That list is configured in the service container using the `Services.ymal`
+providers. That list is configured in the service container using the `Services.yaml`
 file.
 
 All providers will be processed in natural order, meaning the provider with the
