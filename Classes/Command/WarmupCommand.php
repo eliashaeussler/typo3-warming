@@ -97,9 +97,11 @@ class WarmupCommand extends Command
         }
 
         // Initialize crawler
-        $crawler = new OutputtingCrawler();
-        $crawler->setOutput($output);
-        $this->warmupService->setCrawler($crawler);
+        if (($crawler = $this->warmupService->getCrawler()) === null) {
+            $crawler = new OutputtingCrawler();
+            $crawler->setOutput($output);
+            $this->warmupService->setCrawler($crawler);
+        }
 
         // Warmup pages and sites
         $countFailed = 0;
