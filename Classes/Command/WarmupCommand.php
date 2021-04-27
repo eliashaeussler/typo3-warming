@@ -96,6 +96,8 @@ class WarmupCommand extends Command
             return 1;
         }
 
+        $output->writeln('Running <info>cache warmup</info> by <info>Elias Häußler</info> and contributors.');
+
         // Initialize crawler
         if (($crawler = $this->warmupService->getCrawler()) === null) {
             $crawler = new OutputtingCrawler();
