@@ -1,6 +1,6 @@
 [![Pipeline](https://gitlab.elias-haeussler.de/typo3/cache-warmup/badges/master/pipeline.svg)](https://gitlab.elias-haeussler.de/typo3/cache-warmup/-/pipelines)
 [![Coverage](https://gitlab.elias-haeussler.de/typo3/cache-warmup/badges/master/coverage.svg)](https://gitlab.elias-haeussler.de/typo3/cache-warmup/-/pipelines)
-[![License](https://badgen.net/badge/license/GPL-2.0-or-later)](LICENSE.md)
+[![License](https://badgen.net/packagist/license/eliashaeussler/typo3-cache-warmup)](LICENSE.md)
 
 # Cache warmup
 
