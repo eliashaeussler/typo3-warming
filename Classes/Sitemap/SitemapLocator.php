@@ -65,6 +65,8 @@ class SitemapLocator
         $this->cacheManager = $cacheManager;
         $this->providers = $providers;
         ksort($this->providers);
+
+        $this->validateProviders();
     }
 
     /**
@@ -118,5 +120,27 @@ class SitemapLocator
         }
 
         return null;
+    }
+
+    protected function validateProviders(): void
+    {
+        foreach ($this->providers as $provider) {
+            if (!is_object($provider)) {
+                throw new \InvalidArgumentException(
+                    sprintf('Providers must be of type object, "%s" given.', gettype($provider)),
+                    1619525071
+                );
+            }
+            if (!in_array(ProviderInterface::class, class_implements($provider))) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'The given provider "%s" does not implement the interface "%s".',
+                        get_class($provider),
+                        ProviderInterface::class
+                    ),
+                    1619524996
+                );
+            }
+        }
     }
 }
