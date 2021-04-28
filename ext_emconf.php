@@ -29,6 +29,7 @@ $EM_CONF[$_EXTKEY] = [
     'clearCacheOnLoad' => true,
     'author' => 'Elias Häußler',
     'author_email' => 'elias@haeussler.dev',
+    'author_company' => 'familie redlich digital GmbH',
     'constraints' => [
         'depends' => [
             'typo3' => '10.4.0-11.1.99',
