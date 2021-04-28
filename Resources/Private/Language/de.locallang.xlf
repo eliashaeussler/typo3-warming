@@ -77,6 +77,14 @@
 				<source>View</source>
 				<target>Anzeigen</target>
 			</trans-unit>
+			<trans-unit id="modal.total">
+				<source>Total number of crawled URLs:</source>
+				<target>Anzahl der insgesamt verarbeiteten URLs:</target>
+			</trans-unit>
+			<trans-unit id="modal.message.noUrlsCrawled">
+				<source>No URLs were crawled for cache warmup.</source>
+				<target>Es wurden keine URLs zum Aufwärmen von Caches verarbeitet.</target>
+			</trans-unit>
 
 			<trans-unit id="contextMenu.item.cacheWarmup">
 				<source>Warmup cache for this page</source>

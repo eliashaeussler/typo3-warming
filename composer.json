@@ -1,5 +1,5 @@
 {
-	"name": "eliashaeussler/typo3-cache-warmup",
+	"name": "eliashaeussler/typo3-warming",
 	"type": "typo3-cms-extension",
 	"description": "Extension for TYPO3 CMS which warms up Frontend caches based on a XML sitemap",
 	"license": "GPL-2.0-or-later",
@@ -36,25 +36,25 @@
 	},
 	"extra": {
 		"typo3/cms": {
-			"extension-key": "cache_warmup",
+			"extension-key": "warming",
 			"web-dir": ".Build/web"
 		}
 	},
 	"autoload": {
 		"psr-4": {
-			"EliasHaeussler\\Typo3CacheWarmup\\": "Classes/"
+			"EliasHaeussler\\Typo3Warming\\": "Classes/"
 		}
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"EliasHaeussler\\Typo3CacheWarmup\\Tests\\": "Tests/"
+			"EliasHaeussler\\Typo3Warming\\Tests\\": "Tests/"
 		}
 	},
 	"prefer-stable": true,
 	"scripts": {
 		"post-autoload-dump": [
 			"mkdir -p .Build/web/typo3conf/ext/",
-			"[ -L .Build/web/typo3conf/ext/cache_warmup ] || ln -snvf ../../../../. .Build/web/typo3conf/ext/cache_warmup"
+			"[ -L .Build/web/typo3conf/ext/warming ] || ln -snvf ../../../../. .Build/web/typo3conf/ext/warming"
 		],
 		"lint": [
 			"@lint:php",
@@ -70,8 +70,8 @@
 		"test:coverage": "phpunit -c phpunit.coverage.xml"
 	},
 	"support": {
-		"issues": "https://gitlab.elias-haeussler.de/typo3/cache-warmup/-/issues",
-		"source": "https://gitlab.elias-haeussler.de/typo3/cache-warmup",
-		"rss": "https://gitlab.elias-haeussler.de/typo3/cache-warmup.atom"
+		"issues": "https://gitlab.elias-haeussler.de/typo3/warming/-/issues",
+		"source": "https://gitlab.elias-haeussler.de/typo3/warming",
+		"rss": "https://gitlab.elias-haeussler.de/typo3/warming.atom"
 	}
 }

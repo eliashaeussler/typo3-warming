@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the TYPO3 CMS extension "cache_warmup".
+ * This file is part of the TYPO3 CMS extension "warming".
  *
  * Copyright (C) 2021 Elias Häußler <elias@haeussler.dev>
  *
@@ -21,14 +21,14 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3CacheWarmup\Backend\ToolbarItems;
+namespace EliasHaeussler\Typo3Warming\Backend\ToolbarItems;
 
-use EliasHaeussler\Typo3CacheWarmup\Configuration\Extension;
-use EliasHaeussler\Typo3CacheWarmup\Exception\UnsupportedConfigurationException;
-use EliasHaeussler\Typo3CacheWarmup\Exception\UnsupportedSiteException;
-use EliasHaeussler\Typo3CacheWarmup\Sitemap\SitemapLocator;
-use EliasHaeussler\Typo3CacheWarmup\Traits\TranslatableTrait;
-use EliasHaeussler\Typo3CacheWarmup\Utility\AccessUtility;
+use EliasHaeussler\Typo3Warming\Configuration\Extension;
+use EliasHaeussler\Typo3Warming\Exception\UnsupportedConfigurationException;
+use EliasHaeussler\Typo3Warming\Exception\UnsupportedSiteException;
+use EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator;
+use EliasHaeussler\Typo3Warming\Traits\TranslatableTrait;
+use EliasHaeussler\Typo3Warming\Utility\AccessUtility;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -68,7 +68,7 @@ class CacheWarmupToolbarItem implements ToolbarItemInterface
     ) {
         $this->actions = [];
 
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/CacheWarmup/Backend/Toolbar/CacheWarmupMenu');
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Warming/Backend/Toolbar/CacheWarmupMenu');
         $pageRenderer->addInlineLanguageLabelArray([
             'cacheWarmup.notification.error.title' => static::translate('notification.error.title'),
             'cacheWarmup.notification.error.message' => static::translate('notification.error.message'),
@@ -77,6 +77,8 @@ class CacheWarmupToolbarItem implements ToolbarItemInterface
             'cacheWarmup.modal.panel.failed' => static::translate('modal.panel.failed'),
             'cacheWarmup.modal.panel.successful' => static::translate('modal.panel.successful'),
             'cacheWarmup.modal.action.view' => static::translate('modal.action.view'),
+            'cacheWarmup.modal.total' => static::translate('modal.total'),
+            'cacheWarmup.modal.message.noUrlsCrawled' => static::translate('modal.message.noUrlsCrawled'),
         ]);
 
         foreach (array_filter($siteFinder->getAllSites(), [AccessUtility::class, 'canWarmupCacheOfSite']) as $site) {
@@ -143,8 +145,8 @@ class CacheWarmupToolbarItem implements ToolbarItemInterface
     protected function buildView(string $filename): StandaloneView
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplateRootPaths(['EXT:cache_warmup/Resources/Private/Templates']);
-        $view->setPartialRootPaths(['EXT:cache_warmup/Resources/Private/Partials']);
+        $view->setTemplateRootPaths(['EXT:warming/Resources/Private/Templates']);
+        $view->setPartialRootPaths(['EXT:warming/Resources/Private/Partials']);
         $view->setTemplate($filename);
         $view->getRequest()->setControllerExtensionName(Extension::NAME);
 

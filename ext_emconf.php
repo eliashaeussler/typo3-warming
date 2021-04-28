@@ -3,7 +3,7 @@
 defined('TYPO3') or die();
 
 /*
- * This file is part of the TYPO3 CMS extension "cache_warmup".
+ * This file is part of the TYPO3 CMS extension "warming".
  *
  * Copyright (C) 2021 Elias Häußler <elias@haeussler.dev>
  *
@@ -23,8 +23,8 @@ defined('TYPO3') or die();
 
 /** @noinspection PhpUndefinedVariableInspection */
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'Cache warmup',
-    'description' => 'Warms up frontend caches based on a XML sitemap.',
+    'title' => 'Warming',
+    'description' => 'Warms up Frontend caches based on a XML sitemap.',
     'category' => 'be',
     'version' => '0.1.0',
     'state' => 'alpha',

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the TYPO3 CMS extension "cache_warmup".
+ * This file is part of the TYPO3 CMS extension "warming".
  *
  * Copyright (C) 2021 Elias Häußler <elias@haeussler.dev>
  *
@@ -21,7 +21,7 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3CacheWarmup\Cache;
+namespace EliasHaeussler\Typo3Warming\Cache;
 
 use EliasHaeussler\CacheWarmup\Sitemap;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
@@ -35,7 +35,7 @@ use TYPO3\CMS\Core\Site\Entity\Site;
  */
 class CacheManager
 {
-    public const CACHE_IDENTIFIER = 'tx_cachewarmup';
+    public const CACHE_IDENTIFIER = 'tx_warming';
 
     /**
      * @var PhpFrontend

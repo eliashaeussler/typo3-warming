@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the TYPO3 CMS extension "cache_warmup".
+ * This file is part of the TYPO3 CMS extension "warming".
  *
  * Copyright (C) 2021 Elias Häußler <e.haeussler@familie-redlich.de>
  *
@@ -21,14 +21,14 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3CacheWarmup\Tests\Unit\Sitemap;
+namespace EliasHaeussler\Typo3Warming\Tests\Unit\Sitemap;
 
 use EliasHaeussler\CacheWarmup\Sitemap;
-use EliasHaeussler\Typo3CacheWarmup\Cache\CacheManager;
-use EliasHaeussler\Typo3CacheWarmup\Exception\UnsupportedConfigurationException;
-use EliasHaeussler\Typo3CacheWarmup\Exception\UnsupportedSiteException;
-use EliasHaeussler\Typo3CacheWarmup\Sitemap\Provider\DefaultProvider;
-use EliasHaeussler\Typo3CacheWarmup\Sitemap\SitemapLocator;
+use EliasHaeussler\Typo3Warming\Cache\CacheManager;
+use EliasHaeussler\Typo3Warming\Exception\UnsupportedConfigurationException;
+use EliasHaeussler\Typo3Warming\Exception\UnsupportedSiteException;
+use EliasHaeussler\Typo3Warming\Sitemap\Provider\DefaultProvider;
+use EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Http\RequestFactory;

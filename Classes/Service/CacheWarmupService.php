@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the TYPO3 CMS extension "cache_warmup".
+ * This file is part of the TYPO3 CMS extension "warming".
  *
  * Copyright (C) 2021 Elias Häußler <elias@haeussler.dev>
  *
@@ -21,14 +21,14 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3CacheWarmup\Service;
+namespace EliasHaeussler\Typo3Warming\Service;
 
 use EliasHaeussler\CacheWarmup\CacheWarmer;
 use EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface;
-use EliasHaeussler\Typo3CacheWarmup\Configuration\Extension;
-use EliasHaeussler\Typo3CacheWarmup\Exception\UnsupportedConfigurationException;
-use EliasHaeussler\Typo3CacheWarmup\Exception\UnsupportedSiteException;
-use EliasHaeussler\Typo3CacheWarmup\Sitemap\SitemapLocator;
+use EliasHaeussler\Typo3Warming\Configuration\Extension;
+use EliasHaeussler\Typo3Warming\Exception\UnsupportedConfigurationException;
+use EliasHaeussler\Typo3Warming\Exception\UnsupportedSiteException;
+use EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;

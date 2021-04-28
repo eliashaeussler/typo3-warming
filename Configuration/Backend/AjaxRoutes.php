@@ -3,7 +3,7 @@
 defined('TYPO3') or die();
 
 /*
- * This file is part of the TYPO3 CMS extension "cache_warmup".
+ * This file is part of the TYPO3 CMS extension "warming".
  *
  * Copyright (C) 2021 Elias Häußler <elias@haeussler.dev>
  *
@@ -22,8 +22,8 @@ defined('TYPO3') or die();
  */
 
 return [
-    'cache_warmup' => [
-        'path' => '/cache-warmup',
-        'target' => \EliasHaeussler\Typo3CacheWarmup\Controller\CacheWarmupController::class . '::mainAction',
+    'tx_warming_cache_warmup' => [
+        'path' => '/warming/cache-warmup',
+        'target' => \EliasHaeussler\Typo3Warming\Controller\CacheWarmupController::class . '::mainAction',
     ],
 ];

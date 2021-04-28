@@ -3,7 +3,7 @@
 defined('TYPO3') or die();
 
 /*
- * This file is part of the TYPO3 CMS extension "cache_warmup".
+ * This file is part of the TYPO3 CMS extension "warming".
  *
  * Copyright (C) 2021 Elias Häußler <elias@haeussler.dev>
  *
@@ -21,6 +21,6 @@ defined('TYPO3') or die();
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-\EliasHaeussler\Typo3CacheWarmup\Configuration\Extension::registerContextMenuProvider();
-\EliasHaeussler\Typo3CacheWarmup\Configuration\Extension::registerIcons();
-\EliasHaeussler\Typo3CacheWarmup\Configuration\Extension::registerToolbarItem();
+\EliasHaeussler\Typo3Warming\Configuration\Extension::registerContextMenuProvider();
+\EliasHaeussler\Typo3Warming\Configuration\Extension::registerIcons();
+\EliasHaeussler\Typo3Warming\Configuration\Extension::registerToolbarItem();

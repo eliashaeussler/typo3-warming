@@ -1,17 +1,17 @@
-[![Pipeline](https://gitlab.elias-haeussler.de/typo3/cache-warmup/badges/master/pipeline.svg)](https://gitlab.elias-haeussler.de/typo3/cache-warmup/-/pipelines)
-[![Coverage](https://gitlab.elias-haeussler.de/typo3/cache-warmup/badges/master/coverage.svg)](https://gitlab.elias-haeussler.de/typo3/cache-warmup/-/pipelines)
-[![License](https://badgen.net/packagist/license/eliashaeussler/typo3-cache-warmup)](LICENSE.md)
+[![Pipeline](https://gitlab.elias-haeussler.de/typo3/warming/badges/master/pipeline.svg)](https://gitlab.elias-haeussler.de/typo3/warming/-/pipelines)
+[![Coverage](https://gitlab.elias-haeussler.de/typo3/warming/badges/master/coverage.svg)](https://gitlab.elias-haeussler.de/typo3/warming/-/pipelines)
+[![License](https://badgen.net/packagist/license/eliashaeussler/typo3-warming)](LICENSE.md)
 
-# Cache warmup
+# Warming
 
-> Extension for TYPO3 CMS which warms up Frontend caches based on a XML sitemap.
+> Extension for TYPO3 CMS that warms up Frontend caches based on a XML sitemap.
 
 ![Extension icon](Resources/Public/Icons/Extension.svg)
 
 ## Installation
 
 ```bash
-composer require eliashaeussler/typo3-cache-warmup
+composer require eliashaeussler/typo3-warming
 ```
 
 ## Usage
@@ -48,7 +48,7 @@ The extension provides a Console command which allows triggering cache warmup
 from the console or using a Scheduler task.
 
 ```bash
-typo3cms cachewarmup:warmup [-p|--pages <pages>] [-s|--sites <sites>] [-x|--strict]
+typo3cms warming:cachewarmup [-p|--pages <pages>] [-s|--sites <sites>] [-x|--strict]
 ```
 
 * `-p|--pages`: Define single pages to be crawled for cache warmup
@@ -126,12 +126,12 @@ be used as last provider since it always returns a `Sitemap` object.
 
 services:
   # ...
-  EliasHaeussler\Typo3CacheWarmup\Sitemap\SitemapLocator:
+  EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator:
     public: true
     arguments:
       $providers:
         - '@My\Vendor\Sitemap\Provider\MyCustomProvider'
-        - '@EliasHaeussler\Typo3CacheWarmup\Sitemap\Provider\DefaultProvider'
+        - '@EliasHaeussler\Typo3Warming\Sitemap\Provider\DefaultProvider'
 ```
 
 ## License

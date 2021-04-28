@@ -58,6 +58,12 @@
 			<trans-unit id="modal.action.view">
 				<source>View</source>
 			</trans-unit>
+			<trans-unit id="modal.total">
+				<source>Total number of crawled URLs:</source>
+			</trans-unit>
+			<trans-unit id="modal.message.noUrlsCrawled">
+				<source>No URLs were crawled for cache warmup.</source>
+			</trans-unit>
 
 			<trans-unit id="contextMenu.item.cacheWarmup">
 				<source>Warmup cache for this page</source>

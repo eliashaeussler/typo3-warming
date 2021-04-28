@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the TYPO3 CMS extension "cache_warmup".
+ * This file is part of the TYPO3 CMS extension "warming".
  *
  * Copyright (C) 2021 Elias Häußler <elias@haeussler.dev>
  *
@@ -21,7 +21,7 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3CacheWarmup\Utility;
+namespace EliasHaeussler\Typo3Warming\Utility;
 
 use Doctrine\DBAL\FetchMode;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;

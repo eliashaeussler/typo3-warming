@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the TYPO3 CMS extension "cache_warmup".
+ * This file is part of the TYPO3 CMS extension "warming".
  *
  * Copyright (C) 2021 Elias Häußler <elias@haeussler.dev>
  *
@@ -21,10 +21,10 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3CacheWarmup\Backend\ContextMenu\ItemProviders;
+namespace EliasHaeussler\Typo3Warming\Backend\ContextMenu\ItemProviders;
 
-use EliasHaeussler\Typo3CacheWarmup\Sitemap\SitemapLocator;
-use EliasHaeussler\Typo3CacheWarmup\Utility\AccessUtility;
+use EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator;
+use EliasHaeussler\Typo3Warming\Utility\AccessUtility;
 use TYPO3\CMS\Backend\ContextMenu\ItemProviders\PageProvider;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -43,12 +43,12 @@ class CacheWarmupProvider extends PageProvider
      */
     protected $itemsConfiguration = [
         'cacheWarmupPage' => [
-            'label' => 'LLL:EXT:cache_warmup/Resources/Private/Language/locallang.xlf:contextMenu.item.cacheWarmup',
+            'label' => 'LLL:EXT:warming/Resources/Private/Language/locallang.xlf:contextMenu.item.cacheWarmup',
             'iconIdentifier' => 'cache-warmup-page',
             'callbackAction' => 'warmupPageCache',
         ],
         'cacheWarmupSite' => [
-            'label' => 'LLL:EXT:cache_warmup/Resources/Private/Language/locallang.xlf:contextMenu.item.cacheWarmupAll',
+            'label' => 'LLL:EXT:warming/Resources/Private/Language/locallang.xlf:contextMenu.item.cacheWarmupAll',
             'iconIdentifier' => 'cache-warmup-site',
             'callbackAction' => 'warmupSiteCache',
         ],

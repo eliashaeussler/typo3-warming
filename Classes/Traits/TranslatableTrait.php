@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the TYPO3 CMS extension "cache_warmup".
+ * This file is part of the TYPO3 CMS extension "warming".
  *
  * Copyright (C) 2021 Elias Häußler <elias@haeussler.dev>
  *
@@ -21,9 +21,9 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3CacheWarmup\Traits;
+namespace EliasHaeussler\Typo3Warming\Traits;
 
-use EliasHaeussler\Typo3CacheWarmup\Configuration\Extension;
+use EliasHaeussler\Typo3Warming\Configuration\Extension;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -37,9 +37,9 @@ trait TranslatableTrait
     /**
      * @param string $key
      * @param mixed[] $arguments
-     * @return string
+     * @return string|null
      */
-    protected static function translate(string $key, array $arguments = []): string
+    protected static function translate(string $key, array $arguments = []): ?string
     {
         return LocalizationUtility::translate($key, Extension::NAME, $arguments);
     }

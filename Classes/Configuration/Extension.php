@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the TYPO3 CMS extension "cache_warmup".
+ * This file is part of the TYPO3 CMS extension "warming".
  *
  * Copyright (C) 2021 Elias Häußler <elias@haeussler.dev>
  *
@@ -21,10 +21,10 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3CacheWarmup\Configuration;
+namespace EliasHaeussler\Typo3Warming\Configuration;
 
-use EliasHaeussler\Typo3CacheWarmup\Backend\ContextMenu\ItemProviders\CacheWarmupProvider;
-use EliasHaeussler\Typo3CacheWarmup\Backend\ToolbarItems\CacheWarmupToolbarItem;
+use EliasHaeussler\Typo3Warming\Backend\ContextMenu\ItemProviders\CacheWarmupProvider;
+use EliasHaeussler\Typo3Warming\Backend\ToolbarItems\CacheWarmupToolbarItem;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -38,8 +38,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 final class Extension
 {
-    public const KEY = 'cache_warmup';
-    public const NAME = 'CacheWarmup';
+    public const KEY = 'warming';
+    public const NAME = 'Warming';
 
     /**
      * Register context menu item provider.
@@ -62,12 +62,12 @@ final class Extension
         $iconRegistry->registerIcon(
             'cache-warmup-page',
             SvgIconProvider::class,
-            ['source' => 'EXT:cache_warmup/Resources/Public/Icons/cache-warmup-page.svg']
+            ['source' => 'EXT:warming/Resources/Public/Icons/cache-warmup-page.svg']
         );
         $iconRegistry->registerIcon(
             'cache-warmup-site',
             SvgIconProvider::class,
-            ['source' => 'EXT:cache_warmup/Resources/Public/Icons/cache-warmup-site.svg']
+            ['source' => 'EXT:warming/Resources/Public/Icons/cache-warmup-site.svg']
         );
     }
 

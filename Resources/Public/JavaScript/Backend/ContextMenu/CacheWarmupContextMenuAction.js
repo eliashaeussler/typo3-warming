@@ -1,5 +1,5 @@
 /*
- * This file is part of the TYPO3 CMS extension "cache_warmup".
+ * This file is part of the TYPO3 CMS extension "warming".
  *
  * Copyright (C) 2021 Elias Häußler <elias@haeussler.dev>
  *
@@ -18,7 +18,7 @@
  */
 
 define([
-  'TYPO3/CMS/CacheWarmup/Backend/Toolbar/CacheWarmupMenu',
+  'TYPO3/CMS/Warming/Backend/Toolbar/CacheWarmupMenu',
 ], function (CacheWarmupMenu)
 {
   'use strict';

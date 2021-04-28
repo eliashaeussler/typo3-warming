@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the TYPO3 CMS extension "cache_warmup".
+ * This file is part of the TYPO3 CMS extension "warming".
  *
  * Copyright (C) 2021 Elias Häußler <elias@haeussler.dev>
  *
@@ -21,10 +21,10 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3CacheWarmup\Command;
+namespace EliasHaeussler\Typo3Warming\Command;
 
 use EliasHaeussler\CacheWarmup\Crawler\OutputtingCrawler;
-use EliasHaeussler\Typo3CacheWarmup\Service\CacheWarmupService;
+use EliasHaeussler\Typo3Warming\Service\CacheWarmupService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

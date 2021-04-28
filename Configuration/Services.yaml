@@ -4,28 +4,28 @@ services:
     autoconfigure: true
     public: false
 
-  EliasHaeussler\Typo3CacheWarmup\:
+  EliasHaeussler\Typo3Warming\:
     resource: '../Classes/*'
 
-  EliasHaeussler\Typo3CacheWarmup\Backend\ToolbarItems\CacheWarmupToolbarItem:
+  EliasHaeussler\Typo3Warming\Backend\ToolbarItems\CacheWarmupToolbarItem:
     public: true
-  EliasHaeussler\Typo3CacheWarmup\Cache\CacheManager:
+  EliasHaeussler\Typo3Warming\Cache\CacheManager:
     arguments:
       $cache: '@cache.core'
-  EliasHaeussler\Typo3CacheWarmup\Controller\CacheWarmupController:
+  EliasHaeussler\Typo3Warming\Controller\CacheWarmupController:
     public: true
-  EliasHaeussler\Typo3CacheWarmup\Sitemap\SitemapLocator:
+  EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator:
     public: true
     arguments:
       $providers:
-        - '@EliasHaeussler\Typo3CacheWarmup\Sitemap\Provider\SiteProvider'
-        - '@EliasHaeussler\Typo3CacheWarmup\Sitemap\Provider\RobotsTxtProvider'
-        - '@EliasHaeussler\Typo3CacheWarmup\Sitemap\Provider\DefaultProvider'
+        - '@EliasHaeussler\Typo3Warming\Sitemap\Provider\SiteProvider'
+        - '@EliasHaeussler\Typo3Warming\Sitemap\Provider\RobotsTxtProvider'
+        - '@EliasHaeussler\Typo3Warming\Sitemap\Provider\DefaultProvider'
 
-  EliasHaeussler\Typo3CacheWarmup\Command\WarmupCommand:
+  EliasHaeussler\Typo3Warming\Command\WarmupCommand:
     tags:
       - name: console.command
-        command: cachewarmup:warmup
+        command: warming:cachewarmup
 
   cache.core:
     factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']

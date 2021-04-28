@@ -3,7 +3,7 @@
 defined('TYPO3') or die();
 
 /*
- * This file is part of the TYPO3 CMS extension "cache_warmup".
+ * This file is part of the TYPO3 CMS extension "warming".
  *
  * Copyright (C) 2021 Elias Häußler <elias@haeussler.dev>
  *
@@ -22,15 +22,15 @@ defined('TYPO3') or die();
  */
 
 $GLOBALS['SiteConfiguration']['site']['columns']['xml_sitemap_path'] = [
-    'label' => 'LLL:EXT:cache_warmup/Resources/Private/Language/locallang_db.xlf:sites.xml_sitemap_path.label',
-    'description' => 'LLL:EXT:cache_warmup/Resources/Private/Language/locallang_db.xlf:sites.xml_sitemap_path.description',
+    'label' => 'LLL:EXT:warming/Resources/Private/Language/locallang_db.xlf:sites.xml_sitemap_path.label',
+    'description' => 'LLL:EXT:warming/Resources/Private/Language/locallang_db.xlf:sites.xml_sitemap_path.description',
     'config' => [
         'type' => 'input',
         'valuePicker' => [
             'items' => [
                 [
-                    \EliasHaeussler\Typo3CacheWarmup\Sitemap\Provider\DefaultProvider::DEFAULT_PATH,
-                    \EliasHaeussler\Typo3CacheWarmup\Sitemap\Provider\DefaultProvider::DEFAULT_PATH,
+                    \EliasHaeussler\Typo3Warming\Sitemap\Provider\DefaultProvider::DEFAULT_PATH,
+                    \EliasHaeussler\Typo3Warming\Sitemap\Provider\DefaultProvider::DEFAULT_PATH,
                 ],
             ],
         ],

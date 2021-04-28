@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the TYPO3 CMS extension "cache_warmup".
+ * This file is part of the TYPO3 CMS extension "warming".
  *
  * Copyright (C) 2021 Elias Häußler <elias@haeussler.dev>
  *
@@ -21,15 +21,15 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3CacheWarmup\Controller;
+namespace EliasHaeussler\Typo3Warming\Controller;
 
 use EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface;
 use EliasHaeussler\CacheWarmup\CrawlingState;
-use EliasHaeussler\Typo3CacheWarmup\Exception\MissingPageIdException;
-use EliasHaeussler\Typo3CacheWarmup\Exception\UnsupportedConfigurationException;
-use EliasHaeussler\Typo3CacheWarmup\Exception\UnsupportedSiteException;
-use EliasHaeussler\Typo3CacheWarmup\Service\CacheWarmupService;
-use EliasHaeussler\Typo3CacheWarmup\Traits\TranslatableTrait;
+use EliasHaeussler\Typo3Warming\Exception\MissingPageIdException;
+use EliasHaeussler\Typo3Warming\Exception\UnsupportedConfigurationException;
+use EliasHaeussler\Typo3Warming\Exception\UnsupportedSiteException;
+use EliasHaeussler\Typo3Warming\Service\CacheWarmupService;
+use EliasHaeussler\Typo3Warming\Traits\TranslatableTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;

@@ -1,5 +1,5 @@
 /*
- * This file is part of the TYPO3 CMS extension "cache_warmup".
+ * This file is part of the TYPO3 CMS extension "warming".
  *
  * Copyright (C) 2021 Elias Häußler <elias@haeussler.dev>
  *
@@ -28,7 +28,7 @@ define([
   'use strict';
 
   const CacheWarmupMenu = {
-    containerSelector: '#eliashaeussler-typo3cachewarmup-backend-toolbaritems-cachewarmuptoolbaritem',
+    containerSelector: '#eliashaeussler-typo3warming-backend-toolbaritems-cachewarmuptoolbaritem',
     menuItemSelector: 'a.toolbar-cache-warmup-action',
     toolbarIconSelector: '.toolbar-item-icon .t3js-icon',
     notificationDuration: 15,
@@ -136,8 +136,10 @@ define([
             // Reset count of panels in report
             _.panelCount = 0;
 
-            // Build panels from crawled URLs and the appropriate crawling states
+            // Create content container
             const $content = $('<div/>');
+
+            // Build panels from crawled URLs and the appropriate crawling states
             if (failedUrls.length > 0) {
               $content.append(
                 _.createPanel(
@@ -156,6 +158,30 @@ define([
                   successfulUrls,
                   viewPageIcon
                 )
+              );
+            }
+
+            // Add number of totally crawled pages
+            const total = successfulUrls.length + failedUrls.length;
+            if (total > 0) {
+              $content.append(
+                $('<div>')
+                  .addClass('typo3-message alert alert-info')
+                  .append(
+                    $('<div>')
+                      .addClass('message-body')
+                      .text(TYPO3.lang['cacheWarmup.modal.total'] + ' ' + total)
+                  )
+              );
+            } else {
+              $content.append(
+                $('<div>')
+                  .addClass('typo3-message alert alert-warning')
+                  .append(
+                    $('<div>')
+                      .addClass('message-body')
+                      .text(TYPO3.lang['cacheWarmup.modal.message.noUrlsCrawled'])
+                  )
               );
             }
 
@@ -195,7 +221,7 @@ define([
     });
 
     // Trigger cache warmup
-    (new AjaxRequest(TYPO3.settings.ajaxUrls.cache_warmup))
+    (new AjaxRequest(TYPO3.settings.ajaxUrls.tx_warming_cache_warmup))
       .withQueryArguments({pageId: pageId, mode: mode})
       .post({})
       .then(
