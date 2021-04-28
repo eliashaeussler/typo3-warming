@@ -35,17 +35,7 @@ lint:php:
   needs:
     - build
   script:
-    - composer lint:php -- --dry-run
-  rules:
-    - if: '$CI_COMMIT_BRANCH'
-      when: on_success
-
-lint:typoscript:
-  stage: lint
-  needs:
-    - build
-  script:
-    - composer lint:typoscript -- --fail-on-warnings
+    - composer lint -- --dry-run
   rules:
     - if: '$CI_COMMIT_BRANCH'
       when: on_success
@@ -65,7 +55,7 @@ sca:php:
   needs:
     - build
   script:
-    - composer sca:php -- --error-format gitlab > .Build/phpstan.json
+    - composer sca -- --error-format gitlab > .Build/phpstan.json
   artifacts:
     reports:
       codequality: .Build/phpstan.json

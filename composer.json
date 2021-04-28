@@ -23,7 +23,6 @@
 	},
 	"require-dev": {
 		"ergebnis/composer-normalize": "^2.8",
-		"helmich/typo3-typoscript-lint": "^1.5 || ^2.0",
 		"jangregor/phpstan-prophecy": "^0.8.1",
 		"saschaegerer/phpstan-typo3": "^0.13.1",
 		"typo3/coding-standards": "^0.3.0",
@@ -56,16 +55,8 @@
 			"mkdir -p .Build/web/typo3conf/ext/",
 			"[ -L .Build/web/typo3conf/ext/warming ] || ln -snvf ../../../../. .Build/web/typo3conf/ext/warming"
 		],
-		"lint": [
-			"@lint:php",
-			"@lint:typoscript"
-		],
-		"lint:php": "php-cs-fixer fix",
-		"lint:typoscript": "typoscript-lint -c typoscript-lint.yml",
-		"sca": [
-			"@sca:php"
-		],
-		"sca:php": "phpstan analyse -c phpstan.neon",
+		"lint": "php-cs-fixer fix",
+		"sca": "phpstan analyse -c phpstan.neon",
 		"test": "phpunit -c phpunit.xml",
 		"test:coverage": "phpunit -c phpunit.coverage.xml"
 	},
