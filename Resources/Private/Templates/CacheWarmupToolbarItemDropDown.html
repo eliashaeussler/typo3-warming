@@ -1,0 +1,67 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:c="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+      data-namespace-typo3-fluid="true"
+>
+
+<h3 class="dropdown-headline">
+    <f:translate key="cacheWarmupToolbarItem.title" />
+</h3>
+
+<hr>
+
+<div class="dropdown-table">
+    <f:for each="{actions}" as="action">
+        <div class="dropdown-table-row">
+            <f:if condition="{action.missing}">
+                <f:then>
+                    <div class="toolbar-cache-warmup-action text-muted"
+                         data-page-id="{action.pageId}"
+                         title="{action.title}"
+                         style="pointer-events: none"
+                    >
+                        <f:render section="item-icon" arguments="{
+                            identifier: action.iconIdentifier,
+                            overlay: 'overlay-warning'
+                        }" />
+                        <f:render section="item-content" arguments="{
+                            pageId: action.pageId,
+                            title: action.title,
+                            description: '{f:translate(key: \'cacheWarmupToolbarItem.description.invalid\')}'
+                        }" />
+                    </div>
+                </f:then>
+                <f:else>
+                    <a href="#" class="toolbar-cache-warmup-action"
+                       data-page-id="{action.pageId}"
+                       title="{action.title}"
+                    >
+                        <f:render section="item-icon" arguments="{
+                            identifier: action.iconIdentifier
+                        }" />
+                        <f:render section="item-content" arguments="{
+                            pageId: action.pageId,
+                            title: action.title,
+                            description: action.sitemapUrl
+                        }" />
+                    </a>
+                </f:else>
+            </f:if>
+        </div>
+    </f:for>
+</div>
+
+<f:section name="item-icon">
+    <div class="dropdown-table-column dropdown-table-column-top dropdown-table-icon dropdown-table-icon-{identifier}">
+        <c:icon identifier="{identifier}" size="small" overlay="{overlay}" />
+    </div>
+</f:section>
+
+<f:section name="item-content">
+    <div class="dropdown-table-column dropdown-table-column-top dropdown-table-text">
+        [{pageId}] {title}
+        <br>
+        <small class="text-muted">{description}</small>
+    </div>
+</f:section>
+
+</html>
