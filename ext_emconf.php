@@ -1,7 +1,5 @@
 <?php
 
-defined('TYPO3') or die();
-
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
@@ -26,7 +24,7 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'Warming',
     'description' => 'Warms up Frontend caches based on a XML sitemap.',
     'category' => 'be',
-    'version' => '0.1.0',
+    'version' => '0.1.1',
     'state' => 'alpha',
     'clearCacheOnLoad' => true,
     'author' => 'Elias Häußler',
