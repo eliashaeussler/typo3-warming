@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Backend\ToolbarItems;
 
+use EliasHaeussler\Typo3Warming\Configuration\Configuration;
 use EliasHaeussler\Typo3Warming\Configuration\Extension;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedConfigurationException;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedSiteException;
@@ -48,6 +49,11 @@ class CacheWarmupToolbarItem implements ToolbarItemInterface
     use TranslatableTrait;
 
     /**
+     * @var Configuration
+     */
+    protected $configuration;
+
+    /**
      * @var array[]
      */
     protected $actions;
@@ -57,6 +63,7 @@ class CacheWarmupToolbarItem implements ToolbarItemInterface
      * @param SiteFinder $siteFinder
      * @param IconFactory $iconFactory
      * @param SitemapLocator $sitemapLocator
+     * @param Configuration $configuration
      * @throws UnsupportedConfigurationException
      * @throws UnsupportedSiteException
      */
@@ -64,12 +71,15 @@ class CacheWarmupToolbarItem implements ToolbarItemInterface
         PageRenderer $pageRenderer,
         SiteFinder $siteFinder,
         IconFactory $iconFactory,
-        SitemapLocator $sitemapLocator
+        SitemapLocator $sitemapLocator,
+        Configuration $configuration
     ) {
+        $this->configuration = $configuration;
         $this->actions = [];
 
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Warming/Backend/Toolbar/CacheWarmupMenu');
         $pageRenderer->addInlineLanguageLabelArray([
+            'cacheWarmup.toolbar.copy.successful' => static::translate('toolbar.copy.successful'),
             'cacheWarmup.notification.error.title' => static::translate('notification.error.title'),
             'cacheWarmup.notification.error.message' => static::translate('notification.error.message'),
             'cacheWarmup.notification.action.showReport' => static::translate('notification.action.showReport'),
@@ -124,6 +134,7 @@ class CacheWarmupToolbarItem implements ToolbarItemInterface
     {
         $view = $this->buildView('CacheWarmupToolbarItemDropDown.html');
         $view->assign('actions', $this->actions);
+        $view->assign('userAgent', $this->configuration->getUserAgent());
 
         return $view->render();
     }

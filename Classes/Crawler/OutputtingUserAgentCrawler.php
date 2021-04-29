@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
@@ -19,20 +21,23 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-/** @noinspection PhpUndefinedVariableInspection */
-$EM_CONF[$_EXTKEY] = [
-    'title' => 'Warming',
-    'description' => 'Warms up Frontend caches based on a XML sitemap.',
-    'category' => 'be',
-    'version' => '0.1.3',
-    'state' => 'alpha',
-    'clearCacheOnLoad' => true,
-    'author' => 'Elias Häußler',
-    'author_email' => 'elias@haeussler.dev',
-    'author_company' => 'familie redlich digital GmbH',
-    'constraints' => [
-        'depends' => [
-            'typo3' => '10.4.0-11.1.99',
-        ],
-    ],
-];
+namespace EliasHaeussler\Typo3Warming\Crawler;
+
+use EliasHaeussler\CacheWarmup\Crawler\OutputtingCrawler;
+
+/**
+ * OutputtingUserAgentCrawler
+ *
+ * @author Elias Häußler <elias@haeussler.dev>
+ * @license GPL-3.0-or-later
+ */
+class OutputtingUserAgentCrawler extends OutputtingCrawler
+{
+    use UserAgentTrait;
+
+    protected function getRequests(): \Iterator
+    {
+        $request = yield from parent::getRequests();
+        yield $this->applyUserAgentHeader($request);
+    }
+}

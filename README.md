@@ -103,6 +103,21 @@ The extension configuration currently provides two configuration options:
 
 [1]: https://gitlab.elias-haeussler.de/eliashaeussler/cache-warmup/-/blob/master/src/Crawler/CrawlerInterface.php
 
+### Crawler
+
+There exist two dedicated crawlers: one to run the cache warmup from the Backend
+([`ConcurrentUserAgentCrawler`](Classes/Crawler/ConcurrentUserAgentCrawler.php))
+and another one to use when running from the command line
+([`OutputtingUserAgentCrawler`](Classes/Crawler/OutputtingUserAgentCrawler.php)).
+
+Both crawlers define their own `User-Agent` header, which generates a hash from the
+encryption key of the TYPO3 installation. This `User-Agent` header can be copied in
+the dropdown of the toolbar item in the Backend to exclude such requests from the
+statistics of analysis tools, for example.
+
+Alternatively, the command `warming:showuseragent` can be used to read the
+`User-Agent` header.
+
 ## Sitemap providers
 
 The path to XML sitemaps is located using various path providers. All providers

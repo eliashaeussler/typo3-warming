@@ -23,14 +23,24 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Command;
 
-use EliasHaeussler\CacheWarmup\Crawler\OutputtingCrawler;
+use EliasHaeussler\CacheWarmup\Command\CacheWarmupCommand;
+use EliasHaeussler\CacheWarmup\Crawler\VerboseCrawlerInterface;
+use EliasHaeussler\CacheWarmup\Sitemap;
+use EliasHaeussler\Typo3Warming\Configuration\Configuration;
+use EliasHaeussler\Typo3Warming\Crawler\ConcurrentUserAgentCrawler;
+use EliasHaeussler\Typo3Warming\Crawler\OutputtingUserAgentCrawler;
+use EliasHaeussler\Typo3Warming\Exception\UnsupportedConfigurationException;
+use EliasHaeussler\Typo3Warming\Exception\UnsupportedSiteException;
 use EliasHaeussler\Typo3Warming\Service\CacheWarmupService;
+use EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator;
+use Psr\Http\Message\UriInterface;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -49,15 +59,32 @@ class WarmupCommand extends Command
     protected $warmupService;
 
     /**
+     * @var Configuration
+     */
+    protected $configuration;
+
+    /**
+     * @var SitemapLocator
+     */
+    protected $sitemapLocator;
+
+    /**
      * @var SiteFinder
      */
     protected $siteFinder;
 
-    public function __construct(CacheWarmupService $warmupService, SiteFinder $siteFinder, string $name = null)
-    {
+    public function __construct(
+        CacheWarmupService $warmupService,
+        Configuration $configuration,
+        SitemapLocator $sitemapLocator,
+        SiteFinder $siteFinder,
+        string $name = null
+    ) {
         parent::__construct($name);
 
         $this->warmupService = $warmupService;
+        $this->configuration = $configuration;
+        $this->sitemapLocator = $sitemapLocator;
         $this->siteFinder = $siteFinder;
     }
 
@@ -87,33 +114,40 @@ class WarmupCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $pages = array_unique(iterator_to_array($this->resolvePages($input->getOption('pages'))));
-        $sites = array_unique(iterator_to_array($this->resolveSites($input->getOption('sites'))), SORT_REGULAR);
+        $io = new SymfonyStyle($input, $output);
+        $urls = array_unique(iterator_to_array($this->resolveUrls($input->getOption('pages'))));
+        $sitemaps = array_unique(iterator_to_array($this->resolveSitemaps($input->getOption('sites'))), SORT_REGULAR);
 
         // Exit if neither pages nor sites are given
-        if (count($pages) + count($sites) === 0) {
-            $output->writeln('<error>You need to define at least one page or site.</error>');
+        if (count($urls) + count($sitemaps) === 0) {
+            $io->error('You need to define at least one page or site.');
             return 1;
         }
 
-        $output->writeln('Running <info>cache warmup</info> by <info>Elias Häußler</info> and contributors.');
+        $io->writeln('Running <info>cache warmup</info> by <info>Elias Häußler</info> and contributors.');
 
         // Initialize crawler
-        if (($crawler = $this->warmupService->getCrawler()) === null) {
-            $crawler = new OutputtingCrawler();
-            $crawler->setOutput($output);
+        if (($crawler = $this->warmupService->getCrawler()) instanceof ConcurrentUserAgentCrawler) {
+            $crawler = new OutputtingUserAgentCrawler();
             $this->warmupService->setCrawler($crawler);
         }
+        if ($crawler instanceof VerboseCrawlerInterface) {
+            $crawler->setOutput($output);
+        }
 
-        // Warmup pages and sites
-        $countFailed = 0;
-        $this->warmupService->warmupPages($pages);
-        $countFailed += count($crawler->getFailedUrls());
-        $this->warmupService->warmupSites($sites);
-        $countFailed += count($crawler->getFailedUrls());
+        // Run cache warmup in sub command from eliashaeussler/cache-warmup
+        $subCommand = $this->getApplication()->add(new CacheWarmupCommand());
+        $subCommandParameters = [
+            'sitemaps' => $sitemaps,
+            '--urls' => $urls,
+            '--limit' => $this->configuration->getLimit(),
+            '--crawler' => $crawler,
+        ];
+        $subCommandInput = new ArrayInput($subCommandParameters);
+        $returnCode = $subCommand->run($subCommandInput, $output);
 
         // Fail if strict mode is enabled and at least one crawl was erroneous
-        if ($input->getOption('strict') && $countFailed > 0) {
+        if ($input->getOption('strict') && $returnCode > 0) {
             return 2;
         }
 
@@ -122,31 +156,35 @@ class WarmupCommand extends Command
 
     /**
      * @param string[]|int[] $pages
-     * @return \Generator<int>
+     * @return \Generator<UriInterface>
+     * @throws SiteNotFoundException
      */
-    protected function resolvePages(array $pages): \Generator
+    protected function resolveUrls(array $pages): \Generator
     {
         foreach ($pages as $pageList) {
             foreach (GeneralUtility::intExplode(',', $pageList, true) as $page) {
-                yield $page;
+                yield $this->warmupService->generateUri($page);
             }
         }
     }
 
     /**
      * @param string[]|int[] $sites
-     * @return \Generator<Site>
+     * @return \Generator<Sitemap>
      * @throws SiteNotFoundException
+     * @throws UnsupportedConfigurationException
+     * @throws UnsupportedSiteException
      */
-    protected function resolveSites(array $sites): \Generator
+    protected function resolveSitemaps(array $sites): \Generator
     {
         foreach ($sites as $siteList) {
             foreach (GeneralUtility::trimExplode(',', $siteList, true) as $site) {
                 if (MathUtility::canBeInterpretedAsInteger($site)) {
-                    yield $this->siteFinder->getSiteByRootPageId((int)$site);
+                    $site = $this->siteFinder->getSiteByRootPageId((int)$site);
                 } else {
-                    yield $this->siteFinder->getSiteByIdentifier($site);
+                    $site = $this->siteFinder->getSiteByIdentifier($site);
                 }
+                yield $this->sitemapLocator->locateBySite($site);
             }
         }
     }

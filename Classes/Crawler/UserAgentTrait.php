@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
@@ -19,20 +21,32 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-/** @noinspection PhpUndefinedVariableInspection */
-$EM_CONF[$_EXTKEY] = [
-    'title' => 'Warming',
-    'description' => 'Warms up Frontend caches based on a XML sitemap.',
-    'category' => 'be',
-    'version' => '0.1.3',
-    'state' => 'alpha',
-    'clearCacheOnLoad' => true,
-    'author' => 'Elias Häußler',
-    'author_email' => 'elias@haeussler.dev',
-    'author_company' => 'familie redlich digital GmbH',
-    'constraints' => [
-        'depends' => [
-            'typo3' => '10.4.0-11.1.99',
-        ],
-    ],
-];
+namespace EliasHaeussler\Typo3Warming\Crawler;
+
+use EliasHaeussler\Typo3Warming\Configuration\Configuration;
+use GuzzleHttp\Psr7\Request;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+/**
+ * UserAgentTrait
+ *
+ * @author Elias Häußler <elias@haeussler.dev>
+ * @license GPL-2.0-or-later
+ */
+trait UserAgentTrait
+{
+    protected function applyUserAgentHeader(Request $request): Request
+    {
+        /** @var Request $request */
+        $request = $request->withAddedHeader('User-Agent', $this->getUserAgent());
+
+        return $request;
+    }
+
+    protected function getUserAgent(): string
+    {
+        $configuration = GeneralUtility::makeInstance(Configuration::class);
+
+        return $configuration->getUserAgent();
+    }
+}
