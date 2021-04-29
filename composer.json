@@ -50,7 +50,6 @@
 			"EliasHaeussler\\Typo3Warming\\Tests\\": "Tests/"
 		}
 	},
-	"prefer-stable": true,
 	"scripts": {
 		"post-autoload-dump": [
 			"mkdir -p .Build/web/typo3conf/ext/",
