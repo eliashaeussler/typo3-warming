@@ -10,9 +10,14 @@
 
 ## Installation
 
+Via Composer:
+
 ```bash
 composer require eliashaeussler/typo3-warming
 ```
+
+Or download the zip file from
+[TYPO3 extension repository (TER)](https://extensions.typo3.org/extension/warming).
 
 ## Usage
 
