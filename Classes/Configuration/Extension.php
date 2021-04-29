@@ -80,4 +80,19 @@ final class Extension
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['toolbarItems'][1619165047] = CacheWarmupToolbarItem::class;
     }
+
+    /**
+     * Register custom styles for Backend.
+     *
+     * FOR USE IN ext_tables.php ONLY.
+     */
+    public static function registerCustomStyles(): void
+    {
+        $GLOBALS['TBE_STYLES']['skins'][self::KEY] = [
+            'name' => self::KEY,
+            'stylesheetDirectories' => [
+                'css' => 'EXT:warming/Resources/Public/Css/Backend',
+            ],
+        ];
+    }
 }
