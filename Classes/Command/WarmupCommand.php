@@ -23,7 +23,8 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Command;
 
-use EliasHaeussler\CacheWarmup\Crawler\OutputtingCrawler;
+use EliasHaeussler\Typo3Warming\Crawler\ConcurrentUserAgentCrawler;
+use EliasHaeussler\Typo3Warming\Crawler\OutputtingUserAgentCrawler;
 use EliasHaeussler\Typo3Warming\Service\CacheWarmupService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -99,8 +100,8 @@ class WarmupCommand extends Command
         $output->writeln('Running <info>cache warmup</info> by <info>Elias Häußler</info> and contributors.');
 
         // Initialize crawler
-        if (($crawler = $this->warmupService->getCrawler()) === null) {
-            $crawler = new OutputtingCrawler();
+        if (($crawler = $this->warmupService->getCrawler()) instanceof ConcurrentUserAgentCrawler) {
+            $crawler = new OutputtingUserAgentCrawler();
             $crawler->setOutput($output);
             $this->warmupService->setCrawler($crawler);
         }

@@ -12,6 +12,8 @@ services:
   EliasHaeussler\Typo3Warming\Cache\CacheManager:
     arguments:
       $cache: '@cache.core'
+  EliasHaeussler\Typo3Warming\Configuration\Configuration:
+    public: true
   EliasHaeussler\Typo3Warming\Controller\CacheWarmupController:
     public: true
   EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator:
@@ -22,6 +24,10 @@ services:
         - '@EliasHaeussler\Typo3Warming\Sitemap\Provider\RobotsTxtProvider'
         - '@EliasHaeussler\Typo3Warming\Sitemap\Provider\DefaultProvider'
 
+  EliasHaeussler\Typo3Warming\Command\ShowUserAgentCommand:
+    tags:
+      - name: console.command
+        command: warming:showuseragent
   EliasHaeussler\Typo3Warming\Command\WarmupCommand:
     tags:
       - name: console.command

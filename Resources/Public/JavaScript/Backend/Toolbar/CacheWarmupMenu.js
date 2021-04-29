@@ -31,6 +31,9 @@ define([
     containerSelector: '#eliashaeussler-typo3warming-backend-toolbaritems-cachewarmuptoolbaritem',
     menuItemSelector: 'a.toolbar-cache-warmup-action',
     toolbarIconSelector: '.toolbar-item-icon .t3js-icon',
+    userAgentCopySelector: 'button.toolbar-cache-warmup-useragent-copy-action',
+    userAgentCopyIconSelector: '.t3js-icon',
+    userAgentCopyTextSelector: '.toolbar-cache-warmup-useragent-copy-text',
     notificationDuration: 15,
     panelCount: 0,
   }, _ = CacheWarmupMenu;
@@ -46,6 +49,13 @@ define([
       const pageId = $(event.currentTarget).attr('data-page-id');
       if (pageId) {
         _.warmupCache(pageId);
+      }
+    });
+
+    $(_.containerSelector).on('click', _.userAgentCopySelector, function (event) {
+      const userAgent = $(event.currentTarget).attr('data-text');
+      if (userAgent) {
+        _.copyUserAgentToClipboard(userAgent);
       }
     });
   };
@@ -205,7 +215,7 @@ define([
    * notification contains an action which allows to show the full report containing all
    * crawled URLs.
    *
-   * @param pageId {integer} Page ID of the page or site whose caches should be warmed up
+   * @param pageId {int} Page ID of the page or site whose caches should be warmed up
    * @param mode {string} Warmup mode, can be one of "page", "site" (default)
    */
   CacheWarmupMenu.warmupCache = function (pageId, mode = 'site') {
@@ -259,6 +269,36 @@ define([
       .finally(function () {
         $(_.toolbarIconSelector, _.containerSelector).replaceWith($existingIcon);
       });
+  };
+
+  /**
+   * Copy user-agent header to clipboard.
+   *
+   * @param userAgent {string} The user agent to be copied to clipboard
+   */
+  CacheWarmupMenu.copyUserAgentToClipboard = function (userAgent) {
+    const $copyIcon = $(_.userAgentCopyIconSelector, _.userAgentCopySelector);
+    const $existingIcon = $copyIcon.clone();
+
+    // Show spinner during cache warmup
+    Icons.getIcon('spinner-circle-light', Icons.sizes.small).then(function (spinner) {
+      $copyIcon.replaceWith(spinner);
+    });
+
+    // Copy user agent to clipboard
+    Promise.all([
+      navigator.clipboard.writeText(userAgent),
+      Icons.getIcon('actions-check', Icons.sizes.small),
+    ])
+      .then(
+        async function (responses) {
+          $(_.userAgentCopyTextSelector).text(TYPO3.lang['cacheWarmup.toolbar.copy.successful']);
+          $(_.userAgentCopyIconSelector, _.userAgentCopySelector).replaceWith(responses[1]);
+        },
+        function () {
+          $(_.userAgentCopyIconSelector, _.userAgentCopySelector).replaceWith($existingIcon);
+        }
+      );
   };
 
   // Register events to trigger cache warmup for available sites
