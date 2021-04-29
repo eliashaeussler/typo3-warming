@@ -30,6 +30,7 @@ use EliasHaeussler\Typo3Warming\Crawler\ConcurrentUserAgentCrawler;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedConfigurationException;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedSiteException;
 use EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator;
+use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
@@ -114,12 +115,23 @@ class CacheWarmupService implements LoggerAwareInterface
         $cacheWarmer->setLimit($this->limit);
 
         foreach ($pageIds as $pageId) {
-            $site = $this->siteFinder->getSiteByPageId($pageId);
-            $url = $site->getRouter()->generateUri((string)$pageId);
+            $url = $this->generateUri($pageId);
             $cacheWarmer->addUrl($url);
         }
 
         return $cacheWarmer->run($this->crawler);
+    }
+
+    /**
+     * @param int $pageId
+     * @return UriInterface
+     * @throws SiteNotFoundException
+     */
+    public function generateUri(int $pageId): UriInterface
+    {
+        $site = $this->siteFinder->getSiteByPageId($pageId);
+
+        return $site->getRouter()->generateUri((string)$pageId);
     }
 
     /**
