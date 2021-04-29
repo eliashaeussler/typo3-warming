@@ -9,6 +9,16 @@
 			<trans-unit id="cacheWarmupToolbarItem.description.invalid">
 				<source>No XML sitemap found for this site.</source>
 			</trans-unit>
+			<trans-unit id="cacheWarmupToolbarItem.userAgent.description">
+				<source><![CDATA[A custom <code>User-Agent</code> header is used for cache warmup requests. You can copy it here to exclude the requests from your site statistics, for example.]]></source>
+			</trans-unit>
+			<trans-unit id="cacheWarmupToolbarItem.userAgent.action">
+				<source>Copy to clipboard</source>
+			</trans-unit>
+
+			<trans-unit id="toolbar.copy.successful">
+				<source>Copied</source>
+			</trans-unit>
 
 			<trans-unit id="notification.title.failed">
 				<source>Cache warmup failed</source>

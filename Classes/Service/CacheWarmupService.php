@@ -25,14 +25,13 @@ namespace EliasHaeussler\Typo3Warming\Service;
 
 use EliasHaeussler\CacheWarmup\CacheWarmer;
 use EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface;
-use EliasHaeussler\Typo3Warming\Configuration\Extension;
+use EliasHaeussler\Typo3Warming\Configuration\Configuration;
+use EliasHaeussler\Typo3Warming\Crawler\ConcurrentUserAgentCrawler;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedConfigurationException;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedSiteException;
 use EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -71,19 +70,18 @@ class CacheWarmupService implements LoggerAwareInterface
     /**
      * @param SiteFinder $siteFinder
      * @param SitemapLocator $sitemapLocator
-     * @param ExtensionConfiguration $extensionConfiguration
-     * @throws Exception
+     * @param Configuration $configuration
      * @throws UnsupportedConfigurationException
      */
     public function __construct(
         SiteFinder $siteFinder,
         SitemapLocator $sitemapLocator,
-        ExtensionConfiguration $extensionConfiguration
+        Configuration $configuration
     ) {
         $this->siteFinder = $siteFinder;
         $this->sitemapLocator = $sitemapLocator;
-        $this->limit = abs((int)$extensionConfiguration->get(Extension::KEY, 'limit'));
-        $this->crawler = $this->initializeCrawler($extensionConfiguration->get(Extension::KEY, 'crawler'));
+        $this->limit = $configuration->getLimit();
+        $this->crawler = $this->initializeCrawler($configuration->getCrawler());
     }
 
     /**
@@ -125,9 +123,9 @@ class CacheWarmupService implements LoggerAwareInterface
     }
 
     /**
-     * @return CrawlerInterface|null
+     * @return CrawlerInterface
      */
-    public function getCrawler(): ?CrawlerInterface
+    public function getCrawler(): CrawlerInterface
     {
         return $this->crawler;
     }
@@ -145,18 +143,18 @@ class CacheWarmupService implements LoggerAwareInterface
 
     /**
      * @param string|CrawlerInterface|null $crawler
-     * @return CrawlerInterface|null
+     * @return CrawlerInterface
      * @throws UnsupportedConfigurationException
      */
-    protected function initializeCrawler($crawler): ?CrawlerInterface
+    protected function initializeCrawler($crawler): CrawlerInterface
     {
         if ($crawler instanceof CrawlerInterface) {
             return $crawler;
         }
 
-        // Early return if no crawler is given
+        // Use default crawler if no custom crawler is given
         if (empty($crawler)) {
-            return null;
+            $crawler = ConcurrentUserAgentCrawler::class;
         }
 
         // Throw exception if crawler variable type is unsupported
