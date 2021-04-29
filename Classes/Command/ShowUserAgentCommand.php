@@ -31,7 +31,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * ShowUserAgentCommand
  *
- * @author Elias Häußler <e.haeussler@familie-redlich.de>
+ * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
 class ShowUserAgentCommand extends Command

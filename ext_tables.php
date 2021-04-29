@@ -1,5 +1,7 @@
 <?php
 
+defined('TYPO3') or die();
+
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
@@ -19,20 +21,4 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-/** @noinspection PhpUndefinedVariableInspection */
-$EM_CONF[$_EXTKEY] = [
-    'title' => 'Warming',
-    'description' => 'Warms up Frontend caches based on a XML sitemap.',
-    'category' => 'be',
-    'version' => '0.1.4',
-    'state' => 'alpha',
-    'clearCacheOnLoad' => true,
-    'author' => 'Elias Häußler',
-    'author_email' => 'elias@haeussler.dev',
-    'author_company' => 'familie redlich digital GmbH',
-    'constraints' => [
-        'depends' => [
-            'typo3' => '10.4.0-11.1.99',
-        ],
-    ],
-];
+\EliasHaeussler\Typo3Warming\Configuration\Extension::registerCustomStyles();
