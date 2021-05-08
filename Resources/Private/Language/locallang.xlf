@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <xliff version="1.0">
-    <file source-language="en">
-        <header/>
-        <body>
-            <trans-unit id="cacheWarmupToolbarItem.title">
-                <source>Warmup cache</source>
-            </trans-unit>
+	<file source-language="en">
+		<header/>
+		<body>
+			<trans-unit id="cacheWarmupToolbarItem.title">
+				<source>Warmup cache</source>
+			</trans-unit>
 			<trans-unit id="cacheWarmupToolbarItem.loading">
 				<source>Sites are being loaded...</source>
 			</trans-unit>
@@ -84,6 +84,6 @@
 			<trans-unit id="contextMenu.item.cacheWarmupAll">
 				<source>Warmup all caches</source>
 			</trans-unit>
-        </body>
-    </file>
+		</body>
+	</file>
 </xliff>

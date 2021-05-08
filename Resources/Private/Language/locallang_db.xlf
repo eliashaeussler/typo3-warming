@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <xliff version="1.0">
-    <file source-language="en" target-language="de">
-        <header/>
-        <body>
-            <trans-unit id="sites.xml_sitemap_path.label">
-                <source>Path to XML sitemap</source>
-            </trans-unit>
-            <trans-unit id="sites.xml_sitemap_path.description">
-                <source>Specify the path to the XML sitemap, relative to the entry point of the site.
+	<file source-language="en" target-language="de">
+		<header/>
+		<body>
+			<trans-unit id="sites.xml_sitemap_path.label">
+				<source>Path to XML sitemap</source>
+			</trans-unit>
+			<trans-unit id="sites.xml_sitemap_path.description">
+				<source>Specify the path to the XML sitemap, relative to the entry point of the site.
 Note that caches can be warmed up only if the entry point of the site contains the full domain name.</source>
-            </trans-unit>
-        </body>
-    </file>
+			</trans-unit>
+		</body>
+	</file>
 </xliff>
