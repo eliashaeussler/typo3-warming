@@ -1,0 +1,10 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:c="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+      data-namespace-typo3-fluid="true"
+>
+
+<f:for each="{actions}" as="action">
+    <f:render partial="ToolbarItemAction" arguments="{action: action}" />
+</f:for>
+
+</html>

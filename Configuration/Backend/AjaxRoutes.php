@@ -26,4 +26,8 @@ return [
         'path' => '/warming/cache-warmup',
         'target' => \EliasHaeussler\Typo3Warming\Controller\CacheWarmupController::class . '::mainAction',
     ],
+    'tx_warming_fetch_sites' => [
+        'path' => '/warming/fetch-sites',
+        'target' => \EliasHaeussler\Typo3Warming\Controller\CacheWarmupController::class . '::fetchSitesAction',
+    ],
 ];

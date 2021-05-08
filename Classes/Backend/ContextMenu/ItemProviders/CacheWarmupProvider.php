@@ -38,16 +38,19 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class CacheWarmupProvider extends PageProvider
 {
+    protected const ITEM_MODE_PAGE = 'cacheWarmupPage';
+    protected const ITEM_MODE_SITE = 'cacheWarmupSite';
+
     /**
      * @var array<string, array>
      */
     protected $itemsConfiguration = [
-        'cacheWarmupPage' => [
+        self::ITEM_MODE_PAGE => [
             'label' => 'LLL:EXT:warming/Resources/Private/Language/locallang.xlf:contextMenu.item.cacheWarmup',
             'iconIdentifier' => 'cache-warmup-page',
             'callbackAction' => 'warmupPageCache',
         ],
-        'cacheWarmupSite' => [
+        self::ITEM_MODE_SITE => [
             'label' => 'LLL:EXT:warming/Resources/Private/Language/locallang.xlf:contextMenu.item.cacheWarmupAll',
             'iconIdentifier' => 'cache-warmup-site',
             'callbackAction' => 'warmupSiteCache',
@@ -66,7 +69,7 @@ class CacheWarmupProvider extends PageProvider
         }
 
         // Running cache warmup in "site" mode (= using XML sitemap) is only valid for root pages
-        if ($itemName === 'cacheWarmupSite') {
+        if ($itemName === self::ITEM_MODE_SITE) {
             return $this->canWarmupCachesOfSite();
         }
 
@@ -98,7 +101,7 @@ class CacheWarmupProvider extends PageProvider
     protected function getAdditionalAttributes(string $itemName): array
     {
         return [
-            'data-callback-module' => 'TYPO3/CMS/CacheWarmup/Backend/ContextMenu/CacheWarmupContextMenuAction',
+            'data-callback-module' => 'TYPO3/CMS/Warming/Backend/ContextMenu/CacheWarmupContextMenuAction',
         ];
     }
 

@@ -1,3 +1,7 @@
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
@@ -17,25 +21,29 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-define([
-  'TYPO3/CMS/Warming/Backend/Toolbar/CacheWarmupMenu',
-], function (CacheWarmupMenu)
-{
-  'use strict';
-
-  const CacheWarmupContextMenuAction = {};
-
-  CacheWarmupContextMenuAction.warmupPageCache = function (table, uid) {
-    if (table === 'pages') {
-      CacheWarmupMenu.warmupCache(uid, CacheWarmupMenu.modes.page);
-    }
-  };
-
-  CacheWarmupContextMenuAction.warmupSiteCache = function (table, uid) {
-    if (table === 'pages') {
-      CacheWarmupMenu.warmupCache(uid, CacheWarmupMenu.modes.site);
-    }
-  };
-
-  return CacheWarmupContextMenuAction;
-});
+return [
+    'directories' => [
+        '.build',
+        '.git',
+        'bin',
+        'build',
+        'public',
+        'tailor-version-upload',
+        'tests',
+        'vendor',
+    ],
+    'files' => [
+        'DS_Store',
+        'composer.lock',
+        'crowdin.yaml',
+        'editorconfig',
+        'gitattributes',
+        'gitignore',
+        'gitlab-ci.yml',
+        'packaging_exclude.php',
+        'php_cs',
+        'phpstan.neon',
+        'phpunit.coverage.xml',
+        'phpunit.xml',
+    ],
+];

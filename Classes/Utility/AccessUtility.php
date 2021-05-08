@@ -23,13 +23,10 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Utility;
 
-use Doctrine\DBAL\FetchMode;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\PagePermissionRestriction;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -40,11 +37,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class AccessUtility
 {
-    /**
-     * @var ConnectionPool
-     */
-    protected static $connectionPool;
-
     public static function canWarmupCacheOfPage(int $pageId): bool
     {
         return static::checkPagePermissions($pageId) && static::isPageAccessible($pageId);
@@ -55,26 +47,15 @@ class AccessUtility
         return static::checkPagePermissions($site->getRootPageId()) && static::isSiteAccessible($site->getIdentifier());
     }
 
-    protected static function checkPagePermissions(int $pageId, int $permissions = 1): bool
+    protected static function checkPagePermissions(int $pageId, int $permissions = Permission::PAGE_SHOW): bool
     {
-        $userAspect = GeneralUtility::makeInstance(Context::class)->getAspect('backend.user');
-        $restriction = GeneralUtility::makeInstance(PagePermissionRestriction::class, $userAspect, $permissions);
+        $backendUser = static::getBackendUser();
 
-        $queryBuilder = static::getConnectionPool()->getQueryBuilderForTable('pages');
-        $queryBuilder->getRestrictions()->removeAll()->add($restriction);
+        if ($backendUser->isAdmin()) {
+            return true;
+        }
 
-        $result = $queryBuilder->count('*')
-            ->from('pages')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'uid',
-                    $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
-                )
-            )
-            ->execute()
-            ->fetch(FetchMode::COLUMN);
-
-        return $result === 1;
+        return $backendUser->doesUserHaveAccess(BackendUtility::getRecord('pages', $pageId), $permissions);
     }
 
     protected static function isPageAccessible(int $pageId): bool
@@ -103,15 +84,6 @@ class AccessUtility
         $allowedSites = (string)($userTsConfig['options.']['cacheWarmup.']['allowedSites'] ?? '');
 
         return GeneralUtility::inList($allowedSites, $siteIdentifier);
-    }
-
-    protected static function getConnectionPool(): ConnectionPool
-    {
-        if (static::$connectionPool === null) {
-            static::$connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        }
-
-        return static::$connectionPool;
     }
 
     protected static function getBackendUser(): BackendUserAuthentication

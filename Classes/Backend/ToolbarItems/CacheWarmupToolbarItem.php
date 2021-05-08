@@ -24,19 +24,12 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Backend\ToolbarItems;
 
 use EliasHaeussler\Typo3Warming\Configuration\Configuration;
-use EliasHaeussler\Typo3Warming\Configuration\Extension;
-use EliasHaeussler\Typo3Warming\Exception\UnsupportedConfigurationException;
-use EliasHaeussler\Typo3Warming\Exception\UnsupportedSiteException;
-use EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator;
 use EliasHaeussler\Typo3Warming\Traits\TranslatableTrait;
+use EliasHaeussler\Typo3Warming\Traits\ViewTrait;
 use EliasHaeussler\Typo3Warming\Utility\AccessUtility;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * CacheWarmupToolbarItem
@@ -47,6 +40,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 class CacheWarmupToolbarItem implements ToolbarItemInterface
 {
     use TranslatableTrait;
+    use ViewTrait;
 
     /**
      * @var Configuration
@@ -54,28 +48,14 @@ class CacheWarmupToolbarItem implements ToolbarItemInterface
     protected $configuration;
 
     /**
-     * @var array[]
+     * @var SiteFinder
      */
-    protected $actions;
+    protected $siteFinder;
 
-    /**
-     * @param PageRenderer $pageRenderer
-     * @param SiteFinder $siteFinder
-     * @param IconFactory $iconFactory
-     * @param SitemapLocator $sitemapLocator
-     * @param Configuration $configuration
-     * @throws UnsupportedConfigurationException
-     * @throws UnsupportedSiteException
-     */
-    public function __construct(
-        PageRenderer $pageRenderer,
-        SiteFinder $siteFinder,
-        IconFactory $iconFactory,
-        SitemapLocator $sitemapLocator,
-        Configuration $configuration
-    ) {
+    public function __construct(Configuration $configuration, SiteFinder $siteFinder, PageRenderer $pageRenderer)
+    {
         $this->configuration = $configuration;
-        $this->actions = [];
+        $this->siteFinder = $siteFinder;
 
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Warming/Backend/Toolbar/CacheWarmupMenu');
         $pageRenderer->addInlineLanguageLabelArray([
@@ -90,34 +70,17 @@ class CacheWarmupToolbarItem implements ToolbarItemInterface
             'cacheWarmup.modal.total' => static::translate('modal.total'),
             'cacheWarmup.modal.message.noUrlsCrawled' => static::translate('modal.message.noUrlsCrawled'),
         ]);
-
-        foreach (array_filter($siteFinder->getAllSites(), [AccessUtility::class, 'canWarmupCacheOfSite']) as $site) {
-            $row = BackendUtility::getRecord('pages', $site->getRootPageId());
-
-            // Skip site if associated root page is not available
-            if (!is_array($row)) {
-                continue;
-            }
-
-            $action = [
-                'title' => $site->getConfiguration()['websiteTitle'] ?: BackendUtility::getRecordTitle('pages', $row),
-                'pageId' => $site->getRootPageId(),
-                'iconIdentifier' => $iconFactory->getIconForRecord('pages', $row)->getIdentifier(),
-            ];
-
-            if ($sitemapLocator->siteContainsSitemap($site)) {
-                $action['sitemapUrl'] = $sitemapLocator->locateBySite($site)->getUri();
-            } else {
-                $action['missing'] = true;
-            }
-
-            $this->actions[] = $action;
-        }
     }
 
     public function checkAccess(): bool
     {
-        return count($this->actions) > 0;
+        foreach ($this->siteFinder->getAllSites() as $site) {
+            if (AccessUtility::canWarmupCacheOfSite($site)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function getItem(): string
@@ -133,7 +96,6 @@ class CacheWarmupToolbarItem implements ToolbarItemInterface
     public function getDropDown(): string
     {
         $view = $this->buildView('CacheWarmupToolbarItemDropDown.html');
-        $view->assign('actions', $this->actions);
         $view->assign('userAgent', $this->configuration->getUserAgent());
 
         return $view->render();
@@ -151,16 +113,5 @@ class CacheWarmupToolbarItem implements ToolbarItemInterface
     {
         // Clear cache toolbar item has index=25
         return 27;
-    }
-
-    protected function buildView(string $filename): StandaloneView
-    {
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setTemplateRootPaths(['EXT:warming/Resources/Private/Templates']);
-        $view->setPartialRootPaths(['EXT:warming/Resources/Private/Partials']);
-        $view->setTemplate($filename);
-        $view->getRequest()->setControllerExtensionName(Extension::NAME);
-
-        return $view;
     }
 }

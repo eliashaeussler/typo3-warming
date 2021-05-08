@@ -1,3 +1,7 @@
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
@@ -17,25 +21,28 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-define([
-  'TYPO3/CMS/Warming/Backend/Toolbar/CacheWarmupMenu',
-], function (CacheWarmupMenu)
+namespace EliasHaeussler\Typo3Warming\Traits;
+
+use EliasHaeussler\Typo3Warming\Configuration\Extension;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
+
+/**
+ * ViewTrait
+ *
+ * @author Elias Häußler <elias@haeussler.dev>
+ * @license GPL-2.0-or-later
+ */
+trait ViewTrait
 {
-  'use strict';
+    protected function buildView(string $filename): StandaloneView
+    {
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setTemplateRootPaths(['EXT:warming/Resources/Private/Templates']);
+        $view->setPartialRootPaths(['EXT:warming/Resources/Private/Partials']);
+        $view->setTemplate($filename);
+        $view->getRequest()->setControllerExtensionName(Extension::NAME);
 
-  const CacheWarmupContextMenuAction = {};
-
-  CacheWarmupContextMenuAction.warmupPageCache = function (table, uid) {
-    if (table === 'pages') {
-      CacheWarmupMenu.warmupCache(uid, CacheWarmupMenu.modes.page);
+        return $view;
     }
-  };
-
-  CacheWarmupContextMenuAction.warmupSiteCache = function (table, uid) {
-    if (table === 'pages') {
-      CacheWarmupMenu.warmupCache(uid, CacheWarmupMenu.modes.site);
-    }
-  };
-
-  return CacheWarmupContextMenuAction;
-});
+}

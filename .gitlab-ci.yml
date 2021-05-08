@@ -75,11 +75,6 @@ test:unit:
       fi
     - php --version
   script:
-    - mkdir -p .Build/coverage
-    - >
-      if [ "$TYPO3_VERSION" == "11.1" ]; then
-        composer require --dev --no-progress "saschaegerer/phpstan-typo3:0.12.x-dev"
-      fi
     - composer require --no-progress "typo3/cms-core:~${TYPO3_VERSION}.0"
     - >
       if [ "$COVERAGE" == "1" ]; then
@@ -95,7 +90,7 @@ test:unit:
         TYPO3_VERSION: "10.4"
         COVERAGE: "1"
       - PHP_VERSION: "7.4"
-        TYPO3_VERSION: "11.1"
+        TYPO3_VERSION: "11.2"
   coverage: '/^\s*Lines:\s*\d+.\d+\%/'
   cache:
     <<: *cache
@@ -103,7 +98,7 @@ test:unit:
     policy: pull-push
   artifacts:
     reports:
-      junit: .Build/coverage/junit.xml
+      junit: .Build/log/coverage/junit.xml
   rules:
     - if: '$CI_COMMIT_BRANCH'
       when: on_success
@@ -125,6 +120,8 @@ release:gitlab:
 release:ter:
   stage: release
   image: composer:2
+  variables:
+    TYPO3_EXCLUDE_FROM_PACKAGING: packaging_exclude.php
   before_script:
     - composer global require typo3/tailor
   script:

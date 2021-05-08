@@ -22,21 +22,31 @@ define([
   'TYPO3/CMS/Core/Ajax/AjaxRequest',
   'TYPO3/CMS/Backend/Icons',
   'TYPO3/CMS/Backend/Notification',
-  'TYPO3/CMS/Backend/ActionButton/ImmediateAction',
   'TYPO3/CMS/Backend/Viewport',
-], function ($, AjaxRequest, Icons, Notification, ImmediateAction, Viewport) {
+  'TYPO3/CMS/Warming/Backend/CacheWarmupReportModal',
+], function ($, AjaxRequest, Icons, Notification, Viewport, CacheWarmupReportModal) {
   'use strict';
 
   const CacheWarmupMenu = {
     containerSelector: '#eliashaeussler-typo3warming-backend-toolbaritems-cachewarmuptoolbaritem',
+    dropdownTableSelector: '.dropdown-table',
     menuItemSelector: 'a.toolbar-cache-warmup-action',
     toolbarIconSelector: '.toolbar-item-icon .t3js-icon',
     userAgentCopySelector: 'button.toolbar-cache-warmup-useragent-copy-action',
     userAgentCopyIconSelector: '.t3js-icon',
     userAgentCopyTextSelector: '.toolbar-cache-warmup-useragent-copy-text',
     notificationDuration: 15,
-    panelCount: 0,
   }, _ = CacheWarmupMenu;
+
+  /**
+   * Cache warmup modes, can be either "page" or "site".
+   *
+   * @type {{site: string, page: string}}
+   */
+  CacheWarmupMenu.modes = {
+    page: 'page',
+    site: 'site',
+  };
 
   /**
    * Initialize toolbar menu events.
@@ -44,6 +54,8 @@ define([
    * Registers the events to warm up caches of sites or specific pages.
    */
   CacheWarmupMenu.initializeEvents = function () {
+    $(_.containerSelector).ready(_.fetchSites);
+
     $(_.containerSelector).on('click', _.menuItemSelector, function (event) {
       event.preventDefault();
       const pageId = $(event.currentTarget).attr('data-page-id');
@@ -53,6 +65,7 @@ define([
     });
 
     $(_.containerSelector).on('click', _.userAgentCopySelector, function (event) {
+      event.preventDefault();
       const userAgent = $(event.currentTarget).attr('data-text');
       if (userAgent) {
         _.copyUserAgentToClipboard(userAgent);
@@ -71,140 +84,34 @@ define([
   };
 
   /**
-   * Create panel in modal of cache warmup report.
-   *
-   * Creates a panel within the modal containing a specific cache warmup report.
-   * The panel can be used for multiple crawling states, such as successful crawls
-   * or failed crawls. The variable "state" defines a custom panel state and will
-   * be prefixed with "panel-" to match a valid class name.
-   *
-   * @param title {string} Title of the panel
-   * @param state {string} Custom panel state, will be prefixed with "panel-" to match a valid class name
-   * @param urls {string[]} List of URLs to be printed as table within the panel
-   * @param viewPageIcon {string} Resolved icon markup for the "view page" action
-   * @returns {jQuery} Complete panel as jQuery object
+   * Asynchronously fetch sites available for cache warmup.
    */
-  CacheWarmupMenu.createPanel = function (title, state, urls, viewPageIcon) {
-    _.panelCount++;
+  CacheWarmupMenu.fetchSites = function () {
+    const $toolbarItemIcon = $(_.toolbarIconSelector, _.containerSelector);
+    const $existingIcon = $toolbarItemIcon.clone();
 
-    return $('<div>')
-      .addClass('panel panel-' + state + ' panel-table')
-      .addClass(function () {
-        if (_.panelCount > 1) {
-          return 'panel-space';
+    // Close dropdown menu
+    $(_.containerSelector).removeClass('open');
+
+    // Show spinner during cache warmup
+    Icons.getIcon('spinner-circle-light', Icons.sizes.small).then(function (spinner) {
+      $toolbarItemIcon.replaceWith(spinner);
+    });
+
+    // Fetch rendered sites
+    (new AjaxRequest(TYPO3.settings.ajaxUrls.tx_warming_fetch_sites))
+      .get()
+      .then(
+        async function (response) {
+          const data = await response.resolve();
+          const $table = $(_.dropdownTableSelector, _.containerSelector);
+
+          $table.html(data);
         }
-      })
-      .append(
-        // Add panel header
-        $('<div>')
-          .addClass('panel-heading')
-          .text(title + ' (' + urls.length + ')'),
-        // Add panel content
-        $('<div>')
-          .addClass('table-fit table-fit-wrap')
-          .append(
-            // Add table
-            $('<table>')
-              .addClass('table table-striped table-hover')
-              .append(
-                // Add table body
-                $('<tbody>').append(
-                  urls.map(function (url) {
-                    // Add table row for each URL
-                    return $('<tr>').append(
-                      // Add URL as table cell
-                      $('<td>').addClass('col-title').text(url),
-                      // Add controls as table cell
-                      $('<td>').addClass('col-control').append(
-                        $('<a>')
-                          .attr('href', url)
-                          .attr('target', '_blank')
-                          .addClass('btn btn-default btn-sm')
-                          .html(viewPageIcon + ' ' + TYPO3.lang['cacheWarmup.modal.action.view'])
-                      )
-                    ); // End: table row
-                  })
-                ) // End: table body
-              ) // End: table
-          ) // End: panel content
-      );
-  };
-
-  /**
-   * Create modal action to show full report of cache warmup.
-   *
-   * @param failedUrls {string[]} List of failed URLs
-   * @param successfulUrls {string[]} List of successfully crawled URLs
-   * @returns {{action, label}} The combined modal action
-   */
-  CacheWarmupMenu.createModalAction = function (failedUrls, successfulUrls) {
-    return {
-      label: TYPO3.lang['cacheWarmup.notification.action.showReport'],
-      action: new ImmediateAction(function () {
-        require(['jquery', 'TYPO3/CMS/Backend/Modal', 'TYPO3/CMS/Backend/Icons'], function ($, Modal, Icons) {
-          Icons.getIcon('actions-view-page', Icons.sizes.small).done(function (viewPageIcon) {
-            // Reset count of panels in report
-            _.panelCount = 0;
-
-            // Create content container
-            const $content = $('<div/>');
-
-            // Build panels from crawled URLs and the appropriate crawling states
-            if (failedUrls.length > 0) {
-              $content.append(
-                _.createPanel(
-                  TYPO3.lang['cacheWarmup.modal.panel.failed'],
-                  'danger',
-                  failedUrls,
-                  viewPageIcon
-                )
-              );
-            }
-            if (successfulUrls.length > 0) {
-              $content.append(
-                _.createPanel(
-                  TYPO3.lang['cacheWarmup.modal.panel.successful'],
-                  'success',
-                  successfulUrls,
-                  viewPageIcon
-                )
-              );
-            }
-
-            // Add number of totally crawled pages
-            const total = successfulUrls.length + failedUrls.length;
-            if (total > 0) {
-              $content.append(
-                $('<div>')
-                  .addClass('typo3-message alert alert-info')
-                  .append(
-                    $('<div>')
-                      .addClass('message-body')
-                      .text(TYPO3.lang['cacheWarmup.modal.total'] + ' ' + total)
-                  )
-              );
-            } else {
-              $content.append(
-                $('<div>')
-                  .addClass('typo3-message alert alert-warning')
-                  .append(
-                    $('<div>')
-                      .addClass('message-body')
-                      .text(TYPO3.lang['cacheWarmup.modal.message.noUrlsCrawled'])
-                  )
-              );
-            }
-
-            // Open modal with crawling report
-            Modal.advanced({
-              title: TYPO3.lang['cacheWarmup.modal.title'],
-              content: $content,
-              size: Modal.sizes.large,
-            });
-          });
-        });
-      }),
-    };
+      )
+      .finally(function () {
+        $(_.toolbarIconSelector, _.containerSelector).replaceWith($existingIcon);
+      });
   };
 
   /**
@@ -218,7 +125,7 @@ define([
    * @param pageId {int} Page ID of the page or site whose caches should be warmed up
    * @param mode {string} Warmup mode, can be one of "page", "site" (default)
    */
-  CacheWarmupMenu.warmupCache = function (pageId, mode = 'site') {
+  CacheWarmupMenu.warmupCache = function (pageId, mode = CacheWarmupMenu.modes.site) {
     const $toolbarItemIcon = $(_.toolbarIconSelector, _.containerSelector);
     const $existingIcon = $toolbarItemIcon.clone();
 
@@ -241,7 +148,7 @@ define([
           const successfulUrls = data.urls.successful;
 
           // Create action to open full report as modal
-          const modalAction = _.createModalAction(failedUrls, successfulUrls);
+          const modalAction = CacheWarmupReportModal.createModalAction(failedUrls, successfulUrls);
 
           // Show notification
           switch (data.state) {
@@ -280,7 +187,7 @@ define([
     const $copyIcon = $(_.userAgentCopyIconSelector, _.userAgentCopySelector);
     const $existingIcon = $copyIcon.clone();
 
-    // Show spinner during cache warmup
+    // Show spinner when copying user agent
     Icons.getIcon('spinner-circle-light', Icons.sizes.small).then(function (spinner) {
       $copyIcon.replaceWith(spinner);
     });

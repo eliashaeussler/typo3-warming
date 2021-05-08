@@ -24,15 +24,15 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'Warming',
     'description' => 'Warms up Frontend caches based on a XML sitemap.',
     'category' => 'be',
-    'version' => '0.1.4',
-    'state' => 'alpha',
+    'version' => '0.2.0',
+    'state' => 'beta',
     'clearCacheOnLoad' => true,
     'author' => 'Elias Häußler',
     'author_email' => 'elias@haeussler.dev',
     'author_company' => 'familie redlich digital GmbH',
     'constraints' => [
         'depends' => [
-            'typo3' => '10.4.0-11.1.99',
+            'typo3' => '10.4.0-11.2.99',
         ],
     ],
 ];
