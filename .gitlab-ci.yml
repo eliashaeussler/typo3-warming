@@ -75,10 +75,6 @@ test:unit:
       fi
     - php --version
   script:
-    - >
-      if [ "$TYPO3_VERSION" == "11.1" ]; then
-        composer require --dev --no-progress "saschaegerer/phpstan-typo3:0.12.x-dev"
-      fi
     - composer require --no-progress "typo3/cms-core:~${TYPO3_VERSION}.0"
     - >
       if [ "$COVERAGE" == "1" ]; then

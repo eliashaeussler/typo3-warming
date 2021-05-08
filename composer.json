@@ -25,7 +25,7 @@
 	"require-dev": {
 		"ergebnis/composer-normalize": "^2.8",
 		"jangregor/phpstan-prophecy": "^0.8.1",
-		"saschaegerer/phpstan-typo3": "^0.13.1",
+		"saschaegerer/phpstan-typo3": "0.12.x-dev",
 		"typo3/coding-standards": "^0.3.0",
 		"typo3/testing-framework": "^6.8"
 	},
