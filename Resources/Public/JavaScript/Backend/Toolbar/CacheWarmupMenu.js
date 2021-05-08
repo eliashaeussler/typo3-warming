@@ -39,6 +39,16 @@ define([
   }, _ = CacheWarmupMenu;
 
   /**
+   * Cache warmup modes, can be either "page" or "site".
+   *
+   * @type {{site: string, page: string}}
+   */
+  CacheWarmupMenu.modes = {
+    page: 'page',
+    site: 'site',
+  };
+
+  /**
    * Initialize toolbar menu events.
    *
    * Registers the events to warm up caches of sites or specific pages.
@@ -115,7 +125,7 @@ define([
    * @param pageId {int} Page ID of the page or site whose caches should be warmed up
    * @param mode {string} Warmup mode, can be one of "page", "site" (default)
    */
-  CacheWarmupMenu.warmupCache = function (pageId, mode = 'site') {
+  CacheWarmupMenu.warmupCache = function (pageId, mode = CacheWarmupMenu.modes.site) {
     const $toolbarItemIcon = $(_.toolbarIconSelector, _.containerSelector);
     const $existingIcon = $toolbarItemIcon.clone();
 

@@ -27,13 +27,13 @@ define([
 
   CacheWarmupContextMenuAction.warmupPageCache = function (table, uid) {
     if (table === 'pages') {
-      CacheWarmupMenu.warmupCache(uid, 'page');
+      CacheWarmupMenu.warmupCache(uid, CacheWarmupMenu.modes.page);
     }
   };
 
   CacheWarmupContextMenuAction.warmupSiteCache = function (table, uid) {
     if (table === 'pages') {
-      CacheWarmupMenu.warmupCache(uid, 'site');
+      CacheWarmupMenu.warmupCache(uid, CacheWarmupMenu.modes.site);
     }
   };
 
