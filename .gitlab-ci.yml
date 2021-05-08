@@ -120,6 +120,8 @@ release:gitlab:
 release:ter:
   stage: release
   image: composer:2
+  variables:
+    TYPO3_EXCLUDE_FROM_PACKAGING: packaging_exclude.php
   before_script:
     - composer global require typo3/tailor
   script:
