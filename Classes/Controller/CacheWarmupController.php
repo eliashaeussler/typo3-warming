@@ -29,13 +29,18 @@ use EliasHaeussler\Typo3Warming\Exception\MissingPageIdException;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedConfigurationException;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedSiteException;
 use EliasHaeussler\Typo3Warming\Service\CacheWarmupService;
+use EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator;
 use EliasHaeussler\Typo3Warming\Traits\TranslatableTrait;
+use EliasHaeussler\Typo3Warming\Traits\ViewTrait;
+use EliasHaeussler\Typo3Warming\Utility\AccessUtility;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -49,6 +54,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class CacheWarmupController
 {
     use TranslatableTrait;
+    use ViewTrait;
 
     public const MODE_SITE = 'site';
     public const MODE_PAGE = 'page';
@@ -68,10 +74,26 @@ class CacheWarmupController
      */
     protected $warmupService;
 
-    public function __construct(SiteFinder $siteFinder, CacheWarmupService $warmupService)
-    {
+    /**
+     * @var IconFactory
+     */
+    protected $iconFactory;
+
+    /**
+     * @var SitemapLocator
+     */
+    protected $sitemapLocator;
+
+    public function __construct(
+        SiteFinder $siteFinder,
+        CacheWarmupService $warmupService,
+        IconFactory $iconFactory,
+        SitemapLocator $sitemapLocator
+    ) {
         $this->siteFinder = $siteFinder;
         $this->warmupService = $warmupService;
+        $this->iconFactory = $iconFactory;
+        $this->sitemapLocator = $sitemapLocator;
     }
 
     /**
@@ -109,6 +131,44 @@ class CacheWarmupController
         }
 
         return $this->buildJsonResponse($mode, $pageId, $site, $crawler);
+    }
+
+    /**
+     * @return ResponseInterface
+     * @throws UnsupportedConfigurationException
+     * @throws UnsupportedSiteException
+     */
+    public function fetchSitesAction(): ResponseInterface
+    {
+        $actions = [];
+
+        foreach (array_filter($this->siteFinder->getAllSites(), [AccessUtility::class, 'canWarmupCacheOfSite']) as $site) {
+            $row = BackendUtility::getRecord('pages', $site->getRootPageId(), '*', ' AND hidden = 0');
+
+            // Skip site if associated root page is not available
+            if (!is_array($row)) {
+                continue;
+            }
+
+            $action = [
+                'title' => $site->getConfiguration()['websiteTitle'] ?: BackendUtility::getRecordTitle('pages', $row),
+                'pageId' => $site->getRootPageId(),
+                'iconIdentifier' => $this->iconFactory->getIconForRecord('pages', $row)->getIdentifier(),
+            ];
+
+            if ($this->sitemapLocator->siteContainsSitemap($site)) {
+                $action['sitemapUrl'] = (string)$this->sitemapLocator->locateBySite($site)->getUri();
+            } else {
+                $action['missing'] = true;
+            }
+
+            $actions[] = $action;
+        }
+
+        $view = $this->buildView('CacheWarmupToolbarItemActions.html');
+        $view->assign('actions', $actions);
+
+        return new HtmlResponse($view->render());
     }
 
     /**

@@ -7,6 +7,10 @@
                 <source>Warmup cache</source>
                 <target>Cache aufwärmen</target>
             </trans-unit>
+            <trans-unit id="cacheWarmupToolbarItem.loading">
+                <source>Sites are being loaded...</source>
+                <target>Seiten werden geladen...</target>
+            </trans-unit>
             <trans-unit id="cacheWarmupToolbarItem.description.invalid">
                 <source>No XML sitemap found for this site.</source>
                 <target>Keine XML-Sitemap für diese Seite gefunden.</target>

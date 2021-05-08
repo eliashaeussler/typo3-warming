@@ -1,6 +1,6 @@
 <?php
 
-defined('TYPO3') or die();
+declare(strict_types=1);
 
 /*
  * This file is part of the TYPO3 CMS extension "warming".
@@ -21,13 +21,28 @@ defined('TYPO3') or die();
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-return [
-    'tx_warming_cache_warmup' => [
-        'path' => '/warming/cache-warmup',
-        'target' => \EliasHaeussler\Typo3Warming\Controller\CacheWarmupController::class . '::mainAction',
-    ],
-    'tx_warming_fetch_sites' => [
-        'path' => '/warming/fetch-sites',
-        'target' => \EliasHaeussler\Typo3Warming\Controller\CacheWarmupController::class . '::fetchSitesAction',
-    ],
-];
+namespace EliasHaeussler\Typo3Warming\Traits;
+
+use EliasHaeussler\Typo3Warming\Configuration\Extension;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
+
+/**
+ * ViewTrait
+ *
+ * @author Elias Häußler <elias@haeussler.dev>
+ * @license GPL-2.0-or-later
+ */
+trait ViewTrait
+{
+    protected function buildView(string $filename): StandaloneView
+    {
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setTemplateRootPaths(['EXT:warming/Resources/Private/Templates']);
+        $view->setPartialRootPaths(['EXT:warming/Resources/Private/Partials']);
+        $view->setTemplate($filename);
+        $view->getRequest()->setControllerExtensionName(Extension::NAME);
+
+        return $view;
+    }
+}
