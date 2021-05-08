@@ -29,6 +29,7 @@ define([
 
   const CacheWarmupMenu = {
     containerSelector: '#eliashaeussler-typo3warming-backend-toolbaritems-cachewarmuptoolbaritem',
+    dropdownTableSelector: '.dropdown-table',
     menuItemSelector: 'a.toolbar-cache-warmup-action',
     toolbarIconSelector: '.toolbar-item-icon .t3js-icon',
     userAgentCopySelector: 'button.toolbar-cache-warmup-useragent-copy-action',
@@ -44,6 +45,8 @@ define([
    * Registers the events to warm up caches of sites or specific pages.
    */
   CacheWarmupMenu.initializeEvents = function () {
+    $(_.containerSelector).ready(_.fetchSites);
+
     $(_.containerSelector).on('click', _.menuItemSelector, function (event) {
       event.preventDefault();
       const pageId = $(event.currentTarget).attr('data-page-id');
@@ -53,6 +56,7 @@ define([
     });
 
     $(_.containerSelector).on('click', _.userAgentCopySelector, function (event) {
+      event.preventDefault();
       const userAgent = $(event.currentTarget).attr('data-text');
       if (userAgent) {
         _.copyUserAgentToClipboard(userAgent);
@@ -207,6 +211,34 @@ define([
     };
   };
 
+  CacheWarmupMenu.fetchSites = function () {
+    const $toolbarItemIcon = $(_.toolbarIconSelector, _.containerSelector);
+    const $existingIcon = $toolbarItemIcon.clone();
+
+    // Close dropdown menu
+    $(_.containerSelector).removeClass('open');
+
+    // Show spinner during cache warmup
+    Icons.getIcon('spinner-circle-light', Icons.sizes.small).then(function (spinner) {
+      $toolbarItemIcon.replaceWith(spinner);
+    });
+
+    // Fetch rendered sites
+    (new AjaxRequest(TYPO3.settings.ajaxUrls.tx_warming_fetch_sites))
+      .get()
+      .then(
+        async function (response) {
+          const data = await response.resolve();
+          const $table = $(_.dropdownTableSelector, _.containerSelector);
+
+          $table.html(data);
+        }
+      )
+      .finally(function () {
+        $(_.toolbarIconSelector, _.containerSelector).replaceWith($existingIcon);
+      });
+  };
+
   /**
    * Trigger cache warmup for given page in given mode.
    *
@@ -280,7 +312,7 @@ define([
     const $copyIcon = $(_.userAgentCopyIconSelector, _.userAgentCopySelector);
     const $existingIcon = $copyIcon.clone();
 
-    // Show spinner during cache warmup
+    // Show spinner when copying user agent
     Icons.getIcon('spinner-circle-light', Icons.sizes.small).then(function (spinner) {
       $copyIcon.replaceWith(spinner);
     });

@@ -75,7 +75,6 @@ test:unit:
       fi
     - php --version
   script:
-    - mkdir -p .Build/coverage
     - >
       if [ "$TYPO3_VERSION" == "11.1" ]; then
         composer require --dev --no-progress "saschaegerer/phpstan-typo3:0.12.x-dev"
@@ -103,7 +102,7 @@ test:unit:
     policy: pull-push
   artifacts:
     reports:
-      junit: .Build/coverage/junit.xml
+      junit: .Build/log/coverage/junit.xml
   rules:
     - if: '$CI_COMMIT_BRANCH'
       when: on_success
