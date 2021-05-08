@@ -101,7 +101,7 @@ class CacheWarmupProvider extends PageProvider
     protected function getAdditionalAttributes(string $itemName): array
     {
         return [
-            'data-callback-module' => 'TYPO3/CMS/CacheWarmup/Backend/ContextMenu/CacheWarmupContextMenuAction',
+            'data-callback-module' => 'TYPO3/CMS/Warming/Backend/ContextMenu/CacheWarmupContextMenuAction',
         ];
     }
 
