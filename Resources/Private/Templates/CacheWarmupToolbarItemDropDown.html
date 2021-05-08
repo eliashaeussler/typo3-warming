@@ -11,30 +11,12 @@
 
 <div class="toolbar-cache-warmup-table-wrapper">
     <div class="dropdown-table">
-        <div class="dropdown-table-row">
-            <div class="text-muted" style="pointer-events: none">
-                <div class="dropdown-table-column dropdown-table-column-top dropdown-table-icon dropdown-table-icon-spinner-circle-light">
-                    <c:icon identifier="spinner-circle-light" size="small" />
-                </div>
-                <div class="dropdown-table-column dropdown-table-column-top dropdown-table-text">
-                    <f:translate key="cacheWarmupToolbarItem.loading" />
-                </div>
-            </div>
-        </div>
+        <f:render partial="ToolbarItemPlaceholder" />
     </div>
 </div>
 
 <hr>
 
-<p class="dropdown-text text-muted">
-    {f:translate(key: 'cacheWarmupToolbarItem.userAgent.description') -> f:format.raw()}
-</p>
-
-<button class="btn btn-xs btn-default toolbar-cache-warmup-useragent-copy-action" data-text="{userAgent}">
-    <c:icon identifier="actions-clipboard" size="small" />
-    <span class="toolbar-cache-warmup-useragent-copy-text">
-        <f:translate key="cacheWarmupToolbarItem.userAgent.action" />
-    </span>
-</button>
+<f:render partial="ToolbarItemUserAgent" arguments="{userAgent: userAgent}" />
 
 </html>
