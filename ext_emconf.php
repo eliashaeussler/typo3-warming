@@ -32,7 +32,7 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => 'familie redlich digital GmbH',
     'constraints' => [
         'depends' => [
-            'typo3' => '10.4.0-11.1.99',
+            'typo3' => '10.4.0-11.2.99',
         ],
     ],
 ];

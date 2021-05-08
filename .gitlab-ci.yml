@@ -94,7 +94,7 @@ test:unit:
         TYPO3_VERSION: "10.4"
         COVERAGE: "1"
       - PHP_VERSION: "7.4"
-        TYPO3_VERSION: "11.1"
+        TYPO3_VERSION: "11.2"
   coverage: '/^\s*Lines:\s*\d+.\d+\%/'
   cache:
     <<: *cache
