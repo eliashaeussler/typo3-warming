@@ -73,6 +73,9 @@ define([
     );
   };
 
+  /**
+   * Asynchronously fetch sites available for cache warmup.
+   */
   CacheWarmupMenu.fetchSites = function () {
     const $toolbarItemIcon = $(_.toolbarIconSelector, _.containerSelector);
     const $existingIcon = $toolbarItemIcon.clone();
