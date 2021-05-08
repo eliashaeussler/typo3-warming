@@ -154,6 +154,14 @@ services:
         - '@EliasHaeussler\Typo3Warming\Sitemap\Provider\DefaultProvider'
 ```
 
+## Icon
+
+The extension icon ("rocket") as well as the icons for cache warmup actions are
+modified versions of the original
+[`actions-rocket`](https://typo3.github.io/TYPO3.Icons/icons/actions/actions-rocket.html)
+icon from TYPO3 core which is originally licensed under
+[MIT License](https://github.com/TYPO3/TYPO3.Icons/blob/master/LICENSE).
+
 ## License
 
 This project is licensed under [GPL 2.0 (or later)](LICENSE.md).
