@@ -28,6 +28,7 @@ services:
     tags:
       - name: console.command
         command: warming:showuseragent
+        schedulable: false
   EliasHaeussler\Typo3Warming\Command\WarmupCommand:
     tags:
       - name: console.command
