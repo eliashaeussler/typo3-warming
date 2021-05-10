@@ -34,6 +34,7 @@ use EliasHaeussler\Typo3Warming\Exception\UnsupportedSiteException;
 use EliasHaeussler\Typo3Warming\Service\CacheWarmupService;
 use EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator;
 use Psr\Http\Message\UriInterface;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -135,8 +136,15 @@ class WarmupCommand extends Command
             $crawler->setOutput($output);
         }
 
+        // Initialize application
+        $application = $this->getApplication();
+        if ($application === null) {
+            $application = new Application();
+            $application->add($this);
+        }
+
         // Run cache warmup in sub command from eliashaeussler/cache-warmup
-        $subCommand = $this->getApplication()->add(new CacheWarmupCommand());
+        $subCommand = $application->add(new CacheWarmupCommand());
         $subCommandParameters = [
             'sitemaps' => $sitemaps,
             '--urls' => $urls,
