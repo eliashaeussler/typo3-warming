@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" backupGlobals="true"
+         bootstrap=".Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTestsBootstrap.php" colors="false"
+         convertErrorsToExceptions="true" convertWarningsToExceptions="true" forceCoversAnnotation="false"
+         processIsolation="false" stopOnError="false" stopOnFailure="false" stopOnIncomplete="false"
+         stopOnSkipped="false" verbose="true" beStrictAboutTestsThatDoNotTestAnything="true"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+    <extensions>
+        <extension class="EliasHaeussler\Typo3Warming\Tests\Hooks\BypassFinalHook" />
+    </extensions>
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">Classes</directory>
+        </include>
+        <report>
+            <php outputFile=".Build/log/coverage/php/unit.cov"/>
+            <html outputDirectory=".Build/log/coverage/html/unit/"/>
+            <text outputFile="php://stdout" showUncoveredFiles="true"/>
+        </report>
+    </coverage>
+    <testsuites>
+        <testsuite name="unit">
+            <directory>Tests/Unit</directory>
+        </testsuite>
+    </testsuites>
+    <logging>
+        <junit outputFile=".Build/log/coverage/junit/unit.xml"/>
+    </logging>
+</phpunit>

@@ -29,8 +29,11 @@
 		"ergebnis/composer-normalize": "^2.8",
 		"jangregor/phpstan-prophecy": "^0.8.1",
 		"phpspec/prophecy-phpunit": "^2.0",
+		"phpunit/phpcov": "^8.2",
 		"saschaegerer/phpstan-typo3": "^0.13.3",
+		"typo3/cms-lowlevel": "^10.4 || ^11.5",
 		"typo3/coding-standards": "^0.3.0",
+		"typo3/minimal": "^10.4 || ^11.5",
 		"typo3/testing-framework": "^6.11.2"
 	},
 	"config": {
@@ -68,12 +71,17 @@
 		],
 		"sca:php": "phpstan analyse -c phpstan.neon",
 		"test": [
+			"@test:functional",
 			"@test:unit"
 		],
 		"test:ci": [
+			"@test:ci:functional",
 			"@test:ci:unit"
 		],
-		"test:ci:unit": "phpunit -c phpunit.ci.xml",
-		"test:unit": "phpunit -c phpunit.xml"
+		"test:ci:functional": "phpunit -c phpunit.ci.functional.xml",
+		"test:ci:merge": "phpcov merge --html .Build/log/coverage/html/_merged --clover .Build/log/coverage/clover.xml --text php://stdout .Build/log/coverage/php",
+		"test:ci:unit": "phpunit -c phpunit.ci.unit.xml",
+		"test:functional": "phpunit -c phpunit.functional.xml",
+		"test:unit": "phpunit -c phpunit.unit.xml"
 	}
 }
