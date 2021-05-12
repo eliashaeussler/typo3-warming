@@ -39,10 +39,10 @@ class MissingPageIdExceptionTest extends UnitTestCase
      */
     public function createReturnsExceptionForMissingPageId(): void
     {
-        $subject = MissingPageIdException::create();
+        $actual = MissingPageIdException::create();
 
-        self::assertInstanceOf(MissingPageIdException::class, $subject);
-        self::assertSame('Page id is missing or invalid.', $subject->getMessage());
-        self::assertSame(1619168744, $subject->getCode());
+        self::assertInstanceOf(MissingPageIdException::class, $actual);
+        self::assertSame('Page id is missing or invalid.', $actual->getMessage());
+        self::assertSame(1619168744, $actual->getCode());
     }
 }

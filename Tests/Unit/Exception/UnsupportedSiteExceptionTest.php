@@ -41,10 +41,11 @@ class UnsupportedSiteExceptionTest extends UnitTestCase
     public function forMissingSitemapReturnsExceptionForMissingSitemap(): void
     {
         $site = new Site('foo', 1, []);
-        $subject = UnsupportedSiteException::forMissingSitemap($site);
 
-        self::assertInstanceOf(UnsupportedSiteException::class, $subject);
-        self::assertSame('The site "foo" is not supported since it does not provide a sitemap.', $subject->getMessage());
-        self::assertSame(1619369771, $subject->getCode());
+        $actual = UnsupportedSiteException::forMissingSitemap($site);
+
+        self::assertInstanceOf(UnsupportedSiteException::class, $actual);
+        self::assertSame('The site "foo" is not supported since it does not provide a sitemap.', $actual->getMessage());
+        self::assertSame(1619369771, $actual->getCode());
     }
 }
