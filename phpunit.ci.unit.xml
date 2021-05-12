@@ -26,4 +26,7 @@
     <logging>
         <junit outputFile=".Build/log/coverage/junit/unit.xml"/>
     </logging>
+    <php>
+        <ini name="memory_limit" value="2G"/>
+    </php>
 </phpunit>
