@@ -25,6 +25,7 @@ namespace EliasHaeussler\Typo3Warming\Tests\Functional\Configuration;
 
 use EliasHaeussler\Typo3Warming\Configuration\Configuration;
 use EliasHaeussler\Typo3Warming\Configuration\Extension;
+use EliasHaeussler\Typo3Warming\Crawler\ConcurrentUserAgentCrawler;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
@@ -112,14 +113,17 @@ class ConfigurationTest extends FunctionalTestCase
     {
         $this->setExtensionConfiguration();
 
-        self::assertNull($this->subject->getCrawler());
+        self::assertSame(ConcurrentUserAgentCrawler::class, $this->subject->getCrawler());
     }
 
-    public function getCrawlerReturnsNullIfDefinedCrawlerIsEmpty(): void
+    /**
+     * @test
+     */
+    public function getCrawlerReturnsDefaultCrawlerIfDefinedCrawlerIsEmpty(): void
     {
         $this->setExtensionConfiguration(['crawler' => '']);
 
-        self::assertNull($this->subject->getCrawler());
+        self::assertSame(ConcurrentUserAgentCrawler::class, $this->subject->getCrawler());
     }
 
     /**
