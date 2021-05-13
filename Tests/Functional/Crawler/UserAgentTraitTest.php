@@ -21,26 +21,31 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3Warming\Tests\Functional\Traits;
+namespace EliasHaeussler\Typo3Warming\Tests\Functional\Crawler;
 
-use EliasHaeussler\Typo3Warming\Configuration\Extension;
+use EliasHaeussler\Typo3Warming\Configuration\Configuration;
+use EliasHaeussler\Typo3Warming\Crawler\UserAgentTrait;
 use EliasHaeussler\Typo3Warming\Tests\Functional\AccessibleMethodTrait;
-use EliasHaeussler\Typo3Warming\Traits\ViewTrait;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use GuzzleHttp\Psr7\Request;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
- * ViewTraitTest
+ * UserAgentTraitTest
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class ViewTraitTest extends FunctionalTestCase
+class UserAgentTraitTest extends FunctionalTestCase
 {
     use AccessibleMethodTrait;
 
+    protected $testExtensionsToLoad = [
+        'typo3conf/ext/warming',
+    ];
+
     /**
-     * @var object|ViewTrait
+     * @var object|UserAgentTrait
      */
     protected $subject;
 
@@ -54,20 +59,23 @@ class ViewTraitTest extends FunctionalTestCase
         parent::setUp();
 
         [$this->subject, $this->reflectionMethod] = $this->getAccessibleMethodOfTrait(
-            ViewTrait::class,
-            'buildView'
+            UserAgentTrait::class,
+            'applyUserAgentHeader'
         );
     }
 
     /**
      * @test
      */
-    public function buildViewReturnsStandaloneView(): void
+    public function applyUserAgentHeaderAddsUserAgentHeaderToRequest(): void
     {
-        $actual = $this->reflectionMethod->invoke($this->subject, 'Foo.html');
+        $configuration = GeneralUtility::makeInstance(Configuration::class);
+        $request = new Request('GET', 'https://www.example.com');
 
-        self::assertInstanceOf(StandaloneView::class, $actual);
-        self::assertSame('foo', $actual->getRenderingContext()->getControllerAction());
-        self::assertSame(Extension::NAME, $actual->getRequest()->getControllerExtensionName());
+        /** @var Request $actual */
+        $actual = $this->reflectionMethod->invoke($this->subject, $request);
+
+        self::assertTrue($actual->hasHeader('User-Agent'));
+        self::assertSame([$configuration->getUserAgent()], $actual->getHeader('User-Agent'));
     }
 }

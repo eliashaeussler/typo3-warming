@@ -23,24 +23,27 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Tests\Functional\Traits;
 
-use EliasHaeussler\Typo3Warming\Configuration\Extension;
 use EliasHaeussler\Typo3Warming\Tests\Functional\AccessibleMethodTrait;
-use EliasHaeussler\Typo3Warming\Traits\ViewTrait;
-use TYPO3\CMS\Fluid\View\StandaloneView;
+use EliasHaeussler\Typo3Warming\Traits\TranslatableTrait;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
- * ViewTraitTest
+ * TranslatableTraitTest
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class ViewTraitTest extends FunctionalTestCase
+class TranslatableTraitTest extends FunctionalTestCase
 {
     use AccessibleMethodTrait;
 
+    protected $testExtensionsToLoad = [
+        'typo3conf/ext/warming',
+    ];
+
     /**
-     * @var object|ViewTrait
+     * @var object|TranslatableTrait
      */
     protected $subject;
 
@@ -54,20 +57,30 @@ class ViewTraitTest extends FunctionalTestCase
         parent::setUp();
 
         [$this->subject, $this->reflectionMethod] = $this->getAccessibleMethodOfTrait(
-            ViewTrait::class,
-            'buildView'
+            TranslatableTrait::class,
+            'translate'
         );
+
+        $this->setUpBackendUserFromFixture(1);
+        Bootstrap::initializeLanguageObject();
     }
 
     /**
      * @test
      */
-    public function buildViewReturnsStandaloneView(): void
+    public function translateReturnsNullIfGivenLocalizationIsNotAvailable(): void
     {
-        $actual = $this->reflectionMethod->invoke($this->subject, 'Foo.html');
+        self::assertNull($this->reflectionMethod->invoke($this->subject, 'foo'));
+    }
 
-        self::assertInstanceOf(StandaloneView::class, $actual);
-        self::assertSame('foo', $actual->getRenderingContext()->getControllerAction());
-        self::assertSame(Extension::NAME, $actual->getRequest()->getControllerExtensionName());
+    /**
+     * @test
+     */
+    public function translateReturnsResolvedTranslation(): void
+    {
+        self::assertSame(
+            'Warmup cache',
+            $this->reflectionMethod->invoke($this->subject, 'cacheWarmupToolbarItem.title')
+        );
     }
 }
