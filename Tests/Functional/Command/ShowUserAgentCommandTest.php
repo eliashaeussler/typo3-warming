@@ -26,8 +26,7 @@ namespace EliasHaeussler\Typo3Warming\Tests\Functional\Command;
 use EliasHaeussler\Typo3Warming\Command\ShowUserAgentCommand;
 use EliasHaeussler\Typo3Warming\Configuration\Configuration;
 use Symfony\Component\Console\Tester\CommandTester;
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -38,16 +37,33 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class ShowUserAgentCommandTest extends FunctionalTestCase
 {
+    protected $testExtensionsToLoad = [
+        'typo3conf/ext/warming',
+    ];
+
+    /**
+     * @var CommandTester
+     */
+    protected $commandTester;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $command = GeneralUtility::makeInstance(ShowUserAgentCommand::class);
+        $this->commandTester = new CommandTester($command);
+    }
+
     /**
      * @test
      */
     public function commandPrintsUserAgentHeader(): void
     {
-        $configuration = new Configuration(new ExtensionConfiguration(), new HashService());
-        $commandTester = new CommandTester(new ShowUserAgentCommand($configuration));
+        $configuration = GeneralUtility::makeInstance(Configuration::class);
 
-        $commandTester->execute([]);
+        $this->commandTester->execute([]);
 
-        self::assertSame($configuration->getUserAgent(), $commandTester->getDisplay());
+        self::assertSame(0, $this->commandTester->getStatusCode());
+        self::assertSame($configuration->getUserAgent(), $this->commandTester->getDisplay());
     }
 }
