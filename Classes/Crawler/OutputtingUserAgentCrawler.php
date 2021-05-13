@@ -24,6 +24,8 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Crawler;
 
 use EliasHaeussler\CacheWarmup\Crawler\OutputtingCrawler;
+use GuzzleHttp\ClientInterface;
+use TYPO3\CMS\Core\Http\Client\GuzzleClientFactory;
 
 /**
  * OutputtingUserAgentCrawler
@@ -40,5 +42,10 @@ class OutputtingUserAgentCrawler extends OutputtingCrawler
         foreach (parent::getRequests() as $request) {
             yield $this->applyUserAgentHeader($request);
         }
+    }
+
+    protected function initializeClient(): ClientInterface
+    {
+        return GuzzleClientFactory::getClient();
     }
 }
