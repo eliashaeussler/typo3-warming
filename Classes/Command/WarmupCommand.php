@@ -24,7 +24,6 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Command;
 
 use EliasHaeussler\CacheWarmup\Command\CacheWarmupCommand;
-use EliasHaeussler\CacheWarmup\Crawler\VerboseCrawlerInterface;
 use EliasHaeussler\CacheWarmup\Sitemap;
 use EliasHaeussler\Typo3Warming\Configuration\Configuration;
 use EliasHaeussler\Typo3Warming\Crawler\ConcurrentUserAgentCrawler;
@@ -130,10 +129,6 @@ class WarmupCommand extends Command
         // Initialize crawler
         if (($crawler = $this->warmupService->getCrawler()) instanceof ConcurrentUserAgentCrawler) {
             $crawler = new OutputtingUserAgentCrawler();
-            $this->warmupService->setCrawler($crawler);
-        }
-        if ($crawler instanceof VerboseCrawlerInterface) {
-            $crawler->setOutput($output);
         }
 
         // Initialize application
@@ -149,7 +144,7 @@ class WarmupCommand extends Command
             'sitemaps' => $sitemaps,
             '--urls' => $urls,
             '--limit' => $this->configuration->getLimit(),
-            '--crawler' => $crawler,
+            '--crawler' => get_class($crawler),
         ];
         $subCommandInput = new ArrayInput($subCommandParameters);
         $returnCode = $subCommand->run($subCommandInput, $output);

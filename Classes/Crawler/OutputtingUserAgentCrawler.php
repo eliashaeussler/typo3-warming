@@ -37,7 +37,8 @@ class OutputtingUserAgentCrawler extends OutputtingCrawler
 
     protected function getRequests(): \Iterator
     {
-        $request = yield from parent::getRequests();
-        yield $this->applyUserAgentHeader($request);
+        foreach (parent::getRequests() as $request) {
+            yield $this->applyUserAgentHeader($request);
+        }
     }
 }
