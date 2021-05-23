@@ -30,6 +30,26 @@ build:
     - if: '$CI_COMMIT_BRANCH'
       when: on_success
 
+build:ter:
+  stage: build
+  variables:
+    BUILD_PATH: Resources/Private/Libs/Build
+    LIB_PATH: Resources/Private/Libs
+  script:
+    - git reset --hard HEAD && git clean -dfx
+    - composer global require clue/phar-composer
+    - composer install -d $(pwd)/$BUILD_PATH
+    - composer global exec phar-composer build $(pwd)/$BUILD_PATH $(pwd)/$LIB_PATH/vendors.phar
+    - echo "\\EliasHaeussler\\Typo3Warming\\Configuration\\Extension::loadVendorLibraries();" >> ext_localconf.php
+  artifacts:
+    name: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
+    expire_in: 1 day
+    paths:
+      - Resources/Private/Libs/vendors.phar
+  rules:
+    - if: '$CI_COMMIT_TAG'
+      when: on_success
+
 lint:php:
   stage: lint
   needs:
@@ -133,12 +153,13 @@ release:ter:
   image: composer:2
   variables:
     TYPO3_EXCLUDE_FROM_PACKAGING: packaging_exclude.php
+  dependencies:
+    - build:ter
   before_script:
     - composer global require typo3/tailor
   script:
     # Prepare upload
     - echo "Preparing upload of release ${CI_COMMIT_TAG} to TER"
-    - git reset --hard HEAD && git clean -fx
     - PREVIOUS_TAG="$(git describe --abbrev=0 --tags "${CI_COMMIT_TAG}^")"
     - CHANGELOG_URL="${CI_PROJECT_URL}/-/compare/${PREVIOUS_TAG}...${CI_COMMIT_TAG}"
     - /tmp/vendor/bin/tailor set-version "$CI_COMMIT_TAG"
