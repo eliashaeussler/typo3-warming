@@ -1,5 +1,6 @@
 includes:
     - .Build/vendor/jangregor/phpstan-prophecy/extension.neon
+    - .Build/vendor/saschaegerer/phpstan-typo3/extension.neon
 parameters:
     bootstrapFiles:
         - .Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTestsBootstrap.php
