@@ -28,7 +28,7 @@ return [
         'bin',
         'build',
         'public',
-        'resources/private/libs/build',
+        'resources\\/private\\/libs\\/build',
         'tailor-version-upload',
         'tests',
         'vendor',
