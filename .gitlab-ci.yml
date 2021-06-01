@@ -163,7 +163,7 @@ release:ter:
     - echo "Preparing upload of release ${CI_COMMIT_TAG} to TER"
     - PREVIOUS_TAG="$(git describe --abbrev=0 --tags "${CI_COMMIT_TAG}^")"
     - CHANGELOG_URL="${CI_PROJECT_URL}/-/compare/${PREVIOUS_TAG}...${CI_COMMIT_TAG}"
-    - /tmp/vendor/bin/tailor set-version "$CI_COMMIT_TAG"
+    - /tmp/vendor/bin/tailor set-version "$CI_COMMIT_TAG" --no-docs
     # Run upload to TER
     - echo "Uploading release ${CI_COMMIT_TAG} to TER"
     - /tmp/vendor/bin/tailor ter:publish "$CI_COMMIT_TAG" --comment "See changelog at ${CHANGELOG_URL}"
