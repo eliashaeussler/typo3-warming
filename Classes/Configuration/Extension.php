@@ -25,6 +25,7 @@ namespace EliasHaeussler\Typo3Warming\Configuration;
 
 use EliasHaeussler\Typo3Warming\Backend\ContextMenu\ItemProviders\CacheWarmupProvider;
 use EliasHaeussler\Typo3Warming\Backend\ToolbarItems\CacheWarmupToolbarItem;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -94,5 +95,24 @@ final class Extension
                 'css' => 'EXT:warming/Resources/Public/Css/Backend',
             ],
         ];
+    }
+
+    /**
+     * Load additional libraries provided by PHAR file (only to be used in non-Composer-mode).
+     *
+     * FOR USE IN ext_localconf.php AND NON-COMPOSER-MODE ONLY.
+     */
+    public static function loadVendorLibraries(): void
+    {
+        // Vendor libraries are already available in Composer mode
+        if (Environment::isComposerMode()) {
+            return;
+        }
+
+        $vendorPharFile = GeneralUtility::getFileAbsFileName('EXT:warming/Resources/Private/Libs/vendors.phar');
+
+        if (file_exists($vendorPharFile)) {
+            require 'phar://' . $vendorPharFile . '/vendor/autoload.php';
+        }
     }
 }
