@@ -62,7 +62,9 @@ class CacheManagerTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->cache = GeneralUtility::makeInstance(CoreCacheManager::class)->getCache('core');
+        /** @var PhpFrontend $coreCache */
+        $coreCache = GeneralUtility::makeInstance(CoreCacheManager::class)->getCache('core');
+        $this->cache = $coreCache;
         $this->subject = new CacheManager($this->cache);
         $this->site = new Site('foo', 1, []);
     }
