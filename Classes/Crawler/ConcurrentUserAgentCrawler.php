@@ -24,7 +24,9 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Crawler;
 
 use EliasHaeussler\CacheWarmup\Crawler\ConcurrentCrawler;
+use EliasHaeussler\CacheWarmup\CrawlingState;
 use GuzzleHttp\ClientInterface;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\Client\GuzzleClientFactory;
 
 /**
@@ -33,8 +35,9 @@ use TYPO3\CMS\Core\Http\Client\GuzzleClientFactory;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class ConcurrentUserAgentCrawler extends ConcurrentCrawler
+class ConcurrentUserAgentCrawler extends ConcurrentCrawler implements RequestAwareInterface
 {
+    use RequestAwareTrait;
     use UserAgentTrait;
 
     protected function getRequests(): \Iterator
@@ -47,5 +50,25 @@ class ConcurrentUserAgentCrawler extends ConcurrentCrawler
     protected function initializeClient(): ClientInterface
     {
         return GuzzleClientFactory::getClient();
+    }
+
+    public function onSuccess(ResponseInterface $response, int $index): void
+    {
+        $data = [
+            'response' => $response,
+        ];
+
+        $this->successfulUrls[] = $crawlingState = CrawlingState::createSuccessful($this->urls[$index], $data);
+        $this->updateRequest($crawlingState);
+    }
+
+    public function onFailure(\Throwable $exception, int $index): void
+    {
+        $data = [
+            'exception' => $exception,
+        ];
+
+        $this->failedUrls[] = $crawlingState = CrawlingState::createFailed($this->urls[$index], $data);
+        $this->updateRequest($crawlingState);
     }
 }

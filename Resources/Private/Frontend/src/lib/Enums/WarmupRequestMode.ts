@@ -1,3 +1,5 @@
+'use strict'
+
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
@@ -17,25 +19,15 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-define([
-  'TYPO3/CMS/Warming/Backend/Toolbar/CacheWarmupMenu',
-], function (CacheWarmupMenu)
-{
-  'use strict';
+/**
+ * Available request modes that can be used to warmup caches.
+ *
+ * @author Elias Häußler <elias@haeussler.dev>
+ * @license GPL-2.0-or-later
+ */
+enum WarmupRequestMode {
+  Site = 'site',
+  Page = 'page',
+}
 
-  const CacheWarmupContextMenuAction = {};
-
-  CacheWarmupContextMenuAction.warmupPageCache = function (table, uid) {
-    if (table === 'pages') {
-      CacheWarmupMenu.warmupCache(uid, CacheWarmupMenu.modes.page);
-    }
-  };
-
-  CacheWarmupContextMenuAction.warmupSiteCache = function (table, uid) {
-    if (table === 'pages') {
-      CacheWarmupMenu.warmupCache(uid, CacheWarmupMenu.modes.site);
-    }
-  };
-
-  return CacheWarmupContextMenuAction;
-});
+export default WarmupRequestMode;

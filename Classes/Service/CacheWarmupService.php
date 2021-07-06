@@ -27,8 +27,10 @@ use EliasHaeussler\CacheWarmup\CacheWarmer;
 use EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface;
 use EliasHaeussler\Typo3Warming\Configuration\Configuration;
 use EliasHaeussler\Typo3Warming\Crawler\ConcurrentUserAgentCrawler;
+use EliasHaeussler\Typo3Warming\Crawler\RequestAwareInterface;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedConfigurationException;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedSiteException;
+use EliasHaeussler\Typo3Warming\Request\WarmupRequest;
 use EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -87,11 +89,12 @@ class CacheWarmupService implements LoggerAwareInterface
 
     /**
      * @param Site[] $sites
+     * @param WarmupRequest|null $request
      * @return CrawlerInterface
      * @throws UnsupportedConfigurationException
      * @throws UnsupportedSiteException
      */
-    public function warmupSites(array $sites): CrawlerInterface
+    public function warmupSites(array $sites, WarmupRequest $request = null): CrawlerInterface
     {
         $cacheWarmer = new CacheWarmer();
         $cacheWarmer->setLimit($this->limit);
@@ -101,15 +104,21 @@ class CacheWarmupService implements LoggerAwareInterface
             $cacheWarmer->addSitemaps($sitemap);
         }
 
+        if (null !== $request && $this->crawler instanceof RequestAwareInterface) {
+            $request->setRequestedUrls($cacheWarmer->getUrls());
+            $this->crawler->setRequest($request);
+        }
+
         return $cacheWarmer->run($this->crawler);
     }
 
     /**
      * @param int[] $pageIds
+     * @param WarmupRequest|null $request
      * @return CrawlerInterface
      * @throws SiteNotFoundException
      */
-    public function warmupPages(array $pageIds): CrawlerInterface
+    public function warmupPages(array $pageIds, WarmupRequest $request = null): CrawlerInterface
     {
         $cacheWarmer = new CacheWarmer();
         $cacheWarmer->setLimit($this->limit);
@@ -117,6 +126,11 @@ class CacheWarmupService implements LoggerAwareInterface
         foreach ($pageIds as $pageId) {
             $url = $this->generateUri($pageId);
             $cacheWarmer->addUrl($url);
+        }
+
+        if (null !== $request && $this->crawler instanceof RequestAwareInterface) {
+            $request->setRequestedUrls($cacheWarmer->getUrls());
+            $this->crawler->setRequest($request);
         }
 
         return $cacheWarmer->run($this->crawler);
