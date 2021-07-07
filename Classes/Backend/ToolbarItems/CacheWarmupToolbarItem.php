@@ -59,16 +59,30 @@ class CacheWarmupToolbarItem implements ToolbarItemInterface
 
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Warming/Backend/Toolbar/CacheWarmupMenu');
         $pageRenderer->addInlineLanguageLabelArray([
+            // Toolbar
             'cacheWarmup.toolbar.copy.successful' => static::translate('toolbar.copy.successful'),
+
+            // Notification
             'cacheWarmup.notification.error.title' => static::translate('notification.error.title'),
             'cacheWarmup.notification.error.message' => static::translate('notification.error.message'),
             'cacheWarmup.notification.action.showReport' => static::translate('notification.action.showReport'),
-            'cacheWarmup.modal.title' => static::translate('modal.title'),
-            'cacheWarmup.modal.panel.failed' => static::translate('modal.panel.failed'),
-            'cacheWarmup.modal.panel.successful' => static::translate('modal.panel.successful'),
-            'cacheWarmup.modal.action.view' => static::translate('modal.action.view'),
-            'cacheWarmup.modal.total' => static::translate('modal.total'),
-            'cacheWarmup.modal.message.noUrlsCrawled' => static::translate('modal.message.noUrlsCrawled'),
+
+            // Report Modal
+            'cacheWarmup.modal.report.title' => static::translate('modal.report.title'),
+            'cacheWarmup.modal.report.panel.failed' => static::translate('modal.report.panel.failed'),
+            'cacheWarmup.modal.report.panel.successful' => static::translate('modal.report.panel.successful'),
+            'cacheWarmup.modal.report.action.view' => static::translate('modal.report.action.view'),
+            'cacheWarmup.modal.report.message.total' => static::translate('modal.report.message.total'),
+            'cacheWarmup.modal.report.message.noUrlsCrawled' => static::translate('modal.report.message.noUrlsCrawled'),
+
+            // Progress Modal
+            'cacheWarmup.modal.progress.title' => static::translate('modal.progress.title'),
+            'cacheWarmup.modal.progress.button.report' => static::translate('modal.progress.button.report'),
+            'cacheWarmup.modal.progress.button.retry' => static::translate('modal.progress.button.retry'),
+            'cacheWarmup.modal.progress.button.close' => static::translate('modal.progress.button.close'),
+            'cacheWarmup.modal.progress.failedCounter' => static::translate('modal.progress.failedCounter'),
+            'cacheWarmup.modal.progress.allCounter' => static::translate('modal.progress.allCounter'),
+            'cacheWarmup.modal.progress.placeholder' => static::translate('modal.progress.placeholder'),
         ]);
     }
 

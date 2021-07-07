@@ -44,10 +44,10 @@ export default class WarmupRequest {
   private readonly mode: WarmupRequestMode;
 
   constructor(pageId: number, mode: WarmupRequestMode = WarmupRequestMode.Site) {
+    this.requestType = EventSourceRequestHandler.isSupported() ? WarmupRequestType.EventSource : WarmupRequestType.Ajax;
     this.requestId = WarmupRequest.generateRequestId();
     this.pageId = pageId;
     this.mode = mode;
-    this.requestType = EventSourceRequestHandler.isSupported() ? WarmupRequestType.EventSource : WarmupRequestType.Ajax;
   }
 
   /**
@@ -101,7 +101,7 @@ export default class WarmupRequest {
     return new URLSearchParams({
       pageId: this.pageId.toString(),
       mode: this.mode,
-      requestId: this.requestId
+      requestId: this.requestId,
     });
   }
 

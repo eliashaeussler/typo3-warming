@@ -20,6 +20,7 @@
  */
 
 import IconIdentifiers from '../../../lib/Enums/IconIdentifiers';
+import LanguageKeys from '../../../lib/Enums/LanguageKeys';
 import WarmupProgress from '../../../lib/WarmupProgress';
 
 // Modules
@@ -49,7 +50,7 @@ class CacheWarmupReportModal {
    */
   public createModalAction(progress: WarmupProgress): { label: string, action: typeof ImmediateAction } {
     return {
-      label: TYPO3.lang['cacheWarmup.notification.action.showReport'],
+      label: TYPO3.lang[LanguageKeys.notificationShowReport],
       action: new ImmediateAction((): void => this.createModal(progress)),
     };
   }
@@ -81,7 +82,7 @@ class CacheWarmupReportModal {
 
         // Open modal with crawling report
         Modal.advanced({
-          title: TYPO3.lang['cacheWarmup.modal.title'],
+          title: TYPO3.lang[LanguageKeys.modalReportTitle],
           content: $content,
           size: Modal.sizes.large,
         });
@@ -133,7 +134,7 @@ class CacheWarmupReportModal {
                           .attr('href', url)
                           .attr('target', '_blank')
                           .addClass('btn btn-default btn-sm')
-                          .html(`${viewPageIcon} ${TYPO3.lang['cacheWarmup.modal.action.view']}`)
+                          .html(`${viewPageIcon} ${TYPO3.lang[LanguageKeys.modalReportActionView]}`)
                       )
                     ); // End: table row
                   })
@@ -158,7 +159,7 @@ class CacheWarmupReportModal {
     if (this.progress.getNumberOfFailedUrls() > 0) {
       $content.append(
         this.createPanel(
-          TYPO3.lang['cacheWarmup.modal.panel.failed'],
+          TYPO3.lang[LanguageKeys.modalReportPanelFailed],
           'danger',
           this.progress.urls.failed,
           viewPageIcon
@@ -168,7 +169,7 @@ class CacheWarmupReportModal {
     if (this.progress.getNumberOfSuccessfulUrls() > 0) {
       $content.append(
         this.createPanel(
-          TYPO3.lang['cacheWarmup.modal.panel.successful'],
+          TYPO3.lang[LanguageKeys.modalReportPanelSuccessful],
           'success',
           this.progress.urls.successful,
           viewPageIcon
@@ -178,8 +179,8 @@ class CacheWarmupReportModal {
 
     // Add number of totally crawled pages
     const totalText = this.progress.progress.total > 0
-      ? `${TYPO3.lang['cacheWarmup.modal.total']} ${this.progress.progress.total}`
-      : TYPO3.lang['cacheWarmup.modal.message.noUrlsCrawled'];
+      ? `${TYPO3.lang[LanguageKeys.modalReportTotal]} ${this.progress.progress.total}`
+      : TYPO3.lang[LanguageKeys.modalReportNoUrlsCrawled];
     $content.append(
       $('<div>').addClass('badge badge-info').html(`${infoIcon} ${totalText}`)
     );

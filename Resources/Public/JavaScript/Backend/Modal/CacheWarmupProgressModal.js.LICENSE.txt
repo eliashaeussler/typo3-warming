@@ -8,7 +8,21 @@
  */
 
 /**
+ * Collection of utility functions.
+ *
+ * @author Elias Häußler <elias@haeussler.dev>
+ * @license GPL-2.0-or-later
+ */
+
+/**
  * Identifiers of several used TYPO3 icons.
+ *
+ * @author Elias Häußler <elias@haeussler.dev>
+ * @license GPL-2.0-or-later
+ */
+
+/**
+ * Several language keys that are used in custom modules.
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later

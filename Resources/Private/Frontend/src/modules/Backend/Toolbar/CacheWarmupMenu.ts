@@ -20,6 +20,7 @@
  */
 
 import IconIdentifiers from '../../../lib/Enums/IconIdentifiers';
+import LanguageKeys from '../../../lib/Enums/LanguageKeys';
 import WarmupProgress from '../../../lib/WarmupProgress';
 import WarmupRequest from '../../../lib/WarmupRequest';
 import WarmupRequestMode from '../../../lib/Enums/WarmupRequestMode';
@@ -199,7 +200,7 @@ export class CacheWarmupMenu {
     ])
       .then(
         async ([, icon]): Promise<void> => {
-          $(CacheWarmupMenuSelectors.useragentCopyText).text(TYPO3.lang['cacheWarmup.toolbar.copy.successful']);
+          $(CacheWarmupMenuSelectors.useragentCopyText).text(TYPO3.lang[LanguageKeys.toolbarCopySuccessful]);
           $(CacheWarmupMenuSelectors.useragentCopyIcon, CacheWarmupMenuSelectors.useragentCopy).replaceWith(icon);
         },
         (): void => {
@@ -246,7 +247,7 @@ export class CacheWarmupMenu {
    * @private
    */
   private static errorNotification(): void {
-    Notification.error(TYPO3.lang['cacheWarmup.notification.error.title'], TYPO3.lang['cacheWarmup.notification.error.message']);
+    Notification.error(TYPO3.lang[LanguageKeys.notificationErrorTitle], TYPO3.lang[LanguageKeys.notificationErrorMessage]);
   }
 }
 

@@ -20,6 +20,8 @@
  */
 
 import IconIdentifiers from '../../../lib/Enums/IconIdentifiers';
+import LanguageKeys from '../../../lib/Enums/LanguageKeys';
+import Util from '../../../lib/Util';
 import WarmupProgress from '../../../lib/WarmupProgress';
 
 // Modules
@@ -99,10 +101,14 @@ class CacheWarmupProgressModal {
 
     if (failedCount > 0) {
       this.$progressBar.addClass('progress-bar-warning');
-      this.$failedCounter.show().html(`Failed: ${failedCount}`);
+      this.$failedCounter.show().html(
+        Util.formatString(TYPO3.lang[LanguageKeys.modalProgressFailedCounter], failedCount.toString())
+      );
     }
 
-    this.$allCounter.html(`Processed: <strong>${current}</strong><br>Total: <strong>${total}</strong>`);
+    this.$allCounter.html(
+      Util.formatString(TYPO3.lang[LanguageKeys.modalProgressAllCounter], current.toString(), total.toString())
+    );
 
     if (progress.isFinished()) {
       this.$progressBar.removeClass('progress-bar-warning').addClass(
@@ -162,7 +168,7 @@ class CacheWarmupProgressModal {
       .attr('aria-valuemin', 0)
       .attr('aria-valuemax', 0)
       .attr('aria-valuenow', 0);
-    this.$allCounter = $('<div>').html('Crawling sitemaps...');
+    this.$allCounter = $('<div>').html(TYPO3.lang[LanguageKeys.modalProgressPlaceholder]);
     this.$failedCounter = $('<div class="badge badge-danger">');
 
     // Hide failed counter until any URL fails to be warmed up
@@ -185,27 +191,26 @@ class CacheWarmupProgressModal {
    */
   private createModalWithContent($content: JQuery): JQuery {
     return Modal.advanced({
-      // @todo use other localization
-      title: TYPO3.lang['cacheWarmup.modal.title'],
+      title: TYPO3.lang[LanguageKeys.modalProgressTitle],
       content: $content,
       size: Modal.sizes.small,
       buttons: [
         {
-          text: 'Show report',
+          text: TYPO3.lang[LanguageKeys.modalProgressButtonReport],
           icon: IconIdentifiers.listAlternative,
+          // Trigger is defined by external module, button is hidden in the meantime
           btnClass: 'btn-primary hidden',
           name: CacheWarmupProgressModalButtonNames.reportButton,
-          // Trigger is defined by external module, button is hidden in the meantime
         },
         {
-          text: 'Run again',
+          text: TYPO3.lang[LanguageKeys.modalProgressButtonRetry],
           icon: IconIdentifiers.refresh,
+          // Trigger is defined by external module, button is hidden in the meantime
           btnClass: 'btn-default hidden',
           name: CacheWarmupProgressModalButtonNames.retryButton,
-          // Trigger is defined by external module, button is hidden in the meantime
         },
         {
-          text: 'Close',
+          text: TYPO3.lang[LanguageKeys.modalProgressButtonClose],
           btnClass: 'btn-default',
           trigger: (): void => Modal.dismiss(),
         },

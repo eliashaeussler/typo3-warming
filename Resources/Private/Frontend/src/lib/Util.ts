@@ -40,4 +40,20 @@ export default class Util {
 
     return url;
   }
+
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  /**
+   * Get formatted string.
+   *
+   * Formats the given string with given values and returns the formatted string.
+   *
+   * @param format {string} String to be formatted with given values
+   * @param values Values to be used as replacements in formatted string
+   * @returns {string} Formatted string
+   * @see https://stackoverflow.com/a/31007976
+   */
+  public static formatString(format: string, ...values: any[]): string {
+    return values.reduce((p: string, c: any, index: number): string => p.replace(new RegExp(`\\{${index}}`), c), format);
+  }
+  /* eslint-enable @typescript-eslint/no-explicit-any */
 }

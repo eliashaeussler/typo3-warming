@@ -59,23 +59,45 @@
 				<source>View report</source>
 			</trans-unit>
 
-			<trans-unit id="modal.title">
+			<trans-unit id="modal.report.title">
 				<source>Cache warmup report</source>
 			</trans-unit>
-			<trans-unit id="modal.panel.failed">
+			<trans-unit id="modal.report.panel.failed">
 				<source>Failed</source>
 			</trans-unit>
-			<trans-unit id="modal.panel.successful">
+			<trans-unit id="modal.report.panel.successful">
 				<source>Successful</source>
 			</trans-unit>
-			<trans-unit id="modal.action.view">
+			<trans-unit id="modal.report.action.view">
 				<source>View</source>
 			</trans-unit>
-			<trans-unit id="modal.total">
+			<trans-unit id="modal.report.message.total">
 				<source>Total number of crawled URLs:</source>
 			</trans-unit>
-			<trans-unit id="modal.message.noUrlsCrawled">
+			<trans-unit id="modal.report.message.noUrlsCrawled">
 				<source>No URLs were crawled for cache warmup.</source>
+			</trans-unit>
+
+			<trans-unit id="modal.progress.title">
+				<source>Cache warmup is in progress</source>
+			</trans-unit>
+			<trans-unit id="modal.progress.button.report">
+				<source>Show report</source>
+			</trans-unit>
+			<trans-unit id="modal.progress.button.retry">
+				<source>Run again</source>
+			</trans-unit>
+			<trans-unit id="modal.progress.button.close">
+				<source>Close</source>
+			</trans-unit>
+			<trans-unit id="modal.progress.failedCounter">
+				<source>Failed: {0}</source>
+			</trans-unit>
+			<trans-unit id="modal.progress.allCounter">
+				<source><![CDATA[Processed: <strong>{0}</strong><br>Total: <strong>{1}</strong>]]></source>
+			</trans-unit>
+			<trans-unit id="modal.progress.placeholder">
+				<source>Crawling sitemaps...</source>
 			</trans-unit>
 
 			<trans-unit id="contextMenu.item.cacheWarmup">

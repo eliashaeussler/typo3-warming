@@ -50,12 +50,20 @@ export default class EventSourceRequestHandler implements RequestHandlerInterfac
     this.progress = new WarmupProgress();
 
     return new Promise<WarmupProgress>((resolve, reject): void => {
-      this.source.addEventListener('warmupProgress', (event): void => this.updateProgress(event as MessageEvent), false);
-      this.source.addEventListener('warmupFinished', (event): void => {
-        CacheWarmupProgressModal.getModal().find('.modal-footer').show();
-        this.finishWarmup(event as MessageEvent);
-        resolve(this.progress);
-      }, false);
+      this.source.addEventListener(
+        'warmupProgress',
+        (event): void => this.updateProgress(event as MessageEvent),
+        false
+      );
+      this.source.addEventListener(
+        'warmupFinished',
+        (event): void => {
+          CacheWarmupProgressModal.getModal().find('.modal-footer').show();
+          this.finishWarmup(event as MessageEvent);
+          resolve(this.progress);
+        },
+        false
+      );
       this.source.addEventListener('message', (): void => this.reject(reject), false);
       this.source.addEventListener('error', (): void => this.reject(reject), false);
     });
@@ -84,6 +92,7 @@ export default class EventSourceRequestHandler implements RequestHandlerInterfac
    */
   private closeSource(): boolean {
     this.source.close();
+
     return EventSource.CLOSED === this.source.readyState;
   }
 
@@ -97,6 +106,7 @@ export default class EventSourceRequestHandler implements RequestHandlerInterfac
     const data = JSON.parse(event.data);
     this.progress.update(data);
 
+    // Pass update upgraded progress to progress modal
     CacheWarmupProgressModal.updateProgress(this.progress);
   }
 
