@@ -6,7 +6,8 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack",
     "start": "cross-env NODE_ENV=development webpack --watch",
-    "lint": "eslint 'src/**/*.ts'"
+    "lint": "eslint 'src/**/*.{ts,tsx}'",
+    "lint-fix": "eslint 'src/**/*.{ts,tsx}' --fix"
   },
   "author": {
     "name": "Elias Häußler",
@@ -28,6 +29,7 @@
     "clean-webpack-plugin": "^3.0.0",
     "cross-env": "^7.0.3",
     "eslint": "^7.30.0",
+    "eslint-plugin-sonarjs": "^0.9.1",
     "source-map-loader": "^3.0.0",
     "typescript": "^4.3.5",
     "webpack": "^5.42.0",
