@@ -3,7 +3,6 @@
 /var/
 /Resources/Private/Libs/Build/vendor
 /Resources/Private/Libs/vendors.phar
-/Resources/Public/JavaScript
 /.php_cs.cache
 /.phpunit.result.cache
 /composer.lock
