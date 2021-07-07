@@ -28,6 +28,7 @@ return [
         'bin',
         'build',
         'public',
+        'resources\\/private\\/frontend\\/node_modules',
         'resources\\/private\\/libs\\/build',
         'tailor-version-upload',
         'tests',
@@ -35,6 +36,7 @@ return [
     ],
     'files' => [
         'DS_Store',
+        'captainhook.json',
         'composer.lock',
         'crowdin.yaml',
         'editorconfig',
