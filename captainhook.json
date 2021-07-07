@@ -21,7 +21,8 @@
 						"exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\Any",
 						"args": [
 							[
-								"*.php"
+								"*.php",
+								".php_cs"
 							]
 						]
 					}
@@ -35,7 +36,8 @@
 						"exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\Any",
 						"args": [
 							[
-								"*.php"
+								"*.php",
+								"phpstan.neon"
 							]
 						]
 					}
@@ -63,7 +65,9 @@
 						"exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\Any",
 						"args": [
 							[
-								"*.php"
+								"*.php",
+								"phpunit.coverage.xml",
+								"phpunit.xml"
 							]
 						]
 					}
