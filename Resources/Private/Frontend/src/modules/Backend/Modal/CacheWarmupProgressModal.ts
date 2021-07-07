@@ -1,18 +1,68 @@
-/**
- * Module: TYPO3/CMS/Warming/Backend/Modal/CacheWarmupProgressModal
+'use strict'
+
+/*
+ * This file is part of the TYPO3 CMS extension "warming".
+ *
+ * Copyright (C) 2021 Elias Häußler <elias@haeussler.dev>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
+
+import IconIdentifiers from '../../../lib/Enums/IconIdentifiers';
 import WarmupProgress from '../../../lib/WarmupProgress';
 
 // Modules
 import $ from 'jquery';
 import Modal from 'TYPO3/CMS/Backend/Modal';
 
+/**
+ * Button names within cache warmup progress modal.
+ *
+ * @author Elias Häußler <elias@haeussler.dev>
+ * @license GPL-2.0-or-later
+ */
+enum CacheWarmupProgressModalButtonNames {
+  reportButton = 'tx-warming-open-report',
+  retryButton = 'tx-warming-retry',
+}
+
+/**
+ * AMD module that shows a modal with the progress of the current cache warmup.
+ *
+ * Module: TYPO3/CMS/Warming/Backend/Modal/CacheWarmupProgressModal
+ *
+ * @author Elias Häußler <elias@haeussler.dev>
+ * @license GPL-2.0-or-later
+ */
 class CacheWarmupProgressModal {
   private $modal!: JQuery;
   private $progressBar!: JQuery;
   private $allCounter!: JQuery;
   private $failedCounter!: JQuery;
 
+  /**
+   * Create modal with progress bar.
+   *
+   * Re-initializes the current modal or creates a new modal and applies initial
+   * content. The modal contains a progress bar as well as counters of currently
+   * processed pages, total number of pages to be crawled as well as number of
+   * failed crawls.
+   *
+   * Next to the modal content, a footer with several buttons is added. The footer
+   * is hidden as long as cache warmup is in progress since it contains several
+   * actions that require cache warmup to be finished.
+   */
   public createModal(): void {
     const $content = this.buildInitialModalContent();
 
@@ -29,6 +79,14 @@ class CacheWarmupProgressModal {
     this.$modal.find('.modal-footer').hide();
   }
 
+  /**
+   * Update progress bar and counters in modal content.
+   *
+   * Reads data from the given {@link WarmupProgress} object and applies its data
+   * to the single components within the modal content (progress bar and counters).
+   *
+   * @param progress {WarmupProgress} An object holding data about the progress of the current cache warmup
+   */
   public updateProgress(progress: WarmupProgress): void {
     const percent = progress.getProgressInPercent();
     const failedCount = progress.getNumberOfFailedUrls();
@@ -46,29 +104,56 @@ class CacheWarmupProgressModal {
 
     this.$allCounter.html(`Processed: <strong>${current}</strong><br>Total: <strong>${total}</strong>`);
 
-    if (current >= total) {
+    if (progress.isFinished()) {
       this.$progressBar.removeClass('progress-bar-warning').addClass(
         failedCount > 0 ? 'progress-bar-danger' : 'progress-bar-success'
       );
     }
   }
 
+  /**
+   * Get current modal as {@link JQuery} object.
+   *
+   * @returns {JQuery} Current modal as {@link JQuery} object
+   */
   public getModal(): JQuery {
     return this.$modal;
   }
 
+  /**
+   * Get report button within current modal as {@link JQuery} object.
+   *
+   * @returns {JQuery} Report button within current modal as {@link JQuery} object
+   */
   public getReportButton(): JQuery {
-    return this.$modal.find('button[name=tx-warming-open-report]');
+    return this.$modal.find(`button[name=${CacheWarmupProgressModalButtonNames.reportButton}]`);
   }
 
+  /**
+   * Get retry button within current modal as {@link JQuery} object.
+   *
+   * @returns {JQuery} Retry button within current modal as {@link JQuery} object
+   */
   public getRetryButton(): JQuery {
-    return this.$modal.find('button[name=tx-warming-retry]');
+    return this.$modal.find(`button[name=${CacheWarmupProgressModalButtonNames.retryButton}]`);
   }
 
+  /**
+   * Dismiss current modal.
+   */
   public dismiss(): void {
     Modal.dismiss();
   }
 
+  /**
+   * Build initial modal content and return its wrapper.
+   *
+   * Creates a progress bar and several counters and wraps them in a <div>
+   * container. The container is then returned as {@link JQuery} object.
+   *
+   * @returns {JQuery} Modal content as {@link JQuery} object
+   * @private
+   */
   private buildInitialModalContent(): JQuery {
     const $content = $('<div>');
 
@@ -91,6 +176,13 @@ class CacheWarmupProgressModal {
     return $content;
   }
 
+  /**
+   * Create new modal and apply given content to the modal body.
+   *
+   * @param $content {JQuery} Content to be applied to the modal body
+   * @returns {JQuery} The new modal as {@link JQuery} object
+   * @private
+   */
   private createModalWithContent($content: JQuery): JQuery {
     return Modal.advanced({
       // @todo use other localization
@@ -100,22 +192,22 @@ class CacheWarmupProgressModal {
       buttons: [
         {
           text: 'Show report',
-          icon: 'actions-list-alternative',
-          btnClass: 'btn-primary',
-          name: 'tx-warming-open-report',
+          icon: IconIdentifiers.listAlternative,
+          btnClass: 'btn-primary hidden',
+          name: CacheWarmupProgressModalButtonNames.reportButton,
+          // Trigger is defined by external module, button is hidden in the meantime
         },
         {
           text: 'Run again',
-          icon: 'actions-refresh',
-          btnClass: 'btn-default',
-          name: 'tx-warming-retry',
+          icon: IconIdentifiers.refresh,
+          btnClass: 'btn-default hidden',
+          name: CacheWarmupProgressModalButtonNames.retryButton,
+          // Trigger is defined by external module, button is hidden in the meantime
         },
         {
           text: 'Close',
           btnClass: 'btn-default',
-          trigger: () => {
-            Modal.dismiss();
-          },
+          trigger: (): void => Modal.dismiss(),
         },
       ]
     });

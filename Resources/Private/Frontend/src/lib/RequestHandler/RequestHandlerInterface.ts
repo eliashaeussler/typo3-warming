@@ -32,7 +32,7 @@ import WarmupProgress from '../WarmupProgress';
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-interface RequestHandlerInterface {
+export default interface RequestHandlerInterface {
   /**
    * Trigger cache warmup request with given query parameters.
    *
@@ -41,7 +41,7 @@ interface RequestHandlerInterface {
    * result.
    *
    * @param queryParams {URLSearchParams} Set of query parameters to be appended to the request URL
-   * @returns Promise<WarmupProgress> A promise for the started request that resolves to an instance of {@link WarmupProgress}
+   * @returns {Promise<WarmupProgress>} A promise for the started request that resolves to an instance of {@link WarmupProgress}
    */
   startRequestWithQueryParams(queryParams: URLSearchParams): Promise<WarmupProgress>;
 
@@ -52,9 +52,7 @@ interface RequestHandlerInterface {
    * on server-side.
    *
    * @param queryParams {URLSearchParams} Set of query parameters to be appended to the request URL
-   * @returns URL The complete request URL
+   * @returns {URL} The complete request URL
    */
   getUrl(queryParams: URLSearchParams): URL;
 }
-
-export default RequestHandlerInterface;

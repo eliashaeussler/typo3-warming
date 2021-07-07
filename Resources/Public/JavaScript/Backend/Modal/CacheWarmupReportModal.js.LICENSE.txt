@@ -1,0 +1,6 @@
+/**
+ * Identifiers of several used TYPO3 icons.
+ *
+ * @author Elias Häußler <elias@haeussler.dev>
+ * @license GPL-2.0-or-later
+ */

@@ -37,7 +37,7 @@ import WarmupProgress from './WarmupProgress';
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class WarmupRequest {
+export default class WarmupRequest {
   public readonly requestType: WarmupRequestType;
   private readonly requestId: string;
   private readonly pageId: number;
@@ -57,7 +57,7 @@ class WarmupRequest {
    * server. The warmup progress is returned as Promise that resolves to a concrete
    * {@link WarmupProgress}.
    *
-   * @returns Promise<WarmupProgress>
+   * @returns {Promise<WarmupProgress>} A promise for the the current request that resolves to an instance of {@link WarmupProgress}
    */
   public runWarmup(): Promise<WarmupProgress> {
     if (WarmupRequestType.EventSource === this.requestType) {
@@ -67,18 +67,36 @@ class WarmupRequest {
     return this.doWarmupWithAjax();
   }
 
+  /**
+   * Trigger new cache warmup using the {@link EventSourceRequestHandler}.
+   *
+   * @returns {Promise<WarmupProgress>} A promise for the the current request that resolves to an instance of {@link WarmupProgress}
+   * @private
+   */
   private doWarmupWithEventSource(): Promise<WarmupProgress> {
     const handler = new EventSourceRequestHandler();
 
     return handler.startRequestWithQueryParams(this.getQueryParams());
   }
 
+  /**
+   * Trigger new cache warmup using the {@link AjaxRequestHandler}.
+   *
+   * @returns {Promise<WarmupProgress>} A promise for the the current request that resolves to an instance of {@link WarmupProgress}
+   * @private
+   */
   private doWarmupWithAjax(): Promise<WarmupProgress> {
     const handler = new AjaxRequestHandler();
 
     return handler.startRequestWithQueryParams(this.getQueryParams());
   }
 
+  /**
+   * Return set of query params to be used fo cache warmup requests.
+   *
+   * @returns {URLSearchParams} Set of query params to be used for cache warmup requests
+   * @private
+   */
   private getQueryParams(): URLSearchParams {
     return new URLSearchParams({
       pageId: this.pageId.toString(),
@@ -87,9 +105,13 @@ class WarmupRequest {
     });
   }
 
+  /**
+   * Generate unique request ID.
+   *
+   * @returns {string} Unique request ID
+   * @private
+   */
   private static generateRequestId(): string {
     return uuidv4();
   }
 }
-
-export default WarmupRequest;

@@ -50,7 +50,7 @@ interface WarmupProgressDataObject {
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class WarmupProgress {
+export default class WarmupProgress {
   public state: WarmupState = WarmupState.Unknown;
   public progress: CrawlingProgress = {current: 0, total: 0};
   public urls: CrawlingState = {failed: [], successful: []};
@@ -66,6 +66,7 @@ class WarmupProgress {
    * Update internal state of a cache warmup request progress from given data.
    *
    * @param data {WarmupProgressDataObject} An object that displays the current progress of a cache warmup request
+   * @returns {WarmupProgress} This instance
    */
   public update(data: WarmupProgressDataObject): this {
     if (data.state && Object.values(WarmupState).includes(data.state as WarmupState)) {
@@ -90,7 +91,7 @@ class WarmupProgress {
   /**
    * Get number of URLs that failed to be warmed up.
    *
-   * @returns number Number of URLs that failed to be warmed up
+   * @returns {number} Number of URLs that failed to be warmed up
    */
   public getNumberOfFailedUrls(): number {
     return this.urls.failed.length;
@@ -99,7 +100,7 @@ class WarmupProgress {
   /**
    * Get number of successfully warmed up URLs.
    *
-   * @returns number Number of successfully warmed up URLs.
+   * @returns {number} Number of successfully warmed up URLs.
    */
   public getNumberOfSuccessfulUrls(): number {
     return this.urls.successful.length;
@@ -108,7 +109,7 @@ class WarmupProgress {
   /**
    * Get number of current progress in percent.
    *
-   * @returns number A number object that displays the current progress in percent
+   * @returns {number} A number object that displays the current progress in percent
    */
   public getProgressInPercent(): number {
     if (0 !== this.progress.total) {
@@ -117,6 +118,13 @@ class WarmupProgress {
 
     return Number(0);
   }
-}
 
-export default WarmupProgress;
+  /**
+   * Test whether the cache warmup is finished.
+   *
+   * @returns {boolean} `true` if cache warmup is finished, `false` otherwise
+   */
+  public isFinished(): boolean {
+    return this.progress.current >= this.progress.total;
+  }
+}

@@ -20,6 +20,7 @@
  */
 
 import RequestHandlerInterface from './RequestHandlerInterface';
+import Util from '../Util';
 import WarmupProgress from '../WarmupProgress';
 
 // Modules
@@ -42,7 +43,7 @@ export default class AjaxRequestHandler implements RequestHandlerInterface {
     return (new AjaxRequest(this.getUrl(queryParams).toString()))
       .post({})
       .then(
-        async (response: typeof AjaxResponse) => {
+        async (response: typeof AjaxResponse): Promise<WarmupProgress> => {
           const data = await response.resolve();
           return new WarmupProgress(data);
         }
@@ -51,10 +52,7 @@ export default class AjaxRequestHandler implements RequestHandlerInterface {
 
   public getUrl(queryParams: URLSearchParams): URL {
     const url = new URL(TYPO3.settings.ajaxUrls.tx_warming_cache_warmup_legacy, window.location.origin);
-    for (const [name, value] of queryParams.entries()) {
-      url.searchParams.append(name, value);
-    }
 
-    return url;
+    return Util.mergeUrlWithQueryParams(url, queryParams);
   }
 }

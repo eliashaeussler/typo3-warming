@@ -20,6 +20,7 @@
  */
 
 import RequestHandlerInterface from './RequestHandlerInterface';
+import Util from '../Util';
 import WarmupProgress from '../WarmupProgress';
 
 // Modules
@@ -38,7 +39,7 @@ import CacheWarmupReportModal from '../../modules/Backend/Modal/CacheWarmupRepor
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class EventSourceRequestHandler implements RequestHandlerInterface {
+export default class EventSourceRequestHandler implements RequestHandlerInterface {
   private source!: EventSource;
   private progress!: WarmupProgress;
 
@@ -48,32 +49,28 @@ class EventSourceRequestHandler implements RequestHandlerInterface {
     this.source = new EventSource(this.getUrl(queryParams).toString(), {withCredentials: true});
     this.progress = new WarmupProgress();
 
-    return new Promise<WarmupProgress>((resolve, reject) => {
-      this.source.addEventListener('warmupProgress', (event) => this.updateProgress(event as MessageEvent), false);
-      this.source.addEventListener('warmupFinished', (event) => {
+    return new Promise<WarmupProgress>((resolve, reject): void => {
+      this.source.addEventListener('warmupProgress', (event): void => this.updateProgress(event as MessageEvent), false);
+      this.source.addEventListener('warmupFinished', (event): void => {
         CacheWarmupProgressModal.getModal().find('.modal-footer').show();
         this.finishWarmup(event as MessageEvent);
-
         resolve(this.progress);
       }, false);
-      this.source.addEventListener('message', () => this.reject(reject), false);
-      this.source.addEventListener('error', () => this.reject(reject), false);
+      this.source.addEventListener('message', (): void => this.reject(reject), false);
+      this.source.addEventListener('error', (): void => this.reject(reject), false);
     });
   }
 
   public getUrl(queryParams: URLSearchParams): URL {
     const url = new URL(TYPO3.settings.ajaxUrls.tx_warming_cache_warmup, window.location.origin);
-    for (const [name, value] of queryParams.entries()) {
-      url.searchParams.append(name, value);
-    }
 
-    return url;
+    return Util.mergeUrlWithQueryParams(url, queryParams);
   }
 
   /**
    * Test whether the client supports this handler.
    *
-   * @returns boolean `true` if the client has support for the {@link EventSource} API, `false` otherwise
+   * @returns {boolean} `true` if the client has support for the {@link EventSource} API, `false` otherwise
    */
   public static isSupported(): boolean {
     return !!window.EventSource;
@@ -82,7 +79,7 @@ class EventSourceRequestHandler implements RequestHandlerInterface {
   /**
    * Close currently opened {@link EventSource}.
    *
-   * @returns boolean `true` whether the source was closed successfully, `false` otherwise
+   * @returns {boolean} `true` whether the source was closed successfully, `false` otherwise
    * @private
    */
   private closeSource(): boolean {
@@ -118,8 +115,9 @@ class EventSourceRequestHandler implements RequestHandlerInterface {
 
     // Build report modal on click on "open report" button
     CacheWarmupProgressModal.getReportButton()
+      .removeClass('hidden')
       .off('button.clicked')
-      .on('button.clicked', () => CacheWarmupReportModal.createModal(this.progress));
+      .on('button.clicked', (): void => CacheWarmupReportModal.createModal(this.progress));
   }
 
   /**
@@ -134,5 +132,3 @@ class EventSourceRequestHandler implements RequestHandlerInterface {
     reject();
   }
 }
-
-export default EventSourceRequestHandler;
