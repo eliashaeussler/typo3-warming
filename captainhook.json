@@ -1,0 +1,122 @@
+{
+	"config": {
+		"bootstrap": ".Build/vendor/autoload.php"
+	},
+	"commit-msg": {
+		"enabled": true,
+		"actions": []
+	},
+	"pre-push": {
+		"enabled": false,
+		"actions": []
+	},
+	"pre-commit": {
+		"enabled": true,
+		"actions": [
+			{
+				"action": "composer lint -- --dry-run",
+				"options": [],
+				"conditions": [
+					{
+						"exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\Any",
+						"args": [
+							[
+								"*.php"
+							]
+						]
+					}
+				]
+			},
+			{
+				"action": "composer sca",
+				"options": [],
+				"conditions": [
+					{
+						"exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\Any",
+						"args": [
+							[
+								"*.php"
+							]
+						]
+					}
+				]
+			},
+			{
+				"action": "composer normalize --dry-run",
+				"options": [],
+				"conditions": [
+					{
+						"exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\Any",
+						"args": [
+							[
+								"composer.json"
+							]
+						]
+					}
+				]
+			},
+			{
+				"action": "composer test",
+				"options": [],
+				"conditions": [
+					{
+						"exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\Any",
+						"args": [
+							[
+								"*.php"
+							]
+						]
+					}
+				]
+			},
+			{
+				"action": "yarn --cwd Resources/Private/Frontend lint",
+				"options": [],
+				"conditions": [
+					{
+						"exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\InDirectory",
+						"args": [
+							"Resources/Private/Frontend"
+						]
+					}
+				]
+			},
+			{
+				"action": "yarn --cwd Resources/Private/Frontend build && git add Resources/Public/JavaScript",
+				"options": [],
+				"conditions": [
+					{
+						"exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\InDirectory",
+						"args": [
+							"Resources/Private/Frontend"
+						]
+					}
+				]
+			}
+		]
+	},
+	"prepare-commit-msg": {
+		"enabled": false,
+		"actions": []
+	},
+	"post-commit": {
+		"enabled": false,
+		"actions": []
+	},
+	"post-merge": {
+		"enabled": false,
+		"actions": []
+	},
+	"post-checkout": {
+		"enabled": false,
+		"actions": []
+	},
+	"post-rewrite": {
+		"enabled": false,
+		"actions": []
+	},
+	"post-change": {
+		"enabled": false,
+		"actions": []
+	}
+}
