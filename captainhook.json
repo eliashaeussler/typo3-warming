@@ -29,7 +29,7 @@
 				]
 			},
 			{
-				"action": "composer sca",
+				"action": "composer sca -- --memory-limit=2G",
 				"options": [],
 				"conditions": [
 					{
