@@ -23,6 +23,7 @@
 		"typo3/cms-fluid": "^10.4 || 11.*.*@dev"
 	},
 	"require-dev": {
+		"captainhook/plugin-composer": "^5.3",
 		"ergebnis/composer-normalize": "^2.8",
 		"jangregor/phpstan-prophecy": "^0.8.1",
 		"saschaegerer/phpstan-typo3": "^0.13.3",

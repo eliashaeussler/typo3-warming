@@ -1,6 +1,4 @@
-<?php
-
-defined('TYPO3') or die();
+'use strict'
 
 /*
  * This file is part of the TYPO3 CMS extension "warming".
@@ -21,17 +19,15 @@ defined('TYPO3') or die();
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-return [
-    'tx_warming_cache_warmup' => [
-        'path' => '/warming/cache-warmup',
-        'target' => \EliasHaeussler\Typo3Warming\Controller\CacheWarmupController::class . '::mainAction',
-    ],
-    'tx_warming_cache_warmup_legacy' => [
-        'path' => '/warming/cache-warmup-legacy',
-        'target' => \EliasHaeussler\Typo3Warming\Controller\CacheWarmupController::class . '::legacyWarmupAction',
-    ],
-    'tx_warming_fetch_sites' => [
-        'path' => '/warming/fetch-sites',
-        'target' => \EliasHaeussler\Typo3Warming\Controller\CacheWarmupController::class . '::fetchSitesAction',
-    ],
-];
+/**
+ * Concrete request types that can handle cache warmup.
+ *
+ * @author Elias Häußler <elias@haeussler.dev>
+ * @license GPL-2.0-or-later
+ */
+enum WarmupRequestType {
+  EventSource,
+  Ajax,
+}
+
+export default WarmupRequestType;
