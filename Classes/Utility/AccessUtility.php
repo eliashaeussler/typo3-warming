@@ -23,8 +23,8 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Utility;
 
+use EliasHaeussler\Typo3Warming\BackendUserAuthenticationTrait;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -37,14 +37,20 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class AccessUtility
 {
-    public static function canWarmupCacheOfPage(int $pageId): bool
+    use BackendUserAuthenticationTrait;
+
+    public static function canWarmupCacheOfPage(int $pageId, int $languageId = null): bool
     {
-        return static::checkPagePermissions($pageId) && static::isPageAccessible($pageId);
+        return static::checkPagePermissions($pageId)
+            && static::isPageAccessible($pageId)
+            && (null !== $languageId ? static::isLanguageAccessible($languageId) : true);
     }
 
-    public static function canWarmupCacheOfSite(Site $site): bool
+    public static function canWarmupCacheOfSite(Site $site, int $languageId = null): bool
     {
-        return static::checkPagePermissions($site->getRootPageId()) && static::isSiteAccessible($site->getIdentifier());
+        return static::checkPagePermissions($site->getRootPageId())
+            && static::isSiteAccessible($site->getIdentifier())
+            && (null !== $languageId ? static::isLanguageAccessible($languageId) : true);
     }
 
     protected static function checkPagePermissions(int $pageId, int $permissions = Permission::PAGE_SHOW): bool
@@ -86,8 +92,14 @@ class AccessUtility
         return GeneralUtility::inList($allowedSites, $siteIdentifier);
     }
 
-    protected static function getBackendUser(): BackendUserAuthentication
+    protected static function isLanguageAccessible(int $languageId): bool
     {
-        return $GLOBALS['BE_USER'];
+        $backendUser = static::getBackendUser();
+
+        if ($backendUser->isAdmin()) {
+            return true;
+        }
+
+        return $backendUser->checkLanguageAccess($languageId);
     }
 }

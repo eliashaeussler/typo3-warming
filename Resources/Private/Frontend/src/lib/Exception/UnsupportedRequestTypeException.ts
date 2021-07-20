@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+'use strict'
 
 /*
  * This file is part of the TYPO3 CMS extension "warming".
@@ -21,28 +19,16 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3Warming\Sitemap\Provider;
-
-use EliasHaeussler\Typo3Warming\Sitemap\SiteAwareSitemap;
-use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+import WarmupRequestType from '../Enums/WarmupRequestType';
 
 /**
- * DefaultProvider
+ * Exception describing an unsupported warmup request type.
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class DefaultProvider extends AbstractProvider
-{
-    public const DEFAULT_PATH = 'sitemap.xml';
-
-    public function get(Site $site, SiteLanguage $siteLanguage = null): ?SiteAwareSitemap
-    {
-        return new SiteAwareSitemap(
-            $this->getSiteUrlWithPath($site, self::DEFAULT_PATH, $siteLanguage),
-            $site,
-            $siteLanguage
-        );
-    }
+export default class UnsupportedRequestTypeException extends Error {
+  public static create(requestType: WarmupRequestType): UnsupportedRequestTypeException {
+    return new this(`The given request type "${requestType}" is not supported.`);
+  }
 }

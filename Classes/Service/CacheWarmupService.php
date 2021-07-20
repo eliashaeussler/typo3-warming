@@ -88,22 +88,26 @@ class CacheWarmupService implements LoggerAwareInterface
 
     /**
      * @param Site[] $sites
-     * @param WarmupRequest|null $request
+     * @param WarmupRequest $request
      * @return CrawlerInterface
      * @throws UnsupportedConfigurationException
      * @throws UnsupportedSiteException
      */
-    public function warmupSites(array $sites, WarmupRequest $request = null): CrawlerInterface
+    public function warmupSites(array $sites, WarmupRequest $request): CrawlerInterface
     {
         $cacheWarmer = new CacheWarmer();
         $cacheWarmer->setLimit($this->limit);
 
         foreach ($sites as $site) {
-            $sitemap = $this->sitemapLocator->locateBySite($site);
+            $siteLanguage = null;
+            if (null !== $request->getLanguageId()) {
+                $siteLanguage = $site->getLanguageById($request->getLanguageId());
+            }
+            $sitemap = $this->sitemapLocator->locateBySite($site, $siteLanguage);
             $cacheWarmer->addSitemaps($sitemap);
         }
 
-        if (null !== $request && $this->crawler instanceof RequestAwareInterface) {
+        if ($this->crawler instanceof RequestAwareInterface) {
             $request->setRequestedUrls($cacheWarmer->getUrls());
             $this->crawler->setRequest($request);
         }
@@ -113,21 +117,21 @@ class CacheWarmupService implements LoggerAwareInterface
 
     /**
      * @param int[] $pageIds
-     * @param WarmupRequest|null $request
+     * @param WarmupRequest $request
      * @return CrawlerInterface
      * @throws SiteNotFoundException
      */
-    public function warmupPages(array $pageIds, WarmupRequest $request = null): CrawlerInterface
+    public function warmupPages(array $pageIds, WarmupRequest $request): CrawlerInterface
     {
         $cacheWarmer = new CacheWarmer();
         $cacheWarmer->setLimit($this->limit);
 
         foreach ($pageIds as $pageId) {
-            $url = $this->generateUri($pageId);
+            $url = $this->generateUri($pageId, $request->getLanguageId());
             $cacheWarmer->addUrl($url);
         }
 
-        if (null !== $request && $this->crawler instanceof RequestAwareInterface) {
+        if ($this->crawler instanceof RequestAwareInterface) {
             $request->setRequestedUrls($cacheWarmer->getUrls());
             $this->crawler->setRequest($request);
         }
@@ -137,14 +141,15 @@ class CacheWarmupService implements LoggerAwareInterface
 
     /**
      * @param int $pageId
+     * @param int|null $languageId
      * @return UriInterface
      * @throws SiteNotFoundException
      */
-    public function generateUri(int $pageId): UriInterface
+    public function generateUri(int $pageId, int $languageId = null): UriInterface
     {
         $site = $this->siteFinder->getSiteByPageId($pageId);
 
-        return $site->getRouter()->generateUri((string)$pageId);
+        return $site->getRouter()->generateUri((string)$pageId, ['_language' => $languageId]);
     }
 
     /**

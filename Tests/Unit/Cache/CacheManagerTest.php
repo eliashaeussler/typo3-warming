@@ -104,7 +104,9 @@ class CacheManagerTest extends UnitTestCase
 
         $this->cacheProphecy->require(CacheManager::CACHE_IDENTIFIER)->willReturn([
             'sitemaps' => [
-                'foo' => 'baz',
+                'foo' => [
+                    'default' => 'baz',
+                ],
             ],
         ]);
 

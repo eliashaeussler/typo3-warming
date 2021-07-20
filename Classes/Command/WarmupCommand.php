@@ -24,12 +24,12 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Command;
 
 use EliasHaeussler\CacheWarmup\Command\CacheWarmupCommand;
-use EliasHaeussler\CacheWarmup\Sitemap;
 use EliasHaeussler\Typo3Warming\Configuration\Configuration;
 use EliasHaeussler\Typo3Warming\Crawler\OutputtingUserAgentCrawler;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedConfigurationException;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedSiteException;
 use EliasHaeussler\Typo3Warming\Service\CacheWarmupService;
+use EliasHaeussler\Typo3Warming\Sitemap\SiteAwareSitemap;
 use EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Console\Application;
@@ -104,6 +104,12 @@ class WarmupCommand extends Command
             'Site identifiers or root page IDs of sites whose caches are to be warmed up.'
         );
         $this->addOption(
+            'languages',
+            'l',
+            InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+            'Optional identifiers of languages for which caches are to be warmed up'
+        );
+        $this->addOption(
             'strict',
             'x',
             InputOption::VALUE_NONE,
@@ -114,8 +120,9 @@ class WarmupCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $urls = array_unique(iterator_to_array($this->resolveUrls($input->getOption('pages'))));
-        $sitemaps = array_unique(iterator_to_array($this->resolveSitemaps($input->getOption('sites'))), SORT_REGULAR);
+        $languages = iterator_to_array($this->resolveLanguages($input->getOption('languages')));
+        $urls = array_unique(iterator_to_array($this->resolveUrls($input->getOption('pages'), $languages)));
+        $sitemaps = array_unique(iterator_to_array($this->resolveSitemaps($input->getOption('sites'), $languages)), SORT_REGULAR);
 
         // Exit if neither pages nor sites are given
         if (count($urls) + count($sitemaps) === 0) {
@@ -159,35 +166,59 @@ class WarmupCommand extends Command
 
     /**
      * @param string[]|int[] $pages
+     * @param int[] $languages
      * @return \Generator<UriInterface>
      * @throws SiteNotFoundException
      */
-    protected function resolveUrls(array $pages): \Generator
+    protected function resolveUrls(array $pages, array $languages): \Generator
     {
-        foreach ($pages as $pageList) {
-            foreach (GeneralUtility::intExplode(',', $pageList, true) as $page) {
-                yield $this->warmupService->generateUri($page);
+        foreach ($languages as $languageId) {
+            foreach ($pages as $pageList) {
+                foreach (GeneralUtility::intExplode(',', (string)$pageList, true) as $page) {
+                    yield $this->warmupService->generateUri($page, $languageId);
+                }
             }
         }
     }
 
     /**
      * @param string[]|int[] $sites
-     * @return \Generator<Sitemap>
+     * @param int[] $languages
+     * @return \Generator<SiteAwareSitemap>
      * @throws SiteNotFoundException
      * @throws UnsupportedConfigurationException
      * @throws UnsupportedSiteException
      */
-    protected function resolveSitemaps(array $sites): \Generator
+    protected function resolveSitemaps(array $sites, array $languages): \Generator
     {
-        foreach ($sites as $siteList) {
-            foreach (GeneralUtility::trimExplode(',', $siteList, true) as $site) {
-                if (MathUtility::canBeInterpretedAsInteger($site)) {
-                    $site = $this->siteFinder->getSiteByRootPageId((int)$site);
-                } else {
-                    $site = $this->siteFinder->getSiteByIdentifier($site);
+        foreach ($languages as $languageId) {
+            foreach ($sites as $siteList) {
+                foreach (GeneralUtility::trimExplode(',', $siteList, true) as $site) {
+                    if (MathUtility::canBeInterpretedAsInteger($site)) {
+                        $site = $this->siteFinder->getSiteByRootPageId((int)$site);
+                    } else {
+                        $site = $this->siteFinder->getSiteByIdentifier($site);
+                    }
+                    yield $this->sitemapLocator->locateBySite($site, $site->getLanguageById($languageId));
                 }
-                yield $this->sitemapLocator->locateBySite($site);
+            }
+        }
+    }
+
+    /**
+     * @param string[]|int[] $languages
+     * @return \Generator<int>
+     */
+    protected function resolveLanguages(array $languages): \Generator
+    {
+        if ([] === $languages) {
+            yield 0;
+            return;
+        }
+
+        foreach ($languages as $languageList) {
+            foreach (GeneralUtility::intExplode(',', (string)$languageList, true) as $languageId) {
+                yield $languageId;
             }
         }
     }

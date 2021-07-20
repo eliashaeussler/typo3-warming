@@ -23,8 +23,8 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Tests\Unit\Sitemap\Provider;
 
-use EliasHaeussler\CacheWarmup\Sitemap;
 use EliasHaeussler\Typo3Warming\Sitemap\Provider\SiteProvider;
+use EliasHaeussler\Typo3Warming\Sitemap\SiteAwareSitemap;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -67,7 +67,7 @@ class SiteProviderTest extends UnitTestCase
             'base' => 'https://www.example.com/',
             'xml_sitemap_path' => 'baz.xml',
         ]);
-        $expected = new Sitemap(new Uri('https://www.example.com/baz.xml'));
+        $expected = new SiteAwareSitemap(new Uri('https://www.example.com/baz.xml'), $site);
 
         self::assertEquals($expected, $this->subject->get($site));
     }

@@ -2,3 +2,19 @@
     max-height: 50vh;
     overflow-y: scroll;
 }
+
+.tx-warming-language-select-wrapper {
+    margin-top: 9px;
+}
+
+.tx-warming-language-select-option {
+    display: inline-flex;
+}
+
+.tx-warming-language-select-option-text {
+    padding-left: 10px;
+}
+
+.select2-results__option--disabled .tx-warming-language-select-option-flag {
+    opacity: 0.6;
+}

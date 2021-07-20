@@ -23,9 +23,10 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Cache;
 
-use EliasHaeussler\CacheWarmup\Sitemap;
+use EliasHaeussler\Typo3Warming\Sitemap\SiteAwareSitemap;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
 /**
  * CacheManager
@@ -49,27 +50,44 @@ class CacheManager
 
     /**
      * @param Site|null $site
-     * @return array<string, string>|string|null
+     * @param SiteLanguage|null $siteLanguage
+     * @return array<string, array>|string|null
      */
-    public function get(Site $site = null)
+    public function get(Site $site = null, SiteLanguage $siteLanguage = null)
     {
         $cacheData = $this->cache->require(self::CACHE_IDENTIFIER);
 
-        if ($site !== null) {
-            return $cacheData['sitemaps'][$site->getIdentifier()] ?? null;
+        // Return complete cache if no specific site is requested
+        if ($site === null) {
+            return $cacheData['sitemaps'] ?? [];
         }
 
-        return $cacheData['sitemaps'] ?? [];
+        $siteIdentifier = $site->getIdentifier();
+        $languageIdentifier = $this->buildLanguageIdentifier($site, $siteLanguage);
+
+        return $cacheData['sitemaps'][$siteIdentifier][$languageIdentifier] ?? null;
     }
 
-    public function set(Site $site, Sitemap $sitemap): void
+    public function set(SiteAwareSitemap $sitemap): void
     {
         $cacheData = $this->get();
-        $cacheData[$site->getIdentifier()] = (string)$sitemap->getUri();
+        $siteIdentifier = $sitemap->getSite()->getIdentifier();
+        $languageIdentifier = $this->buildLanguageIdentifier($sitemap->getSite(), $sitemap->getSiteLanguage());
+        $cacheData[$siteIdentifier][$languageIdentifier] = (string)$sitemap->getUri();
 
         $this->cache->set(
             self::CACHE_IDENTIFIER,
             sprintf('return %s;', var_export(['sitemaps' => $cacheData], true))
         );
+    }
+
+    protected function buildLanguageIdentifier(Site $site, SiteLanguage $siteLanguage = null): string
+    {
+        $languageIdentifier = 'default';
+        if (null !== $siteLanguage && $siteLanguage !== $site->getDefaultLanguage()) {
+            $languageIdentifier = (string)$siteLanguage->getLanguageId();
+        }
+
+        return $languageIdentifier;
     }
 }

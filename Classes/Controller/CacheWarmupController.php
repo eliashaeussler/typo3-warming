@@ -25,6 +25,7 @@ namespace EliasHaeussler\Typo3Warming\Controller;
 
 use EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface;
 use EliasHaeussler\CacheWarmup\CrawlingState;
+use EliasHaeussler\Typo3Warming\BackendUserAuthenticationTrait;
 use EliasHaeussler\Typo3Warming\Exception\MissingPageIdException;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedConfigurationException;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedSiteException;
@@ -56,6 +57,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class CacheWarmupController
 {
+    use BackendUserAuthenticationTrait;
     use TranslatableTrait;
     use ViewTrait;
 
@@ -117,11 +119,12 @@ class CacheWarmupController
         $queryParams = $request->getQueryParams();
         $mode = $queryParams['mode'] ?: self::MODE_SITE;
         $pageId = (int)$queryParams['pageId'] ?: null;
+        $languageId = (int)$queryParams['languageId'] ?: null;
         $site = $this->determineSite($pageId);
         $requestId = $queryParams['requestId'] ?: StringUtility::getUniqueId('_');
 
         // Build warmup request object
-        $warmupRequest = new WarmupRequest($requestId, $mode);
+        $warmupRequest = new WarmupRequest($requestId, $mode, $languageId);
         $warmupRequest->setUpdateCallback([$this, 'sendWarmupProgressEvent']);
 
         // Send headers for SSE
@@ -222,10 +225,12 @@ class CacheWarmupController
         $queryParams = $request->getQueryParams();
         $mode = $queryParams['mode'] ?: self::MODE_SITE;
         $pageId = (int)$queryParams['pageId'] ?: null;
+        $languageId = (int)$queryParams['languageId'] ?: null;
         $site = $this->determineSite($pageId);
-
         $requestId = $queryParams['requestId'] ?: StringUtility::getUniqueId('_');
-        $warmupRequest = new WarmupRequest($requestId);
+
+        // Build warmup request object
+        $warmupRequest = new WarmupRequest($requestId, $mode, $languageId);
 
         switch ($mode) {
             case self::MODE_PAGE:
@@ -267,15 +272,34 @@ class CacheWarmupController
                 continue;
             }
 
+            $sitemapsFound = false;
             $action = [
                 'title' => $site->getConfiguration()['websiteTitle'] ?: BackendUtility::getRecordTitle('pages', $row),
                 'pageId' => $site->getRootPageId(),
                 'iconIdentifier' => $this->iconFactory->getIconForRecord('pages', $row)->getIdentifier(),
+                'sitemaps' => [],
             ];
 
-            if ($this->sitemapLocator->siteContainsSitemap($site)) {
-                $action['sitemapUrl'] = (string)$this->sitemapLocator->locateBySite($site)->getUri();
-            } else {
+            // Check all available languages for possible sitemaps
+            foreach ($this->sitemapLocator->locateAllBySite($site) as $sitemap) {
+                $siteLanguage = $sitemap->getSiteLanguage();
+                $languageIdentifier = $siteLanguage === $site->getDefaultLanguage() ? 'default' : $siteLanguage->getLanguageId();
+                $sitemapConfiguration = [
+                    'language' => $siteLanguage,
+                ];
+
+                if ($this->sitemapLocator->siteContainsSitemap($site, $siteLanguage)) {
+                    $sitemapConfiguration['url'] = (string)$sitemap->getUri();
+                    $sitemapsFound = true;
+                } else {
+                    $sitemapConfiguration['missing'] = true;
+                }
+
+                $action['sitemaps'][$languageIdentifier] = $sitemapConfiguration;
+            }
+
+            // Add flag if no site language has a sitemap
+            if (!$sitemapsFound) {
                 $action['missing'] = true;
             }
 

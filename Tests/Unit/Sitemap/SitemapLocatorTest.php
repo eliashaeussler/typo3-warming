@@ -23,11 +23,11 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Tests\Unit\Sitemap;
 
-use EliasHaeussler\CacheWarmup\Sitemap;
 use EliasHaeussler\Typo3Warming\Cache\CacheManager;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedConfigurationException;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedSiteException;
 use EliasHaeussler\Typo3Warming\Sitemap\Provider\DefaultProvider;
+use EliasHaeussler\Typo3Warming\Sitemap\SiteAwareSitemap;
 use EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -100,13 +100,13 @@ class SitemapLocatorTest extends UnitTestCase
      * @throws UnsupportedConfigurationException
      * @throws UnsupportedSiteException
      */
-    public function locateBySiteReturnsCacheSitemap(): void
+    public function locateBySiteReturnsCachedSitemap(): void
     {
         $site = $this->getSite([]);
 
-        $this->cacheManagerProphecy->get($site)->willReturn('https://www.example.com/sitemap.xml');
+        $this->cacheManagerProphecy->get($site, null)->willReturn('https://www.example.com/sitemap.xml');
 
-        $expected = new Sitemap(new Uri('https://www.example.com/sitemap.xml'));
+        $expected = new SiteAwareSitemap(new Uri('https://www.example.com/sitemap.xml'), $site);
 
         self::assertEquals($expected, $this->subject->locateBySite($site));
     }
@@ -119,7 +119,7 @@ class SitemapLocatorTest extends UnitTestCase
     {
         $site = $this->getSite([]);
 
-        $this->cacheManagerProphecy->get($site)->willReturn(null);
+        $this->cacheManagerProphecy->get($site, null)->willReturn(null);
 
         $this->expectException(UnsupportedConfigurationException::class);
         $this->expectExceptionCode(1619168965);
@@ -136,7 +136,7 @@ class SitemapLocatorTest extends UnitTestCase
         $site = $this->getSite();
         $subject = new SitemapLocator(new RequestFactory(), $this->cacheManagerProphecy->reveal(), []);
 
-        $this->cacheManagerProphecy->get($site)->willReturn(null);
+        $this->cacheManagerProphecy->get($site, null)->willReturn(null);
 
         $this->expectException(UnsupportedSiteException::class);
         $this->expectExceptionCode(1619369771);
@@ -153,10 +153,10 @@ class SitemapLocatorTest extends UnitTestCase
     {
         $site = $this->getSite();
 
-        $this->cacheManagerProphecy->get($site)->willReturn(null);
-        $this->cacheManagerProphecy->set($site, Argument::type(Sitemap::class))->shouldBeCalledOnce();
+        $this->cacheManagerProphecy->get($site, null)->willReturn(null);
+        $this->cacheManagerProphecy->set(Argument::type(SiteAwareSitemap::class))->shouldBeCalledOnce();
 
-        $expected = new Sitemap(new Uri('https://www.example.com/sitemap.xml'));
+        $expected = new SiteAwareSitemap(new Uri('https://www.example.com/sitemap.xml'), $site);
 
         self::assertEquals($expected, $this->subject->locateBySite($site));
     }

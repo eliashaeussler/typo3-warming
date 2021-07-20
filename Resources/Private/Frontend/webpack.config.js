@@ -19,10 +19,12 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+// noinspection JSUnusedLocalSymbols
 const webpack = require('webpack');
 const fs = require('fs');
 const path = require('path');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const isDev = process.env.NODE_ENV !== 'production';
 const modulePath = path.resolve(__dirname, 'src', 'modules');
@@ -72,12 +74,19 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(),
+    new MiniCssExtractPlugin({
+      filename: '../Css/Backend/lib.css',
+    }),
   ],
   module: {
     rules: [
       {
         test: /\.tsx?$/,
         loader: 'babel-loader',
+      },
+      {
+        test: /\.css$/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
     ],
   },

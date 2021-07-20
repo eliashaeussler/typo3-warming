@@ -22,6 +22,7 @@
 import WarmupRequestMode from '../../../lib/Enums/WarmupRequestMode';
 
 // Modules
+import $ from 'jquery';
 import CacheWarmupMenu from '../Toolbar/CacheWarmupMenu';
 
 /**
@@ -41,7 +42,8 @@ class CacheWarmupContextMenuAction {
    */
   public static warmupPageCache(table: string, uid: number): void {
     if ('pages' === table) {
-      CacheWarmupMenu.warmupCache(uid, WarmupRequestMode.Page);
+      const languageId = CacheWarmupContextMenuAction.determineLanguage($(this) as unknown as JQuery);
+      CacheWarmupMenu.warmupCache(uid, WarmupRequestMode.Page, languageId);
     }
   }
 
@@ -53,8 +55,28 @@ class CacheWarmupContextMenuAction {
    */
   public static warmupSiteCache(table: string, uid: number): void {
     if ('pages' === table) {
-      CacheWarmupMenu.warmupCache(uid, WarmupRequestMode.Site);
+      const languageId = CacheWarmupContextMenuAction.determineLanguage($(this) as unknown as JQuery);
+      CacheWarmupMenu.warmupCache(uid, WarmupRequestMode.Site, languageId);
     }
+  }
+
+  /**
+   * Determine requested language ID from current context.
+   *
+   * Tests whether a language ID is defined in the current context and
+   * returns it, otherwise `NULL` is returned. The language ID is defined
+   * as `data-language-id` attribute in the current context.
+   *
+   * @param {JQuery} $context Current context to be evaluated
+   * @returns {number|null} The resolved language ID or `NULL`
+   * @private
+   */
+  private static determineLanguage($context: JQuery): number|null {
+    if ('undefined' === typeof $context.data('language-id')) {
+      return null;
+    }
+
+    return parseInt($context.data('language-id'));
   }
 }
 

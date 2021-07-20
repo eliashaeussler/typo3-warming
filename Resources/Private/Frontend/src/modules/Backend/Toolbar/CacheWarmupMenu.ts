@@ -19,6 +19,9 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+import 'select2';
+import 'select2/dist/css/select2.css';
+
 import IconIdentifiers from '../../../lib/Enums/IconIdentifiers';
 import LanguageKeys from '../../../lib/Enums/LanguageKeys';
 import WarmupProgress from '../../../lib/WarmupProgress';
@@ -48,6 +51,9 @@ enum CacheWarmupMenuSelectors {
   dropdownTable = '.dropdown-table',
   menuItem = 'a.toolbar-cache-warmup-action',
   toolbarIcon = '.toolbar-item-icon .t3js-icon',
+  languageSelect = '.tx-warming-language-select',
+  languageSelectWrapper = '.tx-warming-language-select-wrapper',
+  languageSelectDropdown = '.tx-warming-language-select-dropdown',
   useragentCopy = 'button.toolbar-cache-warmup-useragent-copy-action',
   useragentCopyIcon = '.t3js-icon',
   useragentCopyText = '.toolbar-cache-warmup-useragent-copy-text',
@@ -65,24 +71,7 @@ export class CacheWarmupMenu {
   private notificationDuration = 15;
 
   constructor() {
-    Viewport.Topbar.Toolbar.registerEvent((): void => this.initializeEvents());
-  }
-
-  /**
-   * Initialize DOM events for several components in the cache warmup menu.
-   */
-  public initializeEvents(): void {
-    // Fetch sites once document is ready
-    $((): void => this.fetchSites());
-
-    // Trigger cache warmup in case a menu item is clicked
-    $(CacheWarmupMenuSelectors.container).on('click', CacheWarmupMenuSelectors.menuItem, (event: JQuery.TriggeredEvent): void => {
-      event.preventDefault();
-      const pageId = $(event.currentTarget).attr('data-page-id');
-      if (pageId) {
-        this.warmupCache(Number(pageId));
-      }
-    });
+    Viewport.Topbar.Toolbar.registerEvent((): void => this.fetchSites());
 
     // Copy user agent to clipboard in case the copy button is clicked
     $(CacheWarmupMenuSelectors.container).on('click', CacheWarmupMenuSelectors.useragentCopy, (event: JQuery.TriggeredEvent): void => {
@@ -105,8 +94,9 @@ export class CacheWarmupMenu {
    *
    * @param pageId {number} Root page ID whose caches should be warmed up
    * @param mode {WarmupRequestMode} Requested warmup request mode
+   * @param languageId {number|null} Optional language ID of a specific site language whose caches should be warmed up
    */
-  public warmupCache(pageId: number, mode: WarmupRequestMode = WarmupRequestMode.Site): void {
+  public warmupCache(pageId: number, mode: WarmupRequestMode = WarmupRequestMode.Site, languageId: number | null = null): void {
     const $toolbarItemIcon = $(CacheWarmupMenuSelectors.toolbarIcon, CacheWarmupMenuSelectors.container);
     const $existingIcon = $toolbarItemIcon.clone();
 
@@ -118,7 +108,7 @@ export class CacheWarmupMenu {
       $toolbarItemIcon.replaceWith(spinner);
     });
 
-    const request = new WarmupRequest(pageId, mode);
+    const request = new WarmupRequest(pageId, mode, languageId);
     request.runWarmup()
       .then(
         // Success
@@ -130,7 +120,7 @@ export class CacheWarmupMenu {
             CacheWarmupProgressModal.getRetryButton()
               .removeClass('hidden')
               .off('button.clicked')
-              .on('button.clicked', (): void => this.warmupCache(pageId, mode));
+              .on('button.clicked', (): void => this.warmupCache(pageId, mode, languageId));
           }
         },
         // Error
@@ -167,15 +157,104 @@ export class CacheWarmupMenu {
       .get()
       .then(
         async (response: typeof AjaxResponse): Promise<void> => {
+          // Replace placeholder with real data
           const data = await response.resolve();
-          const $table = $(CacheWarmupMenuSelectors.dropdownTable, CacheWarmupMenuSelectors.container);
+          $(CacheWarmupMenuSelectors.dropdownTable, CacheWarmupMenuSelectors.container).html(data);
 
-          $table.html(data);
+          // Initialize events for inserted DOM elements
+          this.initializeEvents();
         }
       )
       .finally((): void => {
         $(CacheWarmupMenuSelectors.toolbarIcon, CacheWarmupMenuSelectors.container).replaceWith($existingIcon);
       });
+  }
+
+  /**
+   * Initialize DOM events for several components in the cache warmup menu.
+   *
+   * @private
+   */
+  private initializeEvents(): void {
+    // Trigger cache warmup in case a menu item is clicked
+    $(CacheWarmupMenuSelectors.container).on('click', CacheWarmupMenuSelectors.menuItem, (event: JQuery.TriggeredEvent): void => {
+      event.preventDefault();
+      const pageId = $(event.currentTarget).attr('data-page-id');
+      if (pageId) {
+        this.warmupCache(Number(pageId));
+      }
+    });
+
+    const $languageSelectWrapper = $(CacheWarmupMenuSelectors.languageSelectWrapper, CacheWarmupMenuSelectors.container);
+    const $languageSelect = $(CacheWarmupMenuSelectors.languageSelect, $languageSelectWrapper);
+
+    // Initialize select2 element for language selections
+    $languageSelect.select2({
+      placeholder: {
+        // Use first select option with value="null" (disabled) as placeholder
+        id: 'null',
+        text: TYPO3.lang[LanguageKeys.toolbarSitemapPlaceholder],
+      },
+      // Disable search form
+      minimumResultsForSearch: Infinity,
+      width: '100%',
+      dropdownCssClass: 'tx-warming-language-select-dropdown',
+      dropdownAutoWidth: true,
+      templateResult: (state: Select2.LoadingData): JQuery | null => {
+        // Only valid language options are supported
+        if (!state.id) {
+          return null;
+        }
+
+        // Build option element from icon (flag) and text
+        const $element = $(state.element as unknown as string);
+        const $flag = $('<span class="tx-warming-language-select-option-flag">').append($element.data('icon'));
+        const $content = $('<span class="tx-warming-language-select-option-text">').append(
+          $('<strong>').text(state.text),
+          $('<br>')
+        );
+
+        // Add sitemap URL or error message to option element
+        if ($element.data('missing')) {
+          $content.append(TYPO3.lang[LanguageKeys.toolbarSitemapMissing]);
+        } else {
+          $content.append($element.data('sitemap-url'));
+        }
+
+        // Create and return final option element
+        return $('<span class="tx-warming-language-select-option">').append($flag, $content);
+      }
+    });
+
+    // Prevent Bootstrap from closing toolbar item (= dropdown)
+    // when language select menu is opened or interacted with
+    $languageSelectWrapper.on('click', '.select2', (event: JQuery.TriggeredEvent): void => {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    });
+    $languageSelect.on('select2:open', (): void => {
+      const $dropdown = $(CacheWarmupMenuSelectors.languageSelectDropdown);
+      $dropdown.off('click', 'li');
+      $dropdown.on('click', 'li', (event: JQuery.TriggeredEvent): void => {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+      });
+    });
+
+    // Trigger warmup for a concrete language
+    $languageSelect.on('change', (event: JQuery.TriggeredEvent): void => {
+      const $selectedOption = $(event.target).find(':selected');
+      const pageId = $selectedOption.data('page-id');
+      const languageId = $selectedOption.val();
+
+      if (pageId && 'string' === typeof languageId) {
+        // Trigger cache warmup for page and language
+        this.warmupCache(Number(pageId), WarmupRequestMode.Site, Number(languageId));
+
+        // Reset language selection to placeholder option
+        $(event.target).val('null').trigger('change');
+      }
+    });
   }
 
   /**

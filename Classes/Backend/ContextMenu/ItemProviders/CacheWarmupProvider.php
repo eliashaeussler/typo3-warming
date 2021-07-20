@@ -23,12 +23,16 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Backend\ContextMenu\ItemProviders;
 
+use EliasHaeussler\Typo3Warming\BackendUserAuthenticationTrait;
 use EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator;
 use EliasHaeussler\Typo3Warming\Utility\AccessUtility;
 use TYPO3\CMS\Backend\ContextMenu\ItemProviders\PageProvider;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * CacheWarmupProvider
@@ -38,6 +42,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class CacheWarmupProvider extends PageProvider
 {
+    use BackendUserAuthenticationTrait;
+
     protected const ITEM_MODE_PAGE = 'cacheWarmupPage';
     protected const ITEM_MODE_SITE = 'cacheWarmupSite';
 
@@ -45,6 +51,9 @@ class CacheWarmupProvider extends PageProvider
      * @var array<string, array>
      */
     protected $itemsConfiguration = [
+        'cacheWarmupDivider' => [
+            'type' => 'divider',
+        ],
         self::ITEM_MODE_PAGE => [
             'label' => 'LLL:EXT:warming/Resources/Private/Language/locallang.xlf:contextMenu.item.cacheWarmup',
             'iconIdentifier' => 'cache-warmup-page',
@@ -57,8 +66,30 @@ class CacheWarmupProvider extends PageProvider
         ],
     ];
 
+    /**
+     * @var SitemapLocator
+     */
+    protected $sitemapLocator;
+
+    /**
+     * @var SiteFinder
+     */
+    protected $siteFinder;
+
+    public function __construct(string $table, string $identifier, string $context = '')
+    {
+        parent::__construct($table, $identifier, $context);
+        $this->sitemapLocator = GeneralUtility::makeInstance(SitemapLocator::class);
+        $this->siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+    }
+
     protected function canRender(string $itemName, string $type): bool
     {
+        // Pseudo items (such as dividers) are always renderable
+        if ('item' !== $type) {
+            return true;
+        }
+
         if (in_array($itemName, $this->disabledItems, true)) {
             return false;
         }
@@ -83,6 +114,7 @@ class CacheWarmupProvider extends PageProvider
     public function addItems(array $items): array
     {
         $this->initDisabledItems();
+        $this->initSubMenus();
         $localItems = $this->prepareItems($this->itemsConfiguration);
         $items += $localItems;
 
@@ -94,30 +126,86 @@ class CacheWarmupProvider extends PageProvider
         return 50;
     }
 
+    protected function initSubMenus(): void
+    {
+        $site = $this->getCurrentSite();
+
+        // Early return if site cannot be resolved
+        if (null === $site) {
+            return;
+        }
+
+        foreach ($this->itemsConfiguration as $name => $configuration) {
+            // Skip pseudo types and non-renderable items
+            $type = $configuration['type'] ?? 'item';
+            if ('item' !== $type || !$this->canRender($name, $type)) {
+                continue;
+            }
+
+            // Get all languages of current site that are available
+            // for the current Backend user
+            $languages = $site->getAvailableLanguages(static::getBackendUser());
+
+            // Remove sites where no XML sitemap is available
+            if (self::ITEM_MODE_SITE === $name) {
+                $languages = array_filter($languages, function (SiteLanguage $siteLanguage) use ($site): bool {
+                    return $this->sitemapLocator->siteContainsSitemap($site, $siteLanguage);
+                });
+            }
+
+            // Treat current item as submenu
+            $this->itemsConfiguration[$name]['type'] = 'submenu';
+            $this->itemsConfiguration[$name]['childItems'] = [];
+
+            // Add each site language as child element of the current item
+            foreach ($languages as $language) {
+                $this->itemsConfiguration[$name]['childItems']['lang_' . $language->getLanguageId()] = [
+                    'label' => $language->getTitle(),
+                    'iconIdentifier' => $language->getFlagIdentifier(),
+                    'callbackAction' => $this->itemsConfiguration[$name]['callbackAction'],
+                ];
+            }
+
+            // Callback action is not required on the parent item
+            unset($this->itemsConfiguration[$name]['callbackAction']);
+        }
+    }
+
     /**
      * @param string $itemName
-     * @return array<string, string>
+     * @return array<string, mixed>
      */
     protected function getAdditionalAttributes(string $itemName): array
     {
-        return [
+        $attributes = [
             'data-callback-module' => 'TYPO3/CMS/Warming/Backend/ContextMenu/CacheWarmupContextMenuAction',
         ];
+
+        // Add language ID as data attribute if current item is part
+        // of a submenu within the configured context menu items
+        if (StringUtility::beginsWith($itemName, 'lang_')) {
+            $attributes['data-language-id'] = (int)substr($itemName, 5);
+        }
+
+        return $attributes;
     }
 
     protected function canWarmupCachesOfSite(): bool
     {
-        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
-        $sitemapLocator = GeneralUtility::makeInstance(SitemapLocator::class);
+        $site = $this->getCurrentSite();
 
+        return null !== $site
+                && $site->getRootPageId() === (int)$this->identifier
+            && AccessUtility::canWarmupCacheOfSite($site)
+            && $this->sitemapLocator->siteContainsSitemap($site);
+    }
+
+    protected function getCurrentSite(): ?Site
+    {
         try {
-            $site = $siteFinder->getSiteByPageId((int)$this->identifier);
-
-            return $site->getRootPageId() === (int)$this->identifier
-                && AccessUtility::canWarmupCacheOfSite($site)
-                && $sitemapLocator->siteContainsSitemap($site);
+            return $this->siteFinder->getSiteByPageId((int)$this->identifier);
         } catch (SiteNotFoundException $e) {
-            return false;
+            return null;
         }
     }
 }

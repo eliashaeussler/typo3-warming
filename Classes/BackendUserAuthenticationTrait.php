@@ -21,41 +21,20 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3Warming\Tests\Unit\Sitemap\Provider;
+namespace EliasHaeussler\Typo3Warming;
 
-use EliasHaeussler\Typo3Warming\Sitemap\Provider\DefaultProvider;
-use EliasHaeussler\Typo3Warming\Sitemap\SiteAwareSitemap;
-use TYPO3\CMS\Core\Http\Uri;
-use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 
 /**
- * DefaultProviderTest
+ * BackendUserAuthenticationTrait
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class DefaultProviderTest extends UnitTestCase
+trait BackendUserAuthenticationTrait
 {
-    /**
-     * @var DefaultProvider
-     */
-    protected $subject;
-
-    protected function setUp(): void
+    protected static function getBackendUser(): BackendUserAuthentication
     {
-        parent::setUp();
-        $this->subject = new DefaultProvider();
-    }
-
-    /**
-     * @test
-     */
-    public function getReturnsSitemapWithDefaultPath(): void
-    {
-        $site = new Site('foo', 1, ['base' => 'https://www.example.com/']);
-        $expected = new SiteAwareSitemap(new Uri('https://www.example.com/sitemap.xml'), $site);
-
-        self::assertEquals($expected, $this->subject->get($site));
+        return $GLOBALS['BE_USER'];
     }
 }

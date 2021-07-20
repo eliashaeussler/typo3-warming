@@ -3,41 +3,97 @@
       data-namespace-typo3-fluid="true">
 
 <div class="dropdown-table-row">
-    <f:if condition="{action.missing}">
+    <f:if condition="{action.sitemaps -> f:count()} <= 1 || {action.missing}">
+        <f:then>
+            <f:render section="action-single-language" arguments="{
+                title: action.title,
+                pageId: action.pageId,
+                iconIdentifier: action.iconIdentifier,
+                sitemap: action.sitemaps.default
+            }" />
+        </f:then>
+        <f:else>
+            <f:render section="action-multiple-languages" arguments="{action}" />
+        </f:else>
+    </f:if>
+</div>
+
+<f:section name="action-single-language">
+    <f:if condition="{sitemap.missing}">
         <f:then>
             <div class="toolbar-cache-warmup-action text-muted"
-                 data-page-id="{action.pageId}"
-                 title="{action.title}"
+                 data-page-id="{pageId}"
+                 title="{title}"
                  style="pointer-events: none"
             >
                 <f:render section="item-icon" arguments="{
-                    identifier: action.iconIdentifier,
+                    identifier: iconIdentifier,
                     overlay: 'overlay-warning'
                 }" />
                 <f:render section="item-content" arguments="{
-                    pageId: action.pageId,
-                    title: action.title,
+                    pageId: pageId,
+                    title: title,
                     description: '{f:translate(key: \'cacheWarmupToolbarItem.description.invalid\')}'
                 }" />
             </div>
         </f:then>
         <f:else>
             <a href="#" class="toolbar-cache-warmup-action"
-               data-page-id="{action.pageId}"
-               title="{action.title}"
+               data-page-id="{pageId}"
+               title="{title}"
             >
                 <f:render section="item-icon" arguments="{
-                    identifier: action.iconIdentifier
+                    identifier: iconIdentifier
                 }" />
                 <f:render section="item-content" arguments="{
-                    pageId: action.pageId,
-                    title: action.title,
-                    description: action.sitemapUrl
+                    pageId: pageId,
+                    title: title,
+                    description: sitemap.url
                 }" />
             </a>
         </f:else>
     </f:if>
-</div>
+</f:section>
+
+<f:section name="action-multiple-languages">
+    <div class="toolbar-cache-warmup-action"
+         data-page-id="{pageId}"
+         title="{title}"
+    >
+        <f:render section="item-icon" arguments="{identifier: iconIdentifier}" />
+        <f:render section="item-content" arguments="{pageId: pageId, title: title}" contentAs="content">
+            <div class="tx-warming-language-select-wrapper">
+                <!--suppress HtmlFormInputWithoutLabel -->
+                <select class="tx-warming-language-select">
+                    <option value="null" disabled selected></option>
+                    <f:for each="{sitemaps}" as="sitemap">
+                        <f:if condition="{sitemap.missing}">
+                            <f:then>
+                                <option value="{sitemap.language.languageId}"
+                                        data-icon="{c:icon(identifier: sitemap.language.flagIdentifier, overlay: 'overlay-warning') -> f:format.htmlspecialchars()}"
+                                        data-missing="{sitemap.missing}"
+                                        style="pointer-events: none"
+                                        disabled
+                                >
+                                    {sitemap.language.title} [{sitemap.language.languageId}]
+                                </option>
+                            </f:then>
+                            <f:else>
+                                <option value="{sitemap.language.languageId}"
+                                        data-icon="{c:icon(identifier: sitemap.language.flagIdentifier) -> f:format.htmlspecialchars()}"
+                                        data-page-id="{pageId}"
+                                        data-sitemap-url="{sitemap.url}"
+                                >
+                                    {sitemap.language.title} [{sitemap.language.languageId}]
+                                </option>
+                            </f:else>
+                        </f:if>
+                    </f:for>
+                </select>
+            </div>
+        </f:render>
+    </div>
+</f:section>
 
 <f:section name="item-icon">
     <div class="dropdown-table-column dropdown-table-column-top dropdown-table-icon dropdown-table-icon-{identifier}">
@@ -46,10 +102,15 @@
 </f:section>
 
 <f:section name="item-content">
-    <div class="dropdown-table-column dropdown-table-column-top dropdown-table-text">
+    <div class="dropdown-table-column dropdown-table-column-top dropdown-table-text" style="width: 100%;">
         [{pageId}] {title}
-        <br>
-        <small class="text-muted">{description}</small>
+        <f:if condition="{description}">
+            <br>
+            <small class="text-muted">{description}</small>
+        </f:if>
+        <f:if condition="{content}">
+            {content -> f:format.raw()}
+        </f:if>
     </div>
 </f:section>
 

@@ -1,5 +1,3 @@
-'use strict'
-
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
@@ -21,7 +19,7 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare const TYPO3: any;
-const nothing: any;
+declare const nothing: any;
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
 /**
