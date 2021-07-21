@@ -135,10 +135,10 @@ class CacheWarmupProvider extends PageProvider
             return;
         }
 
-        foreach ($this->itemsConfiguration as $name => $configuration) {
+        foreach ($this->itemsConfiguration as $itemName => $configuration) {
             // Skip pseudo types and non-renderable items
             $type = $configuration['type'] ?? 'item';
-            if ('item' !== $type || !$this->canRender($name, $type)) {
+            if ('item' !== $type || !$this->canRender($itemName, $type)) {
                 continue;
             }
 
@@ -147,27 +147,37 @@ class CacheWarmupProvider extends PageProvider
             $languages = $site->getAvailableLanguages(static::getBackendUser());
 
             // Remove sites where no XML sitemap is available
-            if (self::ITEM_MODE_SITE === $name) {
-                $languages = array_filter($languages, function (SiteLanguage $siteLanguage) use ($site): bool {
-                    return $this->sitemapLocator->siteContainsSitemap($site, $siteLanguage);
+            if (self::ITEM_MODE_SITE === $itemName) {
+                $languages = array_filter($languages, function (SiteLanguage $siteLanguage): bool {
+                    return $this->canWarmupCachesOfSite($siteLanguage);
+                });
+            } else {
+                $languages = array_filter($languages, function (SiteLanguage $siteLanguage): bool {
+                    return AccessUtility::canWarmupCacheOfPage((int)$this->identifier, $siteLanguage->getLanguageId());
                 });
             }
 
+            // Ignore item if no languages are available
+            if ([] === $languages) {
+                $this->disabledItems[] = $itemName;
+                continue;
+            }
+
             // Treat current item as submenu
-            $this->itemsConfiguration[$name]['type'] = 'submenu';
-            $this->itemsConfiguration[$name]['childItems'] = [];
+            $this->itemsConfiguration[$itemName]['type'] = 'submenu';
+            $this->itemsConfiguration[$itemName]['childItems'] = [];
 
             // Add each site language as child element of the current item
             foreach ($languages as $language) {
-                $this->itemsConfiguration[$name]['childItems']['lang_' . $language->getLanguageId()] = [
+                $this->itemsConfiguration[$itemName]['childItems']['lang_' . $language->getLanguageId()] = [
                     'label' => $language->getTitle(),
                     'iconIdentifier' => $language->getFlagIdentifier(),
-                    'callbackAction' => $this->itemsConfiguration[$name]['callbackAction'],
+                    'callbackAction' => $this->itemsConfiguration[$itemName]['callbackAction'],
                 ];
             }
 
             // Callback action is not required on the parent item
-            unset($this->itemsConfiguration[$name]['callbackAction']);
+            unset($this->itemsConfiguration[$itemName]['callbackAction']);
         }
     }
 
@@ -190,14 +200,15 @@ class CacheWarmupProvider extends PageProvider
         return $attributes;
     }
 
-    protected function canWarmupCachesOfSite(): bool
+    protected function canWarmupCachesOfSite(SiteLanguage $siteLanguage = null): bool
     {
         $site = $this->getCurrentSite();
+        $languageId = null !== $siteLanguage ? $siteLanguage->getLanguageId() : null;
 
         return null !== $site
-                && $site->getRootPageId() === (int)$this->identifier
-            && AccessUtility::canWarmupCacheOfSite($site)
-            && $this->sitemapLocator->siteContainsSitemap($site);
+            && $site->getRootPageId() === (int)$this->identifier
+            && AccessUtility::canWarmupCacheOfSite($site, $languageId)
+            && $this->sitemapLocator->siteContainsSitemap($site, $siteLanguage);
     }
 
     protected function getCurrentSite(): ?Site
