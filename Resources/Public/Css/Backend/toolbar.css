@@ -3,6 +3,10 @@
     overflow-y: scroll;
 }
 
+.toolbar-cache-warmup-action {
+    color: rgba(245, 245, 245, 0.7);
+}
+
 .tx-warming-language-select-wrapper {
     margin-top: 9px;
 }
