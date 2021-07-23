@@ -1,0 +1,18 @@
+.tx-warming-counter {
+    align-items: flex-start;
+    display: flex;
+    justify-content: space-between;
+}
+
+.tx-warming-report-item {
+    align-items: center;
+    display: flex;
+
+    &-left {
+        flex-grow: 1;
+    }
+
+    &-right {
+        margin-left: 1.5rem;
+    }
+}

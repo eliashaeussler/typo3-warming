@@ -101,7 +101,20 @@ lint:editorconfig:
         -e var \
         -e Resources/Private/Frontend/node_modules \
         -e Resources/Public/JavaScript \
-        -e Resources/Public/Css/Backend/lib.css
+        -e Resources/Public/Css
+  rules:
+    - if: '$CI_COMMIT_BRANCH'
+      when: on_success
+
+lint:scss:
+  stage: lint
+  image: node:buster
+  needs:
+    - build:frontend
+  script:
+    - yarn --cwd Resources/Private/Frontend lint:scss
+  cache:
+    <<: *frontend-cache
   rules:
     - if: '$CI_COMMIT_BRANCH'
       when: on_success
@@ -112,7 +125,7 @@ lint:typescript:
   needs:
     - build:frontend
   script:
-    - yarn --cwd Resources/Private/Frontend lint
+    - yarn --cwd Resources/Private/Frontend lint:ts
   cache:
     <<: *frontend-cache
   rules:

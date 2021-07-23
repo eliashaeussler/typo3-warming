@@ -20,7 +20,6 @@
  */
 
 import 'select2';
-import 'select2/dist/css/select2.css';
 
 import IconIdentifiers from '../../../lib/Enums/IconIdentifiers';
 import LanguageKeys from '../../../lib/Enums/LanguageKeys';

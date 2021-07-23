@@ -25,9 +25,11 @@ const fs = require('fs');
 const path = require('path');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const IgnoreEmitPlugin = require('ignore-emit-webpack-plugin');
 
 const isDev = process.env.NODE_ENV !== 'production';
-const modulePath = path.resolve(__dirname, 'src', 'modules');
+const modulePath = path.resolve(__dirname, 'src', 'scripts', 'modules');
+const stylesPath = path.resolve(__dirname, 'src', 'styles');
 
 /**
  * Recursively walk through given directory and return all contained files.
@@ -47,50 +49,77 @@ async function* walk(directory) {
   }
 }
 
-module.exports = {
-  mode: isDev ? 'development' : 'production',
-  devtool: isDev ? 'eval-cheap-module-source-map' : 'source-map',
-  context: modulePath,
-  // Dynamic entry points to match all require.js modules
-  entry: () => new Promise(async (resolve) => {
-    const files = {};
-    for await(const file of walk(modulePath)) {
-      const moduleName = path.relative(modulePath, file).replace(/\.tsx?$/, '');
-      files[moduleName] = {
-        import: file,
-        library: {
-          type: 'amd',
-          name: `TYPO3/CMS/Warming/${moduleName}`,
-        },
-      };
-    }
-    return resolve(files);
-  }),
-  // Treat all TYPO3 modules (including jQuery) as external
-  externals: /^(jquery$|TYPO3\/CMS\/)/,
-  output: {
-    libraryTarget: 'amd',
-    path: path.resolve(__dirname, '../../Public/JavaScript'),
-  },
-  plugins: [
-    new CleanWebpackPlugin(),
-    new MiniCssExtractPlugin({
-      filename: '../Css/Backend/lib.css',
+module.exports = [
+  {
+    mode: isDev ? 'development' : 'production',
+    devtool: isDev ? 'eval-cheap-module-source-map' : 'source-map',
+    context: modulePath,
+    // Dynamic entry points to match all require.js modules
+    entry: () => new Promise(async (resolve) => {
+      const files = {};
+      for await(const file of walk(modulePath)) {
+        const moduleName = path.relative(modulePath, file).replace(/\.tsx?$/, '');
+        files[moduleName] = {
+          import: file,
+          library: {
+            type: 'amd',
+            name: `TYPO3/CMS/Warming/${moduleName}`,
+          },
+        };
+      }
+      return resolve(files);
     }),
-  ],
-  module: {
-    rules: [
-      {
-        test: /\.tsx?$/,
-        loader: 'babel-loader',
-      },
-      {
-        test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
-      },
+    // Treat all TYPO3 modules (including jQuery) as external
+    externals: /^(jquery$|TYPO3\/CMS\/)/,
+    output: {
+      libraryTarget: 'amd',
+      path: path.resolve(__dirname, '../../Public/JavaScript'),
+    },
+    plugins: [
+      new CleanWebpackPlugin(),
     ],
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          loader: 'babel-loader',
+        },
+      ],
+    },
+    resolve: {
+      extensions: ['.ts', '.tsx'],
+    },
   },
-  resolve: {
-    extensions: ['.ts', '.tsx'],
+  {
+    mode: isDev ? 'development' : 'production',
+    devtool: isDev ? 'eval-cheap-module-source-map' : 'source-map',
+    output: {
+      path: path.resolve(__dirname, '../../Public/Css'),
+    },
+    context: stylesPath,
+    // Dynamic entry points to match all SCSS files
+    entry: () => new Promise(async (resolve) => {
+      const files = {};
+      for await(const file of walk(stylesPath)) {
+        const targetFile = path.relative(stylesPath, file).replace(/\.scss?$/, '');
+        files[targetFile] = {
+          import: file,
+        };
+      }
+      return resolve(files);
+    }),
+    plugins: [
+      new CleanWebpackPlugin(),
+      new MiniCssExtractPlugin(),
+      new IgnoreEmitPlugin(/\.js$/),
+    ],
+    module: {
+      rules: [
+        {
+          test: /\.scss$/,
+          use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+        },
+      ],
+    },
   },
-};
+];
