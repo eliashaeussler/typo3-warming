@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Configuration;
 
+use EliasHaeussler\Typo3Warming\Crawler\ConcurrentUserAgentCrawler;
+use EliasHaeussler\Typo3Warming\Crawler\OutputtingUserAgentCrawler;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
@@ -35,8 +37,9 @@ use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
  */
 final class Configuration
 {
-    private const DEFAULT_LIMIT = 250;
-    private const DEFAULT_CRAWLER = null;
+    public const DEFAULT_LIMIT = 250;
+    public const DEFAULT_CRAWLER = ConcurrentUserAgentCrawler::class;
+    public const DEFAULT_VERBOSE_CRAWLER = OutputtingUserAgentCrawler::class;
 
     /**
      * @var ExtensionConfiguration
@@ -69,13 +72,23 @@ final class Configuration
         }
     }
 
-    public function getCrawler(): ?string
+    public function getCrawler(): string
     {
         try {
             $crawler = $this->configuration->get(Extension::KEY, 'crawler');
-            return !empty($crawler) ? (string)$crawler : null;
+            return !empty($crawler) ? (string)$crawler : self::DEFAULT_CRAWLER;
         } catch (Exception $e) {
             return self::DEFAULT_CRAWLER;
+        }
+    }
+
+    public function getVerboseCrawler(): string
+    {
+        try {
+            $crawler = $this->configuration->get(Extension::KEY, 'verboseCrawler');
+            return !empty($crawler) ? (string)$crawler : self::DEFAULT_VERBOSE_CRAWLER;
+        } catch (Exception $e) {
+            return self::DEFAULT_VERBOSE_CRAWLER;
         }
     }
 
