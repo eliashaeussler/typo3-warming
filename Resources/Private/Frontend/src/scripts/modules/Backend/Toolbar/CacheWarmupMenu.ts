@@ -75,6 +75,8 @@ export class CacheWarmupMenu {
     // Copy user agent to clipboard in case the copy button is clicked
     $(CacheWarmupMenuSelectors.container).on('click', CacheWarmupMenuSelectors.useragentCopy, (event: JQuery.TriggeredEvent): void => {
       event.preventDefault();
+      event.stopImmediatePropagation();
+
       const userAgent = $(event.currentTarget).attr('data-text');
       if (userAgent) {
         this.copyUserAgentToClipboard(userAgent);
@@ -278,8 +280,16 @@ export class CacheWarmupMenu {
     ])
       .then(
         async ([, icon]): Promise<void> => {
+          const existingText = $(CacheWarmupMenuSelectors.useragentCopyText).text();
           $(CacheWarmupMenuSelectors.useragentCopyText).text(TYPO3.lang[LanguageKeys.toolbarCopySuccessful]);
           $(CacheWarmupMenuSelectors.useragentCopyIcon, CacheWarmupMenuSelectors.useragentCopy).replaceWith(icon);
+
+          // Restore copy button after 3 seconds
+          window.setTimeout((): void => {
+            $(CacheWarmupMenuSelectors.useragentCopyIcon, CacheWarmupMenuSelectors.useragentCopy).replaceWith($existingIcon);
+            $(CacheWarmupMenuSelectors.useragentCopyText).text(existingText);
+            $(CacheWarmupMenuSelectors.useragentCopy).trigger('blur');
+          }, 3000);
         },
         (): void => {
           $(CacheWarmupMenuSelectors.useragentCopyIcon, CacheWarmupMenuSelectors.useragentCopy).replaceWith($existingIcon);
