@@ -79,17 +79,67 @@ class WarmupCommand extends Command
         SiteFinder $siteFinder,
         string $name = null
     ) {
-        parent::__construct($name);
-
         $this->warmupService = $warmupService;
         $this->configuration = $configuration;
         $this->sitemapLocator = $sitemapLocator;
         $this->siteFinder = $siteFinder;
+
+        parent::__construct($name);
     }
 
     protected function configure(): void
     {
         $this->setDescription('Warm up Frontend caches of single pages and/or whole sites using their XML sitemaps.');
+        $this->setHelp(implode(PHP_EOL, [
+            'This command can be used in many ways to warm up frontend caches.',
+            'Some possible combinations and options are shown below.',
+            '',
+            '<info>Sites and pages</info>',
+            '<info>===============</info>',
+            '',
+            'To warm up caches, either <info>pages</info> or <info>sites</info> can be specified.',
+            'Both types can also be combined or extended by the specification of one or more <info>languages</info>.',
+            '',
+            '* <comment>warming:cachewarmup -p 1,2,3</comment>',
+            '  ⌙ Warms up Frontend caches of pages with page IDs 1, 2 and 3',
+            '',
+            '* <comment>warming:cachewarmup -s 1</comment>',
+            '* <comment>warming:cachewarmup -s main</comment>',
+            '  ⌙ Warms up Frontend caches of site with root page ID 1 or identifier "main"',
+            '',
+            '* <comment>warming:cachewarmup -p 1 -s 1</comment>',
+            '* <comment>warming:cachewarmup -p 1 -s main</comment>',
+            '  ⌙ Warms up Frontend caches of page with page ID 1 and site with root page ID 1 or identifier "main"',
+            '',
+            '* <comment>warming:cachewarmup -s 1 -l 0,1</comment>',
+            '  ⌙ Warms up Frontend caches of site with root page ID 1 and language IDs 0 and 1',
+            '',
+            '<info>Additional options</info>',
+            '<info>==================</info>',
+            '',
+            '* <comment>Strict mode</comment>',
+            '  ⌙ You can pass the <info>--strict</info> (or <info>-x</info>) option to terminate execution with an error code',
+            '    if individual caches warm up incorrectly.',
+            '    This is especially useful for automated execution of cache warmups.',
+            '',
+            '<info>Crawling configuration</info>',
+            '<info>======================</info>',
+            '',
+            '* <comment>Alternative crawler</comment>',
+            '  ⌙ Use the extension configuration <info>verboseCrawler</info> to use an alternative crawler.',
+            '    Currently used verbose crawler: <info>' . $this->configuration->getVerboseCrawler() . '</info>',
+            '',
+            '* <comment>Crawl limit</comment>',
+            '  ⌙ The maximum number of pages to be warmed up can be defined via the extension configuration <info>limit</info>.',
+            '    The value <info>0</info> deactivates the crawl limit.',
+            '    Current setting: <info>' . $this->configuration->getLimit() . '</info>',
+            '',
+            '* <comment>Custom User-Agent header</comment>',
+            '  ⌙ When the default crawler is used, each warmup request is executed with a special User-Agent header.',
+            '    This header is generated from the encryption key of the TYPO3 installation.',
+            '    It can be used, for example, to exclude warmup requests from your search statistics.',
+            '    Current User-Agent: <info>' . $this->configuration->getUserAgent() . '</info>',
+        ]));
 
         $this->addOption(
             'pages',
