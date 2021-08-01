@@ -102,11 +102,15 @@ The extension configuration currently provides two configuration options:
 
 * `limit`: Allows to limit the amount of crawled pages in one iteration. Can be
   set to `0` to crawl all pages in XML sitemap.
-* `crawler`: Custom crawler to be used for crawling the requested pages. Note
+* `crawler`: Default crawler to be used for crawling the requested pages. Note
   that custom crawlers must implement
   [`EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface`][1].
+* `verboseCrawler`: Verbose crawler to be used for cache warmup from the
+  command line. Note that custom verbose crawler must implement
+  [`EliasHaeussler\CacheWarmup\Crawler\VerboseCrawlerInterface`][2].
 
 [1]: https://gitlab.elias-haeussler.de/eliashaeussler/cache-warmup/-/blob/master/src/Crawler/CrawlerInterface.php
+[2]: https://gitlab.elias-haeussler.de/eliashaeussler/cache-warmup/-/blob/master/src/Crawler/VerboseCrawlerInterface.php
 
 ### Crawler
 

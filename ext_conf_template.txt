@@ -1,5 +1,8 @@
 # cat=basic/10; type=int+; label=Crawl limit:Define maximum number of pages to crawl in one iteration. Set to "0" to disable the limit.
 limit = 250
 
-# cat=basic/20; type=string; label=Alternative crawler:Provide the FQCN of an alternative crawler. A crawler must implement the interface "EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface".
-crawler =
+# cat=basic/20; type=string; label=Default crawler:Provide the FQCN of the crawler to be used for standard warmup requests. A crawler must implement the interface "EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface".
+crawler = EliasHaeussler\Typo3Warming\Crawler\ConcurrentUserAgentCrawler
+
+# cat=basic/30; type=string; label=Verbose crawler:Provide the FQCN of the crawler to be used for verbose warmup requests. A crawler must implement the interface "EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface".
+verboseCrawler = EliasHaeussler\Typo3Warming\Crawler\OutputtingUserAgentCrawler

@@ -26,7 +26,6 @@ namespace EliasHaeussler\Typo3Warming\Service;
 use EliasHaeussler\CacheWarmup\CacheWarmer;
 use EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface;
 use EliasHaeussler\Typo3Warming\Configuration\Configuration;
-use EliasHaeussler\Typo3Warming\Crawler\ConcurrentUserAgentCrawler;
 use EliasHaeussler\Typo3Warming\Crawler\RequestAwareInterface;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedConfigurationException;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedSiteException;
@@ -168,7 +167,7 @@ class CacheWarmupService implements LoggerAwareInterface
     }
 
     /**
-     * @param string|CrawlerInterface|null $crawler
+     * @param string|CrawlerInterface $crawler
      * @return CrawlerInterface
      * @throws UnsupportedConfigurationException
      */
@@ -180,7 +179,7 @@ class CacheWarmupService implements LoggerAwareInterface
 
         // Use default crawler if no custom crawler is given
         if (empty($crawler)) {
-            $crawler = ConcurrentUserAgentCrawler::class;
+            $crawler = Configuration::DEFAULT_CRAWLER;
         }
 
         // Throw exception if crawler variable type is unsupported

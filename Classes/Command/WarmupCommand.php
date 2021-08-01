@@ -26,7 +26,6 @@ namespace EliasHaeussler\Typo3Warming\Command;
 use EliasHaeussler\CacheWarmup\Command\CacheWarmupCommand;
 use EliasHaeussler\CacheWarmup\Sitemap;
 use EliasHaeussler\Typo3Warming\Configuration\Configuration;
-use EliasHaeussler\Typo3Warming\Crawler\ConcurrentUserAgentCrawler;
 use EliasHaeussler\Typo3Warming\Crawler\OutputtingUserAgentCrawler;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedConfigurationException;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedSiteException;
@@ -127,8 +126,9 @@ class WarmupCommand extends Command
         $io->writeln('Running <info>cache warmup</info> by <info>Elias Häußler</info> and contributors.');
 
         // Initialize crawler
-        if (($crawler = $this->warmupService->getCrawler()) instanceof ConcurrentUserAgentCrawler) {
-            $crawler = new OutputtingUserAgentCrawler();
+        $crawler = $this->configuration->getVerboseCrawler();
+        if (empty($crawler)) {
+            $crawler = OutputtingUserAgentCrawler::class;
         }
 
         // Initialize application
@@ -144,7 +144,7 @@ class WarmupCommand extends Command
             'sitemaps' => $sitemaps,
             '--urls' => $urls,
             '--limit' => $this->configuration->getLimit(),
-            '--crawler' => get_class($crawler),
+            '--crawler' => $crawler,
         ];
         $subCommandInput = new ArrayInput($subCommandParameters);
         $returnCode = $subCommand->run($subCommandInput, $output);
