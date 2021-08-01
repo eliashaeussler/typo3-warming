@@ -52,7 +52,7 @@ async function* walk(directory) {
 module.exports = [
   {
     mode: isDev ? 'development' : 'production',
-    devtool: isDev ? 'eval-cheap-module-source-map' : 'source-map',
+    devtool: isDev ? 'eval-cheap-module-source-map' : false,
     context: modulePath,
     // Dynamic entry points to match all require.js modules
     entry: () => new Promise(async (resolve) => {
@@ -92,7 +92,7 @@ module.exports = [
   },
   {
     mode: isDev ? 'development' : 'production',
-    devtool: isDev ? 'eval-cheap-module-source-map' : 'source-map',
+    devtool: isDev ? 'eval-cheap-module-source-map' : false,
     output: {
       path: path.resolve(__dirname, '../../Public/Css'),
     },
