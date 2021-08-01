@@ -94,19 +94,19 @@ class WarmupCommand extends Command
         $this->addOption(
             'pages',
             'p',
-            InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+            InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
             'Pages whose Frontend caches are to be warmed up.'
         );
         $this->addOption(
             'sites',
             's',
-            InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+            InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
             'Site identifiers or root page IDs of sites whose caches are to be warmed up.'
         );
         $this->addOption(
             'languages',
             'l',
-            InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+            InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
             'Optional identifiers of languages for which caches are to be warmed up'
         );
         $this->addOption(
