@@ -106,7 +106,7 @@ The extension configuration currently provides two configuration options:
   that custom crawlers must implement
   [`EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface`][1].
 * `verboseCrawler`: Verbose crawler to be used for cache warmup from the
-  command line. Note that custom verbose crawler must implement
+  command line. Note that custom verbose crawlers must implement
   [`EliasHaeussler\CacheWarmup\Crawler\VerboseCrawlerInterface`][2].
 
 [1]: https://gitlab.elias-haeussler.de/eliashaeussler/cache-warmup/-/blob/master/src/Crawler/CrawlerInterface.php

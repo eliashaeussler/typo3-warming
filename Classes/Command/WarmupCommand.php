@@ -25,7 +25,6 @@ namespace EliasHaeussler\Typo3Warming\Command;
 
 use EliasHaeussler\CacheWarmup\Command\CacheWarmupCommand;
 use EliasHaeussler\Typo3Warming\Configuration\Configuration;
-use EliasHaeussler\Typo3Warming\Crawler\OutputtingUserAgentCrawler;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedConfigurationException;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedSiteException;
 use EliasHaeussler\Typo3Warming\Service\CacheWarmupService;
@@ -52,6 +51,8 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class WarmupCommand extends Command
 {
+    private const ALL_LANGUAGES = -1;
+
     /**
      * @var CacheWarmupService
      */
@@ -99,46 +100,59 @@ class WarmupCommand extends Command
             '',
             'To warm up caches, either <info>pages</info> or <info>sites</info> can be specified.',
             'Both types can also be combined or extended by the specification of one or more <info>languages</info>.',
+            'If you omit the language option, the caches of all languages of the requested pages and sites',
+            'will be warmed up.',
+            '',
+            'Examples:',
             '',
             '* <comment>warming:cachewarmup -p 1,2,3</comment>',
-            '  ⌙ Warms up Frontend caches of pages with page IDs 1, 2 and 3',
+            '  ├─ Pages: <info>1, 2 and 3</info>',
+            '  └─ Languages: <info>all</info>',
             '',
             '* <comment>warming:cachewarmup -s 1</comment>',
             '* <comment>warming:cachewarmup -s main</comment>',
-            '  ⌙ Warms up Frontend caches of site with root page ID 1 or identifier "main"',
+            '  ├─ Sites: <info>Root page ID 1</info> or <info>identifier "main"</info>',
+            '  └─ Languages: <info>all</info>',
             '',
             '* <comment>warming:cachewarmup -p 1 -s 1</comment>',
             '* <comment>warming:cachewarmup -p 1 -s main</comment>',
-            '  ⌙ Warms up Frontend caches of page with page ID 1 and site with root page ID 1 or identifier "main"',
+            '  ├─ Pages: <info>1</info>',
+            '  ├─ Sites: <info>Root page ID 1</info> or <info>identifier "main"</info>',
+            '  └─ Languages: <info>all</info>',
             '',
             '* <comment>warming:cachewarmup -s 1 -l 0,1</comment>',
-            '  ⌙ Warms up Frontend caches of site with root page ID 1 and language IDs 0 and 1',
+            '  ├─ Sites: <info>Root page ID 1</info> or <info>identifier "main"</info>',
+            '  └─ Languages: <info>0 and 1</info>',
             '',
             '<info>Additional options</info>',
             '<info>==================</info>',
             '',
             '* <comment>Strict mode</comment>',
-            '  ⌙ You can pass the <info>--strict</info> (or <info>-x</info>) option to terminate execution with an error code',
-            '    if individual caches warm up incorrectly.',
-            '    This is especially useful for automated execution of cache warmups.',
+            '  ├─ You can pass the <info>--strict</info> (or <info>-x</info>) option to terminate execution with an error code',
+            '  │  if individual caches warm up incorrectly.',
+            '  │  This is especially useful for automated execution of cache warmups.',
+            '  └─ Example: <comment>warming:cachewarmup -s 1 -x</comment>',
             '',
             '<info>Crawling configuration</info>',
             '<info>======================</info>',
             '',
             '* <comment>Alternative crawler</comment>',
-            '  ⌙ Use the extension configuration <info>verboseCrawler</info> to use an alternative crawler.',
-            '    Currently used verbose crawler: <info>' . $this->configuration->getVerboseCrawler() . '</info>',
+            '  ├─ Use the extension configuration <info>verboseCrawler</info> to use an alternative crawler for',
+            '  │  command-line requests. For warmup requests triggered via the TYPO3 backend, you can use the',
+            '  │  extension configuration <info>crawler</info>.',
+            '  ├─ Currently used default crawler: <info>' . $this->configuration->getCrawler() . '</info>',
+            '  └─ Currently used verbose crawler: <info>' . $this->configuration->getVerboseCrawler() . '</info>',
             '',
             '* <comment>Crawl limit</comment>',
-            '  ⌙ The maximum number of pages to be warmed up can be defined via the extension configuration <info>limit</info>.',
-            '    The value <info>0</info> deactivates the crawl limit.',
-            '    Current setting: <info>' . $this->configuration->getLimit() . '</info>',
+            '  ├─ The maximum number of pages to be warmed up can be defined via the extension configuration <info>limit</info>.',
+            '  │  The value <info>0</info> deactivates the crawl limit.',
+            '  └─ Current setting: <info>' . $this->configuration->getLimit() . '</info>',
             '',
             '* <comment>Custom User-Agent header</comment>',
-            '  ⌙ When the default crawler is used, each warmup request is executed with a special User-Agent header.',
-            '    This header is generated from the encryption key of the TYPO3 installation.',
-            '    It can be used, for example, to exclude warmup requests from your search statistics.',
-            '    Current User-Agent: <info>' . $this->configuration->getUserAgent() . '</info>',
+            '  ├─ When the default crawler is used, each warmup request is executed with a special User-Agent header.',
+            '  │  This header is generated from the encryption key of the TYPO3 installation.',
+            '  │  It can be used, for example, to exclude warmup requests from your search statistics.',
+            '  └─ Current User-Agent: <info>' . $this->configuration->getUserAgent() . '</info>',
         ]));
 
         $this->addOption(
@@ -185,7 +199,7 @@ class WarmupCommand extends Command
         // Initialize crawler
         $crawler = $this->configuration->getVerboseCrawler();
         if (empty($crawler)) {
-            $crawler = OutputtingUserAgentCrawler::class;
+            $crawler = Configuration::DEFAULT_VERBOSE_CRAWLER;
         }
 
         // Initialize application
@@ -222,9 +236,14 @@ class WarmupCommand extends Command
      */
     protected function resolveUrls(array $pages, array $languages): \Generator
     {
-        foreach ($languages as $languageId) {
-            foreach ($pages as $pageList) {
-                foreach (GeneralUtility::intExplode(',', (string)$pageList, true) as $page) {
+        foreach ($pages as $pageList) {
+            foreach (GeneralUtility::intExplode(',', (string)$pageList, true) as $page) {
+                $languageIds = $languages;
+                if ([self::ALL_LANGUAGES] === $languageIds) {
+                    $site = $this->siteFinder->getSiteByPageId($page);
+                    $languageIds = array_keys($site->getLanguages());
+                }
+                foreach ($languageIds as $languageId) {
                     yield $this->warmupService->generateUri($page, $languageId);
                 }
             }
@@ -241,14 +260,18 @@ class WarmupCommand extends Command
      */
     protected function resolveSitemaps(array $sites, array $languages): \Generator
     {
-        foreach ($languages as $languageId) {
-            foreach ($sites as $siteList) {
-                foreach (GeneralUtility::trimExplode(',', $siteList, true) as $site) {
-                    if (MathUtility::canBeInterpretedAsInteger($site)) {
-                        $site = $this->siteFinder->getSiteByRootPageId((int)$site);
-                    } else {
-                        $site = $this->siteFinder->getSiteByIdentifier($site);
-                    }
+        foreach ($sites as $siteList) {
+            foreach (GeneralUtility::trimExplode(',', $siteList, true) as $site) {
+                if (MathUtility::canBeInterpretedAsInteger($site)) {
+                    $site = $this->siteFinder->getSiteByRootPageId((int)$site);
+                } else {
+                    $site = $this->siteFinder->getSiteByIdentifier($site);
+                }
+                $languageIds = $languages;
+                if ([self::ALL_LANGUAGES] === $languageIds) {
+                    $languageIds = array_keys($site->getLanguages());
+                }
+                foreach ($languageIds as $languageId) {
                     yield $this->sitemapLocator->locateBySite($site, $site->getLanguageById($languageId));
                 }
             }
@@ -262,7 +285,8 @@ class WarmupCommand extends Command
     protected function resolveLanguages(array $languages): \Generator
     {
         if ([] === $languages) {
-            yield 0;
+            // Run cache warmup for all languages by default
+            yield self::ALL_LANGUAGES;
             return;
         }
 
