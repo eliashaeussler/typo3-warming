@@ -182,7 +182,6 @@ class WarmupCommand extends Command
             null,
             InputOption::VALUE_REQUIRED,
             'Maximum number of pages to be crawled. Set to <info>0</info> to disable the limit.',
-            /* @phpstan-ignore-next-line */
             $this->configuration->getLimit()
         );
         $this->addOption(
