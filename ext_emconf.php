@@ -25,7 +25,7 @@ $EM_CONF[$_EXTKEY] = [
     'description' => 'Warms up Frontend caches based on an XML sitemap. Cache warmup can be triggered via ' .
         'TYPO3 backend or using a console command. Supports multiple languages and custom crawler implementations.',
     'category' => 'be',
-    'version' => '0.2.6',
+    'version' => '0.3.0',
     'state' => 'beta',
     'clearCacheOnLoad' => true,
     'author' => 'Elias Häußler',
