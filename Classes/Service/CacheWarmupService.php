@@ -26,9 +26,10 @@ namespace EliasHaeussler\Typo3Warming\Service;
 use EliasHaeussler\CacheWarmup\CacheWarmer;
 use EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface;
 use EliasHaeussler\Typo3Warming\Configuration\Configuration;
-use EliasHaeussler\Typo3Warming\Crawler\ConcurrentUserAgentCrawler;
+use EliasHaeussler\Typo3Warming\Crawler\RequestAwareInterface;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedConfigurationException;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedSiteException;
+use EliasHaeussler\Typo3Warming\Request\WarmupRequest;
 use EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -87,18 +88,28 @@ class CacheWarmupService implements LoggerAwareInterface
 
     /**
      * @param Site[] $sites
+     * @param WarmupRequest $request
      * @return CrawlerInterface
      * @throws UnsupportedConfigurationException
      * @throws UnsupportedSiteException
      */
-    public function warmupSites(array $sites): CrawlerInterface
+    public function warmupSites(array $sites, WarmupRequest $request): CrawlerInterface
     {
         $cacheWarmer = new CacheWarmer();
         $cacheWarmer->setLimit($this->limit);
 
         foreach ($sites as $site) {
-            $sitemap = $this->sitemapLocator->locateBySite($site);
+            $siteLanguage = null;
+            if (null !== $request->getLanguageId()) {
+                $siteLanguage = $site->getLanguageById($request->getLanguageId());
+            }
+            $sitemap = $this->sitemapLocator->locateBySite($site, $siteLanguage);
             $cacheWarmer->addSitemaps($sitemap);
+        }
+
+        if ($this->crawler instanceof RequestAwareInterface) {
+            $request->setRequestedUrls($cacheWarmer->getUrls());
+            $this->crawler->setRequest($request);
         }
 
         return $cacheWarmer->run($this->crawler);
@@ -106,17 +117,23 @@ class CacheWarmupService implements LoggerAwareInterface
 
     /**
      * @param int[] $pageIds
+     * @param WarmupRequest $request
      * @return CrawlerInterface
      * @throws SiteNotFoundException
      */
-    public function warmupPages(array $pageIds): CrawlerInterface
+    public function warmupPages(array $pageIds, WarmupRequest $request): CrawlerInterface
     {
         $cacheWarmer = new CacheWarmer();
         $cacheWarmer->setLimit($this->limit);
 
         foreach ($pageIds as $pageId) {
-            $url = $this->generateUri($pageId);
+            $url = $this->generateUri($pageId, $request->getLanguageId());
             $cacheWarmer->addUrl($url);
+        }
+
+        if ($this->crawler instanceof RequestAwareInterface) {
+            $request->setRequestedUrls($cacheWarmer->getUrls());
+            $this->crawler->setRequest($request);
         }
 
         return $cacheWarmer->run($this->crawler);
@@ -124,14 +141,15 @@ class CacheWarmupService implements LoggerAwareInterface
 
     /**
      * @param int $pageId
+     * @param int|null $languageId
      * @return UriInterface
      * @throws SiteNotFoundException
      */
-    public function generateUri(int $pageId): UriInterface
+    public function generateUri(int $pageId, int $languageId = null): UriInterface
     {
         $site = $this->siteFinder->getSiteByPageId($pageId);
 
-        return $site->getRouter()->generateUri((string)$pageId);
+        return $site->getRouter()->generateUri((string)$pageId, ['_language' => $languageId]);
     }
 
     /**
@@ -154,7 +172,7 @@ class CacheWarmupService implements LoggerAwareInterface
     }
 
     /**
-     * @param string|CrawlerInterface|null $crawler
+     * @param string|CrawlerInterface $crawler
      * @return CrawlerInterface
      * @throws UnsupportedConfigurationException
      */
@@ -166,7 +184,7 @@ class CacheWarmupService implements LoggerAwareInterface
 
         // Use default crawler if no custom crawler is given
         if (empty($crawler)) {
-            $crawler = ConcurrentUserAgentCrawler::class;
+            $crawler = Configuration::DEFAULT_CRAWLER;
         }
 
         // Throw exception if crawler variable type is unsupported

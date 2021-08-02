@@ -25,6 +25,7 @@ namespace EliasHaeussler\Typo3Warming\Crawler;
 
 use EliasHaeussler\CacheWarmup\Crawler\OutputtingCrawler;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Psr7\Request;
 use TYPO3\CMS\Core\Http\Client\GuzzleClientFactory;
 
 /**
@@ -39,8 +40,9 @@ class OutputtingUserAgentCrawler extends OutputtingCrawler
 
     protected function getRequests(): \Iterator
     {
+        /** @var Request $request */
         foreach (parent::getRequests() as $request) {
-            yield $this->applyUserAgentHeader($request);
+            yield $this->applyUserAgentHeader($request->withMethod('GET'));
         }
     }
 

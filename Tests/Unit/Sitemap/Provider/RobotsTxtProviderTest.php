@@ -23,8 +23,8 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Tests\Unit\Sitemap\Provider;
 
-use EliasHaeussler\CacheWarmup\Sitemap;
 use EliasHaeussler\Typo3Warming\Sitemap\Provider\RobotsTxtProvider;
+use EliasHaeussler\Typo3Warming\Sitemap\SiteAwareSitemap;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Http\Response;
@@ -102,7 +102,7 @@ class RobotsTxtProviderTest extends UnitTestCase
 
         $this->requestFactoryProphecy->request('https://www.example.com/robots.txt')->willReturn($response);
 
-        $expected = new Sitemap(new Uri('https://www.example.com/baz.xml'));
+        $expected = new SiteAwareSitemap(new Uri('https://www.example.com/baz.xml'), $this->site);
 
         self::assertEquals($expected, $this->subject->get($this->site));
     }

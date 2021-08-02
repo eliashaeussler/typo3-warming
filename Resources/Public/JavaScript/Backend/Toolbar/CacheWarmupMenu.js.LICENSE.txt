@@ -1,0 +1,96 @@
+/*!
+ * Select2 4.1.0-rc.0
+ * https://select2.github.io
+ *
+ * Released under the MIT license
+ * https://github.com/select2/select2/blob/master/LICENSE.md
+ */
+
+/**
+ * @license almond 0.3.3 Copyright jQuery Foundation and other contributors.
+ * Released under MIT license, http://github.com/requirejs/almond/LICENSE
+ */
+
+/**
+ * AMD module that handles cache warmup from the Backend toolbar.
+ *
+ * Module: TYPO3/CMS/Warming/Backend/Toolbar/CacheWarmupMenu
+ *
+ * @author Elias Häußler <elias@haeussler.dev>
+ * @license GPL-2.0-or-later
+ */
+
+/**
+ * AMD module that shows a modal with the progress of the current cache warmup.
+ *
+ * Module: TYPO3/CMS/Warming/Backend/Modal/CacheWarmupProgressModal
+ *
+ * @author Elias Häußler <elias@haeussler.dev>
+ * @license GPL-2.0-or-later
+ */
+
+/**
+ * Available request modes that can be used to warmup caches.
+ *
+ * @author Elias Häußler <elias@haeussler.dev>
+ * @license GPL-2.0-or-later
+ */
+
+/**
+ * Collection of utility functions.
+ *
+ * @author Elias Häußler <elias@haeussler.dev>
+ * @license GPL-2.0-or-later
+ */
+
+/**
+ * Exception describing an unsupported warmup request type.
+ *
+ * @author Elias Häußler <elias@haeussler.dev>
+ * @license GPL-2.0-or-later
+ */
+
+/**
+ * Identifiers of several used TYPO3 icons.
+ *
+ * @author Elias Häußler <elias@haeussler.dev>
+ * @license GPL-2.0-or-later
+ */
+
+/**
+ * Interface describing the data object from a server-sent event handling cache warmup.
+ *
+ * @author Elias Häußler <elias@haeussler.dev>
+ * @license GPL-2.0-or-later
+ */
+
+/**
+ * Progress of a running or finished cache warmup request.
+ *
+ * This class displays the current progress of a running or finished cache
+ * warmup request that has been triggered by a concrete instance of
+ * {@link RequestHandlerInterface}. Each time the server replies with an
+ * update of the request, the event data can be passed over to this class
+ * in order to update the internal state.
+ *
+ * @author Elias Häußler <elias@haeussler.dev>
+ * @license GPL-2.0-or-later
+ */
+
+/**
+ * Request to process a new cache warmup for a given page or site.
+ *
+ * This class represents a complete request for cache warmup of a given page or site.
+ * It uses a concrete {@link RequestHandlerInterface}, depending on the availability
+ * of the concrete handlers.
+ *
+ * @author Elias Häußler <elias@haeussler.dev>
+ * @license GPL-2.0-or-later
+ */
+
+/**
+ * Several language keys that are used in custom modules.
+ *
+ * @author Elias Häußler <elias@haeussler.dev>
+ * @license GPL-2.0-or-later
+ */

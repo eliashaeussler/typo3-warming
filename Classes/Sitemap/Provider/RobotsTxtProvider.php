@@ -23,11 +23,12 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Sitemap\Provider;
 
-use EliasHaeussler\CacheWarmup\Sitemap;
+use EliasHaeussler\Typo3Warming\Sitemap\SiteAwareSitemap;
 use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
 /**
  * RobotsTxtProvider
@@ -49,9 +50,9 @@ class RobotsTxtProvider extends AbstractProvider
         $this->requestFactory = $requestFactory;
     }
 
-    public function get(Site $site): ?Sitemap
+    public function get(Site $site, SiteLanguage $siteLanguage = null): ?SiteAwareSitemap
     {
-        $robotsTxt = $this->fetchRobotsTxt($this->getSiteUrlWithPath($site, 'robots.txt'));
+        $robotsTxt = $this->fetchRobotsTxt($this->getSiteUrlWithPath($site, 'robots.txt', $siteLanguage));
 
         // Early return if no robots.txt exists
         if (empty($robotsTxt)) {
@@ -65,7 +66,7 @@ class RobotsTxtProvider extends AbstractProvider
 
         $uri = new Uri($matches['url']);
 
-        return new Sitemap($uri);
+        return new SiteAwareSitemap($uri, $site, $siteLanguage);
     }
 
     protected function fetchRobotsTxt(UriInterface $uri): ?string

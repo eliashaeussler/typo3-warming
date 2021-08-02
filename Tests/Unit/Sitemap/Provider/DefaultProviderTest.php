@@ -23,8 +23,8 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Tests\Unit\Sitemap\Provider;
 
-use EliasHaeussler\CacheWarmup\Sitemap;
 use EliasHaeussler\Typo3Warming\Sitemap\Provider\DefaultProvider;
+use EliasHaeussler\Typo3Warming\Sitemap\SiteAwareSitemap;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -54,7 +54,7 @@ class DefaultProviderTest extends UnitTestCase
     public function getReturnsSitemapWithDefaultPath(): void
     {
         $site = new Site('foo', 1, ['base' => 'https://www.example.com/']);
-        $expected = new Sitemap(new Uri('https://www.example.com/sitemap.xml'));
+        $expected = new SiteAwareSitemap(new Uri('https://www.example.com/sitemap.xml'), $site);
 
         self::assertEquals($expected, $this->subject->get($site));
     }

@@ -7,6 +7,12 @@ cache: &cache
     - .Build/
   policy: pull
 
+.frontend-cache: &frontend-cache
+  key: "${CI_COMMIT_REF_SLUG}-frontend"
+  paths:
+    - Resources/Private/Frontend/node_modules
+  policy: pull
+
 variables:
   COMPOSER_ALLOW_SUPERUSER: "1"
   COMPOSER_NO_INTERACTION: "1"
@@ -25,6 +31,18 @@ build:
     - composer install --no-progress
   cache:
     <<: *cache
+    policy: pull-push
+  rules:
+    - if: '$CI_COMMIT_BRANCH'
+      when: on_success
+
+build:frontend:
+  stage: build
+  image: node:buster
+  script:
+    - yarn install --frozen-lockfile --cwd Resources/Private/Frontend
+  cache:
+    <<: *frontend-cache
     policy: pull-push
   rules:
     - if: '$CI_COMMIT_BRANCH'
@@ -77,7 +95,39 @@ lint:editorconfig:
     - build
   script:
     - composer require --dev --no-progress armin/editorconfig-cli
-    - .Build/bin/ec -e .Build -e var
+    - >
+      .Build/bin/ec \
+        -e .Build \
+        -e var \
+        -e Resources/Private/Frontend/node_modules \
+        -e Resources/Public/JavaScript \
+        -e Resources/Public/Css
+  rules:
+    - if: '$CI_COMMIT_BRANCH'
+      when: on_success
+
+lint:scss:
+  stage: lint
+  image: node:buster
+  needs:
+    - build:frontend
+  script:
+    - yarn --cwd Resources/Private/Frontend lint:scss
+  cache:
+    <<: *frontend-cache
+  rules:
+    - if: '$CI_COMMIT_BRANCH'
+      when: on_success
+
+lint:typescript:
+  stage: lint
+  image: node:buster
+  needs:
+    - build:frontend
+  script:
+    - yarn --cwd Resources/Private/Frontend lint:ts
+  cache:
+    <<: *frontend-cache
   rules:
     - if: '$CI_COMMIT_BRANCH'
       when: on_success
