@@ -20,6 +20,7 @@
  */
 
 import 'select2';
+import * as clipboard from 'clipboard-polyfill/text';
 
 import IconIdentifiers from '../../../lib/Enums/IconIdentifiers';
 import LanguageKeys from '../../../lib/Enums/LanguageKeys';
@@ -275,7 +276,7 @@ export class CacheWarmupMenu {
 
     // Copy user agent to clipboard
     Promise.all([
-      navigator.clipboard.writeText(userAgent),
+      (navigator.clipboard ?? clipboard).writeText(userAgent),
       Icons.getIcon(IconIdentifiers.check, Icons.sizes.small),
     ])
       .then(
