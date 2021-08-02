@@ -4,7 +4,8 @@
 
 # Warming
 
-> Extension for TYPO3 CMS that warms up Frontend caches based on a XML sitemap.
+> Extension for TYPO3 CMS that warms up Frontend caches based on an XML sitemap
+> with multi-language support.
 
 ![Extension icon](Resources/Public/Icons/Extension.svg)
 
@@ -22,7 +23,7 @@ Or download the zip file from
 ## Usage
 
 Caches can be warmed up in two different modes – either on a **per-page** basis or
-using the **XML sitemap of a site**. Currently, only one XML sitemap per page can
+using the **XML sitemap of a site**. Currently, only one XML sitemap of a site can
 be used for cache warmup.
 
 ### Toolbar item
@@ -31,7 +32,7 @@ be used for cache warmup.
 
 As soon as the extension is installed, a new toolbar item in your TYPO3 backend
 should appear. You can click on the toolbar item to get a list of all sites. If a
-site does not provide a XML sitemap, it cannot be used to warm up caches.
+site does not provide an XML sitemap, it cannot be used to warm up caches.
 
 ![Toolbar item dropdown menu](Resources/Public/Images/Documentation/toolbar-item.png)
 
@@ -45,12 +46,12 @@ menu of pages inside the page tree.
 ![Context menu](Resources/Public/Images/Documentation/context-menu.png)
 
 The option "Warmup cache for this page" is available for all pages whereas the option
-"Warmup all caches" is only available for site root pages.
+"Warmup all caches" is only available for sites' root pages.
 
 ### Console command
 
-The extension provides a Console command which allows triggering cache warmup
-from the console or using a Scheduler task.
+The extension provides a console command which allows triggering cache warmup
+from the command-line or by using a Scheduler task.
 
 ```bash
 typo3cms warming:cachewarmup [-p|--pages <pages>] [-s|--sites <sites>] [-l|--languages <languages>] [--limit <limit>] [-x|--strict]
@@ -59,6 +60,7 @@ typo3cms warming:cachewarmup [-p|--pages <pages>] [-s|--sites <sites>] [-l|--lan
 * `-p|--pages`: Define single pages to be crawled for cache warmup
 * `-s|--sites`: Define site identifiers or site root pages for cache warmup
 * `-l|--languages`: Define language IDs for which caches are to be warmed up
+  (defaults to all available languages)
 * `--limit`: Override crawl limit from [extension configuration](#extension-configuration)
 * `-x|--strict`: Set this option to exit with error in case any page could not
   be crawled during cache warmup
@@ -69,7 +71,7 @@ typo3cms warming:cachewarmup [-p|--pages <pages>] [-s|--sites <sites>] [-l|--lan
 
 All administrators are able to run cache warmup for sites and pages. All other users
 are not allowed to run those tasks. However, you can use User TSconfig to allow
-warmup for specific users/usergroups and sites/pages.
+cache warmup for specific users/usergroups and sites/pages.
 
 ```typo3_typoscript
 # Comma-separated list of pages to be allowed for warming up caches
@@ -81,10 +83,10 @@ options.cacheWarmup.allowedSites = my-dummy-site,another-dummy-site
 
 ### Path to XML sitemap
 
-The path to a XML sitemap is determined in three steps:
+The path to an XML sitemap is determined in three steps:
 
 1. Site configuration: Within the Sites module, one can explicitly define the path
-   to the XML sitemap of a site.
+   to the XML sitemap of a site (see screenshot below).
 2. `robots.txt`: If no path is defined in the site configuration, a possible
    `robots.txt` file is parsed for a valid `Sitemap` configuration. **Note: Only
    the first occurrence will be respected.**
@@ -100,7 +102,7 @@ using a custom `Services.yaml` file. See the section
 
 ### Extension configuration
 
-The extension configuration currently provides two configuration options:
+The extension configuration currently provides the following configuration options:
 
 * `limit`: Allows to limit the amount of crawled pages in one iteration. Can be
   set to `0` to crawl all pages in XML sitemap.
@@ -108,7 +110,7 @@ The extension configuration currently provides two configuration options:
   that custom crawlers must implement
   [`EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface`][1].
 * `verboseCrawler`: Verbose crawler to be used for cache warmup from the
-  command line. Note that custom verbose crawlers must implement
+  command-line. Note that custom verbose crawlers must implement
   [`EliasHaeussler\CacheWarmup\Crawler\VerboseCrawlerInterface`][2].
 
 [1]: https://gitlab.elias-haeussler.de/eliashaeussler/cache-warmup/-/blob/master/src/Crawler/CrawlerInterface.php
@@ -116,14 +118,14 @@ The extension configuration currently provides two configuration options:
 
 ### Crawler
 
-There exist two dedicated crawlers: one to run the cache warmup from the Backend
+There exist two dedicated crawlers: one to run the cache warmup from the backend
 ([`ConcurrentUserAgentCrawler`](Classes/Crawler/ConcurrentUserAgentCrawler.php))
-and another one to use when running from the command line
+and another one to use when running from the command-line
 ([`OutputtingUserAgentCrawler`](Classes/Crawler/OutputtingUserAgentCrawler.php)).
 
 Both crawlers define their own `User-Agent` header, which generates a hash from the
 encryption key of the TYPO3 installation. This `User-Agent` header can be copied in
-the dropdown of the toolbar item in the Backend to exclude such requests from the
+the dropdown of the toolbar item in the backend to exclude such requests from the
 statistics of analysis tools, for example.
 
 Alternatively, the command `warming:showuseragent` can be used to read the
@@ -140,12 +142,12 @@ file.
 
 All providers will be processed in natural order, meaning the provider with the
 lowest array index will be processed first. If any provider returns a valid
-[`Sitemap`](https://gitlab.elias-haeussler.de/eliashaeussler/cache-warmup/-/blob/master/src/Sitemap.php)
-object, the remaining providers won't be processed.
+[`SiteAwareSitemap`](Classes/Sitemap/SiteAwareSitemap.php) object, the remaining
+providers won't be processed.
 
 You are free to modify or extend the list of path providers. Keep in mind that the
 [`DefaultProvider`](Classes/Sitemap/Provider/DefaultProvider.php) should always
-be used as last provider since it always returns a `Sitemap` object.
+be used as last provider since it always returns a `SiteAwareSitemap` object.
 
 ```yaml
 # Configuration/Services.yaml
@@ -170,4 +172,4 @@ icon from TYPO3 core which is originally licensed under
 
 ## License
 
-This project is licensed under [GPL 2.0 (or later)](LICENSE.md).
+This project is licensed under [GNU General Public License 2.0 (or later)](LICENSE.md).

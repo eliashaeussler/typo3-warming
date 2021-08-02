@@ -1,7 +1,7 @@
 {
 	"name": "eliashaeussler/typo3-warming",
 	"type": "typo3-cms-extension",
-	"description": "Extension for TYPO3 CMS which warms up Frontend caches based on a XML sitemap",
+	"description": "Extension for TYPO3 CMS that warms up Frontend caches based on an XML sitemap with multi-language support",
 	"license": "GPL-2.0-or-later",
 	"authors": [
 		{
