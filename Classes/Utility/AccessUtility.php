@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Utility;
 
-use EliasHaeussler\Typo3Warming\BackendUserAuthenticationTrait;
+use EliasHaeussler\Typo3Warming\Traits\BackendUserAuthenticationTrait;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;

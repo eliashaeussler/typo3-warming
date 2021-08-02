@@ -23,8 +23,8 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Backend\ContextMenu\ItemProviders;
 
-use EliasHaeussler\Typo3Warming\BackendUserAuthenticationTrait;
 use EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator;
+use EliasHaeussler\Typo3Warming\Traits\BackendUserAuthenticationTrait;
 use EliasHaeussler\Typo3Warming\Utility\AccessUtility;
 use TYPO3\CMS\Backend\ContextMenu\ItemProviders\PageProvider;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;

@@ -23,11 +23,11 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Sitemap;
 
-use EliasHaeussler\Typo3Warming\BackendUserAuthenticationTrait;
 use EliasHaeussler\Typo3Warming\Cache\CacheManager;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedConfigurationException;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedSiteException;
 use EliasHaeussler\Typo3Warming\Sitemap\Provider\ProviderInterface;
+use EliasHaeussler\Typo3Warming\Traits\BackendUserAuthenticationTrait;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Site\Entity\Site;

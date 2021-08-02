@@ -25,13 +25,13 @@ namespace EliasHaeussler\Typo3Warming\Controller;
 
 use EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface;
 use EliasHaeussler\CacheWarmup\CrawlingState;
-use EliasHaeussler\Typo3Warming\BackendUserAuthenticationTrait;
 use EliasHaeussler\Typo3Warming\Exception\MissingPageIdException;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedConfigurationException;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedSiteException;
 use EliasHaeussler\Typo3Warming\Request\WarmupRequest;
 use EliasHaeussler\Typo3Warming\Service\CacheWarmupService;
 use EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator;
+use EliasHaeussler\Typo3Warming\Traits\BackendUserAuthenticationTrait;
 use EliasHaeussler\Typo3Warming\Traits\TranslatableTrait;
 use EliasHaeussler\Typo3Warming\Traits\ViewTrait;
 use EliasHaeussler\Typo3Warming\Utility\AccessUtility;

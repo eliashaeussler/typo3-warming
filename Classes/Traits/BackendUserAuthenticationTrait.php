@@ -21,7 +21,7 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3Warming;
+namespace EliasHaeussler\Typo3Warming\Traits;
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 
