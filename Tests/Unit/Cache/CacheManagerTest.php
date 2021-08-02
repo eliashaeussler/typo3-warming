@@ -26,7 +26,9 @@ namespace EliasHaeussler\Typo3Warming\Tests\Unit\Cache;
 use EliasHaeussler\Typo3Warming\Cache\CacheManager;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -57,10 +59,12 @@ class CacheManagerTest extends UnitTestCase
 
     /**
      * @test
+     * @dataProvider getReturnsEmptyArrayIfNoSitemapsAreCachedDataProvider
+     * @param false|array<string, mixed> $cacheValue
      */
-    public function getReturnsEmptyArrayIfNoSitemapsAreCached(): void
+    public function getReturnsEmptyArrayIfNoSitemapsAreCached($cacheValue): void
     {
-        $this->cacheProphecy->require(CacheManager::CACHE_IDENTIFIER)->willReturn(false);
+        $this->cacheProphecy->require(CacheManager::CACHE_IDENTIFIER)->willReturn($cacheValue);
 
         self::assertSame([], $this->subject->get());
     }
@@ -98,7 +102,7 @@ class CacheManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getReturnsCachedSitemap(): void
+    public function getReturnsCachedSitemapForDefaultLanguage(): void
     {
         $site = new Site('foo', 1, []);
 
@@ -111,5 +115,35 @@ class CacheManagerTest extends UnitTestCase
         ]);
 
         self::assertSame('baz', $this->subject->get($site));
+        self::assertSame('baz', $this->subject->get($site, $site->getDefaultLanguage()));
+    }
+
+    /**
+     * @test
+     */
+    public function getReturnsCachedSitemapForGivenLanguage(): void
+    {
+        $site = new Site('foo', 1, []);
+        $siteLanguage = new SiteLanguage(1, 'de_DE.UTF-8', new Uri('https://example.com'), []);
+
+        $this->cacheProphecy->require(CacheManager::CACHE_IDENTIFIER)->willReturn([
+            'sitemaps' => [
+                'foo' => [
+                    '1' => 'baz',
+                ],
+            ],
+        ]);
+
+        self::assertSame('baz', $this->subject->get($site, $siteLanguage));
+    }
+
+    /**
+     * @return \Generator<string, array>
+     */
+    public function getReturnsEmptyArrayIfNoSitemapsAreCachedDataProvider(): \Generator
+    {
+        yield 'no cache' => [false];
+        yield 'empty cache' => [[]];
+        yield 'no sitemaps' => [['sitemaps' => []]];
     }
 }
