@@ -53,11 +53,13 @@ The extension provides a Console command which allows triggering cache warmup
 from the console or using a Scheduler task.
 
 ```bash
-typo3cms warming:cachewarmup [-p|--pages <pages>] [-s|--sites <sites>] [-x|--strict]
+typo3cms warming:cachewarmup [-p|--pages <pages>] [-s|--sites <sites>] [-l|--languages <languages>] [--limit <limit>] [-x|--strict]
 ```
 
 * `-p|--pages`: Define single pages to be crawled for cache warmup
 * `-s|--sites`: Define site identifiers or site root pages for cache warmup
+* `-l|--languages`: Define language IDs for which caches are to be warmed up
+* `--limit`: Override crawl limit from [extension configuration](#extension-configuration)
 * `-x|--strict`: Set this option to exit with error in case any page could not
   be crawled during cache warmup
 

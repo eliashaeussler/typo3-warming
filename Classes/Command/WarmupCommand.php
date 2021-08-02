@@ -131,7 +131,16 @@ class WarmupCommand extends Command
             '  ├─ You can pass the <info>--strict</info> (or <info>-x</info>) option to terminate execution with an error code',
             '  │  if individual caches warm up incorrectly.',
             '  │  This is especially useful for automated execution of cache warmups.',
+            '  ├─ Default: <info>false</info>',
             '  └─ Example: <comment>warming:cachewarmup -s 1 -x</comment>',
+            '',
+            '* <comment>Crawl limit</comment>',
+            '  ├─ The maximum number of pages to be warmed up can be defined via the extension configuration <info>limit</info>.',
+            '  │  It can be overridden by using the <info>--limit</info> option.',
+            '  │  The value <info>0</info> deactivates the crawl limit.',
+            '  ├─ Default: <info>' . $this->configuration->getLimit() . '</info>',
+            '  ├─ Example: <comment>warming:cachewarmup -s 1 --limit 100</comment> (limits crawling to 100 pages)',
+            '  └─ Example: <comment>warming:cachewarmup -s 1 --limit 0</comment> (no limit)',
             '',
             '<info>Crawling configuration</info>',
             '<info>======================</info>',
@@ -142,11 +151,6 @@ class WarmupCommand extends Command
             '  │  extension configuration <info>crawler</info>.',
             '  ├─ Currently used default crawler: <info>' . $this->configuration->getCrawler() . '</info>',
             '  └─ Currently used verbose crawler: <info>' . $this->configuration->getVerboseCrawler() . '</info>',
-            '',
-            '* <comment>Crawl limit</comment>',
-            '  ├─ The maximum number of pages to be warmed up can be defined via the extension configuration <info>limit</info>.',
-            '  │  The value <info>0</info> deactivates the crawl limit.',
-            '  └─ Current setting: <info>' . $this->configuration->getLimit() . '</info>',
             '',
             '* <comment>Custom User-Agent header</comment>',
             '  ├─ When the default crawler is used, each warmup request is executed with a special User-Agent header.',
@@ -171,7 +175,15 @@ class WarmupCommand extends Command
             'languages',
             'l',
             InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-            'Optional identifiers of languages for which caches are to be warmed up'
+            'Optional identifiers of languages for which caches are to be warmed up.'
+        );
+        $this->addOption(
+            'limit',
+            null,
+            InputOption::VALUE_REQUIRED,
+            'Maximum number of pages to be crawled. Set to <info>0</info> to disable the limit.',
+            /* @phpstan-ignore-next-line */
+            $this->configuration->getLimit()
         );
         $this->addOption(
             'strict',
@@ -187,6 +199,7 @@ class WarmupCommand extends Command
         $languages = iterator_to_array($this->resolveLanguages($input->getOption('languages')));
         $urls = array_unique(iterator_to_array($this->resolveUrls($input->getOption('pages'), $languages)));
         $sitemaps = array_unique(iterator_to_array($this->resolveSitemaps($input->getOption('sites'), $languages)), SORT_REGULAR);
+        $limit = abs((int)$input->getOption('limit'));
 
         // Exit if neither pages nor sites are given
         if (count($urls) + count($sitemaps) === 0) {
@@ -214,7 +227,7 @@ class WarmupCommand extends Command
         $subCommandParameters = [
             'sitemaps' => $sitemaps,
             '--urls' => $urls,
-            '--limit' => $this->configuration->getLimit(),
+            '--limit' => $limit,
             '--crawler' => $crawler,
         ];
         $subCommandInput = new ArrayInput($subCommandParameters);
