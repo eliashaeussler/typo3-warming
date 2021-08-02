@@ -23,6 +23,8 @@ import {v4 as uuidv4} from 'uuid';
 
 import AjaxRequestHandler from './RequestHandler/AjaxRequestHandler';
 import EventSourceRequestHandler from './RequestHandler/EventSourceRequestHandler';
+import RequestHandlerInterface from "./RequestHandler/RequestHandlerInterface";
+import UnsupportedRequestTypeException from './Exception/UnsupportedRequestTypeException';
 import WarmupRequestMode from './Enums/WarmupRequestMode';
 import WarmupRequestType from './Enums/WarmupRequestType';
 import WarmupProgress from './WarmupProgress';
@@ -42,12 +44,14 @@ export default class WarmupRequest {
   private readonly requestId: string;
   private readonly pageId: number;
   private readonly mode: WarmupRequestMode;
+  private readonly languageId: number | null;
 
-  constructor(pageId: number, mode: WarmupRequestMode = WarmupRequestMode.Site) {
+  constructor(pageId: number, mode: WarmupRequestMode = WarmupRequestMode.Site, languageId: number | null = null) {
     this.requestType = EventSourceRequestHandler.isSupported() ? WarmupRequestType.EventSource : WarmupRequestType.Ajax;
     this.requestId = WarmupRequest.generateRequestId();
     this.pageId = pageId;
     this.mode = mode;
+    this.languageId = languageId;
   }
 
   /**
@@ -60,35 +64,29 @@ export default class WarmupRequest {
    * @returns {Promise<WarmupProgress>} A promise for the the current request that resolves to an instance of {@link WarmupProgress}
    */
   public runWarmup(): Promise<WarmupProgress> {
-    if (WarmupRequestType.EventSource === this.requestType) {
-      return this.doWarmupWithEventSource();
+    const handler = this.initializeRequestHandler();
+
+    return handler.startRequestWithQueryParams(this.getQueryParams());
+  }
+
+  /**
+   * Create and return a supported request handler.
+   *
+   * @returns {RequestHandlerInterface} An instantiated request handler that supports the request type of this warmup request
+   * @throws {UnsupportedRequestTypeException} if the request type of this warmup request is not supported by any request handler
+   * @private
+   */
+  private initializeRequestHandler(): RequestHandlerInterface {
+    switch (this.requestType) {
+      case WarmupRequestType.EventSource:
+        return new EventSourceRequestHandler();
+
+      case WarmupRequestType.Ajax:
+        return new AjaxRequestHandler();
+
+      default:
+        throw UnsupportedRequestTypeException.create(this.requestType);
     }
-
-    return this.doWarmupWithAjax();
-  }
-
-  /**
-   * Trigger new cache warmup using the {@link EventSourceRequestHandler}.
-   *
-   * @returns {Promise<WarmupProgress>} A promise for the the current request that resolves to an instance of {@link WarmupProgress}
-   * @private
-   */
-  private doWarmupWithEventSource(): Promise<WarmupProgress> {
-    const handler = new EventSourceRequestHandler();
-
-    return handler.startRequestWithQueryParams(this.getQueryParams());
-  }
-
-  /**
-   * Trigger new cache warmup using the {@link AjaxRequestHandler}.
-   *
-   * @returns {Promise<WarmupProgress>} A promise for the the current request that resolves to an instance of {@link WarmupProgress}
-   * @private
-   */
-  private doWarmupWithAjax(): Promise<WarmupProgress> {
-    const handler = new AjaxRequestHandler();
-
-    return handler.startRequestWithQueryParams(this.getQueryParams());
   }
 
   /**
@@ -98,11 +96,18 @@ export default class WarmupRequest {
    * @private
    */
   private getQueryParams(): URLSearchParams {
-    return new URLSearchParams({
+    const queryParams: { [key: string]: string } = {
       pageId: this.pageId.toString(),
       mode: this.mode,
       requestId: this.requestId,
-    });
+    };
+
+    // Add language ID only if it's explicitly set (default language is used otherwise)
+    if (null !== this.languageId) {
+      queryParams.languageId = this.languageId.toString();
+    }
+
+    return new URLSearchParams(queryParams);
   }
 
   /**

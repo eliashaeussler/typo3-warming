@@ -23,14 +23,15 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Sitemap;
 
-use EliasHaeussler\CacheWarmup\Sitemap;
 use EliasHaeussler\Typo3Warming\Cache\CacheManager;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedConfigurationException;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedSiteException;
 use EliasHaeussler\Typo3Warming\Sitemap\Provider\ProviderInterface;
+use EliasHaeussler\Typo3Warming\Traits\BackendUserAuthenticationTrait;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
 /**
  * SitemapLocator
@@ -40,6 +41,8 @@ use TYPO3\CMS\Core\Site\Entity\Site;
  */
 class SitemapLocator
 {
+    use BackendUserAuthenticationTrait;
+
     /**
      * @var RequestFactory
      */
@@ -71,38 +74,57 @@ class SitemapLocator
 
     /**
      * @param Site $site
-     * @return Sitemap
+     * @param SiteLanguage|null $siteLanguage
+     * @return SiteAwareSitemap
      * @throws UnsupportedConfigurationException
      * @throws UnsupportedSiteException
      */
-    public function locateBySite(Site $site): Sitemap
+    public function locateBySite(Site $site, SiteLanguage $siteLanguage = null): SiteAwareSitemap
     {
         // Get sitemap from cache
-        if (($sitemapUrl = $this->cacheManager->get($site)) !== null) {
-            return new Sitemap(new Uri($sitemapUrl));
+        if (($sitemapUrl = $this->cacheManager->get($site, $siteLanguage)) !== null) {
+            return new SiteAwareSitemap(new Uri($sitemapUrl), $site, $siteLanguage);
         }
 
-        $baseUrl = $site->getBase();
-
+        // Build and validate base URL
+        $baseUrl = null !== $siteLanguage ? $siteLanguage->getBase() : $site->getBase();
         if ($baseUrl->getHost() === '') {
             throw UnsupportedConfigurationException::forBaseUrl((string)$baseUrl);
         }
 
-        $sitemap = $this->resolveSitemap($site);
-
+        // Resolve and validate sitemap
+        $sitemap = $this->resolveSitemap($site, $siteLanguage);
         if ($sitemap === null) {
             throw UnsupportedSiteException::forMissingSitemap($site);
         }
 
-        $this->cacheManager->set($site, $sitemap);
+        // Store resolved sitemap in cache
+        $this->cacheManager->set($sitemap);
 
         return $sitemap;
     }
 
-    public function siteContainsSitemap(Site $site): bool
+    /**
+     * @param Site $site
+     * @return array<int, SiteAwareSitemap>
+     * @throws UnsupportedConfigurationException
+     * @throws UnsupportedSiteException
+     */
+    public function locateAllBySite(Site $site): array
+    {
+        $sitemaps = [];
+
+        foreach ($site->getAvailableLanguages(static::getBackendUser()) as $siteLanguage) {
+            $sitemaps[$siteLanguage->getLanguageId()] = $this->locateBySite($site, $siteLanguage);
+        }
+
+        return $sitemaps;
+    }
+
+    public function siteContainsSitemap(Site $site, SiteLanguage $siteLanguage = null): bool
     {
         try {
-            $sitemap = $this->locateBySite($site);
+            $sitemap = $this->locateBySite($site, $siteLanguage);
             $response = $this->requestFactory->request((string)$sitemap->getUri(), 'HEAD');
 
             return $response->getStatusCode() < 400;
@@ -111,10 +133,10 @@ class SitemapLocator
         }
     }
 
-    protected function resolveSitemap(Site $site): ?Sitemap
+    protected function resolveSitemap(Site $site, SiteLanguage $siteLanguage = null): ?SiteAwareSitemap
     {
         foreach ($this->providers as $provider) {
-            if (($sitemap = $provider->get($site)) !== null) {
+            if (($sitemap = $provider->get($site, $siteLanguage)) !== null) {
                 return $sitemap;
             }
         }

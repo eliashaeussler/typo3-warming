@@ -19,6 +19,12 @@
 				<source>Copy to clipboard</source>
 			</trans-unit>
 
+			<trans-unit id="toolbar.sitemap.missing">
+				<source>No XML sitemap found for this language.</source>
+			</trans-unit>
+			<trans-unit id="toolbar.sitemap.placeholder">
+				<source>Select a language</source>
+			</trans-unit>
 			<trans-unit id="toolbar.copy.successful">
 				<source>Copied</source>
 			</trans-unit>

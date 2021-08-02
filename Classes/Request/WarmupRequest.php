@@ -46,6 +46,11 @@ class WarmupRequest
     protected $mode;
 
     /**
+     * @var int|null
+     */
+    protected $languageId;
+
+    /**
      * @var UriInterface[]
      */
     protected $requestedUrls = [];
@@ -60,10 +65,11 @@ class WarmupRequest
      */
     protected $updateCallback;
 
-    public function __construct(string $id, string $mode = CacheWarmupController::MODE_SITE)
+    public function __construct(string $id, string $mode = CacheWarmupController::MODE_SITE, int $languageId = null)
     {
         $this->id = $id;
         $this->mode = $mode;
+        $this->languageId = $languageId;
     }
 
     public function getId(): string
@@ -74,6 +80,11 @@ class WarmupRequest
     public function getMode(): string
     {
         return $this->mode;
+    }
+
+    public function getLanguageId(): ?int
+    {
+        return $this->languageId;
     }
 
     public function getTotal(): int

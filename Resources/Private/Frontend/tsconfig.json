@@ -21,7 +21,7 @@
 		"forceConsistentCasingInFileNames": true,
 		"typeRoots": [
 			"node_modules/@types",
-			"@types"
+            "src/scripts/@types"
 		]
 	},
 	"include": [

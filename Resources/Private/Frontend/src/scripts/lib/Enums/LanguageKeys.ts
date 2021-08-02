@@ -27,6 +27,8 @@
  */
 enum LanguageKeys {
   // Toolbar
+  toolbarSitemapMissing = 'cacheWarmup.toolbar.sitemap.missing',
+  toolbarSitemapPlaceholder = 'cacheWarmup.toolbar.sitemap.placeholder',
   toolbarCopySuccessful = 'cacheWarmup.toolbar.copy.successful',
 
   // Notification

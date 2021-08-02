@@ -23,8 +23,9 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Sitemap\Provider;
 
-use EliasHaeussler\CacheWarmup\Sitemap;
+use EliasHaeussler\Typo3Warming\Sitemap\SiteAwareSitemap;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
 /**
  * ProviderInterface
@@ -34,5 +35,5 @@ use TYPO3\CMS\Core\Site\Entity\Site;
  */
 interface ProviderInterface
 {
-    public function get(Site $site): ?Sitemap;
+    public function get(Site $site, SiteLanguage $siteLanguage = null): ?SiteAwareSitemap;
 }

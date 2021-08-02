@@ -86,7 +86,7 @@
 				]
 			},
 			{
-				"action": "yarn --cwd Resources/Private/Frontend build && git add Resources/Public/JavaScript",
+				"action": "yarn --cwd Resources/Private/Frontend build && git add Resources/Public/Css Resources/Public/JavaScript",
 				"options": [],
 				"conditions": [
 					{

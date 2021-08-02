@@ -25,6 +25,7 @@ namespace EliasHaeussler\Typo3Warming\Sitemap\Provider;
 
 use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
 /**
  * AbstractProvider
@@ -34,9 +35,9 @@ use TYPO3\CMS\Core\Site\Entity\Site;
  */
 abstract class AbstractProvider implements ProviderInterface
 {
-    protected function getSiteUrlWithPath(Site $site, string $path): UriInterface
+    protected function getSiteUrlWithPath(Site $site, string $path, SiteLanguage $siteLanguage = null): UriInterface
     {
-        $baseUrl = $site->getBase();
+        $baseUrl = null !== $siteLanguage ? $siteLanguage->getBase() : $site->getBase();
         $fullPath = rtrim($baseUrl->getPath(), '/') . '/' . ltrim($path, '/');
 
         return $baseUrl->withPath($fullPath);

@@ -23,10 +23,11 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Tests\Unit\Sitemap\Provider;
 
-use EliasHaeussler\CacheWarmup\Sitemap;
 use EliasHaeussler\Typo3Warming\Sitemap\Provider\SiteProvider;
+use EliasHaeussler\Typo3Warming\Sitemap\SiteAwareSitemap;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -67,8 +68,24 @@ class SiteProviderTest extends UnitTestCase
             'base' => 'https://www.example.com/',
             'xml_sitemap_path' => 'baz.xml',
         ]);
-        $expected = new Sitemap(new Uri('https://www.example.com/baz.xml'));
+        $expected = new SiteAwareSitemap(new Uri('https://www.example.com/baz.xml'), $site);
 
         self::assertEquals($expected, $this->subject->get($site));
+    }
+
+    /**
+     * @test
+     */
+    public function getReturnsSitemapWithUrlPathFromSiteLanguage(): void
+    {
+        $site = new Site('foo', 1, [
+            'base' => 'https://www.example.com/',
+        ]);
+        $siteLanguage = new SiteLanguage(1, 'de_DE.UTF-8', new Uri('https://www.example.com/de'), [
+            'xml_sitemap_path' => 'baz.xml',
+        ]);
+        $expected = new SiteAwareSitemap(new Uri('https://www.example.com/de/baz.xml'), $site, $siteLanguage);
+
+        self::assertEquals($expected, $this->subject->get($site, $siteLanguage));
     }
 }

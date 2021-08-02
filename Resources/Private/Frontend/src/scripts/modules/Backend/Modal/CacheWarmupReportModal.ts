@@ -74,9 +74,6 @@ class CacheWarmupReportModal {
         // Ensure all other modals are closed
         Modal.dismiss();
 
-        // Reset count of panels in report
-        this.panelCount = 0;
-
         // Build content
         const $content = this.buildModalContent(viewPageIcon, infoIcon);
 
@@ -105,42 +102,31 @@ class CacheWarmupReportModal {
   private createPanel(title: string, state: string, urls: string[], viewPageIcon: string): JQuery {
     this.panelCount++;
 
-    return $('<div>')
-      .addClass(`panel panel-${state} panel-table`)
-      .addClass((): string => this.panelCount > 1 ? 'panel-space' : '')
+    return $('<ul>')
+      .addClass('list-group list-group')
+      .addClass(this.panelCount > 1 ? 'mt-3' : '')
       .append(
-        // Add panel header
-        $('<div>')
-          .addClass('panel-heading')
-          .text(`${title} (${urls.length})`),
-        // Add panel content
-        $('<div>')
-          .addClass('table-fit table-fit-wrap')
-          .append(
-            // Add table
-            $('<table>')
-              .addClass('table table-striped table-hover')
-              .append(
-                // Add table body
-                $('<tbody>').append(
-                  urls.map((url): JQuery => {
-                    // Add table row for each URL
-                    return $('<tr>').append(
-                      // Add URL as table cell
-                      $('<td>').addClass('col-title').text(url),
-                      // Add controls as table cell
-                      $('<td>').addClass('col-control').append(
-                        $('<a>')
-                          .attr('href', url)
-                          .attr('target', '_blank')
-                          .addClass('btn btn-default btn-sm')
-                          .html(`${viewPageIcon} ${TYPO3.lang[LanguageKeys.modalReportActionView]}`)
-                      )
-                    ); // End: table row
-                  })
-                ) // End: table body
-              ) // End: table
-          ) // End: panel content
+        $('<li>')
+          .addClass(`list-group-item list-group-item-${state}`)
+          .html(`<strong>${title}</strong> (${urls.length})`),
+        urls.map((url: string): JQuery => {
+          return $('<li>')
+            .addClass('list-group-item tx-warming-report-item')
+            .append(
+              $('<div>')
+                .addClass('tx-warming-report-item-left')
+                .text(url),
+              $('<div>')
+                .addClass('tx-warming-report-item-right')
+                .append(
+                  $('<a>')
+                    .attr('href', url)
+                    .attr('target', '_blank')
+                    .addClass('btn btn-default btn-sm')
+                    .html(`${viewPageIcon} ${TYPO3.lang[LanguageKeys.modalReportActionView]}`)
+                )
+            );
+        })
       );
   }
 
@@ -153,6 +139,10 @@ class CacheWarmupReportModal {
    * @private
    */
   private buildModalContent(viewPageIcon: string, infoIcon: string): JQuery {
+    // Reset count of panels in report
+    this.panelCount = 0;
+
+    // Initialize content container
     const $content = $('<div>');
 
     // Build panels from crawled URLs and the appropriate crawling states
@@ -182,7 +172,9 @@ class CacheWarmupReportModal {
       ? `${TYPO3.lang[LanguageKeys.modalReportTotal]} ${this.progress.progress.total}`
       : TYPO3.lang[LanguageKeys.modalReportNoUrlsCrawled];
     $content.append(
-      $('<div>').addClass('badge badge-info').html(`${infoIcon} ${totalText}`)
+      $('<div>')
+        .addClass('badge badge-info mt-3')
+        .html(`${infoIcon} ${totalText}`)
     );
 
     return $content;

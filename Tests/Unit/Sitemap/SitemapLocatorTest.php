@@ -23,17 +23,18 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Tests\Unit\Sitemap;
 
-use EliasHaeussler\CacheWarmup\Sitemap;
 use EliasHaeussler\Typo3Warming\Cache\CacheManager;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedConfigurationException;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedSiteException;
 use EliasHaeussler\Typo3Warming\Sitemap\Provider\DefaultProvider;
+use EliasHaeussler\Typo3Warming\Sitemap\SiteAwareSitemap;
 use EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -97,68 +98,116 @@ class SitemapLocatorTest extends UnitTestCase
 
     /**
      * @test
+     * @dataProvider locateBySiteReturnsCachedSitemapDataProvider
+     * @param SiteLanguage|null $siteLanguage
+     * @param string $expectedUrl
      * @throws UnsupportedConfigurationException
      * @throws UnsupportedSiteException
      */
-    public function locateBySiteReturnsCacheSitemap(): void
+    public function locateBySiteReturnsCachedSitemap(?SiteLanguage $siteLanguage, string $expectedUrl): void
     {
         $site = $this->getSite([]);
 
-        $this->cacheManagerProphecy->get($site)->willReturn('https://www.example.com/sitemap.xml');
+        $this->cacheManagerProphecy->get($site, $siteLanguage)->willReturn($expectedUrl);
 
-        $expected = new Sitemap(new Uri('https://www.example.com/sitemap.xml'));
+        $expected = new SiteAwareSitemap(new Uri($expectedUrl), $site, $siteLanguage);
 
-        self::assertEquals($expected, $this->subject->locateBySite($site));
+        self::assertEquals($expected, $this->subject->locateBySite($site, $siteLanguage));
     }
 
     /**
      * @test
+     * @dataProvider locateBySiteThrowsExceptionIfSiteBaseHasNoHostnameConfiguredDataProvider
+     * @param SiteLanguage|null $siteLanguage
+     * @throws UnsupportedConfigurationException
      * @throws UnsupportedSiteException
      */
-    public function locateBySiteThrowsExceptionIfSiteBaseHasNoHostnameConfigured(): void
+    public function locateBySiteThrowsExceptionIfSiteBaseHasNoHostnameConfigured(?SiteLanguage $siteLanguage): void
     {
         $site = $this->getSite([]);
 
-        $this->cacheManagerProphecy->get($site)->willReturn(null);
+        $this->cacheManagerProphecy->get($site, $siteLanguage)->willReturn(null);
 
         $this->expectException(UnsupportedConfigurationException::class);
         $this->expectExceptionCode(1619168965);
 
-        $this->subject->locateBySite($site);
+        $this->subject->locateBySite($site, $siteLanguage);
     }
 
     /**
      * @test
+     * @dataProvider locateBySiteThrowsExceptionIfProvidersCannotResolveSitemapDataProvider
+     * @param SiteLanguage|null $siteLanguage
      * @throws UnsupportedConfigurationException
+     * @throws UnsupportedSiteException
      */
-    public function locateBySiteThrowsExceptionIfProvidersCannotResolveSitemap(): void
+    public function locateBySiteThrowsExceptionIfProvidersCannotResolveSitemap(?SiteLanguage $siteLanguage): void
     {
         $site = $this->getSite();
         $subject = new SitemapLocator(new RequestFactory(), $this->cacheManagerProphecy->reveal(), []);
 
-        $this->cacheManagerProphecy->get($site)->willReturn(null);
+        $this->cacheManagerProphecy->get($site, $siteLanguage)->willReturn(null);
 
         $this->expectException(UnsupportedSiteException::class);
         $this->expectExceptionCode(1619369771);
 
-        $subject->locateBySite($site);
+        $subject->locateBySite($site, $siteLanguage);
     }
 
     /**
      * @test
+     * @dataProvider locateBySiteReturnsLocatedSitemapDataProvider
+     * @param SiteLanguage|null $siteLanguage
+     * @param string $expectedUrl
      * @throws UnsupportedConfigurationException
      * @throws UnsupportedSiteException
      */
-    public function locateBySiteReturnsLocatedSitemap(): void
+    public function locateBySiteReturnsLocatedSitemap(?SiteLanguage $siteLanguage, string $expectedUrl): void
     {
         $site = $this->getSite();
 
-        $this->cacheManagerProphecy->get($site)->willReturn(null);
-        $this->cacheManagerProphecy->set($site, Argument::type(Sitemap::class))->shouldBeCalledOnce();
+        $this->cacheManagerProphecy->get($site, $siteLanguage)->willReturn(null);
+        $this->cacheManagerProphecy->set(Argument::type(SiteAwareSitemap::class))->shouldBeCalledOnce();
 
-        $expected = new Sitemap(new Uri('https://www.example.com/sitemap.xml'));
+        $expected = new SiteAwareSitemap(new Uri($expectedUrl), $site, $siteLanguage);
 
-        self::assertEquals($expected, $this->subject->locateBySite($site));
+        self::assertEquals($expected, $this->subject->locateBySite($site, $siteLanguage));
+    }
+
+    /**
+     * @return \Generator<string, array>
+     */
+    public function locateBySiteReturnsCachedSitemapDataProvider(): \Generator
+    {
+        yield 'no site language' => [null, 'https://www.example.com/sitemap.xml'];
+        yield 'site language' => [$this->getSiteLanguage(), 'https://www.example.com/sitemap.xml'];
+    }
+
+    /**
+     * @return \Generator<string, array>
+     */
+    public function locateBySiteThrowsExceptionIfSiteBaseHasNoHostnameConfiguredDataProvider(): \Generator
+    {
+        yield 'no site language' => [null];
+        yield 'site language' => [$this->getSiteLanguage('')];
+    }
+
+    /**
+     * @return \Generator<string, array>
+     */
+    public function locateBySiteThrowsExceptionIfProvidersCannotResolveSitemapDataProvider(): \Generator
+    {
+        yield 'no site language' => [null];
+        yield 'site language' => [$this->getSiteLanguage()];
+    }
+
+    /**
+     * @return \Generator<string, array>
+     */
+    public function locateBySiteReturnsLocatedSitemapDataProvider(): \Generator
+    {
+        yield 'no site language' => [null, 'https://www.example.com/sitemap.xml'];
+        yield 'site language' => [$this->getSiteLanguage(), 'https://www.example.com/de/sitemap.xml'];
     }
 
     /**
@@ -168,5 +217,10 @@ class SitemapLocatorTest extends UnitTestCase
     private function getSite(array $configuration = ['base' => 'https://www.example.com/']): Site
     {
         return new Site('foo', 1, $configuration);
+    }
+
+    private function getSiteLanguage(string $baseUrl = 'https://www.example.com/de/'): SiteLanguage
+    {
+        return new SiteLanguage(1, 'de_DE.UTF-8', new Uri($baseUrl), []);
     }
 }

@@ -60,6 +60,8 @@ class CacheWarmupToolbarItem implements ToolbarItemInterface
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Warming/Backend/Toolbar/CacheWarmupMenu');
         $pageRenderer->addInlineLanguageLabelArray([
             // Toolbar
+            'cacheWarmup.toolbar.sitemap.missing' => static::translate('toolbar.sitemap.missing'),
+            'cacheWarmup.toolbar.sitemap.placeholder' => static::translate('toolbar.sitemap.placeholder'),
             'cacheWarmup.toolbar.copy.successful' => static::translate('toolbar.copy.successful'),
 
             // Notification

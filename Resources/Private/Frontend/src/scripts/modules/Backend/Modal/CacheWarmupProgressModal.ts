@@ -94,6 +94,7 @@ class CacheWarmupProgressModal {
     const failedCount = progress.getNumberOfFailedUrls();
     const {current, total} = progress.progress;
 
+    this.$progressBar.addClass('active');
     this.$progressBar.attr('aria-valuenow', current);
     this.$progressBar.attr('aria-valuemax', total);
     this.$progressBar.css('width', `${percent}%`);
@@ -111,9 +112,10 @@ class CacheWarmupProgressModal {
     );
 
     if (progress.isFinished()) {
-      this.$progressBar.removeClass('progress-bar-warning').addClass(
-        failedCount > 0 ? 'progress-bar-danger' : 'progress-bar-success'
-      );
+      this.$progressBar
+        .removeClass('active')
+        .removeClass('progress-bar-warning')
+        .addClass(failedCount > 0 ? 'progress-bar-danger' : 'progress-bar-success');
     }
   }
 

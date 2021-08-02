@@ -1,0 +1,7 @@
+{
+    "extends": "stylelint-config-sass-guidelines",
+    "rules": {
+        "indentation": 4,
+        "selector-class-pattern": "^[a-z0-9\\-_]+$"
+    }
+}

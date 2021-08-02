@@ -43,7 +43,7 @@ export default class EventSourceRequestHandler implements RequestHandlerInterfac
   private source!: EventSource;
   private progress!: WarmupProgress;
 
-  public startRequestWithQueryParams(queryParams:URLSearchParams): Promise<WarmupProgress> {
+  public startRequestWithQueryParams(queryParams: URLSearchParams): Promise<WarmupProgress> {
     CacheWarmupProgressModal.createModal();
 
     this.source = new EventSource(this.getUrl(queryParams).toString(), {withCredentials: true});
