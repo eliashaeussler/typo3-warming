@@ -22,6 +22,7 @@
 import RequestHandlerInterface from './RequestHandlerInterface';
 import Util from '../Util';
 import WarmupProgress from '../WarmupProgress';
+import WarmupState from "../Enums/WarmupState";
 
 // Modules
 import CacheWarmupProgressModal from '../../modules/Backend/Modal/CacheWarmupProgressModal';
@@ -50,6 +51,12 @@ export default class EventSourceRequestHandler implements RequestHandlerInterfac
     this.progress = new WarmupProgress();
 
     return new Promise<WarmupProgress>((resolve, reject): void => {
+      // Abort cache warmup of progress modal is closed
+      CacheWarmupProgressModal.getModal().on('hide.bs.modal', (): void => {
+        this.abortWarmup();
+        resolve(this.progress);
+      });
+
       this.source.addEventListener(
         'warmupProgress',
         (event): void => this.updateProgress(event as MessageEvent),
@@ -128,6 +135,18 @@ export default class EventSourceRequestHandler implements RequestHandlerInterfac
       .removeClass('hidden')
       .off('button.clicked')
       .on('button.clicked', (): void => CacheWarmupReportModal.createModal(this.progress));
+  }
+
+  /**
+   * Abort current cache warmup request.
+   *
+   * @private
+   */
+  private abortWarmup(): void {
+    this.closeSource();
+    this.progress.update({
+      state: WarmupState.Aborted,
+    });
   }
 
   /**

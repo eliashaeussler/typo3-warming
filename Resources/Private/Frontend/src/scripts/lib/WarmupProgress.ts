@@ -35,7 +35,7 @@ interface WarmupProgressDataObject {
   title?: string;
   message?: string;
   progress?: CrawlingProgress;
-  urls: CrawlingState;
+  urls?: CrawlingState;
 }
 
 /**
