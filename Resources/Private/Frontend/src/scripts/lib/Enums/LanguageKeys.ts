@@ -33,6 +33,9 @@ enum LanguageKeys {
 
   // Notification
   notificationShowReport = 'cacheWarmup.notification.action.showReport',
+  notificationActionRetry = 'cacheWarmup.notification.action.retry',
+  notificationAbortedTitle = 'cacheWarmup.notification.aborted.title',
+  notificationAbortedMessage = 'cacheWarmup.notification.aborted.message',
   notificationErrorTitle = 'cacheWarmup.notification.error.title',
   notificationErrorMessage = 'cacheWarmup.notification.error.message',
 

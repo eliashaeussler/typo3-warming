@@ -29,6 +29,7 @@ enum WarmupState {
   Failed = 'failed',
   Warning = 'warning',
   Success = 'success',
+  Aborted = 'aborted',
   Unknown = 'unknown',
 }
 

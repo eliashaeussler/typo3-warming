@@ -65,9 +65,12 @@ class CacheWarmupToolbarItem implements ToolbarItemInterface
             'cacheWarmup.toolbar.copy.successful' => static::translate('toolbar.copy.successful'),
 
             // Notification
+            'cacheWarmup.notification.aborted.title' => static::translate('notification.aborted.title'),
+            'cacheWarmup.notification.aborted.message' => static::translate('notification.aborted.message'),
             'cacheWarmup.notification.error.title' => static::translate('notification.error.title'),
             'cacheWarmup.notification.error.message' => static::translate('notification.error.message'),
             'cacheWarmup.notification.action.showReport' => static::translate('notification.action.showReport'),
+            'cacheWarmup.notification.action.retry' => static::translate('notification.action.retry'),
 
             // Report Modal
             'cacheWarmup.modal.report.title' => static::translate('modal.report.title'),
