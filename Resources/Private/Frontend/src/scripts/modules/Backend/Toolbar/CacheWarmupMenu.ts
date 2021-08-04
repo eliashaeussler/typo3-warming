@@ -32,6 +32,7 @@ import WarmupState from '../../../lib/Enums/WarmupState';
 
 // Modules
 import $ from 'jquery';
+import ImmediateAction from "TYPO3/CMS/Backend/ActionButton/ImmediateAction";
 import Icons from 'TYPO3/CMS/Backend/Icons';
 import Notification from 'TYPO3/CMS/Backend/Notification';
 import Viewport from 'TYPO3/CMS/Backend/Viewport';
@@ -115,10 +116,20 @@ export class CacheWarmupMenu {
       .then(
         // Success
         (data: WarmupProgress): void => {
-          this.showNotification(data);
+          let action;
+
+          // Add option to restart cache warmup if it has been aborted
+          if (WarmupState.Aborted === data.state) {
+            action = {
+              label: TYPO3.lang[LanguageKeys.notificationActionRetry],
+              action: new ImmediateAction((): void => this.warmupCache(pageId, mode, languageId)),
+            };
+          }
+
+          this.showNotification(data, action);
 
           // Apply trigger function to "retry" button of progress modal
-          if (WarmupRequestType.EventSource === request.requestType) {
+          if (WarmupRequestType.EventSource === request.requestType && WarmupState.Aborted !== data.state) {
             CacheWarmupProgressModal.getRetryButton()
               .removeClass('hidden')
               .off('button.clicked')
@@ -302,24 +313,36 @@ export class CacheWarmupMenu {
    * Show notification for given cache warmup progress.
    *
    * @param progress {WarmupProgress} Progress of the cache warmup a notification is built for
+   * @param additionalAction {object|null} Additional action to be used for the generated notification
    * @private
    */
-  private showNotification(progress: WarmupProgress): void {
-    const {title, message} = progress.response;
+  private showNotification(progress: WarmupProgress, additionalAction?: { label: string, action: typeof ImmediateAction }): void {
+    let {title, message} = progress.response;
 
     // Create action to open full report as modal
-    const modalAction = CacheWarmupReportModal.createModalAction(progress);
+    const reportAction = CacheWarmupReportModal.createModalAction(progress);
+
+    // Define modal actions
+    const actions = [reportAction];
+    if (additionalAction) {
+      actions.push(additionalAction);
+    }
 
     // Show notification
     switch (progress.state) {
       case WarmupState.Failed:
-        Notification.error(title, message, this.notificationDuration, [modalAction]);
+        Notification.error(title, message, this.notificationDuration, actions);
         break;
       case WarmupState.Warning:
-        Notification.warning(title, message, this.notificationDuration, [modalAction]);
+        Notification.warning(title, message, this.notificationDuration, actions);
         break;
       case WarmupState.Success:
-        Notification.success(title, message, this.notificationDuration, [modalAction]);
+        Notification.success(title, message, this.notificationDuration, actions);
+        break;
+      case WarmupState.Aborted:
+        title = TYPO3.lang[LanguageKeys.notificationAbortedTitle];
+        message = TYPO3.lang[LanguageKeys.notificationAbortedMessage];
+        Notification.info(title, message, this.notificationDuration, actions);
         break;
       case WarmupState.Unknown:
         Notification.notice(title, message, this.notificationDuration);

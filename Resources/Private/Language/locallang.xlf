@@ -55,6 +55,12 @@
 			<trans-unit id="notification.message.page.unknown">
 				<source>Warming up the cache for page "%1$s [%2$d]" ended unexpectedly.</source>
 			</trans-unit>
+			<trans-unit id="notification.aborted.title">
+				<source>Cache warmup aborted</source>
+			</trans-unit>
+			<trans-unit id="notification.aborted.message">
+				<source>The cache warmup was stopped prematurely and therefore could not be completed.</source>
+			</trans-unit>
 			<trans-unit id="notification.error.title">
 				<source>An error occurred</source>
 			</trans-unit>
@@ -63,6 +69,9 @@
 			</trans-unit>
 			<trans-unit id="notification.action.showReport">
 				<source>View report</source>
+			</trans-unit>
+			<trans-unit id="notification.action.retry">
+				<source>Run again</source>
 			</trans-unit>
 
 			<trans-unit id="modal.report.title">
