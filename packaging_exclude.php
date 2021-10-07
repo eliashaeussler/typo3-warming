@@ -25,6 +25,7 @@ return [
     'directories' => [
         '.build',
         '.git',
+        '.github',
         'bin',
         'build',
         'public',
@@ -42,11 +43,11 @@ return [
         'editorconfig',
         'gitattributes',
         'gitignore',
-        'gitlab-ci.yml',
         'packaging_exclude.php',
-        'php_cs',
+        'php-cs-fixer.php',
         'phpstan.neon',
         'phpunit.coverage.xml',
         'phpunit.xml',
+        'sonar-project.properties',
     ],
 ];

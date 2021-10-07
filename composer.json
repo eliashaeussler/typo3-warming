@@ -59,14 +59,21 @@
 			"mkdir -p .Build/web/typo3conf/ext/",
 			"[ -L .Build/web/typo3conf/ext/warming ] || ln -snvf ../../../../. .Build/web/typo3conf/ext/warming"
 		],
-		"lint": "php-cs-fixer fix",
-		"sca": "phpstan analyse -c phpstan.neon",
-		"test": "phpunit -c phpunit.xml",
-		"test:coverage": "phpunit -c phpunit.coverage.xml"
-	},
-	"support": {
-		"issues": "https://gitlab.elias-haeussler.de/typo3/warming/-/issues",
-		"source": "https://gitlab.elias-haeussler.de/typo3/warming",
-		"rss": "https://gitlab.elias-haeussler.de/typo3/warming.atom"
+		"lint": [
+			"@lint:php"
+		],
+		"lint:php": "php-cs-fixer fix",
+		"sca": [
+			"@sca:php"
+		],
+		"sca:php": "phpstan analyse -c phpstan.neon",
+		"test": [
+			"@test:unit"
+		],
+		"test:ci": [
+			"@test:ci:unit"
+		],
+		"test:ci:unit": "phpunit -c phpunit.ci.xml",
+		"test:unit": "phpunit -c phpunit.xml"
 	}
 }
