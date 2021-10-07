@@ -30,6 +30,7 @@ use EliasHaeussler\Typo3Warming\Sitemap\Provider\DefaultProvider;
 use EliasHaeussler\Typo3Warming\Sitemap\SiteAwareSitemap;
 use EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Http\Uri;
@@ -45,6 +46,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class SitemapLocatorTest extends UnitTestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var ObjectProphecy|CacheManager
      */

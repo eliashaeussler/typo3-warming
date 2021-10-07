@@ -1,19 +1,20 @@
 {
-    "name": "eliashaeussler/typo3-warming-libs",
-    "description": "Additional libraries to support non-composer mode of EXT:warming",
-    "license": "GPL-2.0-or-later",
-    "authors": [
-        {
-            "name": "Elias Häußler",
-            "email": "elias@haeussler.dev",
-            "homepage": "https://haeussler.dev",
-            "role": "Maintainer"
-        }
-    ],
-    "require": {
-        "eliashaeussler/cache-warmup": "^0.4.0 || ^0.5.0"
-    },
-    "config": {
-        "lock": false
-    }
+	"name": "eliashaeussler/typo3-warming-libs",
+	"description": "Additional libraries to support non-composer mode of EXT:warming",
+	"license": "GPL-2.0-or-later",
+	"authors": [
+		{
+			"name": "Elias Häußler",
+			"email": "elias@haeussler.dev",
+			"homepage": "https://haeussler.dev",
+			"role": "Maintainer"
+		}
+	],
+	"require": {
+		"eliashaeussler/cache-warmup": "^0.4.0 || ^0.5.0",
+		"symfony/polyfill-php80": "^1.23"
+	},
+	"config": {
+		"lock": false
+	}
 }

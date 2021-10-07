@@ -32,7 +32,6 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * CacheWarmupProvider
@@ -193,7 +192,7 @@ class CacheWarmupProvider extends PageProvider
 
         // Add language ID as data attribute if current item is part
         // of a submenu within the configured context menu items
-        if (StringUtility::beginsWith($itemName, 'lang_')) {
+        if (str_starts_with($itemName, 'lang_')) {
             $attributes['data-language-id'] = (int)substr($itemName, 5);
         }
 
