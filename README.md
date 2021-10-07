@@ -1,15 +1,37 @@
-[![Pipeline](https://gitlab.elias-haeussler.de/typo3/warming/badges/master/pipeline.svg)](https://gitlab.elias-haeussler.de/typo3/warming/-/pipelines)
-[![Coverage](https://gitlab.elias-haeussler.de/typo3/warming/badges/master/coverage.svg)](https://gitlab.elias-haeussler.de/typo3/warming/-/pipelines)
-[![License](https://badgen.net/packagist/license/eliashaeussler/typo3-warming)](LICENSE.md)
-
-# Warming
-
-> Extension for TYPO3 CMS that warms up Frontend caches based on an XML sitemap
-> with multi-language support.
+<div align="center">
 
 ![Extension icon](Resources/Public/Icons/Extension.svg)
 
-## Installation
+# TYPO3 extension `warming`
+
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=eliashaeussler_typo3-warming&metric=coverage)](https://sonarcloud.io/dashboard?id=eliashaeussler_typo3-warming)
+[![Tests](https://github.com/eliashaeussler/typo3-warming/actions/workflows/tests.yaml/badge.svg)](https://github.com/eliashaeussler/typo3-warming/actions/workflows/tests.yaml)
+[![CGL](https://github.com/eliashaeussler/typo3-warming/actions/workflows/cgl.yaml/badge.svg)](https://github.com/eliashaeussler/typo3-warming/actions/workflows/cgl.yaml)
+[![Latest Stable Version](http://poser.pugx.org/eliashaeussler/typo3-warming/v)](https://packagist.org/packages/eliashaeussler/typo3-warming)
+[![License](http://poser.pugx.org/eliashaeussler/typo3-warming/license)](LICENSE.md)
+
+:package:&nbsp;[Packagist](https://packagist.org/packages/eliashaeussler/typo3-warming) |
+:hatched_chick:&nbsp;[TYPO3 extension repository](https://extensions.typo3.org/extension/warming) |
+:floppy_disk:&nbsp;[Repository](https://github.com/eliashaeussler/typo3-warming) |
+:bug:&nbsp;[Issue tracker](https://github.com/eliashaeussler/typo3-warming/issues)
+
+</div>
+
+An extension for TYPO3 CMS that warms up Frontend caches based on an XML sitemap.
+Cache warmup can be triggered via TYPO3 backend or using a console command.
+It supports multiple languages and custom crawler implementations.
+
+## :rocket: Features
+
+* Warmup of Frontend caches from pages or XML sitemap
+* Integration in TYPO3 backend toolbar and page tree
+* Support of various sitemap providers (e.g. `robots.txt` or custom location)
+* Multi-language support
+* Support for custom crawlers
+* Console command
+* Compatible with TYPO3 10.4 LTS and 11.5 LTS
+
+## :fire: Installation
 
 Via Composer:
 
@@ -20,7 +42,7 @@ composer require eliashaeussler/typo3-warming
 Or download the zip file from
 [TYPO3 extension repository (TER)](https://extensions.typo3.org/extension/warming).
 
-## Usage
+## :zap: Usage
 
 Caches can be warmed up in two different modes – either on a **per-page** basis or
 using the **XML sitemap of a site**. Currently, only one XML sitemap of a site can
@@ -65,7 +87,7 @@ typo3cms warming:cachewarmup [-p|--pages <pages>] [-s|--sites <sites>] [-l|--lan
 * `-x|--strict`: Set this option to exit with error in case any page could not
   be crawled during cache warmup
 
-## Configuration
+## :open_file_folder: Configuration
 
 ### Permissions
 
@@ -131,7 +153,7 @@ statistics of analysis tools, for example.
 Alternatively, the command `warming:showuseragent` can be used to read the
 `User-Agent` header.
 
-## Sitemap providers
+### Sitemap providers
 
 The path to XML sitemaps is located using various path providers. All providers
 implement the [`ProviderInterface`](Classes/Sitemap/Provider/ProviderInterface.php).
@@ -162,7 +184,7 @@ services:
         - '@EliasHaeussler\Typo3Warming\Sitemap\Provider\DefaultProvider'
 ```
 
-## Icon
+## :gem: Credits
 
 The extension icon ("rocket") as well as the icons for cache warmup actions are
 modified versions of the original
@@ -170,6 +192,6 @@ modified versions of the original
 icon from TYPO3 core which is originally licensed under
 [MIT License](https://github.com/TYPO3/TYPO3.Icons/blob/master/LICENSE).
 
-## License
+## :star: License
 
 This project is licensed under [GNU General Public License 2.0 (or later)](LICENSE.md).

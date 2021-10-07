@@ -1,0 +1,33 @@
+name: CGL
+on: [push, pull_request]
+
+jobs:
+  cgl:
+    runs-on: ubuntu-18.04
+    strategy:
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      # Prepare environment
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          tools: composer:v2
+
+      # Install dependencies
+      - name: Install Composer dependencies
+        run: composer install --no-progress
+
+      # Linting
+      - name: Lint composer.json
+        run: composer normalize --dry-run
+      - name: Lint PHP
+        run: composer lint:php -- --dry-run
+
+      # SCA
+      - name: SCA PHP
+        run: composer sca:php -- --error-format github

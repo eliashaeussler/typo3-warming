@@ -4,7 +4,7 @@
          convertErrorsToExceptions="true" convertWarningsToExceptions="true" forceCoversAnnotation="false"
          processIsolation="false" stopOnError="false" stopOnFailure="false" stopOnIncomplete="false"
          stopOnSkipped="false" verbose="true" beStrictAboutTestsThatDoNotTestAnything="true"
-         xsi:noNamespaceSchemaLocation=".Build/vendor/phpunit/phpunit/phpunit.xsd">
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
     <extensions>
         <extension class="EliasHaeussler\Typo3Warming\Tests\Hooks\BypassFinalHook" />
     </extensions>
@@ -20,7 +20,7 @@
     </coverage>
     <testsuites>
         <testsuite name="unit">
-            <directory>Tests/Unit/*</directory>
+            <directory>Tests/Unit</directory>
         </testsuite>
     </testsuites>
     <logging>
