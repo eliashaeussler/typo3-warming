@@ -166,7 +166,7 @@ test:unit:
       fi
   parallel:
     matrix:
-      - PHP_VERSION: ["7.2", "7.3", "7.4"]
+      - PHP_VERSION: ["7.3", "7.4"]
         TYPO3_VERSION: "10.4"
       - PHP_VERSION: "7.4"
         TYPO3_VERSION: "11.4"

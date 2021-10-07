@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Tests\Unit\Cache;
 
 use EliasHaeussler\Typo3Warming\Cache\CacheManager;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Http\Uri;
@@ -39,6 +40,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class CacheManagerTest extends UnitTestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var ObjectProphecy|PhpFrontend
      */

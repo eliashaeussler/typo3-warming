@@ -25,6 +25,7 @@ namespace EliasHaeussler\Typo3Warming\Tests\Unit\Command;
 
 use EliasHaeussler\Typo3Warming\Command\ShowUserAgentCommand;
 use EliasHaeussler\Typo3Warming\Configuration\Configuration;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Console\Tester\CommandTester;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -36,6 +37,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ShowUserAgentCommandTest extends UnitTestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var CommandTester
      */
