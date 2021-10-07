@@ -25,6 +25,7 @@ namespace EliasHaeussler\Typo3Warming\Tests\Unit\Sitemap\Provider;
 
 use EliasHaeussler\Typo3Warming\Sitemap\Provider\RobotsTxtProvider;
 use EliasHaeussler\Typo3Warming\Sitemap\SiteAwareSitemap;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Http\Response;
@@ -41,6 +42,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class RobotsTxtProviderTest extends UnitTestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var ObjectProphecy|RequestFactory
      */

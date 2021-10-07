@@ -44,7 +44,7 @@
 				]
 			},
 			{
-				"action": "composer normalize --dry-run",
+				"action": "composer normalize --dry-run --no-check-lock --no-update-lock",
 				"options": [],
 				"conditions": [
 					{
