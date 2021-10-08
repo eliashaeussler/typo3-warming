@@ -58,7 +58,7 @@
 				]
 			},
 			{
-				"action": "composer test",
+				"action": "ddev composer test",
 				"options": [],
 				"conditions": [
 					{
@@ -66,8 +66,7 @@
 						"args": [
 							[
 								"*.php",
-								"phpunit.coverage.xml",
-								"phpunit.xml"
+								"phpunit.*.xml"
 							]
 						]
 					}
