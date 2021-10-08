@@ -151,9 +151,9 @@ class ConfigurationTest extends FunctionalTestCase
      */
     public function getAllReturnsCompleteExtensionConfiguration(): void
     {
-        $this->setExtensionConfiguration(['crawler' => 'foo', 'limit' => 'baz']);
+        $this->setExtensionConfiguration(['crawler' => 'foo', 'limit' => 'baz', 'verboseCrawler' => 'hello']);
 
-        self::assertSame(['crawler' => 'foo', 'limit' => 'baz'], $this->subject->getAll());
+        self::assertSame(['crawler' => 'foo', 'limit' => 'baz', 'verboseCrawler' => 'hello'], $this->subject->getAll());
     }
 
     /**
