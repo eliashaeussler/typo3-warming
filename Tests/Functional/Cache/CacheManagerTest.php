@@ -23,17 +23,15 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Tests\Functional\Cache;
 
-use EliasHaeussler\CacheWarmup\Sitemap;
 use EliasHaeussler\Typo3Warming\Cache\CacheManager;
 use EliasHaeussler\Typo3Warming\Sitemap\SiteAwareSitemap;
 use TYPO3\CMS\Core\Cache\CacheManager as CoreCacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * CacheManagerTest
