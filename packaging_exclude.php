@@ -24,6 +24,7 @@ declare(strict_types=1);
 return [
     'directories' => [
         '.build',
+        '.ddev',
         '.git',
         '.github',
         'bin',
@@ -46,8 +47,10 @@ return [
         'packaging_exclude.php',
         'php-cs-fixer.php',
         'phpstan.neon',
-        'phpunit.coverage.xml',
-        'phpunit.xml',
+        'phpunit.ci.functional.xml',
+        'phpunit.ci.unit.xml',
+        'phpunit.functional.xml',
+        'phpunit.unit.xml',
         'sonar-project.properties',
     ],
 ];
