@@ -51,7 +51,7 @@ class CacheManager
     /**
      * @param Site|null $site
      * @param SiteLanguage|null $siteLanguage
-     * @return array<string, array>|string|null
+     * @return array<string, array<string, mixed>>|string|null
      */
     public function get(Site $site = null, SiteLanguage $siteLanguage = null)
     {

@@ -1,0 +1,16 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Right side of \\|\\| is always false\\.$#"
+			count: 1
+			path: Configuration/Backend/AjaxRoutes.php
+
+		-
+			message: "#^Right side of \\|\\| is always false\\.$#"
+			count: 1
+			path: Configuration/SiteConfiguration/Overrides/site.php
+
+		-
+			message: "#^Right side of \\|\\| is always false\\.$#"
+			count: 1
+			path: Configuration/SiteConfiguration/Overrides/site_language.php

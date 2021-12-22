@@ -178,7 +178,7 @@ class SitemapLocatorTest extends UnitTestCase
     }
 
     /**
-     * @return \Generator<string, array>
+     * @return \Generator<string, array{SiteLanguage|null, string}>
      */
     public function locateBySiteReturnsCachedSitemapDataProvider(): \Generator
     {
@@ -187,7 +187,7 @@ class SitemapLocatorTest extends UnitTestCase
     }
 
     /**
-     * @return \Generator<string, array>
+     * @return \Generator<string, array{SiteLanguage|null}>
      */
     public function locateBySiteThrowsExceptionIfSiteBaseHasNoHostnameConfiguredDataProvider(): \Generator
     {
@@ -196,7 +196,7 @@ class SitemapLocatorTest extends UnitTestCase
     }
 
     /**
-     * @return \Generator<string, array>
+     * @return \Generator<string, array{SiteLanguage|null}>
      */
     public function locateBySiteThrowsExceptionIfProvidersCannotResolveSitemapDataProvider(): \Generator
     {
@@ -205,7 +205,7 @@ class SitemapLocatorTest extends UnitTestCase
     }
 
     /**
-     * @return \Generator<string, array>
+     * @return \Generator<string, array{SiteLanguage|null, string}>
      */
     public function locateBySiteReturnsLocatedSitemapDataProvider(): \Generator
     {
