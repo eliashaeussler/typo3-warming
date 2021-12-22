@@ -32,7 +32,7 @@
 		"phpunit/phpcov": "^8.2",
 		"saschaegerer/phpstan-typo3": "^0.13.3",
 		"typo3/cms-lowlevel": "^10.4 || ^11.5",
-		"typo3/coding-standards": "^0.3.0",
+		"typo3/coding-standards": "^0.5.0",
 		"typo3/minimal": "^10.4 || ^11.5",
 		"typo3/testing-framework": "^6.11.2"
 	},
