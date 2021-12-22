@@ -41,6 +41,21 @@
 				]
 			},
 			{
+				"action": "composer lint:typoscript -- --fail-on-warnings",
+				"options": [],
+				"conditions": [
+					{
+						"exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\Any",
+						"args": [
+							[
+								"*.typoscript",
+								"*.tsconfig"
+							]
+						]
+					}
+				]
+			},
+			{
 				"action": "composer sca -- --memory-limit=2G",
 				"options": [],
 				"conditions": [

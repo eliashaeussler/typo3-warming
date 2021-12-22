@@ -29,6 +29,8 @@ jobs:
         run: .Build/bin/ec -e .Build -e Resources/Private/Frontend/node_modules -e Resources/Public/JavaScript
       - name: Lint PHP
         run: composer lint:php -- --dry-run
+      - name: Lint TypoScript
+        run: composer lint:typoscript -- --fail-on-warnings
 
       # SCA
       - name: SCA PHP
