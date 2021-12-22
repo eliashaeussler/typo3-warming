@@ -341,7 +341,7 @@ class CacheWarmupController
         if (is_array($parsedBody)) {
             $redirect = $parsedBody['redirect'] ?? null;
         }
-        $redirect ??= $request->getQueryParams()['redirect'] ?? '';
+        $redirect = $redirect ?? $request->getQueryParams()['redirect'] ?? '';
 
         return GeneralUtility::sanitizeLocalUrl($redirect);
     }
