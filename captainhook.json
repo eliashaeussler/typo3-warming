@@ -14,7 +14,19 @@
 		"enabled": true,
 		"actions": [
 			{
-				"action": "composer lint -- --dry-run",
+				"action": ".Build/bin/ec -e .Build -e Resources/Private/Frontend/node_modules -e Resources/Public/JavaScript",
+				"options": [],
+				"conditions": [
+					{
+						"exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\All",
+						"args": [
+							[]
+						]
+					}
+				]
+			},
+			{
+				"action": "composer lint:php -- --dry-run",
 				"options": [],
 				"conditions": [
 					{
