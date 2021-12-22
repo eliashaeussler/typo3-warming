@@ -18,10 +18,10 @@
 		"psr/log": "^1.0",
 		"symfony/console": "^4.0 || ^5.0",
 		"symfony/polyfill-php80": "^1.23",
-		"typo3/cms-backend": "^10.4 || ^11.5",
-		"typo3/cms-core": "^10.4 || ^11.5",
-		"typo3/cms-extbase": "^10.4 || ^11.5",
-		"typo3/cms-fluid": "^10.4 || ^11.5"
+		"typo3/cms-backend": "~10.4.0 || ~11.5.0",
+		"typo3/cms-core": "~10.4.0 || ~11.5.0",
+		"typo3/cms-extbase": "~10.4.0 || ~11.5.0",
+		"typo3/cms-fluid": "~10.4.0 || ~11.5.0"
 	},
 	"require-dev": {
 		"captainhook/plugin-composer": "^5.3",
@@ -31,9 +31,7 @@
 		"phpspec/prophecy-phpunit": "^2.0",
 		"phpunit/phpcov": "^8.2",
 		"saschaegerer/phpstan-typo3": "^0.13.3",
-		"typo3/cms-lowlevel": "^10.4 || ^11.5",
 		"typo3/coding-standards": "^0.5.0",
-		"typo3/minimal": "^10.4 || ^11.5",
 		"typo3/testing-framework": "^6.11.2"
 	},
 	"autoload": {
