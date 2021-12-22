@@ -1,8 +1,8 @@
 {
 	"name": "eliashaeussler/typo3-warming",
-	"type": "typo3-cms-extension",
 	"description": "Extension for TYPO3 CMS that warms up Frontend caches based on an XML sitemap with multi-language support",
 	"license": "GPL-2.0-or-later",
+	"type": "typo3-cms-extension",
 	"authors": [
 		{
 			"name": "Elias Häußler",
@@ -36,17 +36,6 @@
 		"typo3/minimal": "^10.4 || ^11.5",
 		"typo3/testing-framework": "^6.11.2"
 	},
-	"config": {
-		"bin-dir": ".Build/bin",
-		"sort-packages": true,
-		"vendor-dir": ".Build/vendor"
-	},
-	"extra": {
-		"typo3/cms": {
-			"extension-key": "warming",
-			"web-dir": ".Build/web"
-		}
-	},
 	"autoload": {
 		"psr-4": {
 			"EliasHaeussler\\Typo3Warming\\": "Classes/"
@@ -55,6 +44,23 @@
 	"autoload-dev": {
 		"psr-4": {
 			"EliasHaeussler\\Typo3Warming\\Tests\\": "Tests/"
+		}
+	},
+	"config": {
+		"allow-plugins": {
+			"captainhook/plugin-composer": true,
+			"ergebnis/composer-normalize": true,
+			"typo3/class-alias-loader": true,
+			"typo3/cms-composer-installers": true
+		},
+		"bin-dir": ".Build/bin",
+		"sort-packages": true,
+		"vendor-dir": ".Build/vendor"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "warming",
+			"web-dir": ".Build/web"
 		}
 	},
 	"scripts": {
