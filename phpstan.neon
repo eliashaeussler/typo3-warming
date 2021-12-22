@@ -5,7 +5,7 @@ includes:
 parameters:
     bootstrapFiles:
         - .Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTestsBootstrap.php
-    level: 7
+    level: 8
     paths:
         - Classes
         - Configuration

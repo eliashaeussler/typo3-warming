@@ -222,6 +222,7 @@ class WarmupCommand extends Command
         }
 
         // Run cache warmup in sub command from eliashaeussler/cache-warmup
+        /** @var CacheWarmupCommand $subCommand */
         $subCommand = $application->add(new CacheWarmupCommand());
         $subCommandParameters = [
             'sitemaps' => $sitemaps,

@@ -152,16 +152,13 @@ class CacheWarmupService implements LoggerAwareInterface
         return $site->getRouter()->generateUri((string)$pageId, ['_language' => $languageId]);
     }
 
-    /**
-     * @return CrawlerInterface
-     */
-    public function getCrawler(): CrawlerInterface
+    public function getCrawler(): ?CrawlerInterface
     {
         return $this->crawler;
     }
 
     /**
-     * @param string|CrawlerInterface|null $crawler
+     * @param class-string<CrawlerInterface>|CrawlerInterface|null $crawler
      * @return self
      * @throws UnsupportedConfigurationException
      */
@@ -172,7 +169,7 @@ class CacheWarmupService implements LoggerAwareInterface
     }
 
     /**
-     * @param string|CrawlerInterface $crawler
+     * @param class-string<CrawlerInterface>|CrawlerInterface|null $crawler
      * @return CrawlerInterface
      * @throws UnsupportedConfigurationException
      */
@@ -202,8 +199,6 @@ class CacheWarmupService implements LoggerAwareInterface
             throw UnsupportedConfigurationException::forMissingImplementation($crawler, CrawlerInterface::class);
         }
 
-        /** @var CrawlerInterface $instance */
-        $instance = GeneralUtility::makeInstance($crawler);
-        return $instance;
+        return GeneralUtility::makeInstance($crawler);
     }
 }

@@ -45,6 +45,7 @@ use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -283,6 +284,7 @@ class CacheWarmupController
             // Check all available languages for possible sitemaps
             foreach ($this->sitemapLocator->locateAllBySite($site) as $sitemap) {
                 $siteLanguage = $sitemap->getSiteLanguage();
+                assert($siteLanguage instanceof SiteLanguage);
                 $languageIdentifier = $siteLanguage === $site->getDefaultLanguage() ? 'default' : $siteLanguage->getLanguageId();
                 $sitemapConfiguration = [
                     'language' => $siteLanguage,
@@ -382,9 +384,13 @@ class CacheWarmupController
         return $data;
     }
 
-    protected function getPageTitle(int $pageId): string
+    protected function getPageTitle(?int $pageId): string
     {
-        return BackendUtility::getRecordTitle('pages', BackendUtility::getRecord('pages', $pageId));
+        if (null === $pageId || !is_array($record = BackendUtility::getRecord('pages', $pageId))) {
+            return BackendUtility::getNoRecordTitle();
+        }
+
+        return BackendUtility::getRecordTitle('pages', $record);
     }
 
     protected function determineCrawlState(int $successfulCount, int $failedCount): string

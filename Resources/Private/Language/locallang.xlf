@@ -121,6 +121,10 @@
 			<trans-unit id="contextMenu.item.cacheWarmupAll">
 				<source>Warmup all caches</source>
 			</trans-unit>
+
+			<trans-unit id="page.unknown">
+				<source>Unknown page</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
