@@ -326,7 +326,7 @@ class CacheWarmupController
             return $this->siteFinder->getSiteByPageId($pageId);
         }
 
-        if (count($allSites) > 1) {
+        if (1 !== count($allSites)) {
             throw MissingPageIdException::create();
         }
 
@@ -335,7 +335,11 @@ class CacheWarmupController
 
     protected function getRedirectUrl(ServerRequestInterface $request): string
     {
-        $redirect = $request->getParsedBody()['redirect'] ?? $request->getQueryParams()['redirect'] ?? '';
+        $parsedBody = $request->getParsedBody();
+        if (is_array($parsedBody)) {
+            $redirect = $parsedBody['redirect'] ?? null;
+        }
+        $redirect ??= $request->getQueryParams()['redirect'] ?? '';
 
         return GeneralUtility::sanitizeLocalUrl($redirect);
     }

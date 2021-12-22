@@ -82,7 +82,7 @@ class SitemapLocator
     public function locateBySite(Site $site, SiteLanguage $siteLanguage = null): SiteAwareSitemap
     {
         // Get sitemap from cache
-        if (($sitemapUrl = $this->cacheManager->get($site, $siteLanguage)) !== null) {
+        if (is_string($sitemapUrl = $this->cacheManager->get($site, $siteLanguage))) {
             return new SiteAwareSitemap(new Uri($sitemapUrl), $site, $siteLanguage);
         }
 
@@ -153,7 +153,7 @@ class SitemapLocator
                     1619525071
                 );
             }
-            if (!in_array(ProviderInterface::class, class_implements($provider))) {
+            if (!in_array(ProviderInterface::class, class_implements($provider) ?: [])) {
                 throw new \InvalidArgumentException(
                     sprintf(
                         'The given provider "%s" does not implement the interface "%s".',

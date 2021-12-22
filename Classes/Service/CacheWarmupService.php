@@ -198,7 +198,7 @@ class CacheWarmupService implements LoggerAwareInterface
         }
 
         // Throw exception if crawler class is invalid
-        if (!in_array(CrawlerInterface::class, class_implements($crawler))) {
+        if (!in_array(CrawlerInterface::class, class_implements($crawler) ?: [])) {
             throw UnsupportedConfigurationException::forMissingImplementation($crawler, CrawlerInterface::class);
         }
 
