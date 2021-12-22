@@ -1,7 +1,7 @@
 name: typo3-ext-warming
 type: typo3
 docroot: .Build/web
-php_version: "7.4"
+php_version: "8.0"
 webserver_type: nginx-fpm
 router_http_port: "80"
 router_https_port: "443"
@@ -12,7 +12,7 @@ mariadb_version: "10.3"
 mysql_version: ""
 nfs_mount_enabled: false
 mutagen_enabled: false
-webimage_extra_packages: [php7.4-pcov]
+webimage_extra_packages: [php8.0-pcov]
 use_dns_when_possible: true
 composer_version: ""
 web_environment:
