@@ -1,8 +1,8 @@
 {
 	"name": "eliashaeussler/typo3-warming",
-	"type": "typo3-cms-extension",
 	"description": "Extension for TYPO3 CMS that warms up Frontend caches based on an XML sitemap with multi-language support",
 	"license": "GPL-2.0-or-later",
+	"type": "typo3-cms-extension",
 	"authors": [
 		{
 			"name": "Elias Häußler",
@@ -12,11 +12,11 @@
 		}
 	],
 	"require": {
-		"php": "^7.1 || 8.0.*",
-		"eliashaeussler/cache-warmup": "^0.4.0 || ^0.5.0",
+		"php": ">= 7.1 < 8.1",
+		"eliashaeussler/cache-warmup": ">= 0.4.0 < 0.7.0",
 		"psr/http-message": "^1.0",
 		"psr/log": "^1.0",
-		"symfony/console": "^4.0 || ^5.0",
+		"symfony/console": ">= 4.0 < 6.0",
 		"symfony/polyfill-php80": "^1.23",
 		"typo3/cms-backend": "^10.4 || ^11.5",
 		"typo3/cms-core": "^10.4 || ^11.5",
@@ -33,6 +33,16 @@
 		"typo3/coding-standards": "^0.3.0",
 		"typo3/testing-framework": "^6.11.2"
 	},
+	"autoload": {
+		"psr-4": {
+			"EliasHaeussler\\Typo3Warming\\": "Classes/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"EliasHaeussler\\Typo3Warming\\Tests\\": "Tests/"
+		}
+	},
 	"config": {
 		"bin-dir": ".Build/bin",
 		"sort-packages": true,
@@ -42,16 +52,6 @@
 		"typo3/cms": {
 			"extension-key": "warming",
 			"web-dir": ".Build/web"
-		}
-	},
-	"autoload": {
-		"psr-4": {
-			"EliasHaeussler\\Typo3Warming\\": "Classes/"
-		}
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"EliasHaeussler\\Typo3Warming\\Tests\\": "Tests/"
 		}
 	},
 	"scripts": {
