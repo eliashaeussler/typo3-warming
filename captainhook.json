@@ -56,7 +56,7 @@
 				]
 			},
 			{
-				"action": "composer normalize --dry-run --no-check-lock --no-update-lock",
+				"action": "composer lint:composer -- --dry-run",
 				"options": [],
 				"conditions": [
 					{

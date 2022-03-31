@@ -35,7 +35,7 @@ jobs:
 
       # Linting
       - name: Lint composer.json
-        run: composer normalize --dry-run
+        run: composer lint:composer -- --dry-run
       - name: Lint Editorconfig
         run: .Build/bin/ec -e .Build
       - name: Lint PHP
