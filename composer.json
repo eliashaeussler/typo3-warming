@@ -76,7 +76,7 @@
 			"@lint:php"
 		],
 		"lint:composer": "@composer normalize --no-check-lock --no-update-lock",
-		"lint:editorconfig": "ec --fix -e .Build",
+		"lint:editorconfig": "ec --fix --git-only",
 		"lint:php": "php-cs-fixer fix",
 		"sca": [
 			"@sca:php"
