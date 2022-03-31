@@ -47,7 +47,7 @@ class CacheWarmupProvider extends PageProvider
     protected const ITEM_MODE_SITE = 'cacheWarmupSite';
 
     /**
-     * @var array<string, array>
+     * @var array<string, array{type: string}|array{label: string, iconIdentifier: string, callbackAction: string}>
      */
     protected $itemsConfiguration = [
         'cacheWarmupDivider' => [
@@ -107,8 +107,8 @@ class CacheWarmupProvider extends PageProvider
     }
 
     /**
-     * @param array<string, array> $items
-     * @return array<string, array>
+     * @param array<string, array<string, mixed>> $items
+     * @return array<string, array<string, mixed>>
      */
     public function addItems(array $items): array
     {

@@ -49,7 +49,7 @@ class CacheManager
     }
 
     /**
-     * @return array<string, array>|string|null
+     * @return array<string, array<string, string>>|string|null
      */
     public function get(Site $site = null, SiteLanguage $siteLanguage = null)
     {
