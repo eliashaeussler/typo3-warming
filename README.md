@@ -9,6 +9,7 @@
 [![CGL](https://github.com/eliashaeussler/typo3-warming/actions/workflows/cgl.yaml/badge.svg)](https://github.com/eliashaeussler/typo3-warming/actions/workflows/cgl.yaml)
 [![Latest Stable Version](http://poser.pugx.org/eliashaeussler/typo3-warming/v)](https://packagist.org/packages/eliashaeussler/typo3-warming)
 [![License](http://poser.pugx.org/eliashaeussler/typo3-warming/license)](LICENSE.md)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Feliashaeussler%2Ftypo3-warming.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Feliashaeussler%2Ftypo3-warming?ref=badge_shield)
 
 :package:&nbsp;[Packagist](https://packagist.org/packages/eliashaeussler/typo3-warming) |
 :hatched_chick:&nbsp;[TYPO3 extension repository](https://extensions.typo3.org/extension/warming) |
@@ -195,3 +196,6 @@ icon from TYPO3 core which is originally licensed under
 ## :star: License
 
 This project is licensed under [GNU General Public License 2.0 (or later)](LICENSE.md).
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Feliashaeussler%2Ftypo3-warming.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Feliashaeussler%2Ftypo3-warming?ref=badge_large)
