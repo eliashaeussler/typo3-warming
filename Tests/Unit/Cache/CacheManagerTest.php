@@ -141,7 +141,7 @@ class CacheManagerTest extends UnitTestCase
     }
 
     /**
-     * @return \Generator<string, array>
+     * @return \Generator<string, array{bool|array{sitemaps?: array{}}}>
      */
     public function getReturnsEmptyArrayIfNoSitemapsAreCachedDataProvider(): \Generator
     {
