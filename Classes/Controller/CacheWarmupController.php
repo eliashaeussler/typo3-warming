@@ -102,8 +102,6 @@ class CacheWarmupController
     }
 
     /**
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
      * @throws MissingPageIdException
      * @throws SiteNotFoundException
      * @throws UnsupportedConfigurationException
@@ -182,10 +180,7 @@ class CacheWarmupController
     }
 
     /**
-     * @param string $id
-     * @param string $eventName
      * @param array<string, mixed> $eventData
-     * @param int|null $retry
      */
     protected function sendServerEvent(string $id, string $eventName, array $eventData, int $retry = null): void
     {
@@ -213,8 +208,6 @@ class CacheWarmupController
     }
 
     /**
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
      * @throws MissingPageIdException
      * @throws SiteNotFoundException
      * @throws UnsupportedConfigurationException
@@ -256,7 +249,6 @@ class CacheWarmupController
     }
 
     /**
-     * @return ResponseInterface
      * @throws UnsupportedConfigurationException
      * @throws UnsupportedSiteException
      */
@@ -313,8 +305,6 @@ class CacheWarmupController
     }
 
     /**
-     * @param int|null $pageId
-     * @return Site
      * @throws MissingPageIdException
      * @throws SiteNotFoundException
      */
@@ -341,10 +331,6 @@ class CacheWarmupController
     }
 
     /**
-     * @param string $mode
-     * @param int|null $pageId
-     * @param Site $site
-     * @param CrawlerInterface $crawler
      * @return array<string, mixed>
      */
     protected function buildJsonResponseData(string $mode, ?int $pageId, Site $site, CrawlerInterface $crawler): array

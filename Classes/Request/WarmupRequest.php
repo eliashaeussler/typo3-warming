@@ -118,7 +118,6 @@ class WarmupRequest
 
     /**
      * @param UriInterface[] $requestedUrls
-     * @return self
      */
     public function setRequestedUrls(array $requestedUrls): self
     {
@@ -172,7 +171,6 @@ class WarmupRequest
     }
 
     /**
-     * @param int $state
      * @return \Generator<CrawlingState>
      */
     protected function filterByState(int $state): \Generator

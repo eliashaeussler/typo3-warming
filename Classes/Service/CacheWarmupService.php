@@ -70,9 +70,6 @@ class CacheWarmupService implements LoggerAwareInterface
     protected $crawler;
 
     /**
-     * @param SiteFinder $siteFinder
-     * @param SitemapLocator $sitemapLocator
-     * @param Configuration $configuration
      * @throws UnsupportedConfigurationException
      */
     public function __construct(
@@ -88,8 +85,6 @@ class CacheWarmupService implements LoggerAwareInterface
 
     /**
      * @param Site[] $sites
-     * @param WarmupRequest $request
-     * @return CrawlerInterface
      * @throws UnsupportedConfigurationException
      * @throws UnsupportedSiteException
      */
@@ -117,8 +112,6 @@ class CacheWarmupService implements LoggerAwareInterface
 
     /**
      * @param int[] $pageIds
-     * @param WarmupRequest $request
-     * @return CrawlerInterface
      * @throws SiteNotFoundException
      */
     public function warmupPages(array $pageIds, WarmupRequest $request): CrawlerInterface
@@ -140,9 +133,6 @@ class CacheWarmupService implements LoggerAwareInterface
     }
 
     /**
-     * @param int $pageId
-     * @param int|null $languageId
-     * @return UriInterface
      * @throws SiteNotFoundException
      */
     public function generateUri(int $pageId, int $languageId = null): UriInterface
@@ -152,9 +142,6 @@ class CacheWarmupService implements LoggerAwareInterface
         return $site->getRouter()->generateUri((string)$pageId, ['_language' => $languageId]);
     }
 
-    /**
-     * @return CrawlerInterface
-     */
     public function getCrawler(): CrawlerInterface
     {
         return $this->crawler;
@@ -162,7 +149,6 @@ class CacheWarmupService implements LoggerAwareInterface
 
     /**
      * @param string|CrawlerInterface|null $crawler
-     * @return self
      * @throws UnsupportedConfigurationException
      */
     public function setCrawler($crawler): self
@@ -173,7 +159,6 @@ class CacheWarmupService implements LoggerAwareInterface
 
     /**
      * @param string|CrawlerInterface $crawler
-     * @return CrawlerInterface
      * @throws UnsupportedConfigurationException
      */
     protected function initializeCrawler($crawler): CrawlerInterface

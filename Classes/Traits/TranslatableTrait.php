@@ -35,9 +35,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 trait TranslatableTrait
 {
     /**
-     * @param string $key
      * @param mixed[] $arguments
-     * @return string|null
      */
     protected static function translate(string $key, array $arguments = []): ?string
     {

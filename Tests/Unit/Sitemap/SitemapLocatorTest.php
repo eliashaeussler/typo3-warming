@@ -102,8 +102,6 @@ class SitemapLocatorTest extends UnitTestCase
     /**
      * @test
      * @dataProvider locateBySiteReturnsCachedSitemapDataProvider
-     * @param SiteLanguage|null $siteLanguage
-     * @param string $expectedUrl
      * @throws UnsupportedConfigurationException
      * @throws UnsupportedSiteException
      */
@@ -121,7 +119,6 @@ class SitemapLocatorTest extends UnitTestCase
     /**
      * @test
      * @dataProvider locateBySiteThrowsExceptionIfSiteBaseHasNoHostnameConfiguredDataProvider
-     * @param SiteLanguage|null $siteLanguage
      * @throws UnsupportedConfigurationException
      * @throws UnsupportedSiteException
      */
@@ -140,7 +137,6 @@ class SitemapLocatorTest extends UnitTestCase
     /**
      * @test
      * @dataProvider locateBySiteThrowsExceptionIfProvidersCannotResolveSitemapDataProvider
-     * @param SiteLanguage|null $siteLanguage
      * @throws UnsupportedConfigurationException
      * @throws UnsupportedSiteException
      */
@@ -160,8 +156,6 @@ class SitemapLocatorTest extends UnitTestCase
     /**
      * @test
      * @dataProvider locateBySiteReturnsLocatedSitemapDataProvider
-     * @param SiteLanguage|null $siteLanguage
-     * @param string $expectedUrl
      * @throws UnsupportedConfigurationException
      * @throws UnsupportedSiteException
      */
@@ -215,7 +209,6 @@ class SitemapLocatorTest extends UnitTestCase
 
     /**
      * @param array<string, mixed> $configuration
-     * @return Site
      */
     private function getSite(array $configuration = ['base' => 'https://www.example.com/']): Site
     {

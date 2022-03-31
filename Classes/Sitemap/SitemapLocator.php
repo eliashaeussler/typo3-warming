@@ -59,7 +59,6 @@ class SitemapLocator
     protected $providers = [];
 
     /**
-     * @param RequestFactory $requestFactory
      * @param ProviderInterface[] $providers
      */
     public function __construct(RequestFactory $requestFactory, CacheManager $cacheManager, array $providers)
@@ -73,9 +72,6 @@ class SitemapLocator
     }
 
     /**
-     * @param Site $site
-     * @param SiteLanguage|null $siteLanguage
-     * @return SiteAwareSitemap
      * @throws UnsupportedConfigurationException
      * @throws UnsupportedSiteException
      */
@@ -105,7 +101,6 @@ class SitemapLocator
     }
 
     /**
-     * @param Site $site
      * @return array<int, SiteAwareSitemap>
      * @throws UnsupportedConfigurationException
      * @throws UnsupportedSiteException

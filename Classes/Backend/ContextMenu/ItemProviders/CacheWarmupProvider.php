@@ -181,7 +181,6 @@ class CacheWarmupProvider extends PageProvider
     }
 
     /**
-     * @param string $itemName
      * @return array<string, mixed>
      */
     protected function getAdditionalAttributes(string $itemName): array
