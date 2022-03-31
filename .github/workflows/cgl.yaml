@@ -16,7 +16,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.0
-          tools: composer:v2, composer-require-checker
+          tools: composer:v2, composer-require-checker, composer-unused
 
       # Validation
       - name: Validate composer.json
@@ -30,6 +30,8 @@ jobs:
       - name: Check dependencies
         run: composer-require-checker check --config-file dependency-checker.json
       - run: composer install --no-progress
+      - name: Check for unused dependencies
+        run: composer-unused
 
       # Linting
       - name: Lint composer.json
