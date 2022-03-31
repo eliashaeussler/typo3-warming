@@ -7,8 +7,9 @@
 /.gitignore               export-ignore
 /.php-cs-fixer.php        export-ignore
 /captainhook.json         export-ignore
+/codecov.yml              export-ignore
+/dependency-checker.json  export-ignore
 /packaging_exclude.php    export-ignore
 /phpstan.neon             export-ignore
 /phpunit.ci.xml           export-ignore
 /phpunit.xml              export-ignore
-/sonar-project.properties export-ignore

@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
- * Copyright (C) 2021 Elias Häußler <elias@haeussler.dev>
+ * Copyright (C) 2022 Elias Häußler <elias@haeussler.dev>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,7 +59,6 @@ class SitemapLocator
     protected $providers = [];
 
     /**
-     * @param RequestFactory $requestFactory
      * @param ProviderInterface[] $providers
      */
     public function __construct(RequestFactory $requestFactory, CacheManager $cacheManager, array $providers)
@@ -73,9 +72,6 @@ class SitemapLocator
     }
 
     /**
-     * @param Site $site
-     * @param SiteLanguage|null $siteLanguage
-     * @return SiteAwareSitemap
      * @throws UnsupportedConfigurationException
      * @throws UnsupportedSiteException
      */
@@ -105,7 +101,6 @@ class SitemapLocator
     }
 
     /**
-     * @param Site $site
      * @return array<int, SiteAwareSitemap>
      * @throws UnsupportedConfigurationException
      * @throws UnsupportedSiteException
@@ -147,17 +142,17 @@ class SitemapLocator
     protected function validateProviders(): void
     {
         foreach ($this->providers as $provider) {
-            if (!is_object($provider)) {
+            if (!\is_object($provider)) {
                 throw new \InvalidArgumentException(
-                    sprintf('Providers must be of type object, "%s" given.', gettype($provider)),
+                    sprintf('Providers must be of type object, "%s" given.', \gettype($provider)),
                     1619525071
                 );
             }
-            if (!in_array(ProviderInterface::class, class_implements($provider))) {
+            if (!\in_array(ProviderInterface::class, class_implements($provider))) {
                 throw new \InvalidArgumentException(
                     sprintf(
                         'The given provider "%s" does not implement the interface "%s".',
-                        get_class($provider),
+                        \get_class($provider),
                         ProviderInterface::class
                     ),
                     1619524996

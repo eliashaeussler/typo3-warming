@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
- * Copyright (C) 2021 Elias Häußler <elias@haeussler.dev>
+ * Copyright (C) 2022 Elias Häußler <elias@haeussler.dev>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -89,7 +89,7 @@ class CacheWarmupProvider extends PageProvider
             return true;
         }
 
-        if (in_array($itemName, $this->disabledItems, true)) {
+        if (\in_array($itemName, $this->disabledItems, true)) {
             return false;
         }
 
@@ -181,7 +181,6 @@ class CacheWarmupProvider extends PageProvider
     }
 
     /**
-     * @param string $itemName
      * @return array<string, mixed>
      */
     protected function getAdditionalAttributes(string $itemName): array

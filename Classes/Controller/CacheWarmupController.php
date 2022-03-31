@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
- * Copyright (C) 2021 Elias Häußler <elias@haeussler.dev>
+ * Copyright (C) 2022 Elias Häußler <elias@haeussler.dev>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -102,8 +102,6 @@ class CacheWarmupController
     }
 
     /**
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
      * @throws MissingPageIdException
      * @throws SiteNotFoundException
      * @throws UnsupportedConfigurationException
@@ -170,7 +168,7 @@ class CacheWarmupController
 
         $eventData = [
             'progress' => [
-                'current' => count($successfulUrls) + count($failedUrls),
+                'current' => \count($successfulUrls) + \count($failedUrls),
                 'total' => $request->getTotal(),
             ],
             'urls' => [
@@ -182,10 +180,7 @@ class CacheWarmupController
     }
 
     /**
-     * @param string $id
-     * @param string $eventName
      * @param array<string, mixed> $eventData
-     * @param int|null $retry
      */
     protected function sendServerEvent(string $id, string $eventName, array $eventData, int $retry = null): void
     {
@@ -213,8 +208,6 @@ class CacheWarmupController
     }
 
     /**
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
      * @throws MissingPageIdException
      * @throws SiteNotFoundException
      * @throws UnsupportedConfigurationException
@@ -256,7 +249,6 @@ class CacheWarmupController
     }
 
     /**
-     * @return ResponseInterface
      * @throws UnsupportedConfigurationException
      * @throws UnsupportedSiteException
      */
@@ -268,7 +260,7 @@ class CacheWarmupController
             $row = BackendUtility::getRecord('pages', $site->getRootPageId(), '*', ' AND hidden = 0');
 
             // Skip site if associated root page is not available
-            if (!is_array($row)) {
+            if (!\is_array($row)) {
                 continue;
             }
 
@@ -313,8 +305,6 @@ class CacheWarmupController
     }
 
     /**
-     * @param int|null $pageId
-     * @return Site
      * @throws MissingPageIdException
      * @throws SiteNotFoundException
      */
@@ -326,7 +316,7 @@ class CacheWarmupController
             return $this->siteFinder->getSiteByPageId($pageId);
         }
 
-        if (count($allSites) > 1) {
+        if (\count($allSites) > 1) {
             throw MissingPageIdException::create();
         }
 
@@ -341,16 +331,12 @@ class CacheWarmupController
     }
 
     /**
-     * @param string $mode
-     * @param int|null $pageId
-     * @param Site $site
-     * @param CrawlerInterface $crawler
      * @return array<string, mixed>
      */
     protected function buildJsonResponseData(string $mode, ?int $pageId, Site $site, CrawlerInterface $crawler): array
     {
-        $successfulCount = count($crawler->getSuccessfulUrls());
-        $failedCount = count($crawler->getFailedUrls());
+        $successfulCount = \count($crawler->getSuccessfulUrls());
+        $failedCount = \count($crawler->getFailedUrls());
         $state = $this->determineCrawlState($successfulCount, $failedCount);
 
         $data = [

@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
- * Copyright (C) 2021 Elias Häußler <elias@haeussler.dev>
+ * Copyright (C) 2022 Elias Häußler <elias@haeussler.dev>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -201,7 +201,7 @@ class WarmupCommand extends Command
         $limit = abs((int)$input->getOption('limit'));
 
         // Exit if neither pages nor sites are given
-        if (count($urls) + count($sitemaps) === 0) {
+        if (\count($urls) + \count($sitemaps) === 0) {
             $io->error('You need to define at least one page or site.');
             return 1;
         }

@@ -3,11 +3,11 @@ on: [push, pull_request]
 
 jobs:
   cgl:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -15,16 +15,29 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 7.4
-          tools: composer:v2
+          php-version: 8.0
+          tools: composer:v2, composer-require-checker, composer-unused
+
+      # Validation
+      - name: Validate composer.json
+        run: composer validate --no-check-lock
 
       # Install dependencies
       - name: Install Composer dependencies
-        run: composer install --no-progress
+        run: composer require --no-progress --no-plugins
+
+      # Check Composer dependencies
+      - name: Check dependencies
+        run: composer-require-checker check --config-file dependency-checker.json
+      - run: composer install --no-progress
+      - name: Check for unused dependencies
+        run: composer-unused
 
       # Linting
       - name: Lint composer.json
-        run: composer normalize --dry-run
+        run: composer lint:composer -- --dry-run
+      - name: Lint Editorconfig
+        run: .Build/bin/ec -e .Build
       - name: Lint PHP
         run: composer lint:php -- --dry-run
 
