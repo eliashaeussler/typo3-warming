@@ -41,7 +41,7 @@
 				]
 			},
 			{
-				"action": "composer sca -- --memory-limit=2G",
+				"action": "composer sca:php -- --memory-limit=2G",
 				"options": [],
 				"conditions": [
 					{
