@@ -14,7 +14,19 @@
 		"enabled": true,
 		"actions": [
 			{
-				"action": "composer lint -- --dry-run",
+				"action": ".Build/bin/ec -e .Build",
+				"options": [],
+				"conditions": [
+					{
+						"exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\All",
+						"args": [
+							[]
+						]
+					}
+				]
+			},
+			{
+				"action": "composer lint:php -- --dry-run",
 				"options": [],
 				"conditions": [
 					{
@@ -22,14 +34,14 @@
 						"args": [
 							[
 								"*.php",
-								".php_cs"
+								".php-cs-fixer.php"
 							]
 						]
 					}
 				]
 			},
 			{
-				"action": "composer sca -- --memory-limit=2G",
+				"action": "composer sca:php -- --memory-limit=2G",
 				"options": [],
 				"conditions": [
 					{
@@ -44,7 +56,7 @@
 				]
 			},
 			{
-				"action": "composer normalize --dry-run --no-check-lock --no-update-lock",
+				"action": "composer lint:composer -- --dry-run",
 				"options": [],
 				"conditions": [
 					{
@@ -66,7 +78,7 @@
 						"args": [
 							[
 								"*.php",
-								"phpunit.coverage.xml",
+								"phpunit.ci.xml",
 								"phpunit.xml"
 							]
 						]

@@ -8,11 +8,11 @@ jobs:
   # Job: Create release
   release:
     if: startsWith(github.ref, 'refs/tags/')
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     outputs:
       release-notes-url: ${{ steps.create-release.outputs.url }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -23,49 +23,24 @@ jobs:
             exit 1
           fi
 
-      # Create Changelog
-      - name: Create changelog
-        id: create-changelog
-        uses: heinrichreimer/github-changelog-generator-action@v2.2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          addSections: '{"documentation":{"prefix":"### Documentation","labels":["documentation"]},"feature":{"prefix":"### Added","labels":["feature"]}}'
-          breakingLabel: "### Breaking"
-          enhancementLabel: "### Changed"
-          bugsLabel: "### Fixed"
-          deprecatedLabel: "### Deprecated"
-          removedLabel: "### Removed"
-          securityLabel: "### Security"
-          prLabel: "### Other pull requests"
-          onlyLastTag: true
-          issues: false
-          issuesWoLabels: false
-          pullRequests: true
-          prWoLabels: true
-          stripHeaders: false
-          stripGeneratorNotice: true
-      - name: Print changelog to console
-        run: cat CHANGELOG.md
-
       # Create release
       - name: Create release
         id: create-release
         uses: softprops/action-gh-release@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          body: ${{ steps.create-changelog.outputs.changelog }}
+          generate_release_notes: true
 
   # Job: Publish on TER
   ter-publish:
     if: startsWith(github.ref, 'refs/tags/')
     needs: [release]
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     env:
       TYPO3_EXTENSION_KEY: warming
       TYPO3_API_TOKEN: ${{ secrets.TYPO3_API_TOKEN }}
       TYPO3_EXCLUDE_FROM_PACKAGING: packaging_exclude.php
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -86,7 +61,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 7.4
+          php-version: 8.0
           extensions: intl, mbstring, json, zip, curl
           tools: composer:v2
 

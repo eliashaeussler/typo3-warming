@@ -3,7 +3,7 @@
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
- * Copyright (C) 2021 Elias Häußler <elias@haeussler.dev>
+ * Copyright (C) 2022 Elias Häußler <elias@haeussler.dev>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'Warming',
     'description' => 'Warms up Frontend caches based on an XML sitemap. Cache warmup can be triggered via TYPO3 backend or using a console command. Supports multiple languages and custom crawler implementations.',
     'category' => 'be',
-    'version' => '0.3.7',
+    'version' => '0.3.8',
     'state' => 'beta',
     'clearCacheOnLoad' => true,
     'author' => 'Elias Häußler',

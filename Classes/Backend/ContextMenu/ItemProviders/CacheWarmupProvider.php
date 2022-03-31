@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
- * Copyright (C) 2021 Elias Häußler <elias@haeussler.dev>
+ * Copyright (C) 2022 Elias Häußler <elias@haeussler.dev>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,7 +47,7 @@ class CacheWarmupProvider extends PageProvider
     protected const ITEM_MODE_SITE = 'cacheWarmupSite';
 
     /**
-     * @var array<string, array>
+     * @var array<string, array{type: string}|array{label: string, iconIdentifier: string, callbackAction: string}>
      */
     protected $itemsConfiguration = [
         'cacheWarmupDivider' => [
@@ -89,7 +89,7 @@ class CacheWarmupProvider extends PageProvider
             return true;
         }
 
-        if (in_array($itemName, $this->disabledItems, true)) {
+        if (\in_array($itemName, $this->disabledItems, true)) {
             return false;
         }
 
@@ -107,8 +107,8 @@ class CacheWarmupProvider extends PageProvider
     }
 
     /**
-     * @param array<string, array> $items
-     * @return array<string, array>
+     * @param array<string, array<string, mixed>> $items
+     * @return array<string, array<string, mixed>>
      */
     public function addItems(array $items): array
     {
@@ -181,7 +181,6 @@ class CacheWarmupProvider extends PageProvider
     }
 
     /**
-     * @param string $itemName
      * @return array<string, mixed>
      */
     protected function getAdditionalAttributes(string $itemName): array

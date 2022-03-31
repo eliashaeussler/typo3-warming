@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
- * Copyright (C) 2021 Elias Häußler <elias@haeussler.dev>
+ * Copyright (C) 2022 Elias Häußler <elias@haeussler.dev>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,9 +35,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 trait TranslatableTrait
 {
     /**
-     * @param string $key
      * @param mixed[] $arguments
-     * @return string|null
      */
     protected static function translate(string $key, array $arguments = []): ?string
     {
