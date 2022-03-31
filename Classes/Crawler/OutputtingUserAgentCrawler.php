@@ -32,7 +32,7 @@ use TYPO3\CMS\Core\Http\Client\GuzzleClientFactory;
  * OutputtingUserAgentCrawler
  *
  * @author Elias Häußler <elias@haeussler.dev>
- * @license GPL-3.0-or-later
+ * @license GPL-2.0-or-later
  */
 class OutputtingUserAgentCrawler extends OutputtingCrawler
 {
