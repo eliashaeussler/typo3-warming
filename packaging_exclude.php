@@ -40,6 +40,7 @@ return [
         'captainhook.json',
         'composer.lock',
         'crowdin.yaml',
+        'dependency-checker.json',
         'editorconfig',
         'gitattributes',
         'gitignore',
