@@ -65,6 +65,13 @@ jobs:
           coverageLocations: |
             ${{ github.workspace }}/.Build/log/coverage/clover.xml:clover
         if: ${{ matrix.coverage }}
+      - name: codecov report
+        uses: codecov/codecov-action@v2
+        with:
+          directory: .Build/log/coverage
+          fail_ci_if_error: true
+          verbose: true
+        if: ${{ matrix.coverage }}
 
   tests-lowest:
     name: '[test-lowest] PHP ${{ matrix.php-version }} & TYPO3 ${{ matrix.typo3-version }}'

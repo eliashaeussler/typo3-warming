@@ -38,6 +38,7 @@ return [
     'files' => [
         'DS_Store',
         'captainhook.json',
+        'codecov.yml',
         'composer.lock',
         'crowdin.yaml',
         'dependency-checker.json',
