@@ -2,10 +2,13 @@
 
 declare(strict_types=1);
 
-$config = \TYPO3\CodingStandards\CsFixerConfig::create();
-$config->setCacheFile('.php-cs-fixer.cache');
+$config = \TYPO3\CodingStandards\CsFixerConfig::create()
+    ->addRules([
+        'native_function_invocation' => true,
+    ]);
+
 $finder = $config->getFinder()
     ->in(__DIR__)
-    ->exclude('node_modules')
     ->ignoreVCSIgnored(true);
+
 return $config;

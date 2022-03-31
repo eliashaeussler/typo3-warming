@@ -188,8 +188,8 @@ class CacheWarmupService implements LoggerAwareInterface
         }
 
         // Throw exception if crawler variable type is unsupported
-        if (!is_string($crawler)) {
-            throw UnsupportedConfigurationException::forTypeMismatch('string', gettype($crawler));
+        if (!\is_string($crawler)) {
+            throw UnsupportedConfigurationException::forTypeMismatch('string', \gettype($crawler));
         }
 
         // Throw exception if crawler class does not exist
@@ -198,7 +198,7 @@ class CacheWarmupService implements LoggerAwareInterface
         }
 
         // Throw exception if crawler class is invalid
-        if (!in_array(CrawlerInterface::class, class_implements($crawler))) {
+        if (!\in_array(CrawlerInterface::class, class_implements($crawler))) {
             throw UnsupportedConfigurationException::forMissingImplementation($crawler, CrawlerInterface::class);
         }
 

@@ -89,12 +89,12 @@ class WarmupRequest
 
     public function getTotal(): int
     {
-        return count($this->requestedUrls);
+        return \count($this->requestedUrls);
     }
 
     public function getProcessed(): int
     {
-        return count($this->crawlingStates);
+        return \count($this->crawlingStates);
     }
 
     public function isSuccessful(): bool
@@ -186,7 +186,7 @@ class WarmupRequest
 
     protected function triggerUpdate(): void
     {
-        if (is_callable($this->updateCallback)) {
+        if (\is_callable($this->updateCallback)) {
             ($this->updateCallback)($this);
         }
     }

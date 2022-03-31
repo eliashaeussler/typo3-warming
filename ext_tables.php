@@ -1,6 +1,6 @@
 <?php
 
-defined('TYPO3') or die();
+\defined('TYPO3') or die();
 
 /*
  * This file is part of the TYPO3 CMS extension "warming".

@@ -89,7 +89,7 @@ class CacheWarmupProvider extends PageProvider
             return true;
         }
 
-        if (in_array($itemName, $this->disabledItems, true)) {
+        if (\in_array($itemName, $this->disabledItems, true)) {
             return false;
         }
 

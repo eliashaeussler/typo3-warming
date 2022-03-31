@@ -147,17 +147,17 @@ class SitemapLocator
     protected function validateProviders(): void
     {
         foreach ($this->providers as $provider) {
-            if (!is_object($provider)) {
+            if (!\is_object($provider)) {
                 throw new \InvalidArgumentException(
-                    sprintf('Providers must be of type object, "%s" given.', gettype($provider)),
+                    sprintf('Providers must be of type object, "%s" given.', \gettype($provider)),
                     1619525071
                 );
             }
-            if (!in_array(ProviderInterface::class, class_implements($provider))) {
+            if (!\in_array(ProviderInterface::class, class_implements($provider))) {
                 throw new \InvalidArgumentException(
                     sprintf(
                         'The given provider "%s" does not implement the interface "%s".',
-                        get_class($provider),
+                        \get_class($provider),
                         ProviderInterface::class
                     ),
                     1619524996

@@ -201,7 +201,7 @@ class WarmupCommand extends Command
         $limit = abs((int)$input->getOption('limit'));
 
         // Exit if neither pages nor sites are given
-        if (count($urls) + count($sitemaps) === 0) {
+        if (\count($urls) + \count($sitemaps) === 0) {
             $io->error('You need to define at least one page or site.');
             return 1;
         }
