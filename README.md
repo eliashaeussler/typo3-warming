@@ -8,8 +8,12 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/2f55fa181559fdda4cc1/maintainability)](https://codeclimate.com/github/eliashaeussler/typo3-warming/maintainability)
 [![Tests](https://github.com/eliashaeussler/typo3-warming/actions/workflows/tests.yaml/badge.svg)](https://github.com/eliashaeussler/typo3-warming/actions/workflows/tests.yaml)
 [![CGL](https://github.com/eliashaeussler/typo3-warming/actions/workflows/cgl.yaml/badge.svg)](https://github.com/eliashaeussler/typo3-warming/actions/workflows/cgl.yaml)
-[![Latest Stable Version](http://poser.pugx.org/eliashaeussler/typo3-warming/v)](https://packagist.org/packages/eliashaeussler/typo3-warming)
-[![License](http://poser.pugx.org/eliashaeussler/typo3-warming/license)](LICENSE.md)
+[![Release](https://github.com/eliashaeussler/typo3-warming/actions/workflows/release.yaml/badge.svg)](https://github.com/eliashaeussler/typo3-warming/actions/workflows/release.yaml)
+[![License](http://poser.pugx.org/eliashaeussler/typo3-warming/license)](LICENSE.md)\
+[![Version](https://shields.io/endpoint?url=https://typo3-badges.dev/badge/warming/version/shields)](https://extensions.typo3.org/extension/warming)
+[![Downloads](https://shields.io/endpoint?url=https://typo3-badges.dev/badge/warming/downloads/shields)](https://extensions.typo3.org/extension/warming)
+[![Extension stability](https://shields.io/endpoint?url=https://typo3-badges.dev/badge/warming/stability/shields)](https://extensions.typo3.org/extension/warming)
+[![TYPO3 badge](https://shields.io/endpoint?url=https://typo3-badges.dev/badge/typo3/shields)](https://typo3.org/)
 
 :package:&nbsp;[Packagist](https://packagist.org/packages/eliashaeussler/typo3-warming) |
 :hatched_chick:&nbsp;[TYPO3 extension repository](https://extensions.typo3.org/extension/warming) |
