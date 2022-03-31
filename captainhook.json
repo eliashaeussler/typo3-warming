@@ -78,7 +78,7 @@
 						"args": [
 							[
 								"*.php",
-								"phpunit.coverage.xml",
+								"phpunit.ci.xml",
 								"phpunit.xml"
 							]
 						]
