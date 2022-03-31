@@ -9,15 +9,15 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - typo3-version: 10.4
-            php-version: 7.3
-          - typo3-version: 10.4
-            php-version: 7.4
-          - typo3-version: 11.5
-            php-version: 7.4
-          - typo3-version: 11.5
-            php-version: 8.0
-            coverage: 1
+          - typo3-version: "10.4"
+            php-version: "7.3"
+          - typo3-version: "10.4"
+            php-version: "7.4"
+          - typo3-version: "11.5"
+            php-version: "7.4"
+          - typo3-version: "11.5"
+            php-version: "8.0"
+            coverage: true
     steps:
       - uses: actions/checkout@v3
         with:
@@ -80,14 +80,14 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - typo3-version: 10.4
-            php-version: 7.3
-          - typo3-version: 10.4
-            php-version: 7.4
-          - typo3-version: 11.5
-            php-version: 7.4
-          - typo3-version: 11.5
-            php-version: 8.0
+          - typo3-version: "10.4"
+            php-version: "7.3"
+          - typo3-version: "10.4"
+            php-version: "7.4"
+          - typo3-version: "11.5"
+            php-version: "7.4"
+          - typo3-version: "11.5"
+            php-version: "8.0"
     steps:
       - uses: actions/checkout@v3
         with:
@@ -99,7 +99,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
           tools: composer:v2
-          coverage: xdebug
+          coverage: none
 
       # Define Composer cache
       - name: Get Composer cache directory
@@ -120,4 +120,4 @@ jobs:
 
       # Run tests
       - name: Run tests
-        run: composer test:ci -- --coverage-text
+        run: composer test
