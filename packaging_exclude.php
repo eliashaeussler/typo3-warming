@@ -49,6 +49,5 @@ return [
         'phpstan.neon',
         'phpunit.coverage.xml',
         'phpunit.xml',
-        'sonar-project.properties',
     ],
 ];
