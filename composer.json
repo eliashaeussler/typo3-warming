@@ -21,10 +21,10 @@
 		"psr/log": "^1.0",
 		"symfony/console": ">= 4.0 < 6.0",
 		"symfony/polyfill-php80": "^1.23",
-		"typo3/cms-backend": "^10.4 || ^11.5",
-		"typo3/cms-core": "^10.4 || ^11.5",
-		"typo3/cms-extbase": "^10.4 || ^11.5",
-		"typo3/cms-fluid": "^10.4 || ^11.5"
+		"typo3/cms-backend": "~10.4.0 || ~11.5.0",
+		"typo3/cms-core": "~10.4.0 || ~11.5.0",
+		"typo3/cms-extbase": "~10.4.0 || ~11.5.0",
+		"typo3/cms-fluid": "~10.4.0 || ~11.5.0"
 	},
 	"require-dev": {
 		"armin/editorconfig-cli": "^1.5",
