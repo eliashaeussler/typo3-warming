@@ -14,7 +14,7 @@
 		"enabled": true,
 		"actions": [
 			{
-				"action": ".Build/bin/ec -e .Build",
+				"action": ".Build/bin/ec --git-only",
 				"options": [],
 				"conditions": [
 					{
