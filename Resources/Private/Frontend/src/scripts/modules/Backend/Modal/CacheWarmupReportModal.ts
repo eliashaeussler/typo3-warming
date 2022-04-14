@@ -122,7 +122,7 @@ class CacheWarmupReportModal {
                   $('<a>')
                     .attr('href', url)
                     .attr('target', '_blank')
-                    .addClass('btn btn-default btn-sm')
+                    .addClass('btn btn-default btn-sm nowrap')
                     .html(`${viewPageIcon} ${TYPO3.lang[LanguageKeys.modalReportActionView]}`)
                 )
             );
