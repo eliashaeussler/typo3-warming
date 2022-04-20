@@ -1,4 +1,7 @@
-# Code of conduct
+# Code of Conduct
 
-The official [TYPO3 Code Of Conduct](https://typo3.org/community/values/code-of-conduct)
-applies to this project. Be respectful to each other!
+This project uses the
+[TYPO3 Code of Conduct](https://typo3.org/community/values/code-of-conduct).
+
+When you contribute to this project or interact with community members,
+you agree to adhere to this code of conduct.
