@@ -21,35 +21,11 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-return [
-    'directories' => [
-        '.build',
-        '.git',
-        '.github',
-        'bin',
-        'build',
-        'public',
-        'resources\\/private\\/frontend\\/node_modules',
-        'resources\\/private\\/libs\\/build',
-        'tailor-version-upload',
-        'tests',
-        'vendor',
-    ],
-    'files' => [
-        'DS_Store',
-        'captainhook.json',
-        'codecov.yml',
-        'composer.lock',
-        'crowdin.yaml',
-        'dependency-checker.json',
-        'editorconfig',
-        'editorconfig-lint.php',
-        'gitattributes',
-        'gitignore',
-        'packaging_exclude.php',
-        'php-cs-fixer.php',
-        'phpstan.neon',
-        'phpunit.ci.xml',
-        'phpunit.xml',
-    ],
-];
+return \Symfony\Component\Finder\Finder::create()
+    ->files()
+    ->in(__DIR__)
+    ->ignoreVCSIgnored(true)
+    ->exclude([
+        'Resources/Public/JavaScript',
+    ])
+;
