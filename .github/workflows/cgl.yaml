@@ -37,7 +37,7 @@ jobs:
       - name: Lint composer.json
         run: composer lint:composer -- --dry-run
       - name: Lint Editorconfig
-        run: .Build/bin/ec --git-only
+        run: .Build/bin/ec --finder-config .editorconfig-lint.php
       - name: Lint PHP
         run: composer lint:php -- --dry-run
 
