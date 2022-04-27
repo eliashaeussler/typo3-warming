@@ -43,6 +43,7 @@ return [
         'crowdin.yaml',
         'dependency-checker.json',
         'editorconfig',
+        'editorconfig-lint.php',
         'gitattributes',
         'gitignore',
         'packaging_exclude.php',

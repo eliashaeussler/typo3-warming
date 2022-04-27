@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
@@ -19,19 +21,11 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-/** @noinspection PhpUndefinedVariableInspection */
-$EM_CONF[$_EXTKEY] = [
-    'title' => 'Warming',
-    'description' => 'Warms up Frontend caches based on an XML sitemap. Cache warmup can be triggered via TYPO3 backend or using a console command. Supports multiple languages and custom crawler implementations.',
-    'category' => 'be',
-    'version' => '0.3.12',
-    'state' => 'beta',
-    'clearCacheOnLoad' => true,
-    'author' => 'Elias Häußler',
-    'author_email' => 'elias@haeussler.dev',
-    'constraints' => [
-        'depends' => [
-            'typo3' => '10.4.0-11.5.99',
-        ],
-    ],
-];
+return \Symfony\Component\Finder\Finder::create()
+    ->files()
+    ->in(__DIR__)
+    ->ignoreVCSIgnored(true)
+    ->exclude([
+        'Resources/Public/JavaScript',
+    ])
+;
