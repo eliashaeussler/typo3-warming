@@ -37,7 +37,6 @@ body:
       description: Are you running TYPO3 in composer mode?
       options:
         - label: I'm running TYPO3 in composer mode.
-          required: true
   - type: input
     id: operating-system
     attributes:
