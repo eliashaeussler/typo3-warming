@@ -46,7 +46,7 @@ jobs:
         run: |
           echo "::set-output name=dir::$(composer config cache-files-dir)"
       - name: Define Composer cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: tests-php-${{ matrix.php-version }}-typo3-${{ matrix.typo3-version }}
@@ -75,7 +75,7 @@ jobs:
             ${{ github.workspace }}/.Build/log/coverage/clover.xml:clover
         if: ${{ matrix.coverage }}
       - name: codecov report
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         with:
           directory: .Build/log/coverage
           fail_ci_if_error: true
@@ -118,7 +118,7 @@ jobs:
         run: |
           echo "::set-output name=dir::$(composer config cache-files-dir)"
       - name: Define Composer cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: tests-lowest-php-${{ matrix.php-version }}-typo3-${{ matrix.typo3-version }}
