@@ -20,6 +20,9 @@ changelog:
     - title: 🚑 Fixed
       labels:
         - bug
+    - title: 👷 Changed
+      labels:
+        - maintenance
     - title: Other changes
       labels:
         - "*"
