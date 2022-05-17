@@ -1,5 +1,12 @@
 name: Tests
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - '**'
 
 jobs:
   tests:
@@ -17,6 +24,8 @@ jobs:
             php-version: "7.4"
           - typo3-version: "11.5"
             php-version: "8.0"
+          - typo3-version: "11.5"
+            php-version: "8.1"
             coverage: true
     steps:
       - uses: actions/checkout@v3
@@ -88,6 +97,8 @@ jobs:
             php-version: "7.4"
           - typo3-version: "11.5"
             php-version: "8.0"
+          - typo3-version: "11.5"
+            php-version: "8.1"
     steps:
       - uses: actions/checkout@v3
         with:

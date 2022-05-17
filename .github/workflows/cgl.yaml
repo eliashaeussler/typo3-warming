@@ -1,11 +1,16 @@
 name: CGL
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - '**'
 
 jobs:
   cgl:
     runs-on: ubuntu-20.04
-    strategy:
-      fail-fast: false
     steps:
       - uses: actions/checkout@v3
         with:
@@ -15,7 +20,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.0
+          php-version: 8.1
           tools: composer:v2, composer-require-checker, composer-unused
 
       # Validation
