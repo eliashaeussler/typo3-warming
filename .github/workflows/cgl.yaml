@@ -1,5 +1,12 @@
 name: CGL
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - '**'
 
 jobs:
   cgl:
