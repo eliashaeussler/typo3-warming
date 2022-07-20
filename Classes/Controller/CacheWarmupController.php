@@ -190,7 +190,7 @@ class CacheWarmupController
             'event' => $eventName,
             'data' => json_encode($eventData),
         ];
-        if (null !== $retry && $retry > 0) {
+        if ($retry !== null && $retry > 0) {
             $event['retry'] = $retry;
         }
 

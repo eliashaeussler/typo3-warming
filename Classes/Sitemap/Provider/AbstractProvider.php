@@ -37,7 +37,7 @@ abstract class AbstractProvider implements ProviderInterface
 {
     protected function getSiteUrlWithPath(Site $site, string $path, SiteLanguage $siteLanguage = null): UriInterface
     {
-        $baseUrl = null !== $siteLanguage ? $siteLanguage->getBase() : $site->getBase();
+        $baseUrl = $siteLanguage !== null ? $siteLanguage->getBase() : $site->getBase();
         $fullPath = rtrim($baseUrl->getPath(), '/') . '/' . ltrim($path, '/');
 
         return $baseUrl->withPath($fullPath);

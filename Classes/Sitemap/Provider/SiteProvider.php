@@ -37,7 +37,7 @@ class SiteProvider extends AbstractProvider
 {
     public function get(Site $site, SiteLanguage $siteLanguage = null): ?SiteAwareSitemap
     {
-        if (null !== $siteLanguage && $siteLanguage !== $site->getDefaultLanguage()) {
+        if ($siteLanguage !== null && $siteLanguage !== $site->getDefaultLanguage()) {
             $sitemapPath = $siteLanguage->toArray()['xml_sitemap_path'] ?? null;
         } else {
             $sitemapPath = $site->getConfiguration()['xml_sitemap_path'] ?? null;

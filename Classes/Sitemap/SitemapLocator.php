@@ -83,7 +83,7 @@ class SitemapLocator
         }
 
         // Build and validate base URL
-        $baseUrl = null !== $siteLanguage ? $siteLanguage->getBase() : $site->getBase();
+        $baseUrl = $siteLanguage !== null ? $siteLanguage->getBase() : $site->getBase();
         if ($baseUrl->getHost() === '') {
             throw UnsupportedConfigurationException::forBaseUrl((string)$baseUrl);
         }

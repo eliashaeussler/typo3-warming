@@ -46,7 +46,7 @@ trait RequestAwareTrait
 
     protected function updateRequest(CrawlingState $state): void
     {
-        if (null !== $this->request) {
+        if ($this->request !== null) {
             $this->request->addCrawlingState($state);
         }
     }

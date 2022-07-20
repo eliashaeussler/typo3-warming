@@ -82,7 +82,7 @@ class CacheManager
     protected function buildLanguageIdentifier(Site $site, SiteLanguage $siteLanguage = null): string
     {
         $languageIdentifier = 'default';
-        if (null !== $siteLanguage && $siteLanguage !== $site->getDefaultLanguage()) {
+        if ($siteLanguage !== null && $siteLanguage !== $site->getDefaultLanguage()) {
             $languageIdentifier = (string)$siteLanguage->getLanguageId();
         }
 
