@@ -11,3 +11,14 @@ updates:
     labels:
       - dependencies
     open-pull-requests-limit: 10
+
+  - package-ecosystem: npm
+    directory: 'Resources/Private/Frontend'
+    schedule:
+      interval: weekly
+      day: friday
+    commit-message:
+      prefix: '[TASK]'
+    labels:
+      - dependencies
+    open-pull-requests-limit: 10
