@@ -296,7 +296,7 @@ class WarmupCommand extends Command
      */
     protected function resolveLanguages(array $languages): \Generator
     {
-        if ([] === $languages) {
+        if ($languages === []) {
             // Run cache warmup for all languages by default
             yield self::ALL_LANGUAGES;
             return;

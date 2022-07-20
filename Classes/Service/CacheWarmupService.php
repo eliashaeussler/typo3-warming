@@ -95,7 +95,7 @@ class CacheWarmupService implements LoggerAwareInterface
 
         foreach ($sites as $site) {
             $siteLanguage = null;
-            if (null !== $request->getLanguageId()) {
+            if ($request->getLanguageId() !== null) {
                 $siteLanguage = $site->getLanguageById($request->getLanguageId());
             }
             $sitemap = $this->sitemapLocator->locateBySite($site, $siteLanguage);
