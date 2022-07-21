@@ -1,8 +1,5 @@
 name: Dependabot auto-merge
-on:
-  pull_request:
-    branches:
-      - 'dependabot/npm_and_yarn/**'
+on: [pull_request]
 
 jobs:
   dependabot-auto-merge:
