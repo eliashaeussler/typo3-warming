@@ -189,6 +189,10 @@ services:
         - '@EliasHaeussler\Typo3Warming\Sitemap\Provider\DefaultProvider'
 ```
 
+## :technologist: Contributing
+
+Please have a look at [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
 ## :gem: Credits
 
 The extension icon ("rocket") as well as the icons for cache warmup actions are
