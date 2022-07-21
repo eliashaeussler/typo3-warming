@@ -24,6 +24,7 @@ declare(strict_types=1);
 return [
     'directories' => [
         '.build',
+        '.ddev',
         '.git',
         '.github',
         'bin',
@@ -49,7 +50,10 @@ return [
         'packaging_exclude.php',
         'php-cs-fixer.php',
         'phpstan.neon',
-        'phpunit.ci.xml',
-        'phpunit.xml',
+        'phpunit.ci.functional.xml',
+        'phpunit.ci.unit.xml',
+        'phpunit.functional.xml',
+        'phpunit.unit.xml',
+        'typoscript-lint.yml',
     ],
 ];

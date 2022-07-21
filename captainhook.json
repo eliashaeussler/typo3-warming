@@ -41,6 +41,21 @@
 				]
 			},
 			{
+				"action": "composer lint:typoscript -- --fail-on-warnings",
+				"options": [],
+				"conditions": [
+					{
+						"exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\Any",
+						"args": [
+							[
+								"*.typoscript",
+								"*.tsconfig"
+							]
+						]
+					}
+				]
+			},
+			{
 				"action": "composer sca:php -- --memory-limit=2G",
 				"options": [],
 				"conditions": [
@@ -70,7 +85,7 @@
 				]
 			},
 			{
-				"action": "composer test",
+				"action": "ddev composer test",
 				"options": [],
 				"conditions": [
 					{
@@ -78,8 +93,7 @@
 						"args": [
 							[
 								"*.php",
-								"phpunit.ci.xml",
-								"phpunit.xml"
+								"phpunit.*.xml"
 							]
 						]
 					}

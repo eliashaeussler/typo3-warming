@@ -13,8 +13,8 @@
             <directory suffix=".php">Classes</directory>
         </include>
         <report>
-            <clover outputFile=".Build/log/coverage/clover.xml"/>
-            <html outputDirectory=".Build/log/coverage/html/"/>
+            <php outputFile=".Build/log/coverage/php/unit.cov"/>
+            <html outputDirectory=".Build/log/coverage/html/unit/"/>
             <text outputFile="php://stdout" showUncoveredFiles="true"/>
         </report>
     </coverage>
@@ -24,6 +24,9 @@
         </testsuite>
     </testsuites>
     <logging>
-        <junit outputFile=".Build/log/coverage/junit.xml"/>
+        <junit outputFile=".Build/log/coverage/junit/unit.xml"/>
     </logging>
+    <php>
+        <ini name="memory_limit" value="2G"/>
+    </php>
 </phpunit>

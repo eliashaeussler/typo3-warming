@@ -222,6 +222,7 @@ class WarmupCommand extends Command
         }
 
         // Run cache warmup in sub command from eliashaeussler/cache-warmup
+        /** @var CacheWarmupCommand $subCommand */
         $subCommand = $application->add(new CacheWarmupCommand());
         $subCommandParameters = [
             'sitemaps' => $sitemaps,
@@ -273,7 +274,7 @@ class WarmupCommand extends Command
     protected function resolveSitemaps(array $sites, array $languages): \Generator
     {
         foreach ($sites as $siteList) {
-            foreach (GeneralUtility::trimExplode(',', $siteList, true) as $site) {
+            foreach (GeneralUtility::trimExplode(',', (string)$siteList, true) as $site) {
                 if (MathUtility::canBeInterpretedAsInteger($site)) {
                     $site = $this->siteFinder->getSiteByRootPageId((int)$site);
                 } else {

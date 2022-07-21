@@ -44,6 +44,8 @@ jobs:
         run: .Build/bin/ec --finder-config .editorconfig-lint.php
       - name: Lint PHP
         run: composer lint:php -- --dry-run
+      - name: Lint TypoScript
+        run: composer lint:typoscript -- --fail-on-warnings
 
       # SCA
       - name: SCA PHP

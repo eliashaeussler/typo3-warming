@@ -39,11 +39,11 @@ class UnsupportedConfigurationExceptionTest extends UnitTestCase
      */
     public function forBaseUrlReturnsExceptionForBaseUrl(): void
     {
-        $subject = UnsupportedConfigurationException::forBaseUrl('foo');
+        $actual = UnsupportedConfigurationException::forBaseUrl('foo');
 
-        self::assertInstanceOf(UnsupportedConfigurationException::class, $subject);
-        self::assertSame('The given base URL "foo" is not supported.', $subject->getMessage());
-        self::assertSame(1619168965, $subject->getCode());
+        self::assertInstanceOf(UnsupportedConfigurationException::class, $actual);
+        self::assertSame('The given base URL "foo" is not supported.', $actual->getMessage());
+        self::assertSame(1619168965, $actual->getCode());
     }
 
     /**
@@ -51,11 +51,11 @@ class UnsupportedConfigurationExceptionTest extends UnitTestCase
      */
     public function forMissingPageIdReturnsExceptionForMissingPageId(): void
     {
-        $subject = UnsupportedConfigurationException::forMissingPageId();
+        $actual = UnsupportedConfigurationException::forMissingPageId();
 
-        self::assertInstanceOf(UnsupportedConfigurationException::class, $subject);
-        self::assertSame('No page ID given. Omitting the page ID is not supported.', $subject->getMessage());
-        self::assertSame(1619190793, $subject->getCode());
+        self::assertInstanceOf(UnsupportedConfigurationException::class, $actual);
+        self::assertSame('No page ID given. Omitting the page ID is not supported.', $actual->getMessage());
+        self::assertSame(1619190793, $actual->getCode());
     }
 
     /**
@@ -63,11 +63,11 @@ class UnsupportedConfigurationExceptionTest extends UnitTestCase
      */
     public function forTypeMismatchReturnsExceptionForTypeMismatch(): void
     {
-        $subject = UnsupportedConfigurationException::forTypeMismatch('foo', 'baz');
+        $actual = UnsupportedConfigurationException::forTypeMismatch('foo', 'baz');
 
-        self::assertInstanceOf(UnsupportedConfigurationException::class, $subject);
-        self::assertSame('Expected variable of type "foo", got "baz" instead.', $subject->getMessage());
-        self::assertSame(1619196807, $subject->getCode());
+        self::assertInstanceOf(UnsupportedConfigurationException::class, $actual);
+        self::assertSame('Expected variable of type "foo", got "baz" instead.', $actual->getMessage());
+        self::assertSame(1619196807, $actual->getCode());
     }
 
     /**
@@ -75,11 +75,11 @@ class UnsupportedConfigurationExceptionTest extends UnitTestCase
      */
     public function forUnresolvableClassReturnsExceptionForUnresolvableClass(): void
     {
-        $subject = UnsupportedConfigurationException::forUnresolvableClass('foo');
+        $actual = UnsupportedConfigurationException::forUnresolvableClass('foo');
 
-        self::assertInstanceOf(UnsupportedConfigurationException::class, $subject);
-        self::assertSame('Given class "foo" does not exist or cannot be resolved.', $subject->getMessage());
-        self::assertSame(1619196886, $subject->getCode());
+        self::assertInstanceOf(UnsupportedConfigurationException::class, $actual);
+        self::assertSame('Given class "foo" does not exist or cannot be resolved.', $actual->getMessage());
+        self::assertSame(1619196886, $actual->getCode());
     }
 
     /**
@@ -87,10 +87,10 @@ class UnsupportedConfigurationExceptionTest extends UnitTestCase
      */
     public function forMissingImplementationReturnsExceptionForMissingImplementation(): void
     {
-        $subject = UnsupportedConfigurationException::forMissingImplementation('foo', 'baz');
+        $actual = UnsupportedConfigurationException::forMissingImplementation('foo', 'baz');
 
-        self::assertInstanceOf(UnsupportedConfigurationException::class, $subject);
-        self::assertSame('Given class "baz" does not implement the expected interface "foo".', $subject->getMessage());
-        self::assertSame(1619196994, $subject->getCode());
+        self::assertInstanceOf(UnsupportedConfigurationException::class, $actual);
+        self::assertSame('Given class "baz" does not implement the expected interface "foo".', $actual->getMessage());
+        self::assertSame(1619196994, $actual->getCode());
     }
 }

@@ -21,28 +21,41 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3Warming\Tests\Unit\Exception;
-
-use EliasHaeussler\Typo3Warming\Exception\MissingPageIdException;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+namespace EliasHaeussler\Typo3Warming\Tests\Functional;
 
 /**
- * MissingPageIdExceptionTest
+ * AccessibleMethodTrait
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class MissingPageIdExceptionTest extends UnitTestCase
+trait AccessibleMethodTrait
 {
     /**
-     * @test
+     * @param class-string|object $classNameOrObject
+     * @throws \ReflectionException
      */
-    public function createReturnsExceptionForMissingPageId(): void
+    private function getAccessibleMethod($classNameOrObject, string $methodName): \ReflectionMethod
     {
-        $actual = MissingPageIdException::create();
+        $reflection = new \ReflectionClass($classNameOrObject);
+        $reflectionMethod = $reflection->getMethod($methodName);
+        $reflectionMethod->setAccessible(true);
 
-        self::assertInstanceOf(MissingPageIdException::class, $actual);
-        self::assertSame('Page id is missing or invalid.', $actual->getMessage());
-        self::assertSame(1619168744, $actual->getCode());
+        return $reflectionMethod;
+    }
+
+    /**
+     * @param class-string $traitName
+     * @return array{0: object, 1: \ReflectionMethod}
+     * @throws \ReflectionException
+     */
+    private function getAccessibleMethodOfTrait(string $traitName, string $methodName): array
+    {
+        $object = $this->getObjectForTrait($traitName);
+
+        return [
+            $object,
+            $this->getAccessibleMethod($object, $methodName),
+        ];
     }
 }
