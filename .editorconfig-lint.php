@@ -21,28 +21,11 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3Warming\Tests\Unit\Exception;
-
-use EliasHaeussler\Typo3Warming\Exception\MissingPageIdException;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
-
-/**
- * MissingPageIdExceptionTest
- *
- * @author Elias Häußler <elias@haeussler.dev>
- * @license GPL-2.0-or-later
- */
-class MissingPageIdExceptionTest extends UnitTestCase
-{
-    /**
-     * @test
-     */
-    public function createReturnsExceptionForMissingPageId(): void
-    {
-        $actual = MissingPageIdException::create();
-
-        self::assertInstanceOf(MissingPageIdException::class, $actual);
-        self::assertSame('Page id is missing or invalid.', $actual->getMessage());
-        self::assertSame(1619168744, $actual->getCode());
-    }
-}
+return \Symfony\Component\Finder\Finder::create()
+    ->files()
+    ->in(__DIR__)
+    ->ignoreVCSIgnored(true)
+    ->exclude([
+        'Resources/Public/JavaScript',
+    ])
+;

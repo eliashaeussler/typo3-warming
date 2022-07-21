@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
- * Copyright (C) 2021 Elias Häußler <elias@haeussler.dev>
+ * Copyright (C) 2022 Elias Häußler <elias@haeussler.dev>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -70,9 +70,6 @@ class CacheWarmupService implements LoggerAwareInterface
     protected $crawler;
 
     /**
-     * @param SiteFinder $siteFinder
-     * @param SitemapLocator $sitemapLocator
-     * @param Configuration $configuration
      * @throws UnsupportedConfigurationException
      */
     public function __construct(
@@ -88,8 +85,6 @@ class CacheWarmupService implements LoggerAwareInterface
 
     /**
      * @param Site[] $sites
-     * @param WarmupRequest $request
-     * @return CrawlerInterface
      * @throws UnsupportedConfigurationException
      * @throws UnsupportedSiteException
      */
@@ -100,7 +95,7 @@ class CacheWarmupService implements LoggerAwareInterface
 
         foreach ($sites as $site) {
             $siteLanguage = null;
-            if (null !== $request->getLanguageId()) {
+            if ($request->getLanguageId() !== null) {
                 $siteLanguage = $site->getLanguageById($request->getLanguageId());
             }
             $sitemap = $this->sitemapLocator->locateBySite($site, $siteLanguage);
@@ -117,8 +112,6 @@ class CacheWarmupService implements LoggerAwareInterface
 
     /**
      * @param int[] $pageIds
-     * @param WarmupRequest $request
-     * @return CrawlerInterface
      * @throws SiteNotFoundException
      */
     public function warmupPages(array $pageIds, WarmupRequest $request): CrawlerInterface
@@ -140,9 +133,6 @@ class CacheWarmupService implements LoggerAwareInterface
     }
 
     /**
-     * @param int $pageId
-     * @param int|null $languageId
-     * @return UriInterface
      * @throws SiteNotFoundException
      */
     public function generateUri(int $pageId, int $languageId = null): UriInterface
@@ -159,7 +149,6 @@ class CacheWarmupService implements LoggerAwareInterface
 
     /**
      * @param class-string<CrawlerInterface>|CrawlerInterface|null $crawler
-     * @return self
      * @throws UnsupportedConfigurationException
      */
     public function setCrawler($crawler): self
@@ -170,7 +159,6 @@ class CacheWarmupService implements LoggerAwareInterface
 
     /**
      * @param class-string<CrawlerInterface>|CrawlerInterface|null $crawler
-     * @return CrawlerInterface
      * @throws UnsupportedConfigurationException
      */
     protected function initializeCrawler($crawler): CrawlerInterface
@@ -185,8 +173,8 @@ class CacheWarmupService implements LoggerAwareInterface
         }
 
         // Throw exception if crawler variable type is unsupported
-        if (!is_string($crawler)) {
-            throw UnsupportedConfigurationException::forTypeMismatch('string', gettype($crawler));
+        if (!\is_string($crawler)) {
+            throw UnsupportedConfigurationException::forTypeMismatch('string', \gettype($crawler));
         }
 
         // Throw exception if crawler class does not exist
@@ -195,7 +183,7 @@ class CacheWarmupService implements LoggerAwareInterface
         }
 
         // Throw exception if crawler class is invalid
-        if (!in_array(CrawlerInterface::class, class_implements($crawler) ?: [])) {
+        if (!\in_array(CrawlerInterface::class, class_implements($crawler) ?: [])) {
             throw UnsupportedConfigurationException::forMissingImplementation($crawler, CrawlerInterface::class);
         }
 

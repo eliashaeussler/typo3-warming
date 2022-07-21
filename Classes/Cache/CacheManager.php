@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
- * Copyright (C) 2021 Elias Häußler <elias@haeussler.dev>
+ * Copyright (C) 2022 Elias Häußler <elias@haeussler.dev>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,9 +49,7 @@ class CacheManager
     }
 
     /**
-     * @param Site|null $site
-     * @param SiteLanguage|null $siteLanguage
-     * @return array<string, array<string, mixed>>|string|null
+     * @return array<string, array<string, string>>|string|null
      */
     public function get(Site $site = null, SiteLanguage $siteLanguage = null)
     {
@@ -84,7 +82,7 @@ class CacheManager
     protected function buildLanguageIdentifier(Site $site, SiteLanguage $siteLanguage = null): string
     {
         $languageIdentifier = 'default';
-        if (null !== $siteLanguage && $siteLanguage !== $site->getDefaultLanguage()) {
+        if ($siteLanguage !== null && $siteLanguage !== $site->getDefaultLanguage()) {
             $languageIdentifier = (string)$siteLanguage->getLanguageId();
         }
 

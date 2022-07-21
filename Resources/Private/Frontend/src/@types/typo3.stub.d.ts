@@ -23,49 +23,49 @@ declare const nothing: any;
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
 /**
- * @see https://github.com/TYPO3/TYPO3.CMS/blob/master/Build/Sources/TypeScript/backend/Resources/Public/TypeScript/ActionButton/ImmediateAction.ts
+ * @see https://github.com/TYPO3/TYPO3.CMS/blob/11.5/Build/Sources/TypeScript/backend/Resources/Public/TypeScript/ActionButton/ImmediateAction.ts
  */
 declare module 'TYPO3/CMS/Backend/ActionButton/ImmediateAction' {
   export default nothing;
 }
 
 /**
- * @see https://github.com/TYPO3/TYPO3.CMS/blob/master/Build/Sources/TypeScript/backend/Resources/Public/TypeScript/Icons.ts
+ * @see https://github.com/TYPO3/TYPO3.CMS/blob/11.5/Build/Sources/TypeScript/backend/Resources/Public/TypeScript/Icons.ts
  */
 declare module 'TYPO3/CMS/Backend/Icons' {
   export default nothing;
 }
 
 /**
- * @see https://github.com/TYPO3/TYPO3.CMS/blob/master/Build/Sources/TypeScript/backend/Resources/Public/TypeScript/Modal.ts
+ * @see https://github.com/TYPO3/TYPO3.CMS/blob/11.5/Build/Sources/TypeScript/backend/Resources/Public/TypeScript/Modal.ts
  */
 declare module 'TYPO3/CMS/Backend/Modal' {
   export default nothing;
 }
 
 /**
- * @see https://github.com/TYPO3/TYPO3.CMS/blob/master/Build/Sources/TypeScript/backend/Resources/Public/TypeScript/Notification.ts
+ * @see https://github.com/TYPO3/TYPO3.CMS/blob/11.5/Build/Sources/TypeScript/backend/Resources/Public/TypeScript/Notification.ts
  */
 declare module 'TYPO3/CMS/Backend/Notification' {
   export default nothing;
 }
 
 /**
- * @see https://github.com/TYPO3/TYPO3.CMS/blob/master/Build/Sources/TypeScript/backend/Resources/Public/TypeScript/Viewport.ts
+ * @see https://github.com/TYPO3/TYPO3.CMS/blob/11.5/Build/Sources/TypeScript/backend/Resources/Public/TypeScript/Viewport.ts
  */
 declare module 'TYPO3/CMS/Backend/Viewport' {
   export default nothing;
 }
 
 /**
- * @see https://github.com/TYPO3/TYPO3.CMS/blob/master/Build/Sources/TypeScript/core/Resources/Public/TypeScript/Ajax/AjaxRequest.ts
+ * @see https://github.com/TYPO3/TYPO3.CMS/blob/11.5/Build/Sources/TypeScript/core/Resources/Public/TypeScript/Ajax/AjaxRequest.ts
  */
 declare module 'TYPO3/CMS/Core/Ajax/AjaxRequest' {
   export default nothing;
 }
 
 /**
- * @see https://github.com/TYPO3/TYPO3.CMS/blob/master/Build/Sources/TypeScript/core/Resources/Public/TypeScript/Ajax/AjaxResponse.ts
+ * @see https://github.com/TYPO3/TYPO3.CMS/blob/11.5/Build/Sources/TypeScript/core/Resources/Public/TypeScript/Ajax/AjaxResponse.ts
  */
 declare module 'TYPO3/CMS/Core/Ajax/AjaxResponse' {
   export default nothing;

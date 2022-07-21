@@ -94,14 +94,14 @@ class CacheWarmupProgressModal {
     const failedCount = progress.getNumberOfFailedUrls();
     const {current, total} = progress.progress;
 
-    this.$progressBar.addClass('active');
+    this.$progressBar.addClass('progress-bar-animated active');
     this.$progressBar.attr('aria-valuenow', current);
     this.$progressBar.attr('aria-valuemax', total);
     this.$progressBar.css('width', `${percent}%`);
     this.$progressBar.html(`${percent.toFixed(2)}%`);
 
     if (failedCount > 0) {
-      this.$progressBar.addClass('progress-bar-warning');
+      this.$progressBar.addClass('progress-bar-warning bg-warning');
       this.$failedCounter.show().html(
         Util.formatString(TYPO3.lang[LanguageKeys.modalProgressFailedCounter], failedCount.toString())
       );
@@ -113,9 +113,9 @@ class CacheWarmupProgressModal {
 
     if (progress.isFinished()) {
       this.$progressBar
-        .removeClass('active')
-        .removeClass('progress-bar-warning')
-        .addClass(failedCount > 0 ? 'progress-bar-danger' : 'progress-bar-success');
+        .removeClass('progress-bar-animated active')
+        .removeClass('progress-bar-warning bg-warning')
+        .addClass(failedCount > 0 ? 'progress-bar-danger bg-danger' : 'progress-bar-success bg-success');
     }
   }
 
@@ -163,9 +163,9 @@ class CacheWarmupProgressModal {
    * @private
    */
   private buildInitialModalContent(): JQuery {
-    const $content = $('<div>');
+    const $content = $('<div class="d-flex flex-column gap-3">');
 
-    this.$progressBar = $('<div class="progress-bar progress-bar-striped">')
+    this.$progressBar = $('<div class="progress-bar progress-bar-striped progress-bar-animated active">')
       .attr('role', 'progressbar')
       .attr('aria-valuemin', 0)
       .attr('aria-valuemax', 0)

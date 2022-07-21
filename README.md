@@ -4,11 +4,16 @@
 
 # TYPO3 extension `warming`
 
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=eliashaeussler_typo3-warming&metric=coverage)](https://sonarcloud.io/dashboard?id=eliashaeussler_typo3-warming)
+[![Coverage](https://codecov.io/gh/eliashaeussler/typo3-warming/branch/main/graph/badge.svg?token=7M3UXACCKA)](https://codecov.io/gh/eliashaeussler/typo3-warming)
+[![Maintainability](https://api.codeclimate.com/v1/badges/2f55fa181559fdda4cc1/maintainability)](https://codeclimate.com/github/eliashaeussler/typo3-warming/maintainability)
 [![Tests](https://github.com/eliashaeussler/typo3-warming/actions/workflows/tests.yaml/badge.svg)](https://github.com/eliashaeussler/typo3-warming/actions/workflows/tests.yaml)
 [![CGL](https://github.com/eliashaeussler/typo3-warming/actions/workflows/cgl.yaml/badge.svg)](https://github.com/eliashaeussler/typo3-warming/actions/workflows/cgl.yaml)
-[![Latest Stable Version](http://poser.pugx.org/eliashaeussler/typo3-warming/v)](https://packagist.org/packages/eliashaeussler/typo3-warming)
-[![License](http://poser.pugx.org/eliashaeussler/typo3-warming/license)](LICENSE.md)
+[![Release](https://github.com/eliashaeussler/typo3-warming/actions/workflows/release.yaml/badge.svg)](https://github.com/eliashaeussler/typo3-warming/actions/workflows/release.yaml)
+[![License](http://poser.pugx.org/eliashaeussler/typo3-warming/license)](LICENSE.md)\
+[![Version](https://shields.io/endpoint?url=https://typo3-badges.dev/badge/warming/version/shields)](https://extensions.typo3.org/extension/warming)
+[![Downloads](https://shields.io/endpoint?url=https://typo3-badges.dev/badge/warming/downloads/shields)](https://extensions.typo3.org/extension/warming)
+[![Extension stability](https://shields.io/endpoint?url=https://typo3-badges.dev/badge/warming/stability/shields)](https://extensions.typo3.org/extension/warming)
+[![TYPO3 badge](https://shields.io/endpoint?url=https://typo3-badges.dev/badge/typo3/shields)](https://typo3.org/)
 
 :package:&nbsp;[Packagist](https://packagist.org/packages/eliashaeussler/typo3-warming) |
 :hatched_chick:&nbsp;[TYPO3 extension repository](https://extensions.typo3.org/extension/warming) |
@@ -190,8 +195,10 @@ The extension icon ("rocket") as well as the icons for cache warmup actions are
 modified versions of the original
 [`actions-rocket`](https://typo3.github.io/TYPO3.Icons/icons/actions/actions-rocket.html)
 icon from TYPO3 core which is originally licensed under
-[MIT License](https://github.com/TYPO3/TYPO3.Icons/blob/master/LICENSE).
+[MIT License](https://github.com/TYPO3/TYPO3.Icons/blob/main/LICENSE).
 
 ## :star: License
 
 This project is licensed under [GNU General Public License 2.0 (or later)](LICENSE.md).
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Feliashaeussler%2Ftypo3-warming.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Feliashaeussler%2Ftypo3-warming?ref=badge_large)

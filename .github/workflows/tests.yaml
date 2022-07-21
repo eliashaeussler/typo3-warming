@@ -1,30 +1,36 @@
 name: Tests
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - '**'
 
 jobs:
   tests:
-    name: PHP ${{ matrix.php-version }} & TYPO3 ${{ matrix.typo3-version }}
-    runs-on: ubuntu-18.04
+    name: Tests (PHP ${{ matrix.php-version }}, TYPO3 ${{ matrix.typo3-version }} & ${{ matrix.preferred-install }} dependencies)
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - typo3-version: 10.4
-            php-version: 7.3
-          - typo3-version: 10.4
-            php-version: 7.4
-          - typo3-version: 11.5
-            php-version: 7.4
-          - typo3-version: 11.5
-            php-version: 8.0
-            coverage: 1
+        typo3-version: ["10.4", "11.5"]
+        php-version: ["7.3", "7.4", "8.0", "8.1"]
+        preferred-install: ["stable", "lowest"]
+        exclude:
+          - typo3-version: "10.4"
+            php-version: "8.0"
+          - typo3-version: "10.4"
+            php-version: "8.1"
+          - typo3-version: "11.5"
+            php-version: "7.3"
     env:
       typo3DatabaseName: typo3
       typo3DatabaseHost: '127.0.0.1'
       typo3DatabaseUsername: root
       typo3DatabasePassword: root
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -34,7 +40,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
           tools: composer:v2
-          coverage: xdebug
+          coverage: none
 
       # Start MySQL service
       - name: Start MySQL
@@ -46,89 +52,87 @@ jobs:
         run: |
           echo "::set-output name=dir::$(composer config cache-files-dir)"
       - name: Define Composer cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: tests-php-${{ matrix.php-version }}-typo3-${{ matrix.typo3-version }}
+          key: tests-php-${{ matrix.php-version }}-${{ matrix.typo3-version }}-${{ matrix.preferred-install }}
           restore-keys: |
-            tests-php-${{ matrix.php-version }}-typo3-
+            tests-php-${{ matrix.php-version }}-${{ matrix.typo3-version }}-
+            tests-php-${{ matrix.php-version }}-
+            tests-php-
 
       # Install dependencies
       - name: Install TYPO3 and Composer dependencies
-        run: composer require typo3/cms-core:"^${{ matrix.typo3-version }}" --no-progress
+        run: composer require typo3/cms-core:"^${{ matrix.typo3-version }}" --no-progress --prefer-${{ matrix.preferred-install }}
+
+      # Run tests
+      - name: Run tests
+        run: composer test
+
+  coverage:
+    name: Test coverage
+    runs-on: ubuntu-latest
+    env:
+      typo3DatabaseName: typo3
+      typo3DatabaseHost: '127.0.0.1'
+      typo3DatabaseUsername: root
+      typo3DatabasePassword: root
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # Prepare environment
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+          tools: composer:v2
+          coverage: pcov
+
+      # Start MySQL service
+      - name: Start MySQL
+        run: sudo /etc/init.d/mysql start
+
+      # Define Composer cache
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Define Composer cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: tests-php-8.1-11.5-stable
+          restore-keys: |
+            tests-php-8.1-11.5-
+            tests-php-8.1-
+            tests-php-
+
+      # Install dependencies
+      - name: Install TYPO3 and Composer dependencies
+        run: composer update --no-progress
 
       # Run tests
       - name: Run tests
         run: |
-          composer test:ci -- --coverage-text
+          composer test:ci
           composer test:ci:merge
 
       # Report coverage
       - name: Fix coverage path
         working-directory: .Build/log/coverage
-        run: sed -i 's/\/home\/runner\/work\/typo3-warming\/typo3-warming\//\/github\/workspace\//g' clover.xml
-        if: ${{ matrix.coverage }}
-      - name: Run SonarCloud scan
-        uses: SonarSource/sonarcloud-github-action@master
+        run: sed -i 's#/home/runner/work/typo3-warming/typo3-warming#${{ github.workspace }}#g' clover.xml
+      - name: CodeClimate report
+        uses: paambaati/codeclimate-action@v3.0.0
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        if: ${{ matrix.coverage }}
-
-  tests-lowest:
-    name: '[test-lowest] PHP ${{ matrix.php-version }} & TYPO3 ${{ matrix.typo3-version }}'
-    runs-on: ubuntu-18.04
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - typo3-version: 10.4
-            php-version: 7.3
-          - typo3-version: 10.4
-            php-version: 7.4
-          - typo3-version: 11.5
-            php-version: 7.4
-          - typo3-version: 11.5
-            php-version: 8.0
-    env:
-      typo3DatabaseName: typo3
-      typo3DatabaseHost: '127.0.0.1'
-      typo3DatabaseUsername: root
-      typo3DatabasePassword: root
-    steps:
-      - uses: actions/checkout@v2
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
-          fetch-depth: 0
-
-      # Prepare environment
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+          coverageLocations: |
+            ${{ github.workspace }}/.Build/log/coverage/clover.xml:clover
+      - name: codecov report
+        uses: codecov/codecov-action@v3
         with:
-          php-version: ${{ matrix.php-version }}
-          tools: composer:v2
-          coverage: xdebug
-
-      # Start MySQL service
-      - name: Start MySQL
-        run: sudo /etc/init.d/mysql start
-
-      # Define Composer cache
-      - name: Get Composer cache directory
-        id: composer-cache
-        run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - name: Define Composer cache
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: tests-lowest-php-${{ matrix.php-version }}-typo3-${{ matrix.typo3-version }}
-          restore-keys: |
-            tests-lowest-php-${{ matrix.php-version }}-typo3-
-
-      # Install dependencies
-      - name: Install TYPO3 and Composer dependencies
-        run: composer require typo3/cms-core:"^${{ matrix.typo3-version }}" --prefer-lowest --no-progress
-
-      # Run tests
-      - name: Run tests
-        run: composer test:ci -- --coverage-text
+          directory: .Build/log/coverage
+          fail_ci_if_error: true
+          verbose: true

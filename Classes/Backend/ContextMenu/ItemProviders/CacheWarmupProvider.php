@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
- * Copyright (C) 2021 Elias Häußler <elias@haeussler.dev>
+ * Copyright (C) 2022 Elias Häußler <elias@haeussler.dev>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -85,11 +85,11 @@ class CacheWarmupProvider extends PageProvider
     protected function canRender(string $itemName, string $type): bool
     {
         // Pseudo items (such as dividers) are always renderable
-        if ('item' !== $type) {
+        if ($type !== 'item') {
             return true;
         }
 
-        if (in_array($itemName, $this->disabledItems, true)) {
+        if (\in_array($itemName, $this->disabledItems, true)) {
             return false;
         }
 
@@ -130,14 +130,14 @@ class CacheWarmupProvider extends PageProvider
         $site = $this->getCurrentSite();
 
         // Early return if site cannot be resolved
-        if (null === $site) {
+        if ($site === null) {
             return;
         }
 
         foreach ($this->itemsConfiguration as $itemName => $configuration) {
             // Skip pseudo types and non-renderable items
             $type = $configuration['type'] ?? 'item';
-            if ('item' !== $type || !$this->canRender($itemName, $type)) {
+            if ($type !== 'item' || !$this->canRender($itemName, $type)) {
                 continue;
             }
 
@@ -146,7 +146,7 @@ class CacheWarmupProvider extends PageProvider
             $languages = $site->getAvailableLanguages(static::getBackendUser());
 
             // Remove sites where no XML sitemap is available
-            if (self::ITEM_MODE_SITE === $itemName) {
+            if ($itemName === self::ITEM_MODE_SITE) {
                 $languages = array_filter($languages, function (SiteLanguage $siteLanguage): bool {
                     return $this->canWarmupCachesOfSite($siteLanguage);
                 });
@@ -157,7 +157,7 @@ class CacheWarmupProvider extends PageProvider
             }
 
             // Ignore item if no languages are available
-            if ([] === $languages) {
+            if ($languages === []) {
                 $this->disabledItems[] = $itemName;
                 continue;
             }
@@ -181,7 +181,6 @@ class CacheWarmupProvider extends PageProvider
     }
 
     /**
-     * @param string $itemName
      * @return array<string, mixed>
      */
     protected function getAdditionalAttributes(string $itemName): array
@@ -202,9 +201,9 @@ class CacheWarmupProvider extends PageProvider
     protected function canWarmupCachesOfSite(SiteLanguage $siteLanguage = null): bool
     {
         $site = $this->getCurrentSite();
-        $languageId = null !== $siteLanguage ? $siteLanguage->getLanguageId() : null;
+        $languageId = $siteLanguage !== null ? $siteLanguage->getLanguageId() : null;
 
-        return null !== $site
+        return $site !== null
             && $site->getRootPageId() === (int)$this->identifier
             && AccessUtility::canWarmupCacheOfSite($site, $languageId)
             && $this->sitemapLocator->siteContainsSitemap($site, $siteLanguage);

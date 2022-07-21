@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
- * Copyright (C) 2021 Elias Häußler <elias@haeussler.dev>
+ * Copyright (C) 2022 Elias Häußler <elias@haeussler.dev>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -89,12 +89,12 @@ class WarmupRequest
 
     public function getTotal(): int
     {
-        return count($this->requestedUrls);
+        return \count($this->requestedUrls);
     }
 
     public function getProcessed(): int
     {
-        return count($this->crawlingStates);
+        return \count($this->crawlingStates);
     }
 
     public function isSuccessful(): bool
@@ -118,7 +118,6 @@ class WarmupRequest
 
     /**
      * @param UriInterface[] $requestedUrls
-     * @return self
      */
     public function setRequestedUrls(array $requestedUrls): self
     {
@@ -172,7 +171,6 @@ class WarmupRequest
     }
 
     /**
-     * @param int $state
      * @return \Generator<CrawlingState>
      */
     protected function filterByState(int $state): \Generator
@@ -186,7 +184,7 @@ class WarmupRequest
 
     protected function triggerUpdate(): void
     {
-        if (is_callable($this->updateCallback)) {
+        if (\is_callable($this->updateCallback)) {
             ($this->updateCallback)($this);
         }
     }

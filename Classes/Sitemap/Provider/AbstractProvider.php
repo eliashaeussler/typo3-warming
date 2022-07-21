@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
- * Copyright (C) 2021 Elias Häußler <elias@haeussler.dev>
+ * Copyright (C) 2022 Elias Häußler <elias@haeussler.dev>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ abstract class AbstractProvider implements ProviderInterface
 {
     protected function getSiteUrlWithPath(Site $site, string $path, SiteLanguage $siteLanguage = null): UriInterface
     {
-        $baseUrl = null !== $siteLanguage ? $siteLanguage->getBase() : $site->getBase();
+        $baseUrl = $siteLanguage !== null ? $siteLanguage->getBase() : $site->getBase();
         $fullPath = rtrim($baseUrl->getPath(), '/') . '/' . ltrim($path, '/');
 
         return $baseUrl->withPath($fullPath);
