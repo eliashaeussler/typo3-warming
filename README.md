@@ -140,8 +140,8 @@ The extension configuration currently provides the following configuration optio
   command-line. Note that custom verbose crawlers must implement
   [`EliasHaeussler\CacheWarmup\Crawler\VerboseCrawlerInterface`][2].
 
-[1]: https://gitlab.elias-haeussler.de/eliashaeussler/cache-warmup/-/blob/master/src/Crawler/CrawlerInterface.php
-[2]: https://gitlab.elias-haeussler.de/eliashaeussler/cache-warmup/-/blob/master/src/Crawler/VerboseCrawlerInterface.php
+[1]: https://github.com/eliashaeussler/cache-warmup/blob/main/src/Crawler/CrawlerInterface.php
+[2]: https://github.com/eliashaeussler/cache-warmup/blob/main/src/Crawler/VerboseCrawlerInterface.php
 
 ### Crawler
 
