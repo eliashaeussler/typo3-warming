@@ -39,6 +39,7 @@ return [
         'DS_Store',
         'captainhook.json',
         'codecov.yml',
+        'CODEOWNERS',
         'composer.lock',
         'crowdin.yaml',
         'dependency-checker.json',
