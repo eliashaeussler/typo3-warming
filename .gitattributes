@@ -9,6 +9,7 @@
 /.php-cs-fixer.php        export-ignore
 /captainhook.json         export-ignore
 /codecov.yml              export-ignore
+/CODEOWNERS               export-ignore
 /dependency-checker.json  export-ignore
 /packaging_exclude.php    export-ignore
 /phpstan.neon             export-ignore
