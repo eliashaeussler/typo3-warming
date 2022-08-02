@@ -14,7 +14,7 @@
 	"require": {
 		"php": ">= 7.1 < 8.2",
 		"ext-json": "*",
-		"eliashaeussler/cache-warmup": ">= 0.4.0 < 0.8.0",
+		"eliashaeussler/cache-warmup": ">= 0.4.0 < 0.9.0",
 		"guzzlehttp/guzzle": ">= 6.3.0 < 8.0.0",
 		"guzzlehttp/psr7": ">= 1.4.0 < 3.0.0",
 		"psr/http-message": "^1.0",
