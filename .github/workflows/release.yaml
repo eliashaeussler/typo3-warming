@@ -69,8 +69,20 @@ jobs:
       - name: Install tailor
         run: composer global require typo3/tailor --prefer-dist --no-progress --no-suggest
 
+      - name: Reset files
+        run: git reset --hard HEAD && git clean -dfx
+
+      # PHAR files
+      - name: Build PHAR file
+        run: |
+          composer global require clue/phar-composer
+          composer install -d Resources/Private/Libs/Build
+          composer global exec phar-composer build Resources/Private/Libs/Build Resources/Private/Libs/vendors.phar
+      - name: Include PHAR file
+        run: echo "\\EliasHaeussler\\Typo3Warming\\Configuration\\Extension::loadVendorLibraries();" >> ext_localconf.php
+
+      # Release
       - name: Publish to TER
         run: |
-          git reset --hard HEAD && git clean -dfx
           php ~/.composer/vendor/bin/tailor set-version "${{ steps.get-version.outputs.version }}" --no-docs
           php ~/.composer/vendor/bin/tailor ter:publish --comment "${{ steps.get-comment.outputs.comment }}" "${{ steps.get-version.outputs.version }}"
