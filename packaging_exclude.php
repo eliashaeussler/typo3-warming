@@ -29,7 +29,7 @@ return [
         'bin',
         'build',
         'public',
-        'resources\\/private\\/frontend\\/node_modules',
+        'resources\\/private\\/frontend',
         'resources\\/private\\/libs\\/build',
         'tailor-version-upload',
         'tests',
