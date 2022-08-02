@@ -11,10 +11,8 @@
 		}
 	],
 	"require": {
+		"php": "~7.4.0",
 		"eliashaeussler/cache-warmup": ">= 0.4.0 < 0.9.0",
 		"symfony/polyfill-php80": "^1.23"
-	},
-	"config": {
-		"lock": false
 	}
 }
