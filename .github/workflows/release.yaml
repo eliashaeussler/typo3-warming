@@ -63,11 +63,7 @@ jobs:
         with:
           php-version: 7.4
           extensions: intl, mbstring, json, zip, curl
-          tools: composer:v2
-
-      # Install tailor
-      - name: Install tailor
-        run: composer global require typo3/tailor --prefer-dist --no-progress --no-suggest
+          tools: composer:v2, typo3/tailor, clue/phar-composer
 
       - name: Reset files
         run: git reset --hard HEAD && git clean -dfx
@@ -75,7 +71,6 @@ jobs:
       # PHAR files
       - name: Build PHAR file
         run: |
-          composer global require clue/phar-composer
           composer install -d Resources/Private/Libs/Build
           composer global exec phar-composer build Resources/Private/Libs/Build Resources/Private/Libs/vendors.phar
       - name: Include PHAR file
