@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "eliashaeussler/cache-warmup",
-            "version": "0.8.0",
+            "version": "0.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/cache-warmup.git",
-                "reference": "09754ab8ae2f28aca6e3bf9cad497d20826fbd8a"
+                "reference": "55bacd0657f2967f78a34a547ab870fbbf76ebf8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/cache-warmup/zipball/09754ab8ae2f28aca6e3bf9cad497d20826fbd8a",
-                "reference": "09754ab8ae2f28aca6e3bf9cad497d20826fbd8a",
+                "url": "https://api.github.com/repos/eliashaeussler/cache-warmup/zipball/55bacd0657f2967f78a34a547ab870fbbf76ebf8",
+                "reference": "55bacd0657f2967f78a34a547ab870fbbf76ebf8",
                 "shasum": ""
             },
             "require": {
@@ -26,7 +26,7 @@
                 "ext-libxml": "*",
                 "ext-simplexml": "*",
                 "guzzlehttp/guzzle": "^7.0",
-                "guzzlehttp/promises": "^1.0.3",
+                "guzzlehttp/promises": "^1.4.0",
                 "guzzlehttp/psr7": ">= 1.8 < 3.0",
                 "php": ">= 7.1 < 8.2",
                 "psr/http-client": "^1.0",
@@ -69,9 +69,9 @@
             "homepage": "https://haeussler.dev",
             "support": {
                 "issues": "https://github.com/eliashaeussler/cache-warmup/issues",
-                "source": "https://github.com/eliashaeussler/cache-warmup/tree/0.8.0"
+                "source": "https://github.com/eliashaeussler/cache-warmup/tree/0.8.1"
             },
-            "time": "2022-08-02T16:36:06+00:00"
+            "time": "2022-08-15T11:53:02+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
