@@ -27,6 +27,7 @@ use EliasHaeussler\CacheWarmup\CrawlingState;
 use EliasHaeussler\Typo3Warming\Controller\CacheWarmupController;
 use EliasHaeussler\Typo3Warming\Request\WarmupRequest;
 use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -45,7 +46,7 @@ class WarmupRequestTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->subject = new WarmupRequest('foo', CacheWarmupController::MODE_SITE, 1);
+        $this->subject = new WarmupRequest('foo', CacheWarmupController::MODE_SITE, 1, 7);
     }
 
     /**
@@ -70,6 +71,14 @@ class WarmupRequestTest extends UnitTestCase
     public function getLanguageIdReturnsLanguageId(): void
     {
         self::assertSame(1, $this->subject->getLanguageId());
+    }
+
+    /**
+     * @test
+     */
+    public function getPageIdReturnsPageId(): void
+    {
+        self::assertSame(7, $this->subject->getPageId());
     }
 
     /**
@@ -203,6 +212,19 @@ class WarmupRequestTest extends UnitTestCase
         ];
 
         self::assertSame($expected, iterator_to_array($this->subject->getFailedCrawls()));
+    }
+
+    /**
+     * @test
+     */
+    public function getSiteReturnsSite(): void
+    {
+        self::assertNull($this->subject->getSite());
+
+        $site = new Site('foo', 7, []);
+        $this->subject->setSite($site);
+
+        self::assertSame($site, $this->subject->getSite());
     }
 
     /**

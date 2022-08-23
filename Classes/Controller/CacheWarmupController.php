@@ -37,6 +37,9 @@ use EliasHaeussler\Typo3Warming\Traits\ViewTrait;
 use EliasHaeussler\Typo3Warming\Utility\AccessUtility;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -47,7 +50,6 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * CacheWarmupController
@@ -89,6 +91,11 @@ class CacheWarmupController
      */
     protected $sitemapLocator;
 
+    /**
+     * @var DenormalizerInterface
+     */
+    protected $denormalizer;
+
     public function __construct(
         SiteFinder $siteFinder,
         CacheWarmupService $warmupService,
@@ -99,6 +106,7 @@ class CacheWarmupController
         $this->warmupService = $warmupService;
         $this->iconFactory = $iconFactory;
         $this->sitemapLocator = $sitemapLocator;
+        $this->denormalizer = new ObjectNormalizer();
     }
 
     /**
@@ -111,19 +119,17 @@ class CacheWarmupController
     {
         // Ensure request was sent using the EventSource API performing an SSE request
         if (['text/event-stream'] !== $request->getHeader('Accept')) {
-            return new Response(null, 400, [], 'Invalid Request Headers');
+            return $this->buildBadRequestResponse();
         }
 
-        $queryParams = $request->getQueryParams();
-        $mode = $queryParams['mode'] ?: self::MODE_SITE;
-        $pageId = (int)$queryParams['pageId'] ?: null;
-        $languageId = (int)$queryParams['languageId'] ?: null;
-        $site = $this->determineSite($pageId);
-        $requestId = $queryParams['requestId'] ?: StringUtility::getUniqueId('_');
-
         // Build warmup request object
-        $warmupRequest = new WarmupRequest($requestId, $mode, $languageId);
-        $warmupRequest->setUpdateCallback([$this, 'sendWarmupProgressEvent']);
+        try {
+            $warmupRequest = $this->createWarmupRequest($request->getQueryParams());
+            $warmupRequest->setUpdateCallback([$this, 'sendWarmupProgressEvent']);
+            $warmupRequest->setSite($this->determineSite($warmupRequest->getPageId()));
+        } catch (ExceptionInterface $e) {
+            return $this->buildBadRequestResponse();
+        }
 
         // Send headers for SSE
         $headers = [
@@ -136,26 +142,14 @@ class CacheWarmupController
             header(sprintf('%s: %s', $key, $value));
         }
 
-        switch ($mode) {
-            case self::MODE_PAGE:
-                if (empty($pageId)) {
-                    throw UnsupportedConfigurationException::forMissingPageId();
-                }
-
-                $crawler = $this->warmupService->warmupPages([$pageId], $warmupRequest);
-                break;
-
-            case self::MODE_SITE:
-            default:
-                $crawler = $this->warmupService->warmupSites([$site], $warmupRequest);
-                break;
-        }
+        // Perform cache warmup
+        $crawler = $this->performCacheWarmup($warmupRequest);
 
         // Send final response
         $this->sendServerEvent(
             $warmupRequest->getId(),
             'warmupFinished',
-            $this->buildJsonResponseData($mode, $pageId, $site, $crawler)
+            $this->buildJsonResponseData($warmupRequest, $crawler)
         );
 
         return new Response();
@@ -215,37 +209,45 @@ class CacheWarmupController
      */
     public function legacyWarmupAction(ServerRequestInterface $request): ResponseInterface
     {
-        $queryParams = $request->getQueryParams();
-        $mode = $queryParams['mode'] ?: self::MODE_SITE;
-        $pageId = (int)$queryParams['pageId'] ?: null;
-        $languageId = (int)$queryParams['languageId'] ?: null;
-        $site = $this->determineSite($pageId);
-        $requestId = $queryParams['requestId'] ?: StringUtility::getUniqueId('_');
-
         // Build warmup request object
-        $warmupRequest = new WarmupRequest($requestId, $mode, $languageId);
-
-        switch ($mode) {
-            case self::MODE_PAGE:
-                if (empty($pageId)) {
-                    throw UnsupportedConfigurationException::forMissingPageId();
-                }
-
-                $crawler = $this->warmupService->warmupPages([$pageId], $warmupRequest);
-                break;
-
-            case self::MODE_SITE:
-            default:
-                $crawler = $this->warmupService->warmupSites([$site], $warmupRequest);
-                break;
+        try {
+            $warmupRequest = $this->createWarmupRequest($request->getQueryParams());
+            $warmupRequest->setSite($this->determineSite($warmupRequest->getPageId()));
+        } catch (ExceptionInterface $e) {
+            return $this->buildBadRequestResponse();
         }
 
+        // Perform cache warmup
+        $crawler = $this->performCacheWarmup($warmupRequest);
+
+        // Redirect to requested URL
         $redirectUrl = $this->getRedirectUrl($request);
         if ($redirectUrl !== '') {
             return new RedirectResponse(GeneralUtility::locationHeaderUrl($redirectUrl), 301);
         }
 
-        return new JsonResponse($this->buildJsonResponseData($mode, $pageId, $site, $crawler));
+        return new JsonResponse($this->buildJsonResponseData($warmupRequest, $crawler));
+    }
+
+    /**
+     * @throws SiteNotFoundException
+     * @throws UnsupportedConfigurationException
+     * @throws UnsupportedSiteException
+     */
+    protected function performCacheWarmup(WarmupRequest $warmupRequest): CrawlerInterface
+    {
+        switch ($warmupRequest->getMode()) {
+            case self::MODE_PAGE:
+                if (empty($warmupRequest->getPageId())) {
+                    throw UnsupportedConfigurationException::forMissingPageId();
+                }
+
+                return $this->warmupService->warmupPages([$warmupRequest->getPageId()], $warmupRequest);
+
+            case self::MODE_SITE:
+            default:
+                return $this->warmupService->warmupSites([$warmupRequest->getSite()], $warmupRequest);
+        }
     }
 
     /**
@@ -305,6 +307,15 @@ class CacheWarmupController
     }
 
     /**
+     * @param array<string, mixed> $queryParams
+     * @throws ExceptionInterface
+     */
+    protected function createWarmupRequest(array $queryParams): WarmupRequest
+    {
+        return $this->denormalizer->denormalize($queryParams, WarmupRequest::class);
+    }
+
+    /**
      * @throws MissingPageIdException
      * @throws SiteNotFoundException
      */
@@ -333,7 +344,7 @@ class CacheWarmupController
     /**
      * @return array<string, mixed>
      */
-    protected function buildJsonResponseData(string $mode, ?int $pageId, Site $site, CrawlerInterface $crawler): array
+    protected function buildJsonResponseData(WarmupRequest $warmupRequest, CrawlerInterface $crawler): array
     {
         $successfulCount = \count($crawler->getSuccessfulUrls());
         $failedCount = \count($crawler->getFailedUrls());
@@ -348,20 +359,25 @@ class CacheWarmupController
             ],
         ];
 
-        switch ($mode) {
+        switch ($warmupRequest->getMode()) {
             case self::MODE_PAGE:
-                $pageTitle = $this->getPageTitle($pageId);
-                $data['message'] = static::translate('notification.message.page.' . $state, [$pageTitle, $pageId]);
+                $pageTitle = $this->getPageTitle($warmupRequest->getPageId());
+                $data['message'] = static::translate('notification.message.page.' . $state, [$pageTitle, $warmupRequest->getPageId()]);
                 break;
 
             case self::MODE_SITE:
             default:
-                $pageTitle = $this->getPageTitle($site->getRootPageId());
-                $data['message'] = static::translate('notification.message.site', [$pageTitle, $pageId, $successfulCount, $failedCount]);
+                $pageTitle = $this->getPageTitle($warmupRequest->getSite()->getRootPageId());
+                $data['message'] = static::translate('notification.message.site', [$pageTitle, $warmupRequest->getPageId(), $successfulCount, $failedCount]);
                 break;
         }
 
         return $data;
+    }
+
+    protected function buildBadRequestResponse(string $reason = 'Invalid Request Headers'): ResponseInterface
+    {
+        return new Response(null, 400, [], $reason);
     }
 
     protected function getPageTitle(int $pageId): string
