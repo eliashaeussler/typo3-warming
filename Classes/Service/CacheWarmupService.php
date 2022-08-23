@@ -148,7 +148,7 @@ class CacheWarmupService implements LoggerAwareInterface
     }
 
     /**
-     * @param string|CrawlerInterface|null $crawler
+     * @param class-string<CrawlerInterface>|CrawlerInterface|null $crawler
      * @throws UnsupportedConfigurationException
      */
     public function setCrawler($crawler): self
@@ -158,7 +158,7 @@ class CacheWarmupService implements LoggerAwareInterface
     }
 
     /**
-     * @param string|CrawlerInterface $crawler
+     * @param class-string<CrawlerInterface>|CrawlerInterface $crawler
      * @throws UnsupportedConfigurationException
      */
     protected function initializeCrawler($crawler): CrawlerInterface
@@ -183,12 +183,10 @@ class CacheWarmupService implements LoggerAwareInterface
         }
 
         // Throw exception if crawler class is invalid
-        if (!\in_array(CrawlerInterface::class, class_implements($crawler))) {
+        if (!\in_array(CrawlerInterface::class, class_implements($crawler) ?: [])) {
             throw UnsupportedConfigurationException::forMissingImplementation($crawler, CrawlerInterface::class);
         }
 
-        /** @var CrawlerInterface $instance */
-        $instance = GeneralUtility::makeInstance($crawler);
-        return $instance;
+        return GeneralUtility::makeInstance($crawler);
     }
 }

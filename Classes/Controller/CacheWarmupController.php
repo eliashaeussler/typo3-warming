@@ -230,6 +230,7 @@ class CacheWarmupController
     }
 
     /**
+     * @throws MissingPageIdException
      * @throws SiteNotFoundException
      * @throws UnsupportedConfigurationException
      * @throws UnsupportedSiteException
@@ -246,7 +247,13 @@ class CacheWarmupController
 
             case self::MODE_SITE:
             default:
-                return $this->warmupService->warmupSites([$warmupRequest->getSite()], $warmupRequest);
+                $site = $warmupRequest->getSite();
+
+                if ($site === null) {
+                    throw MissingPageIdException::create();
+                }
+
+                return $this->warmupService->warmupSites([$site], $warmupRequest);
         }
     }
 
@@ -327,7 +334,7 @@ class CacheWarmupController
             return $this->siteFinder->getSiteByPageId($pageId);
         }
 
-        if (\count($allSites) > 1) {
+        if (\count($allSites) !== 1) {
             throw MissingPageIdException::create();
         }
 
@@ -336,7 +343,15 @@ class CacheWarmupController
 
     protected function getRedirectUrl(ServerRequestInterface $request): string
     {
-        $redirect = $request->getParsedBody()['redirect'] ?? $request->getQueryParams()['redirect'] ?? '';
+        $parsedBody = $request->getParsedBody();
+
+        if (\is_array($parsedBody)) {
+            $redirect = $parsedBody['redirect'] ?? null;
+        } elseif (\is_object($parsedBody) && property_exists($parsedBody, 'redirect')) {
+            $redirect = $parsedBody->redirect;
+        }
+
+        $redirect = $redirect ?? $request->getQueryParams()['redirect'] ?? '';
 
         return GeneralUtility::sanitizeLocalUrl($redirect);
     }

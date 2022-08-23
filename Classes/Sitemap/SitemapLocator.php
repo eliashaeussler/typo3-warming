@@ -148,7 +148,7 @@ class SitemapLocator
                     1619525071
                 );
             }
-            if (!\in_array(ProviderInterface::class, class_implements($provider))) {
+            if (!\in_array(ProviderInterface::class, class_implements($provider) ?: [])) {
                 throw new \InvalidArgumentException(
                     sprintf(
                         'The given provider "%s" does not implement the interface "%s".',

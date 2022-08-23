@@ -34,7 +34,7 @@
 		"ergebnis/composer-normalize": "^2.8",
 		"jangregor/phpstan-prophecy": "^1.0",
 		"phpspec/prophecy-phpunit": "^2.0",
-		"phpstan/phpstan": "^1.5",
+		"phpstan/phpstan": "^1.6",
 		"saschaegerer/phpstan-typo3": "^1.1",
 		"typo3/coding-standards": "^0.5.0",
 		"typo3/testing-framework": "^6.11.2"
