@@ -65,7 +65,7 @@ class CacheWarmupService implements LoggerAwareInterface
     protected $limit;
 
     /**
-     * @var CrawlerInterface|null
+     * @var CrawlerInterface
      */
     protected $crawler;
 
@@ -148,7 +148,7 @@ class CacheWarmupService implements LoggerAwareInterface
     }
 
     /**
-     * @param class-string<CrawlerInterface>|CrawlerInterface|null $crawler
+     * @param class-string<CrawlerInterface>|CrawlerInterface $crawler
      * @throws UnsupportedConfigurationException
      */
     public function setCrawler($crawler): self
