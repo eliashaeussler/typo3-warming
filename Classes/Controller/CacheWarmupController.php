@@ -48,6 +48,7 @@ use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -284,6 +285,8 @@ class CacheWarmupController
             // Check all available languages for possible sitemaps
             foreach ($this->sitemapLocator->locateAllBySite($site) as $sitemap) {
                 $siteLanguage = $sitemap->getSiteLanguage();
+                \assert($siteLanguage instanceof SiteLanguage);
+
                 $languageIdentifier = $siteLanguage === $site->getDefaultLanguage() ? 'default' : $siteLanguage->getLanguageId();
                 $sitemapConfiguration = [
                     'language' => $siteLanguage,
@@ -358,6 +361,7 @@ class CacheWarmupController
 
     /**
      * @return array<string, mixed>
+     * @throws MissingPageIdException
      */
     protected function buildJsonResponseData(WarmupRequest $warmupRequest, CrawlerInterface $crawler): array
     {
@@ -374,16 +378,28 @@ class CacheWarmupController
             ],
         ];
 
+        // Throw exception if page ID is not available
+        $pageId = $warmupRequest->getPageId();
+        if ($pageId === null) {
+            throw MissingPageIdException::create();
+        }
+
         switch ($warmupRequest->getMode()) {
             case self::MODE_PAGE:
-                $pageTitle = $this->getPageTitle($warmupRequest->getPageId());
-                $data['message'] = static::translate('notification.message.page.' . $state, [$pageTitle, $warmupRequest->getPageId()]);
+                $pageTitle = $this->getPageTitle($pageId);
+                $data['message'] = static::translate('notification.message.page.' . $state, [$pageTitle, $pageId]);
                 break;
 
             case self::MODE_SITE:
             default:
-                $pageTitle = $this->getPageTitle($warmupRequest->getSite()->getRootPageId());
-                $data['message'] = static::translate('notification.message.site', [$pageTitle, $warmupRequest->getPageId(), $successfulCount, $failedCount]);
+                $site = $warmupRequest->getSite();
+
+                if ($site === null) {
+                    throw MissingPageIdException::create();
+                }
+
+                $pageTitle = $this->getPageTitle($site->getRootPageId());
+                $data['message'] = static::translate('notification.message.site', [$pageTitle, $pageId, $successfulCount, $failedCount]);
                 break;
         }
 
@@ -395,9 +411,18 @@ class CacheWarmupController
         return new Response(null, 400, [], $reason);
     }
 
+    /**
+     * @throws MissingPageIdException
+     */
     protected function getPageTitle(int $pageId): string
     {
-        return BackendUtility::getRecordTitle('pages', BackendUtility::getRecord('pages', $pageId));
+        $record = BackendUtility::getRecord('pages', $pageId);
+
+        if ($record === null) {
+            throw MissingPageIdException::create();
+        }
+
+        return BackendUtility::getRecordTitle('pages', $record);
     }
 
     protected function determineCrawlState(int $successfulCount, int $failedCount): string
