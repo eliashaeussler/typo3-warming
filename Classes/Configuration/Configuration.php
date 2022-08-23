@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Configuration;
 
+use EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface;
 use EliasHaeussler\Typo3Warming\Crawler\ConcurrentUserAgentCrawler;
 use EliasHaeussler\Typo3Warming\Crawler\OutputtingUserAgentCrawler;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -72,19 +73,27 @@ final class Configuration
         }
     }
 
+    /**
+     * @return class-string<CrawlerInterface>
+     */
     public function getCrawler(): string
     {
         try {
-            $crawler = $this->configuration->get(Extension::KEY, 'crawler');
+            /** @var class-string<CrawlerInterface>|null $crawler */
+            $crawler = (string)$this->configuration->get(Extension::KEY, 'crawler');
             return !empty($crawler) ? (string)$crawler : self::DEFAULT_CRAWLER;
         } catch (Exception $e) {
             return self::DEFAULT_CRAWLER;
         }
     }
 
+    /**
+     * @return class-string<CrawlerInterface>
+     */
     public function getVerboseCrawler(): string
     {
         try {
+            /** @var class-string<CrawlerInterface>|null $crawler */
             $crawler = $this->configuration->get(Extension::KEY, 'verboseCrawler');
             return !empty($crawler) ? (string)$crawler : self::DEFAULT_VERBOSE_CRAWLER;
         } catch (Exception $e) {

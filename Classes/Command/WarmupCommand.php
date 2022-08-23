@@ -273,7 +273,7 @@ class WarmupCommand extends Command
     protected function resolveSitemaps(array $sites, array $languages): \Generator
     {
         foreach ($sites as $siteList) {
-            foreach (GeneralUtility::trimExplode(',', $siteList, true) as $site) {
+            foreach (GeneralUtility::trimExplode(',', (string)$siteList, true) as $site) {
                 if (MathUtility::canBeInterpretedAsInteger($site)) {
                     $site = $this->siteFinder->getSiteByRootPageId((int)$site);
                 } else {
