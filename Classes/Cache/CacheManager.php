@@ -55,6 +55,11 @@ class CacheManager
     {
         $cacheData = $this->cache->require(self::CACHE_IDENTIFIER);
 
+        // Enforce array for cached data
+        if (!\is_array($cacheData)) {
+            $cacheData = [];
+        }
+
         // Return complete cache if no specific site is requested
         if ($site === null) {
             return $cacheData['sitemaps'] ?? [];

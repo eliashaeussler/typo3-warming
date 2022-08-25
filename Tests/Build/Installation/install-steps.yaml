@@ -1,0 +1,7 @@
+prepareInstall:
+  type: prepareInstall
+  description: 'Prepare installation'
+
+environmentAndFolders:
+  type: install
+  description: 'Check environment and create folders'
