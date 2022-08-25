@@ -67,7 +67,13 @@ final class Configuration
     public function getLimit(): int
     {
         try {
-            return abs((int)$this->configuration->get(Extension::KEY, 'limit'));
+            $limit = $this->configuration->get(Extension::KEY, 'limit');
+
+            if (!is_numeric($limit)) {
+                return self::DEFAULT_LIMIT;
+            }
+
+            return abs((int)$limit);
         } catch (Exception $e) {
             return self::DEFAULT_LIMIT;
         }
@@ -80,8 +86,13 @@ final class Configuration
     {
         try {
             /** @var class-string<CrawlerInterface>|null $crawler */
-            $crawler = (string)$this->configuration->get(Extension::KEY, 'crawler');
-            return !empty($crawler) ? (string)$crawler : self::DEFAULT_CRAWLER;
+            $crawler = $this->configuration->get(Extension::KEY, 'crawler');
+
+            if (!\is_string($crawler)) {
+                return self::DEFAULT_CRAWLER;
+            }
+
+            return $crawler ?: self::DEFAULT_CRAWLER;
         } catch (Exception $e) {
             return self::DEFAULT_CRAWLER;
         }
@@ -112,7 +123,10 @@ final class Configuration
     public function getAll(): array
     {
         try {
-            return $this->configuration->get(Extension::KEY);
+            $configuration = $this->configuration->get(Extension::KEY);
+            \assert(\is_array($configuration));
+
+            return $configuration;
         } catch (Exception $e) {
             return [];
         }
