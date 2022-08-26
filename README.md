@@ -14,6 +14,7 @@
 [![Downloads](https://shields.io/endpoint?url=https://typo3-badges.dev/badge/warming/downloads/shields)](https://extensions.typo3.org/extension/warming)
 [![Extension stability](https://shields.io/endpoint?url=https://typo3-badges.dev/badge/warming/stability/shields)](https://extensions.typo3.org/extension/warming)
 [![TYPO3 badge](https://shields.io/endpoint?url=https://typo3-badges.dev/badge/typo3/shields)](https://typo3.org/)
+[![Slack](https://img.shields.io/badge/slack-%23ext--warming-4a154b?logo=slack)](https://typo3.slack.com/archives/C0400CSGWAY)
 
 :package:&nbsp;[Packagist](https://packagist.org/packages/eliashaeussler/typo3-warming) |
 :hatched_chick:&nbsp;[TYPO3 extension repository](https://extensions.typo3.org/extension/warming) |
