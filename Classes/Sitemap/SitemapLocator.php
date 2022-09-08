@@ -54,19 +54,18 @@ class SitemapLocator
     protected $cacheManager;
 
     /**
-     * @var ProviderInterface[]
+     * @var iterable<ProviderInterface>
      */
     protected $providers = [];
 
     /**
-     * @param ProviderInterface[] $providers
+     * @param iterable<ProviderInterface> $providers
      */
-    public function __construct(RequestFactory $requestFactory, CacheManager $cacheManager, array $providers)
+    public function __construct(RequestFactory $requestFactory, CacheManager $cacheManager, iterable $providers)
     {
         $this->requestFactory = $requestFactory;
         $this->cacheManager = $cacheManager;
         $this->providers = $providers;
-        ksort($this->providers);
 
         $this->validateProviders();
     }

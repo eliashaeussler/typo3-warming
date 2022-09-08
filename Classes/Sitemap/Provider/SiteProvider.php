@@ -53,4 +53,12 @@ class SiteProvider extends AbstractProvider
             $siteLanguage
         );
     }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public static function getPriority(): int
+    {
+        return 200;
+    }
 }

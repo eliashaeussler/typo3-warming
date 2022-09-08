@@ -19,10 +19,7 @@ services:
   EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator:
     public: true
     arguments:
-      $providers:
-        - '@EliasHaeussler\Typo3Warming\Sitemap\Provider\SiteProvider'
-        - '@EliasHaeussler\Typo3Warming\Sitemap\Provider\RobotsTxtProvider'
-        - '@EliasHaeussler\Typo3Warming\Sitemap\Provider\DefaultProvider'
+      $providers: !tagged_iterator { tag: 'warming.sitemap_provider', default_priority_method: 'getPriority' }
 
   EliasHaeussler\Typo3Warming\Command\ShowUserAgentCommand:
     tags:

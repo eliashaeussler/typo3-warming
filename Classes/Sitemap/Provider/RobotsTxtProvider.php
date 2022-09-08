@@ -79,4 +79,12 @@ class RobotsTxtProvider extends AbstractProvider
             return null;
         }
     }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public static function getPriority(): int
+    {
+        return 100;
+    }
 }

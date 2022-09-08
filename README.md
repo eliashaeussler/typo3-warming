@@ -162,33 +162,19 @@ Alternatively, the command `warming:showuseragent` can be used to read the
 ### Sitemap providers
 
 The path to XML sitemaps is located using various path providers. All providers
-implement the [`ProviderInterface`](Classes/Sitemap/Provider/ProviderInterface.php).
+implement the [`ProviderInterface`](Classes/Sitemap/Provider/ProviderInterface.php)
+and are automatically tagged as `warming.sitemap_provider`. A tagged iterator is
+passed to the [`SitemapLocator`](Classes/Sitemap/SitemapLocator.php) which
+automatically contains all available sitemap providers.
 
-The [`SitemapLocator`](Classes/Sitemap/SitemapLocator.php) is fed by a list of
-providers. That list is configured in the service container using the `Services.yaml`
-file.
+All providers must return a priority by implementing the `getPriority()` method.
+The provider with the highest priority will be processed first. If any provider
+returns a valid [`SiteAwareSitemap`](Classes/Sitemap/SiteAwareSitemap.php) object,
+the remaining providers won't be processed.
 
-All providers will be processed in natural order, meaning the provider with the
-lowest array index will be processed first. If any provider returns a valid
-[`SiteAwareSitemap`](Classes/Sitemap/SiteAwareSitemap.php) object, the remaining
-providers won't be processed.
-
-You are free to modify or extend the list of path providers. Keep in mind that the
-[`DefaultProvider`](Classes/Sitemap/Provider/DefaultProvider.php) should always
-be used as last provider since it always returns a `SiteAwareSitemap` object.
-
-```yaml
-# Configuration/Services.yaml
-
-services:
-  # ...
-  EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator:
-    public: true
-    arguments:
-      $providers:
-        - '@My\Vendor\Sitemap\Provider\MyCustomProvider'
-        - '@EliasHaeussler\Typo3Warming\Sitemap\Provider\DefaultProvider'
-```
+When implementing a custom provider, keep in mind that the
+[`DefaultProvider`](Classes/Sitemap/Provider/DefaultProvider.php) is always
+executed last since it always returns a `SiteAwareSitemap` object.
 
 ## :technologist: Contributing
 
