@@ -21,36 +21,15 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3Warming\Sitemap\Provider;
+namespace EliasHaeussler\Typo3Warming\DependencyInjection;
 
-use EliasHaeussler\Typo3Warming\Sitemap\SiteAwareSitemap;
-use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use EliasHaeussler\Typo3Warming\Sitemap;
+use Symfony\Component\DependencyInjection as SymfonyDI;
 
-/**
- * DefaultProvider
- *
- * @author Elias Häußler <elias@haeussler.dev>
- * @license GPL-2.0-or-later
- */
-class DefaultProvider extends AbstractProvider
-{
-    public const DEFAULT_PATH = 'sitemap.xml';
-
-    public function get(Site $site, SiteLanguage $siteLanguage = null): ?SiteAwareSitemap
-    {
-        return new SiteAwareSitemap(
-            $this->getSiteUrlWithPath($site, self::DEFAULT_PATH, $siteLanguage),
-            $site,
-            $siteLanguage
-        );
-    }
-
-    /**
-     * @codeCoverageIgnore
-     */
-    public static function getPriority(): int
-    {
-        return -PHP_INT_MAX;
-    }
-}
+return static function (
+    SymfonyDI\Loader\Configurator\ContainerConfigurator $containerConfigurator,
+    SymfonyDI\ContainerBuilder $container
+): void {
+    $container->registerForAutoconfiguration(Sitemap\Provider\ProviderInterface::class)
+        ->addTag('warming.sitemap_provider');
+};
