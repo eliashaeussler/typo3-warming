@@ -49,11 +49,6 @@ composer require eliashaeussler/typo3-warming
 Or download the zip file from
 [TYPO3 extension repository (TER)](https://extensions.typo3.org/extension/warming).
 
-## :orange_book: Documentation
-
-The [official documentation](https://docs.typo3.org/p/eliashaeussler/typo3-warming/main/en-us/)
-is hosted on docs.typo3.org
-
 ## :star: License
 
 This project is licensed under [GNU General Public License 2.0 (or later)](LICENSE.md).
