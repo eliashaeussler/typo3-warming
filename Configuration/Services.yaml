@@ -16,6 +16,8 @@ services:
     public: true
   EliasHaeussler\Typo3Warming\Controller\CacheWarmupController:
     public: true
+  EliasHaeussler\Typo3Warming\Service\CacheWarmupService:
+    public: true
   EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator:
     public: true
     arguments:
