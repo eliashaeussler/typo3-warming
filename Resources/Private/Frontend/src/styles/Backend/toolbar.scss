@@ -1,0 +1,24 @@
+.toolbar-cache-warmup-table-wrapper {
+    max-height: 50vh;
+    overflow-y: scroll;
+
+    .toolbar-cache-warmup-action {
+        color: rgba(245, 245, 245, 0.7);
+    }
+
+    .tx-warming-language-select-wrapper {
+        margin-top: 9px;
+    }
+}
+
+.tx-warming-language-select-option {
+    display: inline-flex;
+
+    &-text {
+        padding-left: 10px;
+    }
+
+    .select2-results__option--disabled &-flag {
+        opacity: 0.6;
+    }
+}

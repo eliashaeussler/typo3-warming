@@ -1,0 +1,8 @@
+/.Build/
+/config/
+/var/
+/Resources/Private/Libs/Build/vendor
+/Resources/Private/Libs/vendors.phar
+/.php-cs-fixer.cache
+/.phpunit.result.cache
+/composer.lock
