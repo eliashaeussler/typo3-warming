@@ -76,6 +76,14 @@
 		"post-autoload-dump": [
 			"@environment:prepare"
 		],
+		"docs": [
+			"@docs:cleanup",
+			"@docs:build",
+			"@docs:open"
+		],
+		"docs:build": "docker-compose run --rm docs",
+		"docs:cleanup": "rm -rf .Build/docs",
+		"docs:open": "open .Build/docs/Result/project/0.0.0/Index.html",
 		"environment:prepare": [
 			"@environment:prepare:extension",
 			"@environment:prepare:typo3"

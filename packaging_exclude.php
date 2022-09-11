@@ -43,6 +43,7 @@ return [
         'composer.lock',
         'crowdin.yaml',
         'dependency-checker.json',
+        'docker-compose.yml',
         'editorconfig',
         'editorconfig-lint.php',
         'gitattributes',
