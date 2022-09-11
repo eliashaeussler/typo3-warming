@@ -11,11 +11,16 @@ all steps below.
 git clone https://github.com/eliashaeussler/typo3-warming.git
 cd typo3-warming
 
-# Install dependencies
+# Install Composer dependencies
 composer install
+
+# Install Node dependencies
+yarn --cwd Resources/Private/Frontend
 ```
 
 ## Run linters
+
+### TYPO3
 
 ```bash
 # All linters
@@ -25,6 +30,20 @@ composer lint
 composer lint:composer
 composer lint:editorconfig
 composer lint:php
+```
+
+### Frontend
+
+```bash
+# All linters
+yarn --cwd Resources/Private/Frontend lint
+yarn --cwd Resources/Private/Frontend lint:fix
+
+# Specific linters
+yarn --cwd Resources/Private/Frontend lint:scss
+yarn --cwd Resources/Private/Frontend lint:scss:fix
+yarn --cwd Resources/Private/Frontend lint:ts
+yarn --cwd Resources/Private/Frontend lint:ts:fix
 ```
 
 ## Run static code analysis

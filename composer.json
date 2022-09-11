@@ -11,6 +11,13 @@
 			"role": "Maintainer"
 		}
 	],
+	"support": {
+		"issues": "https://github.com/eliashaeussler/typo3-warming/issues",
+		"chat": "https://typo3.slack.com/archives/C0400CSGWAY",
+		"source": "https://github.com/eliashaeussler/typo3-warming.git",
+		"docs": "https://docs.typo3.org/p/eliashaeussler/typo3-warming/main/en-us/",
+		"rss": "https://github.com/eliashaeussler/typo3-warming/releases.atom"
+	},
 	"require": {
 		"php": ">= 7.1 < 8.2",
 		"ext-json": "*",
@@ -76,6 +83,14 @@
 		"post-autoload-dump": [
 			"@environment:prepare"
 		],
+		"docs": [
+			"@docs:cleanup",
+			"@docs:build",
+			"@docs:open"
+		],
+		"docs:build": "docker-compose run --rm docs",
+		"docs:cleanup": "rm -rf .Build/docs",
+		"docs:open": "open .Build/docs/Result/project/0.0.0/Index.html",
 		"environment:prepare": [
 			"@environment:prepare:extension",
 			"@environment:prepare:typo3"

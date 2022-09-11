@@ -13,6 +13,7 @@
 /codecov.yml                 export-ignore
 /CODEOWNERS                  export-ignore
 /dependency-checker.json     export-ignore
+/docker-compose.yml          export-ignore
 /packaging_exclude.php       export-ignore
 /phpstan.neon                export-ignore
 /phpunit.ci.xml              export-ignore
