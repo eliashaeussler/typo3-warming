@@ -42,7 +42,7 @@ Default crawlers
 
 The extension ships with two default crawlers:
 
--   :php:class:`EliasHaeussler\\Typo3Warming\\Crawler\\ConcurrentUserAgentCrawler>`:
+-   :php:class:`EliasHaeussler\\Typo3Warming\\Crawler\\ConcurrentUserAgentCrawler`:
     Used for cache warmup triggered within the **TYPO3 backend**
 -   :php:class:`EliasHaeussler\\Typo3Warming\\Crawler\\OutputtingUserAgentCrawler`:
     Used for cache warmup executed from the **command-line**
