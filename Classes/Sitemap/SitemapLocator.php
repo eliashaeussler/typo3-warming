@@ -109,7 +109,9 @@ class SitemapLocator
         $sitemaps = [];
 
         foreach ($site->getAvailableLanguages(static::getBackendUser()) as $siteLanguage) {
-            $sitemaps[$siteLanguage->getLanguageId()] = $this->locateBySite($site, $siteLanguage);
+            if ($siteLanguage->isEnabled()) {
+                $sitemaps[$siteLanguage->getLanguageId()] = $this->locateBySite($site, $siteLanguage);
+            }
         }
 
         return $sitemaps;
