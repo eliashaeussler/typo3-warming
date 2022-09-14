@@ -49,6 +49,14 @@ composer require eliashaeussler/typo3-warming
 Or download the zip file from
 [TYPO3 extension repository (TER)](https://extensions.typo3.org/extension/warming).
 
+## :gem: Credits
+
+The extension icon ("rocket") as well as the icons for cache warmup actions are
+modified versions of the original
+[`actions-rocket`](https://typo3.github.io/TYPO3.Icons/icons/actions/actions-rocket.html)
+icon from TYPO3 core which is originally licensed under
+[MIT License](https://github.com/TYPO3/TYPO3.Icons/blob/main/LICENSE).
+
 ## :star: License
 
 This project is licensed under [GNU General Public License 2.0 (or later)](LICENSE.md).
