@@ -32,6 +32,7 @@ use EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -169,6 +170,88 @@ class SitemapLocatorTest extends UnitTestCase
         $expected = new SiteAwareSitemap(new Uri($expectedUrl), $site, $siteLanguage);
 
         self::assertEquals($expected, $this->subject->locateBySite($site, $siteLanguage));
+    }
+
+    /**
+     * @test
+     */
+    public function locateAllBySiteExcludesDisabledLanguages(): void
+    {
+        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $backendUserProphecy->checkLanguageAccess(0)->willReturn(false);
+        $backendUserProphecy->checkLanguageAccess(1)->willReturn(true);
+
+        $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
+
+        $site = $this->getSite([
+            'base' => 'https://www.example.com/',
+            'languages' => [
+                0 => [
+                    'languageId' => 0,
+                    'title' => 'Default',
+                    'navigationTitle' => '',
+                    'typo3Language' => 'default',
+                    'flag' => 'us',
+                    'locale' => 'en_US.UTF-8',
+                    'iso-639-1' => 'en',
+                    'hreflang' => 'en-US',
+                    'direction' => '',
+                    'enabled' => false,
+                ],
+                1 => array_merge(
+                    $this->getSiteLanguage()->toArray(),
+                    ['enabled' => false]
+                ),
+            ],
+        ]);
+
+        self::assertSame([], $this->subject->locateAllBySite($site));
+    }
+
+    /**
+     * @test
+     */
+    public function locateAllBySiteExcludesInaccessibleLanguages(): void
+    {
+        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
+        $backendUserProphecy->checkLanguageAccess(0)->willReturn(false);
+        $backendUserProphecy->checkLanguageAccess(1)->willReturn(true);
+
+        $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
+
+        $site = $this->getSite([
+            'base' => 'https://www.example.com/',
+            'languages' => [
+                0 => [
+                    'languageId' => 0,
+                    'title' => 'Default',
+                    'navigationTitle' => '',
+                    'typo3Language' => 'default',
+                    'flag' => 'us',
+                    'locale' => 'en_US.UTF-8',
+                    'iso-639-1' => 'en',
+                    'hreflang' => 'en-US',
+                    'direction' => '',
+                ],
+                1 => $this->getSiteLanguage()->toArray(),
+            ],
+        ]);
+
+        /** @noinspection PhpParamsInspection */
+        $this->cacheManagerProphecy->get(
+            $site,
+            Argument::that(function (SiteLanguage $siteLanguage): SiteLanguage {
+                self::assertSame(1, $siteLanguage->getLanguageId());
+
+                return $siteLanguage;
+            })
+        )->willReturn('https://www.example.com/');
+
+        $expected = [
+            1 => new SiteAwareSitemap(new Uri('https://www.example.com/'), $site, $site->getLanguageById(1)),
+        ];
+
+        self::assertEquals($expected, $this->subject->locateAllBySite($site));
     }
 
     /**
