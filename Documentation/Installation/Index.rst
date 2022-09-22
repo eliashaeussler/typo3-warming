@@ -23,7 +23,7 @@ Require the extension via Composer (recommended):
 
 .. code-block:: bash
 
-   composer require eliashaeussler/typo3-warming
+    composer require eliashaeussler/typo3-warming
 
 Or download it from the
 `TYPO3 extension repository <https://extensions.typo3.org/extension/warming>`__.

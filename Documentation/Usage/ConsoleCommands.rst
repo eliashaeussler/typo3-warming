@@ -22,17 +22,17 @@ using their XML sitemaps.
 
 .. tabs::
 
-   .. group-tab:: Composer-based installation
+    .. group-tab:: Composer-based installation
 
-      .. code-block:: bash
+        .. code-block:: bash
 
-         vendor/bin/typo3 warming:cachewarmup
+            vendor/bin/typo3 warming:cachewarmup
 
-   .. group-tab:: Legacy installation
+    .. group-tab:: Legacy installation
 
-      .. code-block:: bash
+        .. code-block:: bash
 
-         typo3/sysext/core/bin/typo3 warming:cachewarmup
+            typo3/sysext/core/bin/typo3 warming:cachewarmup
 
 The following command options are available:
 
@@ -52,19 +52,19 @@ The following command options are available:
 
     .. tabs::
 
-       .. group-tab:: Composer-based installation
+        .. group-tab:: Composer-based installation
 
-          .. code-block:: bash
+            .. code-block:: bash
 
-             vendor/bin/typo3 warming:cachewarmup -p 1 -p 2 -p 3
-             vendor/bin/typo3 warming:cachewarmup -p 1,2,3
+                vendor/bin/typo3 warming:cachewarmup -p 1 -p 2 -p 3
+                vendor/bin/typo3 warming:cachewarmup -p 1,2,3
 
        .. group-tab:: Legacy installation
 
-          .. code-block:: bash
+            .. code-block:: bash
 
-             typo3/sysext/core/bin/typo3 warming:cachewarmup -p 1 -p 2 -p 3
-             typo3/sysext/core/bin/typo3 warming:cachewarmup -p 1,2,3
+                typo3/sysext/core/bin/typo3 warming:cachewarmup -p 1 -p 2 -p 3
+                typo3/sysext/core/bin/typo3 warming:cachewarmup -p 1,2,3
 
 .. confval:: -s|--sites
 
@@ -81,19 +81,19 @@ The following command options are available:
 
     .. tabs::
 
-       .. group-tab:: Composer-based installation
+        .. group-tab:: Composer-based installation
 
-          .. code-block:: bash
+            .. code-block:: bash
 
-             vendor/bin/typo3 warming:cachewarmup -s my-cool-site
-             vendor/bin/typo3 warming:cachewarmup -s 1
+                vendor/bin/typo3 warming:cachewarmup -s my-cool-site
+                vendor/bin/typo3 warming:cachewarmup -s 1
 
-       .. group-tab:: Legacy installation
+        .. group-tab:: Legacy installation
 
-          .. code-block:: bash
+            .. code-block:: bash
 
-             typo3/sysext/core/bin/typo3 warming:cachewarmup -s my-cool-site
-             typo3/sysext/core/bin/typo3 warming:cachewarmup -s 1
+                typo3/sysext/core/bin/typo3 warming:cachewarmup -s my-cool-site
+                typo3/sysext/core/bin/typo3 warming:cachewarmup -s 1
 
 .. confval:: -l|--languages
 
@@ -110,19 +110,19 @@ The following command options are available:
 
     .. tabs::
 
-       .. group-tab:: Composer-based installation
+        .. group-tab:: Composer-based installation
 
-          .. code-block:: bash
+            .. code-block:: bash
 
-             vendor/bin/typo3 warming:cachewarmup -l 0 -l 1
-             vendor/bin/typo3 warming:cachewarmup -l 0,1
+                vendor/bin/typo3 warming:cachewarmup -l 0 -l 1
+                vendor/bin/typo3 warming:cachewarmup -l 0,1
 
-       .. group-tab:: Legacy installation
+        .. group-tab:: Legacy installation
 
-          .. code-block:: bash
+            .. code-block:: bash
 
-             typo3/sysext/core/bin/typo3 warming:cachewarmup -l 0 -l 1
-             typo3/sysext/core/bin/typo3 warming:cachewarmup -l 0,1
+                typo3/sysext/core/bin/typo3 warming:cachewarmup -l 0 -l 1
+                typo3/sysext/core/bin/typo3 warming:cachewarmup -l 0,1
 
 .. confval:: --limit
 
@@ -160,14 +160,14 @@ cache warmup requests by default crawlers.
 
 .. tabs::
 
-   .. group-tab:: Composer-based installation
+    .. group-tab:: Composer-based installation
 
-      .. code-block:: bash
+        .. code-block:: bash
 
-         vendor/bin/typo3 warming:showuseragent
+            vendor/bin/typo3 warming:showuseragent
 
-   .. group-tab:: Legacy installation
+    .. group-tab:: Legacy installation
 
-      .. code-block:: bash
+        .. code-block:: bash
 
-         typo3/sysext/core/bin/typo3 warming:showuseragent
+            typo3/sysext/core/bin/typo3 warming:showuseragent
