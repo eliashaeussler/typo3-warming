@@ -99,6 +99,20 @@ final class Configuration
     }
 
     /**
+     * @return array<string, mixed>
+     */
+    public function getCrawlerOptions(): array
+    {
+        try {
+            $json = $this->configuration->get(Extension::KEY, 'crawlerOptions');
+
+            return $this->parseCrawlerOptions($json);
+        } catch (Exception $e) {
+            return [];
+        }
+    }
+
+    /**
      * @return class-string<CrawlerInterface>
      */
     public function getVerboseCrawler(): string
@@ -109,6 +123,20 @@ final class Configuration
             return !empty($crawler) ? (string)$crawler : self::DEFAULT_VERBOSE_CRAWLER;
         } catch (Exception $e) {
             return self::DEFAULT_VERBOSE_CRAWLER;
+        }
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getVerboseCrawlerOptions(): array
+    {
+        try {
+            $json = $this->configuration->get(Extension::KEY, 'verboseCrawlerOptions');
+
+            return $this->parseCrawlerOptions($json);
+        } catch (Exception $e) {
+            return [];
         }
     }
 
@@ -130,6 +158,25 @@ final class Configuration
         } catch (Exception $e) {
             return [];
         }
+    }
+
+    /**
+     * @param mixed $json
+     * @return array<string, mixed>
+     */
+    private function parseCrawlerOptions($json): array
+    {
+        if (!\is_string($json)) {
+            return [];
+        }
+
+        $crawlerOptions = json_decode($json, true);
+
+        if (!\is_array($crawlerOptions)) {
+            return [];
+        }
+
+        return $crawlerOptions;
     }
 
     private function generateUserAgent(): string
