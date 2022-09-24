@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -e
+
+## Description: Handle frontend assets
+## Usage: frontend
+## Example: ddev frontend install\nddev frontend build\nddev frontend start\nddev frontend lint
+
+yarn --cwd Resources/Private/Frontend "$@"
