@@ -26,6 +26,7 @@ namespace EliasHaeussler\Typo3Warming\Tests\Functional\Configuration;
 use EliasHaeussler\Typo3Warming\Configuration\Configuration;
 use EliasHaeussler\Typo3Warming\Configuration\Extension;
 use EliasHaeussler\Typo3Warming\Crawler\ConcurrentUserAgentCrawler;
+use EliasHaeussler\Typo3Warming\Crawler\OutputtingUserAgentCrawler;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
@@ -139,6 +140,116 @@ class ConfigurationTest extends FunctionalTestCase
     /**
      * @test
      */
+    public function getCrawlerOptionsReturnsEmptyArrayIfNoCrawlerOptionsAreSet(): void
+    {
+        $this->setExtensionConfiguration();
+
+        self::assertSame([], $this->subject->getCrawlerOptions());
+    }
+
+    /**
+     * @test
+     */
+    public function getCrawlerOptionsReturnsEmptyArrayIfDefinedCrawlerOptionsAreOfInvalidType(): void
+    {
+        $this->setExtensionConfiguration(['crawlerOptions' => ['foo' => 'baz']]);
+
+        self::assertSame([], $this->subject->getCrawlerOptions());
+    }
+
+    /**
+     * @test
+     */
+    public function getCrawlerOptionsReturnsEmptyArrayIfDefinedCrawlerOptionsAreOfInvalidJson(): void
+    {
+        $this->setExtensionConfiguration(['crawlerOptions' => '"foo"']);
+
+        self::assertSame([], $this->subject->getCrawlerOptions());
+    }
+
+    /**
+     * @test
+     */
+    public function getCrawlerOptionsReturnsDefinedCrawlerOptions(): void
+    {
+        $this->setExtensionConfiguration(['crawlerOptions' => '{"foo":"baz"}']);
+
+        self::assertSame(['foo' => 'baz'], $this->subject->getCrawlerOptions());
+    }
+
+    /**
+     * @test
+     */
+    public function getVerboseCrawlerReturnsDefaultVerboseCrawlerIfNoVerboseCrawlerIsSet(): void
+    {
+        $this->setExtensionConfiguration();
+
+        self::assertSame(OutputtingUserAgentCrawler::class, $this->subject->getVerboseCrawler());
+    }
+
+    /**
+     * @test
+     */
+    public function getVerboseCrawlerReturnsDefaultVerboseCrawlerIfDefinedVerboseCrawlerIsEmpty(): void
+    {
+        $this->setExtensionConfiguration(['verboseCrawler' => '']);
+
+        self::assertSame(OutputtingUserAgentCrawler::class, $this->subject->getVerboseCrawler());
+    }
+
+    /**
+     * @test
+     */
+    public function getVerboseCrawlerReturnsDefinedVerboseCrawler(): void
+    {
+        $this->setExtensionConfiguration(['verboseCrawler' => 'foo']);
+
+        self::assertSame('foo', $this->subject->getVerboseCrawler());
+    }
+
+    /**
+     * @test
+     */
+    public function getVerboseCrawlerOptionsReturnsEmptyArrayIfNoVerboseCrawlerOptionsAreSet(): void
+    {
+        $this->setExtensionConfiguration();
+
+        self::assertSame([], $this->subject->getVerboseCrawlerOptions());
+    }
+
+    /**
+     * @test
+     */
+    public function getVerboseCrawlerOptionsReturnsEmptyArrayIfDefinedVerboseCrawlerOptionsAreOfInvalidType(): void
+    {
+        $this->setExtensionConfiguration(['verboseCrawlerOptions' => ['foo' => 'baz']]);
+
+        self::assertSame([], $this->subject->getVerboseCrawlerOptions());
+    }
+
+    /**
+     * @test
+     */
+    public function getVerboseCrawlerOptionsReturnsEmptyArrayIfDefinedVerboseCrawlerOptionsAreOfInvalidJson(): void
+    {
+        $this->setExtensionConfiguration(['verboseCrawlerOptions' => '"foo"']);
+
+        self::assertSame([], $this->subject->getVerboseCrawlerOptions());
+    }
+
+    /**
+     * @test
+     */
+    public function getVerboseCrawlerOptionsReturnsDefinedVerboseCrawlerOptions(): void
+    {
+        $this->setExtensionConfiguration(['verboseCrawlerOptions' => '{"foo":"baz"}']);
+
+        self::assertSame(['foo' => 'baz'], $this->subject->getVerboseCrawlerOptions());
+    }
+
+    /**
+     * @test
+     */
     public function getUserAgentReturnsCorrectlyGeneratedUserAgent(): void
     {
         $expected = 'TYPO3/tx_warming_crawler2cdfe0c134f3796954daf9395c034c39b542ca57';
@@ -151,9 +262,17 @@ class ConfigurationTest extends FunctionalTestCase
      */
     public function getAllReturnsCompleteExtensionConfiguration(): void
     {
-        $this->setExtensionConfiguration(['crawler' => 'foo', 'limit' => 'baz', 'verboseCrawler' => 'hello']);
+        $configuration = [
+            'crawler' => 'foo',
+            'crawlerOptions' => '{"foo":"baz"}',
+            'limit' => 'baz',
+            'verboseCrawler' => 'hello',
+            'verboseCrawlerOptions' => '{"foo":"baz"}',
+        ];
 
-        self::assertSame(['crawler' => 'foo', 'limit' => 'baz', 'verboseCrawler' => 'hello'], $this->subject->getAll());
+        $this->setExtensionConfiguration($configuration);
+
+        self::assertSame($configuration, $this->subject->getAll());
     }
 
     /**
