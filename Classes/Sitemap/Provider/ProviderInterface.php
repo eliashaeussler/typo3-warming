@@ -36,4 +36,6 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 interface ProviderInterface
 {
     public function get(Site $site, SiteLanguage $siteLanguage = null): ?SiteAwareSitemap;
+
+    public static function getPriority(): int;
 }

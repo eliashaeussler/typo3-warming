@@ -9,14 +9,14 @@ on:
 
 jobs:
   tests:
-    name: Tests (PHP ${{ matrix.php-version }}, TYPO3 ${{ matrix.typo3-version }} & ${{ matrix.preferred-install }} dependencies)
+    name: Tests (PHP ${{ matrix.php-version }}, TYPO3 ${{ matrix.typo3-version }} & ${{ matrix.dependencies }} dependencies)
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         typo3-version: ["10.4", "11.5"]
         php-version: ["7.3", "7.4", "8.0", "8.1"]
-        preferred-install: ["stable", "lowest"]
+        dependencies: ["highest", "lowest"]
         exclude:
           - typo3-version: "10.4"
             php-version: "8.0"
@@ -48,8 +48,11 @@ jobs:
           ddev start
 
       # Install dependencies
-      - name: Install TYPO3 and Composer dependencies
-        run: ddev composer require typo3/cms-core:"^${{ matrix.typo3-version }}" --no-progress --prefer-${{ matrix.preferred-install }}
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@v2
+        with:
+          dependency-versions: ${{ matrix.dependencies }}
+          composer-options: --with=typo3/cms-core:"^${{ matrix.typo3-version }}"
 
       # Run tests
       - name: Run tests
@@ -69,7 +72,7 @@ jobs:
         with:
           php-version: 8.1
           tools: composer:v2
-          coverage: pcov
+          coverage: none
 
       # Setup DDEV
       - name: Setup DDEV
@@ -82,8 +85,8 @@ jobs:
           ddev start
 
       # Install dependencies
-      - name: Install TYPO3 and Composer dependencies
-        run: ddev composer update --no-progress
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@v2
 
       # Run tests
       - name: Run tests
@@ -97,6 +100,7 @@ jobs:
         run: sed -i 's#/var/www/html#${{ github.workspace }}#g' clover.xml
       - name: CodeClimate report
         uses: paambaati/codeclimate-action@v3.0.0
+        if: env.CC_TEST_REPORTER_ID
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:

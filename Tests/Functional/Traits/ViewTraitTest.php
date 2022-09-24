@@ -24,8 +24,7 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Tests\Functional\Traits;
 
 use EliasHaeussler\Typo3Warming\Configuration\Extension;
-use EliasHaeussler\Typo3Warming\Tests\Functional\AccessibleMethodTrait;
-use EliasHaeussler\Typo3Warming\Traits\ViewTrait;
+use EliasHaeussler\Typo3Warming\Tests\Functional\Fixtures\Classes\ViewTraitTestClass;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -37,26 +36,16 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class ViewTraitTest extends FunctionalTestCase
 {
-    use AccessibleMethodTrait;
-
     /**
-     * @var object|ViewTrait
+     * @var ViewTraitTestClass
      */
     protected $subject;
-
-    /**
-     * @var \ReflectionMethod
-     */
-    protected $reflectionMethod;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        [$this->subject, $this->reflectionMethod] = $this->getAccessibleMethodOfTrait(
-            ViewTrait::class,
-            'buildView'
-        );
+        $this->subject = new ViewTraitTestClass();
     }
 
     /**
@@ -64,7 +53,7 @@ class ViewTraitTest extends FunctionalTestCase
      */
     public function buildViewReturnsStandaloneView(): void
     {
-        $actual = $this->reflectionMethod->invoke($this->subject, 'Foo.html');
+        $actual = $this->subject->runBuildView('Foo.html');
 
         self::assertInstanceOf(StandaloneView::class, $actual);
         self::assertSame('foo', $actual->getRenderingContext()->getControllerAction());

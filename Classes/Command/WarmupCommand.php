@@ -73,6 +73,11 @@ class WarmupCommand extends Command
      */
     protected $siteFinder;
 
+    /**
+     * @var SymfonyStyle
+     */
+    protected $io;
+
     public function __construct(
         CacheWarmupService $warmupService,
         Configuration $configuration,
@@ -192,87 +197,108 @@ class WarmupCommand extends Command
         );
     }
 
+    protected function initialize(InputInterface $input, OutputInterface $output): void
+    {
+        $this->io = new SymfonyStyle($input, $output);
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);
-        $languages = iterator_to_array($this->resolveLanguages($input->getOption('languages')));
-        $urls = array_unique(iterator_to_array($this->resolveUrls($input->getOption('pages'), $languages)));
-        $sitemaps = array_unique(iterator_to_array($this->resolveSitemaps($input->getOption('sites'), $languages)), SORT_REGULAR);
-        $limit = abs((int)$input->getOption('limit'));
+        // Initialize sub-command
+        $subCommand = new CacheWarmupCommand();
+        $subCommand->setApplication($this->getApplication() ?? new Application());
+        $subCommandInput = $this->initializeSubCommandInput($subCommand, $input);
+        $subCommandInput->setInteractive(false);
 
-        // Exit if neither pages nor sites are given
-        if (\count($urls) + \count($sitemaps) === 0) {
-            $io->error('You need to define at least one page or site.');
-            return 1;
-        }
-
-        $io->writeln('Running <info>cache warmup</info> by <info>Elias Häußler</info> and contributors.');
-
-        // Initialize crawler
-        $crawler = $this->configuration->getVerboseCrawler();
-        if (empty($crawler)) {
-            $crawler = Configuration::DEFAULT_VERBOSE_CRAWLER;
-        }
-
-        // Initialize application
-        $application = $this->getApplication();
-        if ($application === null) {
-            $application = new Application();
-            $application->add($this);
-        }
+        $output->writeln('Running <info>cache warmup</info> by <info>Elias Häußler</info> and contributors.');
 
         // Run cache warmup in sub command from eliashaeussler/cache-warmup
-        /** @var CacheWarmupCommand $subCommand */
-        $subCommand = $application->add(new CacheWarmupCommand());
+        $statusCode = $subCommand->run($subCommandInput, $output);
+
+        // Fail if strict mode is enabled and at least one crawl was erroneous
+        if ($input->getOption('strict') && $statusCode > 0) {
+            return $statusCode;
+        }
+
+        return 0;
+    }
+
+    protected function initializeSubCommandInput(CacheWarmupCommand $subCommand, InputInterface $input): ArrayInput
+    {
+        // Resolve input options
+        $languages = $this->resolveLanguages($input->getOption('languages'));
+        $urls = array_unique($this->resolveUrls($input->getOption('pages'), $languages));
+        $sitemaps = array_unique($this->resolveSitemaps($input->getOption('sites'), $languages), SORT_REGULAR);
+        $limit = abs((int)$input->getOption('limit'));
+
+        // Fetch crawler and crawler options
+        $crawler = $this->configuration->getVerboseCrawler();
+        $crawlerOptions = $this->configuration->getVerboseCrawlerOptions();
+
+        // Initialize sub-command parameters
         $subCommandParameters = [
             'sitemaps' => $sitemaps,
             '--urls' => $urls,
             '--limit' => $limit,
             '--crawler' => $crawler,
         ];
-        $subCommandInput = new ArrayInput($subCommandParameters);
-        $returnCode = $subCommand->run($subCommandInput, $output);
 
-        // Fail if strict mode is enabled and at least one crawl was erroneous
-        if ($input->getOption('strict') && $returnCode > 0) {
-            return 2;
+        // Early return if no crawler options are given
+        if ($crawlerOptions === []) {
+            return new ArrayInput($subCommandParameters, $subCommand->getDefinition());
         }
 
-        return 0;
+        // Add crawler options to sub-command parameters
+        if ($subCommand->getDefinition()->hasOption('crawler-options')) {
+            $subCommandParameters['--crawler-options'] = json_encode($crawlerOptions);
+        } else {
+            $this->io->writeln([
+                '<comment>This version of eliashaeussler/cache-warmup does not yet support crawler options.</comment>',
+                '<comment>Please upgrade to version 0.7.13 or any later version.</comment>',
+            ]);
+        }
+
+        return new ArrayInput($subCommandParameters, $subCommand->getDefinition());
     }
 
     /**
-     * @param string[]|int[] $pages
-     * @param int[] $languages
-     * @return \Generator<UriInterface>
+     * @param list<string|int> $pages
+     * @param list<int> $languages
+     * @return list<UriInterface>
      * @throws SiteNotFoundException
      */
-    protected function resolveUrls(array $pages, array $languages): \Generator
+    protected function resolveUrls(array $pages, array $languages): array
     {
+        $resolvedUrls = [];
+
         foreach ($pages as $pageList) {
             foreach (GeneralUtility::intExplode(',', (string)$pageList, true) as $page) {
                 $languageIds = $languages;
-                if ([self::ALL_LANGUAGES] === $languageIds) {
+                if ($languageIds === [self::ALL_LANGUAGES]) {
                     $site = $this->siteFinder->getSiteByPageId($page);
                     $languageIds = array_keys($site->getLanguages());
                 }
                 foreach ($languageIds as $languageId) {
-                    yield $this->warmupService->generateUri($page, $languageId);
+                    $resolvedUrls[] = $this->warmupService->generateUri($page, $languageId);
                 }
             }
         }
+
+        return $resolvedUrls;
     }
 
     /**
-     * @param string[]|int[] $sites
-     * @param int[] $languages
-     * @return \Generator<SiteAwareSitemap>
+     * @param list<string|int> $sites
+     * @param list<int> $languages
+     * @return list<SiteAwareSitemap>
      * @throws SiteNotFoundException
      * @throws UnsupportedConfigurationException
      * @throws UnsupportedSiteException
      */
-    protected function resolveSitemaps(array $sites, array $languages): \Generator
+    protected function resolveSitemaps(array $sites, array $languages): array
     {
+        $resolvedSitemaps = [];
+
         foreach ($sites as $siteList) {
             foreach (GeneralUtility::trimExplode(',', (string)$siteList, true) as $site) {
                 if (MathUtility::canBeInterpretedAsInteger($site)) {
@@ -285,28 +311,33 @@ class WarmupCommand extends Command
                     $languageIds = array_keys($site->getLanguages());
                 }
                 foreach ($languageIds as $languageId) {
-                    yield $this->sitemapLocator->locateBySite($site, $site->getLanguageById($languageId));
+                    $resolvedSitemaps[] = $this->sitemapLocator->locateBySite($site, $site->getLanguageById($languageId));
                 }
             }
         }
+
+        return $resolvedSitemaps;
     }
 
     /**
-     * @param string[]|int[] $languages
-     * @return \Generator<int>
+     * @param list<string|int> $languages
+     * @return list<int>
      */
-    protected function resolveLanguages(array $languages): \Generator
+    protected function resolveLanguages(array $languages): array
     {
+        $resolvedLanguages = [];
+
         if ($languages === []) {
             // Run cache warmup for all languages by default
-            yield self::ALL_LANGUAGES;
-            return;
+            return [self::ALL_LANGUAGES];
         }
 
         foreach ($languages as $languageList) {
             foreach (GeneralUtility::intExplode(',', (string)$languageList, true) as $languageId) {
-                yield $languageId;
+                $resolvedLanguages[] = $languageId;
             }
         }
+
+        return $resolvedLanguages;
     }
 }

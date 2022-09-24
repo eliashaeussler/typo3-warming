@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Service;
 
 use EliasHaeussler\CacheWarmup\CacheWarmer;
+use EliasHaeussler\CacheWarmup\Crawler\ConfigurableCrawlerInterface;
 use EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface;
 use EliasHaeussler\Typo3Warming\Configuration\Configuration;
 use EliasHaeussler\Typo3Warming\Crawler\RequestAwareInterface;
@@ -65,7 +66,7 @@ class CacheWarmupService implements LoggerAwareInterface
     protected $limit;
 
     /**
-     * @var CrawlerInterface|null
+     * @var CrawlerInterface
      */
     protected $crawler;
 
@@ -80,7 +81,10 @@ class CacheWarmupService implements LoggerAwareInterface
         $this->siteFinder = $siteFinder;
         $this->sitemapLocator = $sitemapLocator;
         $this->limit = $configuration->getLimit();
-        $this->crawler = $this->initializeCrawler($configuration->getCrawler());
+        $this->crawler = $this->initializeCrawler(
+            $configuration->getCrawler(),
+            $configuration->getCrawlerOptions()
+        );
     }
 
     /**
@@ -148,23 +152,25 @@ class CacheWarmupService implements LoggerAwareInterface
     }
 
     /**
-     * @param class-string<CrawlerInterface>|CrawlerInterface|null $crawler
+     * @param class-string<CrawlerInterface>|CrawlerInterface $crawler
+     * @param array<string, mixed> $options
      * @throws UnsupportedConfigurationException
      */
-    public function setCrawler($crawler): self
+    public function setCrawler($crawler, array $options = []): self
     {
-        $this->crawler = $this->initializeCrawler($crawler);
+        $this->crawler = $this->initializeCrawler($crawler, $options);
         return $this;
     }
 
     /**
-     * @param class-string<CrawlerInterface>|CrawlerInterface|null $crawler
+     * @param class-string<CrawlerInterface>|CrawlerInterface $crawler
+     * @param array<string, mixed> $options
      * @throws UnsupportedConfigurationException
      */
-    protected function initializeCrawler($crawler): CrawlerInterface
+    protected function initializeCrawler($crawler, array $options = []): CrawlerInterface
     {
         if ($crawler instanceof CrawlerInterface) {
-            return $crawler;
+            goto configurableCrawler;
         }
 
         // Use default crawler if no custom crawler is given
@@ -187,6 +193,15 @@ class CacheWarmupService implements LoggerAwareInterface
             throw UnsupportedConfigurationException::forMissingImplementation($crawler, CrawlerInterface::class);
         }
 
-        return GeneralUtility::makeInstance($crawler);
+        // Instantiate crawler
+        $crawler = GeneralUtility::makeInstance($crawler);
+
+        // Apply crawler options to configurable crawler
+        configurableCrawler:
+        if ($crawler instanceof ConfigurableCrawlerInterface) {
+            $crawler->setOptions($options);
+        }
+
+        return $crawler;
     }
 }

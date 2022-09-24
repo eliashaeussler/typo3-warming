@@ -9,7 +9,7 @@ on:
 
 jobs:
   cgl:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
@@ -28,7 +28,7 @@ jobs:
 
       # Install dependencies
       - name: Install Composer dependencies
-        run: composer require --no-progress --no-plugins
+        run: composer update --no-progress --no-plugins --no-scripts
 
       # Check Composer dependencies
       - name: Check dependencies
@@ -50,3 +50,13 @@ jobs:
       # SCA
       - name: SCA PHP
         run: composer sca:php -- --error-format github
+
+      # Install Frontend dependencies
+      - name: Install Frontend dependencies
+        run: yarn --cwd Resources/Private/Frontend --frozen-lockfile
+
+      # Frontend linting
+      - name: Lint SCSS
+        run: yarn --cwd Resources/Private/Frontend lint:scss
+      - name: Lint TypeScript
+        run: yarn --cwd Resources/Private/Frontend lint:ts

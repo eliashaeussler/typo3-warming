@@ -4,5 +4,11 @@ limit = 250
 # cat=basic/20; type=string; label=Default crawler:Provide the FQCN of the crawler to be used for standard warmup requests. A crawler must implement the interface "EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface".
 crawler = EliasHaeussler\Typo3Warming\Crawler\ConcurrentUserAgentCrawler
 
+# cat=basic/25; type=string; label=Default crawler options (JSON-encoded string):Provide crawler options for the default crawler. Applies only if the default crawler implements the interface "EliasHaeussler\CacheWarmup\Crawler\ConfigurableCrawlerInterface".
+crawlerOptions =
+
 # cat=basic/30; type=string; label=Verbose crawler:Provide the FQCN of the crawler to be used for verbose warmup requests. A crawler must implement the interface "EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface".
 verboseCrawler = EliasHaeussler\Typo3Warming\Crawler\OutputtingUserAgentCrawler
+
+# cat=basic/35; type=string; label=Verbose crawler options (JSON-encoded string):Provide crawler options for the verbose crawler. Applies only if the verbose crawler implements the interface "EliasHaeussler\CacheWarmup\Crawler\ConfigurableCrawlerInterface".
+verboseCrawlerOptions =

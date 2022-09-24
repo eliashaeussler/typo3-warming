@@ -45,4 +45,12 @@ class DefaultProvider extends AbstractProvider
             $siteLanguage
         );
     }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public static function getPriority(): int
+    {
+        return -PHP_INT_MAX;
+    }
 }

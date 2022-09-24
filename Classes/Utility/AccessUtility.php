@@ -68,7 +68,18 @@ class AccessUtility
             $record = BackendUtility::getRecordLocalization('pages', $pageId, $languageId, 'hidden = 0');
         }
 
-        return !empty($record) && $backendUser->doesUserHaveAccess($record, $permissions);
+        // Early return if record is inaccessible
+        if (!\is_array($record) || $record === []) {
+            return false;
+        }
+
+        // Select first record inside list of records which is potentially returned by
+        // BackendUtility::getRecordLocalization()
+        if (array_is_list($record)) {
+            $record = reset($record);
+        }
+
+        return $backendUser->doesUserHaveAccess($record, $permissions);
     }
 
     protected static function isPageAccessible(int $pageId): bool

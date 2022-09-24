@@ -26,6 +26,8 @@ namespace EliasHaeussler\Typo3Warming\Request;
 use EliasHaeussler\CacheWarmup\CrawlingState;
 use EliasHaeussler\Typo3Warming\Controller\CacheWarmupController;
 use Psr\Http\Message\UriInterface;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * WarmupRequest
@@ -41,7 +43,7 @@ class WarmupRequest
     protected $id;
 
     /**
-     * @var string
+     * @var CacheWarmupController::MODE_*
      */
     protected $mode;
 
@@ -49,6 +51,16 @@ class WarmupRequest
      * @var int|null
      */
     protected $languageId;
+
+    /**
+     * @var int|null
+     */
+    protected $pageId;
+
+    /**
+     * @var Site|null
+     */
+    protected $site;
 
     /**
      * @var UriInterface[]
@@ -65,11 +77,19 @@ class WarmupRequest
      */
     protected $updateCallback;
 
-    public function __construct(string $id, string $mode = CacheWarmupController::MODE_SITE, int $languageId = null)
-    {
-        $this->id = $id;
+    /**
+     * @param CacheWarmupController::MODE_* $mode
+     */
+    public function __construct(
+        string $requestId = null,
+        string $mode = CacheWarmupController::MODE_SITE,
+        int $languageId = null,
+        int $pageId = null
+    ) {
+        $this->id = $requestId ?? StringUtility::getUniqueId('_');
         $this->mode = $mode;
         $this->languageId = $languageId;
+        $this->pageId = $pageId;
     }
 
     public function getId(): string
@@ -85,6 +105,11 @@ class WarmupRequest
     public function getLanguageId(): ?int
     {
         return $this->languageId;
+    }
+
+    public function getPageId(): ?int
+    {
+        return $this->pageId;
     }
 
     public function getTotal(): int
@@ -156,6 +181,16 @@ class WarmupRequest
     public function getFailedCrawls(): \Generator
     {
         yield from $this->filterByState(CrawlingState::FAILED);
+    }
+
+    public function getSite(): ?Site
+    {
+        return $this->site;
+    }
+
+    public function setSite(?Site $site): void
+    {
+        $this->site = $site;
     }
 
     public function getUpdateCallback(): ?callable

@@ -54,19 +54,18 @@ class SitemapLocator
     protected $cacheManager;
 
     /**
-     * @var ProviderInterface[]
+     * @var iterable<ProviderInterface>
      */
     protected $providers = [];
 
     /**
-     * @param ProviderInterface[] $providers
+     * @param iterable<ProviderInterface> $providers
      */
-    public function __construct(RequestFactory $requestFactory, CacheManager $cacheManager, array $providers)
+    public function __construct(RequestFactory $requestFactory, CacheManager $cacheManager, iterable $providers)
     {
         $this->requestFactory = $requestFactory;
         $this->cacheManager = $cacheManager;
         $this->providers = $providers;
-        ksort($this->providers);
 
         $this->validateProviders();
     }
@@ -110,7 +109,9 @@ class SitemapLocator
         $sitemaps = [];
 
         foreach ($site->getAvailableLanguages(static::getBackendUser()) as $siteLanguage) {
-            $sitemaps[$siteLanguage->getLanguageId()] = $this->locateBySite($site, $siteLanguage);
+            if ($siteLanguage->isEnabled()) {
+                $sitemaps[$siteLanguage->getLanguageId()] = $this->locateBySite($site, $siteLanguage);
+            }
         }
 
         return $sitemaps;

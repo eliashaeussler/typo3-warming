@@ -23,8 +23,7 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Tests\Functional\Traits;
 
-use EliasHaeussler\Typo3Warming\Tests\Functional\AccessibleMethodTrait;
-use EliasHaeussler\Typo3Warming\Traits\TranslatableTrait;
+use EliasHaeussler\Typo3Warming\Tests\Functional\Fixtures\Classes\TranslatableTraitTestClass;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -36,30 +35,20 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class TranslatableTraitTest extends FunctionalTestCase
 {
-    use AccessibleMethodTrait;
-
     protected $testExtensionsToLoad = [
         'typo3conf/ext/warming',
     ];
 
     /**
-     * @var object|TranslatableTrait
+     * @var TranslatableTraitTestClass
      */
     protected $subject;
-
-    /**
-     * @var \ReflectionMethod
-     */
-    protected $reflectionMethod;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        [$this->subject, $this->reflectionMethod] = $this->getAccessibleMethodOfTrait(
-            TranslatableTrait::class,
-            'translate'
-        );
+        $this->subject = new TranslatableTraitTestClass();
 
         $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
@@ -70,7 +59,7 @@ class TranslatableTraitTest extends FunctionalTestCase
      */
     public function translateReturnsNullIfGivenLocalizationIsNotAvailable(): void
     {
-        self::assertNull($this->reflectionMethod->invoke($this->subject, 'foo'));
+        self::assertNull($this->subject->runTranslate('foo'));
     }
 
     /**
@@ -80,7 +69,7 @@ class TranslatableTraitTest extends FunctionalTestCase
     {
         self::assertSame(
             'Warmup cache',
-            $this->reflectionMethod->invoke($this->subject, 'cacheWarmupToolbarItem.title')
+            $this->subject->runTranslate('cacheWarmupToolbarItem.title')
         );
     }
 }

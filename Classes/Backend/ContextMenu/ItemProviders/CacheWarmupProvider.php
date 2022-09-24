@@ -47,18 +47,32 @@ class CacheWarmupProvider extends PageProvider
     protected const ITEM_MODE_SITE = 'cacheWarmupSite';
 
     /**
-     * @var array<string, array<string, string>>
+     * @var array<string, array{
+     *     type: string
+     * }|array{
+     *     type: string,
+     *     label: string,
+     *     iconIdentifier: string,
+     *     callbackAction: string,
+     *     childItems?: array<string, array{
+     *         label?: string,
+     *         iconIdentifier?: string,
+     *         callbackAction?: string
+     *     }>
+     * }>
      */
     protected $itemsConfiguration = [
         'cacheWarmupDivider' => [
             'type' => 'divider',
         ],
         self::ITEM_MODE_PAGE => [
+            'type' => 'item',
             'label' => 'LLL:EXT:warming/Resources/Private/Language/locallang.xlf:contextMenu.item.cacheWarmup',
             'iconIdentifier' => 'cache-warmup-page',
             'callbackAction' => 'warmupPageCache',
         ],
         self::ITEM_MODE_SITE => [
+            'type' => 'item',
             'label' => 'LLL:EXT:warming/Resources/Private/Language/locallang.xlf:contextMenu.item.cacheWarmupAll',
             'iconIdentifier' => 'cache-warmup-site',
             'callbackAction' => 'warmupSiteCache',
@@ -134,9 +148,9 @@ class CacheWarmupProvider extends PageProvider
             return;
         }
 
-        foreach ($this->itemsConfiguration as $itemName => $configuration) {
+        foreach ($this->itemsConfiguration as $itemName => &$configuration) {
             // Skip pseudo types and non-renderable items
-            $type = $configuration['type'] ?? 'item';
+            $type = $configuration['type'];
             if ($type !== 'item' || !$this->canRender($itemName, $type)) {
                 continue;
             }
@@ -163,20 +177,20 @@ class CacheWarmupProvider extends PageProvider
             }
 
             // Treat current item as submenu
-            $this->itemsConfiguration[$itemName]['type'] = 'submenu';
-            $this->itemsConfiguration[$itemName]['childItems'] = [];
+            $configuration['type'] = 'submenu';
+            $configuration['childItems'] = [];
 
             // Add each site language as child element of the current item
             foreach ($languages as $language) {
-                $this->itemsConfiguration[$itemName]['childItems']['lang_' . $language->getLanguageId()] = [
+                $configuration['childItems']['lang_' . $language->getLanguageId()] = [
                     'label' => $language->getTitle(),
                     'iconIdentifier' => $language->getFlagIdentifier(),
-                    'callbackAction' => $this->itemsConfiguration[$itemName]['callbackAction'],
+                    'callbackAction' => $configuration['callbackAction'] ?? null,
                 ];
             }
 
             // Callback action is not required on the parent item
-            unset($this->itemsConfiguration[$itemName]['callbackAction']);
+            unset($configuration['callbackAction']);
         }
     }
 

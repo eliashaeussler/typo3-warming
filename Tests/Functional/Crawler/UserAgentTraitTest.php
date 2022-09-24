@@ -24,8 +24,7 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Tests\Functional\Crawler;
 
 use EliasHaeussler\Typo3Warming\Configuration\Configuration;
-use EliasHaeussler\Typo3Warming\Crawler\UserAgentTrait;
-use EliasHaeussler\Typo3Warming\Tests\Functional\AccessibleMethodTrait;
+use EliasHaeussler\Typo3Warming\Tests\Functional\Fixtures\Classes\UserAgentTraitTestClass;
 use GuzzleHttp\Psr7\Request;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -38,30 +37,20 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class UserAgentTraitTest extends FunctionalTestCase
 {
-    use AccessibleMethodTrait;
-
     protected $testExtensionsToLoad = [
         'typo3conf/ext/warming',
     ];
 
     /**
-     * @var object|UserAgentTrait
+     * @var UserAgentTraitTestClass
      */
     protected $subject;
-
-    /**
-     * @var \ReflectionMethod
-     */
-    protected $reflectionMethod;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        [$this->subject, $this->reflectionMethod] = $this->getAccessibleMethodOfTrait(
-            UserAgentTrait::class,
-            'applyUserAgentHeader'
-        );
+        $this->subject = new UserAgentTraitTestClass();
     }
 
     /**
@@ -72,8 +61,7 @@ class UserAgentTraitTest extends FunctionalTestCase
         $configuration = GeneralUtility::makeInstance(Configuration::class);
         $request = new Request('GET', 'https://www.example.com');
 
-        /** @var Request $actual */
-        $actual = $this->reflectionMethod->invoke($this->subject, $request);
+        $actual = $this->subject->runApplyUserAgent($request);
 
         self::assertTrue($actual->hasHeader('User-Agent'));
         self::assertSame([$configuration->getUserAgent()], $actual->getHeader('User-Agent'));

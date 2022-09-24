@@ -35,7 +35,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class AccessUtilityTest extends FunctionalTestCase
 {
-    protected $backendUserFixture = __DIR__ . '/../Fixtures/be_users.xml';
+    protected $backendUserFixture = __DIR__ . '/../Fixtures/Database/be_users.xml';
 
     /**
      * @var Site
@@ -48,8 +48,8 @@ class AccessUtilityTest extends FunctionalTestCase
 
         $this->site = new Site('main', 1, []);
 
-        $this->importDataSet(__DIR__ . '/../Fixtures/be_groups.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/pages.xml');
+        $this->importDataSet(__DIR__ . '/../Fixtures/Database/be_groups.xml');
+        $this->importDataSet(__DIR__ . '/../Fixtures/Database/pages.xml');
     }
 
     /**

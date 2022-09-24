@@ -49,11 +49,16 @@ class CacheManager
     }
 
     /**
-     * @return array<string, array<string, string>>|string|null
+     * @return ($site is null ? array<string, array<string, string>> : string|null)
      */
     public function get(Site $site = null, SiteLanguage $siteLanguage = null)
     {
         $cacheData = $this->cache->require(self::CACHE_IDENTIFIER);
+
+        // Enforce array for cached data
+        if (!\is_array($cacheData)) {
+            $cacheData = [];
+        }
 
         // Return complete cache if no specific site is requested
         if ($site === null) {
