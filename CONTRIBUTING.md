@@ -4,6 +4,9 @@ Thanks for considering contributing to this project! Each contribution is
 highly appreciated. In order to maintain a high code quality, please follow
 all steps below.
 
+This project uses [DDEV][1] for local development. Make sure to set it up as
+described below. For continuous integration, we use GitHub Actions.
+
 ## Preparation
 
 ```bash
@@ -11,12 +14,17 @@ all steps below.
 git clone https://github.com/eliashaeussler/typo3-warming.git
 cd typo3-warming
 
+# Start DDEV project
+ddev start
+
 # Install Composer dependencies
-composer install
+ddev composer install
 
 # Install Node dependencies
-yarn --cwd Resources/Private/Frontend
+ddev frontend install
 ```
+
+You can access the DDEV site at <https://typo3-ext-warming.ddev.site/>.
 
 ## Run linters
 
@@ -24,56 +32,69 @@ yarn --cwd Resources/Private/Frontend
 
 ```bash
 # All linters
-composer lint
+ddev composer lint
 
 # Specific linters
-composer lint:composer
-composer lint:editorconfig
-composer lint:php
+ddev composer lint:composer
+ddev composer lint:editorconfig
+ddev composer lint:php
 ```
 
 ### Frontend
 
 ```bash
 # All linters
-yarn --cwd Resources/Private/Frontend lint
-yarn --cwd Resources/Private/Frontend lint:fix
+ddev frontend lint
+ddev frontend lint:fix
 
 # Specific linters
-yarn --cwd Resources/Private/Frontend lint:scss
-yarn --cwd Resources/Private/Frontend lint:scss:fix
-yarn --cwd Resources/Private/Frontend lint:ts
-yarn --cwd Resources/Private/Frontend lint:ts:fix
+ddev frontend lint:scss
+ddev frontend lint:scss:fix
+ddev frontend lint:ts
+ddev frontend lint:ts:fix
 ```
 
 ## Run static code analysis
 
 ```bash
 # All static code analyzers
-composer sca
+ddev composer sca
 
 # Specific static code analyzers
-composer sca:php
+ddev composer sca:php
 ```
 
 ## Run tests
 
 ```bash
 # All tests
-composer test
+ddev composer test
+
+# Specific tests
+ddev composer test:functional
+ddev composer test:unit
 
 # All tests with code coverage
-composer test:ci
+ddev composer test:ci
+
+# Specific tests with code coverage
+ddev composer test:ci:functional
+ddev composer test:ci:unit
+
+# Merge code coverage of all test suites
+ddev composer test:ci:merge
 ```
 
 ### Test reports
 
 Code coverage reports are written to `.Build/log/coverage`. You can open the
-last HTML report like follows:
+last merged HTML report like follows:
 
 ```bash
-open .Build/log/coverage/html/index.html
+open .Build/log/coverage/html/_merged/index.html
 ```
+
+:bulb: Make sure to merge coverage reports as written above.
 
 ## Submit a pull request
 
@@ -82,5 +103,8 @@ what you've done. Ideally, your PR references an issue describing the problem
 you're trying to solve.
 
 All described code quality tools are automatically executed on each pull request
-for all currently supported PHP versions and TYPO3 versions. Take a look at
-the appropriate [workflows](.github/workflows) to get a detailed overview.
+for all currently supported PHP versions and TYPO3 versions. Take a look at the
+appropriate [workflows][2] to get a detailed overview.
+
+[1]: https://ddev.readthedocs.io/en/stable/
+[2]: .github/workflows
