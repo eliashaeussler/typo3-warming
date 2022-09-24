@@ -36,6 +36,17 @@ The extension currently provides the following configuration options:
         Custom crawlers must implement
         :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\CrawlerInterface`.
 
+.. _extconf-crawlerOptions:
+
+.. confval:: crawlerOptions
+
+    :type: string (JSON)
+
+    JSON-encoded string of custom crawler options for the default
+    :ref:`crawler <extconf-crawler>`. Applies only to crawlers implementing the
+    :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\ConfigurableCrawlerInterface`.
+    For more information read :ref:`configurable-crawlers`.
+
 .. _extconf-verboseCrawler:
 
 .. confval:: verboseCrawler
@@ -49,3 +60,14 @@ The extension currently provides the following configuration options:
 
         Custom verbose crawlers must implement
         :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\VerboseCrawlerInterface`.
+
+.. _extconf-verboseCrawlerOptions:
+
+.. confval:: verboseCrawlerOptions
+
+    :type: string (JSON)
+
+    JSON-encoded string of custom crawler options for the verbose
+    :ref:`crawler <extconf-verboseCrawler>`. Applies only to crawlers implementing the
+    :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\ConfigurableCrawlerInterface`.
+    For more information read :ref:`configurable-crawlers`.

@@ -78,7 +78,7 @@ also a
 that redirects user-oriented output to an instance of
 :php:interface:`Symfony\\Component\\Console\\Output\\OutputInterface`.
 
-.. _configuratble-crawlers:
+.. _configurable-crawlers:
 
 Configurable crawlers
 ---------------------
