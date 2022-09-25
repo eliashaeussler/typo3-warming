@@ -32,10 +32,9 @@ use PHPUnit\Runner\BeforeTestHook;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class BypassFinalHook implements BeforeTestHook
+final class BypassFinalHook implements BeforeTestHook
 {
     /**
-     * @inheritDoc
      * @see https://tomasvotruba.com/blog/2019/03/28/how-to-mock-final-classes-in-phpunit/
      */
     public function executeBeforeTest(string $test): void
