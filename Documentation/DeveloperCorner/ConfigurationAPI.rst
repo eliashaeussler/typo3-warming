@@ -32,7 +32,7 @@ an appropriate class method.
 
         Get the configured :ref:`verbose crawler class <extconf-verboseCrawler>`.
 
-        :returntype: class-string<EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface>
+        :returntype: class-string<EliasHaeussler\CacheWarmup\Crawler\VerboseCrawlerInterface>
 
     ..  php:method:: getUserAgent()
 
