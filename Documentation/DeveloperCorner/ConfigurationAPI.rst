@@ -28,11 +28,23 @@ an appropriate class method.
 
         :returntype: class-string<EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface>
 
+    ..  php:method:: getCrawlerOptions()
+
+        Get the configured :ref:`crawler options <extconf-crawlerOptions>`.
+
+        :returntype: array
+
     ..  php:method:: getVerboseCrawler()
 
         Get the configured :ref:`verbose crawler class <extconf-verboseCrawler>`.
 
-        :returntype: class-string<EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface>
+        :returntype: class-string<EliasHaeussler\CacheWarmup\Crawler\VerboseCrawlerInterface>
+
+    ..  php:method:: getVerboseCrawlerOptions()
+
+        Get the configured :ref:`verbose crawler options <extconf-verboseCrawlerOptions>`.
+
+        :returntype: array
 
     ..  php:method:: getUserAgent()
 
