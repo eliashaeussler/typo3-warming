@@ -52,7 +52,7 @@ class ShowUserAgentCommand extends Command
         $this->setDescription('Show custom "User-Agent" header to be used for Frontend requests by default crawlers.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->write($this->configuration->getUserAgent());
 
