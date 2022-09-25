@@ -1,0 +1,5 @@
+"pages",
+,"uid","pid","title","sorting","deleted","perms_userid","perms_groupid","perms_user","perms_group","perms_everybody"
+,1,0,"Root",128,0,1,1,31,31,15
+,2,1,"Dummy 1-2",128,0,1,1,31,31,15
+,3,2,"Dummy 1-2-3",128,0,1,1,31,0,0

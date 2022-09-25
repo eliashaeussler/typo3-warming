@@ -35,8 +35,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class AccessUtilityTest extends FunctionalTestCase
 {
-    protected $backendUserFixture = __DIR__ . '/../Fixtures/Database/be_users.xml';
-
     /**
      * @var Site
      */
@@ -48,8 +46,9 @@ class AccessUtilityTest extends FunctionalTestCase
 
         $this->site = new Site('main', 1, []);
 
-        $this->importDataSet(__DIR__ . '/../Fixtures/Database/be_groups.xml');
-        $this->importDataSet(__DIR__ . '/../Fixtures/Database/pages.xml');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/Database/be_groups.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/Database/be_users.csv');
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/Database/pages.csv');
     }
 
     /**
@@ -57,7 +56,7 @@ class AccessUtilityTest extends FunctionalTestCase
      */
     public function canWarmupCacheOfPageReturnsTrueIfBackendUserIsAdmin(): void
     {
-        $this->setUpBackendUserFromFixture(1);
+        $this->setUpBackendUser(1);
 
         self::assertTrue(AccessUtility::canWarmupCacheOfPage(1));
     }
@@ -67,7 +66,7 @@ class AccessUtilityTest extends FunctionalTestCase
      */
     public function canWarmupCacheOfPageReturnsFalseIfBackendUserHasNoPagePermissions(): void
     {
-        $this->setUpBackendUserFromFixture(2);
+        $this->setUpBackendUser(2);
 
         self::assertFalse(AccessUtility::canWarmupCacheOfPage(3));
     }
@@ -77,7 +76,7 @@ class AccessUtilityTest extends FunctionalTestCase
      */
     public function canWarmupCacheOfPageReturnsFalseIfBackendUserHasNoPageAccess(): void
     {
-        $this->setUpBackendUserFromFixture(2);
+        $this->setUpBackendUser(2);
 
         self::assertFalse(AccessUtility::canWarmupCacheOfPage(2));
     }
@@ -87,7 +86,7 @@ class AccessUtilityTest extends FunctionalTestCase
      */
     public function canWarmupCacheOfPageReturnsTrueIfBackendUserHasPageAccessViaUserTSconfig(): void
     {
-        $this->setUpBackendUserFromFixture(3);
+        $this->setUpBackendUser(3);
 
         self::assertTrue(AccessUtility::canWarmupCacheOfPage(2));
         self::assertFalse(AccessUtility::canWarmupCacheOfPage(1));
@@ -98,7 +97,7 @@ class AccessUtilityTest extends FunctionalTestCase
      */
     public function canWarmupCacheOfSiteReturnsTrueIfBackendUserIsAdmin(): void
     {
-        $this->setUpBackendUserFromFixture(1);
+        $this->setUpBackendUser(1);
 
         self::assertTrue(AccessUtility::canWarmupCacheOfSite($this->site));
     }
@@ -108,7 +107,7 @@ class AccessUtilityTest extends FunctionalTestCase
      */
     public function canWarmupCacheOfSiteReturnsFalseIfBackendUserHasNoPagePermissions(): void
     {
-        $this->setUpBackendUserFromFixture(2);
+        $this->setUpBackendUser(2);
 
         self::assertFalse(AccessUtility::canWarmupCacheOfSite($this->site));
     }
@@ -118,7 +117,7 @@ class AccessUtilityTest extends FunctionalTestCase
      */
     public function canWarmupCacheOfSiteReturnsFalseIfBackendUserHasNoPageAccess(): void
     {
-        $this->setUpBackendUserFromFixture(2);
+        $this->setUpBackendUser(2);
 
         self::assertFalse(AccessUtility::canWarmupCacheOfSite($this->site));
     }
@@ -128,7 +127,7 @@ class AccessUtilityTest extends FunctionalTestCase
      */
     public function canWarmupCacheOfSiteReturnsTrueIfBackendUserHasPageAccessViaUserTSconfig(): void
     {
-        $this->setUpBackendUserFromFixture(3);
+        $this->setUpBackendUser(3);
 
         self::assertTrue(AccessUtility::canWarmupCacheOfSite($this->site));
     }

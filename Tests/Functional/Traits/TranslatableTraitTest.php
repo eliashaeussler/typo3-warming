@@ -50,7 +50,9 @@ class TranslatableTraitTest extends FunctionalTestCase
 
         $this->subject = new TranslatableTraitTestClass();
 
-        $this->setUpBackendUserFromFixture(1);
+        $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/be_users.csv');
+        $this->setUpBackendUser(1);
+
         Bootstrap::initializeLanguageObject();
     }
 
