@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Configuration;
 
 use EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface;
+use EliasHaeussler\CacheWarmup\Crawler\VerboseCrawlerInterface;
 use EliasHaeussler\Typo3Warming\Crawler\ConcurrentUserAgentCrawler;
 use EliasHaeussler\Typo3Warming\Crawler\OutputtingUserAgentCrawler;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
@@ -92,7 +93,11 @@ final class Configuration
                 return self::DEFAULT_CRAWLER;
             }
 
-            return $crawler ?: self::DEFAULT_CRAWLER;
+            if (!\in_array(CrawlerInterface::class, class_implements($crawler) ?: [])) {
+                return self::DEFAULT_CRAWLER;
+            }
+
+            return $crawler;
         } catch (Exception $e) {
             return self::DEFAULT_CRAWLER;
         }
@@ -113,14 +118,23 @@ final class Configuration
     }
 
     /**
-     * @return class-string<CrawlerInterface>
+     * @return class-string<VerboseCrawlerInterface>
      */
     public function getVerboseCrawler(): string
     {
         try {
-            /** @var class-string<CrawlerInterface>|null $crawler */
+            /** @var class-string<VerboseCrawlerInterface>|null $crawler */
             $crawler = $this->configuration->get(Extension::KEY, 'verboseCrawler');
-            return !empty($crawler) ? (string)$crawler : self::DEFAULT_VERBOSE_CRAWLER;
+
+            if (!\is_string($crawler)) {
+                return self::DEFAULT_VERBOSE_CRAWLER;
+            }
+
+            if (!\in_array(VerboseCrawlerInterface::class, class_implements($crawler) ?: [])) {
+                return self::DEFAULT_VERBOSE_CRAWLER;
+            }
+
+            return $crawler;
         } catch (Exception $e) {
             return self::DEFAULT_VERBOSE_CRAWLER;
         }
