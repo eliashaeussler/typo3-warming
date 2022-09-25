@@ -84,10 +84,10 @@ final class CacheManagerTest extends FunctionalTestCase
     {
         $this->cache->set(
             CacheManager::CACHE_IDENTIFIER,
-            sprintf('return %s;', var_export(['sitemaps' => ['foo' => 'baz']], true))
+            sprintf('return %s;', var_export(['sitemaps' => ['foo' => ['baz' => 'https://example.com']]], true))
         );
 
-        self::assertSame(['foo' => 'baz'], $this->subject->get());
+        self::assertSame(['foo' => ['baz' => 'https://example.com']], $this->subject->get());
     }
 
     /**
