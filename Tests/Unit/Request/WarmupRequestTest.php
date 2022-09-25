@@ -186,7 +186,7 @@ class WarmupRequestTest extends UnitTestCase
         $this->subject->addCrawlingState($crawlingState1 = CrawlingState::createSuccessful(new Uri('https://www.example.com')));
         $this->subject->addCrawlingState($crawlingState2 = CrawlingState::createSuccessful(new Uri('https://www.example.com/foo')));
         $this->subject->addCrawlingState($crawlingState3 = CrawlingState::createSuccessful(new Uri('https://www.example.com/baz')));
-        $this->subject->addCrawlingState($crawlingState4 = CrawlingState::createFailed(new Uri('https://www.example.com/error')));
+        $this->subject->addCrawlingState(CrawlingState::createFailed(new Uri('https://www.example.com/error')));
 
         $expected = [
             $crawlingState1,
@@ -202,9 +202,9 @@ class WarmupRequestTest extends UnitTestCase
      */
     public function getFailedCrawlsReturnsFailedUrls(): void
     {
-        $this->subject->addCrawlingState($crawlingState1 = CrawlingState::createSuccessful(new Uri('https://www.example.com')));
-        $this->subject->addCrawlingState($crawlingState2 = CrawlingState::createSuccessful(new Uri('https://www.example.com/foo')));
-        $this->subject->addCrawlingState($crawlingState3 = CrawlingState::createSuccessful(new Uri('https://www.example.com/baz')));
+        $this->subject->addCrawlingState(CrawlingState::createSuccessful(new Uri('https://www.example.com')));
+        $this->subject->addCrawlingState(CrawlingState::createSuccessful(new Uri('https://www.example.com/foo')));
+        $this->subject->addCrawlingState(CrawlingState::createSuccessful(new Uri('https://www.example.com/baz')));
         $this->subject->addCrawlingState($crawlingState4 = CrawlingState::createFailed(new Uri('https://www.example.com/error')));
 
         $expected = [
