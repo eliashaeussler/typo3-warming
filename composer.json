@@ -42,8 +42,6 @@
 		"ergebnis/composer-normalize": "^2.17",
 		"helhum/typo3-console": ">= 6.3.2 < 8.0",
 		"helmich/typo3-typoscript-lint": "^2.5",
-		"jangregor/phpstan-prophecy": "^1.0",
-		"phpspec/prophecy-phpunit": "^2.0",
 		"phpstan/phpstan": "^1.6",
 		"phpstan/phpstan-phpunit": "^1.0",
 		"phpstan/phpstan-symfony": "^1.2",

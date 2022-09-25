@@ -25,9 +25,7 @@ namespace EliasHaeussler\Typo3Warming\Tests\Unit\Sitemap\Provider;
 
 use EliasHaeussler\Typo3Warming\Sitemap\Provider\RobotsTxtProvider;
 use EliasHaeussler\Typo3Warming\Sitemap\SiteAwareSitemap;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
-use TYPO3\CMS\Core\Http\RequestFactory;
+use EliasHaeussler\Typo3Warming\Tests\Unit\Fixtures\DummyRequestFactory;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Http\Uri;
@@ -42,12 +40,10 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class RobotsTxtProviderTest extends UnitTestCase
 {
-    use ProphecyTrait;
-
     /**
-     * @var ObjectProphecy|RequestFactory
+     * @var DummyRequestFactory
      */
-    protected $requestFactoryProphecy;
+    protected $requestFactory;
 
     /**
      * @var Site
@@ -63,9 +59,9 @@ final class RobotsTxtProviderTest extends UnitTestCase
     {
         parent::setUp();
 
-        $this->requestFactoryProphecy = $this->prophesize(RequestFactory::class);
+        $this->requestFactory = new DummyRequestFactory();
         $this->site = new Site('foo', 1, ['base' => 'https://www.example.com/']);
-        $this->subject = new RobotsTxtProvider($this->requestFactoryProphecy->reveal());
+        $this->subject = new RobotsTxtProvider($this->requestFactory);
     }
 
     /**
@@ -73,7 +69,7 @@ final class RobotsTxtProviderTest extends UnitTestCase
      */
     public function getReturnsNullIfNoRobotsTxtExists(): void
     {
-        $this->requestFactoryProphecy->request('https://www.example.com/robots.txt')->willThrow(\Exception::class);
+        $this->requestFactory->responseStack[] = new \Exception();
 
         self::assertNull($this->subject->get($this->site));
     }
@@ -88,7 +84,7 @@ final class RobotsTxtProviderTest extends UnitTestCase
         $body->rewind();
         $response = new Response($body);
 
-        $this->requestFactoryProphecy->request('https://www.example.com/robots.txt')->willReturn($response);
+        $this->requestFactory->responseStack[] = $response;
 
         self::assertNull($this->subject->get($this->site));
     }
@@ -103,7 +99,7 @@ final class RobotsTxtProviderTest extends UnitTestCase
         $body->rewind();
         $response = new Response($body);
 
-        $this->requestFactoryProphecy->request('https://www.example.com/robots.txt')->willReturn($response);
+        $this->requestFactory->responseStack[] = $response;
 
         $expected = new SiteAwareSitemap(new Uri('https://www.example.com/baz.xml'), $this->site);
 
