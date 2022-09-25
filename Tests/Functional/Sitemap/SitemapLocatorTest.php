@@ -29,9 +29,12 @@ use EliasHaeussler\Typo3Warming\Exception\UnsupportedSiteException;
 use EliasHaeussler\Typo3Warming\Sitemap\Provider\DefaultProvider;
 use EliasHaeussler\Typo3Warming\Sitemap\SiteAwareSitemap;
 use EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator;
+use EliasHaeussler\Typo3Warming\Tests\Unit\Fixtures\DummyRequestFactory;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Cache\CacheManager as CoreCacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Http\RequestFactory;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -46,6 +49,11 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 final class SitemapLocatorTest extends FunctionalTestCase
 {
+    /**
+     * @var DummyRequestFactory
+     */
+    protected $requestFactory;
+
     /**
      * @var PhpFrontend
      */
@@ -69,9 +77,10 @@ final class SitemapLocatorTest extends FunctionalTestCase
 
         self::assertInstanceOf(PhpFrontend::class, $cache);
 
+        $this->requestFactory = new DummyRequestFactory();
         $this->cache = $cache;
         $this->cacheManager = new CacheManager($this->cache);
-        $this->subject = new SitemapLocator(new RequestFactory(), $this->cacheManager, [new DefaultProvider()]);
+        $this->subject = new SitemapLocator($this->requestFactory, $this->cacheManager, [new DefaultProvider()]);
 
         $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/be_groups.csv');
         $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/be_users.csv');
@@ -241,6 +250,33 @@ final class SitemapLocatorTest extends FunctionalTestCase
     }
 
     /**
+     * @test
+     */
+    public function siteContainsSitemapReturnsFalseIfSiteCannotBeLocated(): void
+    {
+        $site = $this->getSite([]);
+
+        $this->populateInvalidCacheForSite($site);
+
+        self::assertFalse($this->subject->siteContainsSitemap($site));
+    }
+
+    /**
+     * @test
+     * @dataProvider siteContainsSitemapReturnsTrueIfLocatedSitemapIsAvailableDataProvider
+     */
+    public function siteContainsSitemapReturnsTrueIfLocatedSitemapIsAvailable(
+        ResponseInterface $response,
+        bool $expected
+    ): void {
+        $site = $this->getSite();
+
+        $this->requestFactory->responseStack[] = $response;
+
+        self::assertSame($expected, $this->subject->siteContainsSitemap($site));
+    }
+
+    /**
      * @return \Generator<string, array{SiteLanguage|null, string}>
      */
     public function locateBySiteReturnsCachedSitemapDataProvider(): \Generator
@@ -274,6 +310,15 @@ final class SitemapLocatorTest extends FunctionalTestCase
     {
         yield 'no site language' => [null, 'https://www.example.com/sitemap.xml'];
         yield 'site language' => [$this->getSiteLanguage(), 'https://www.example.com/de/sitemap.xml'];
+    }
+
+    /**
+     * @return \Generator<string, array{ResponseInterface, bool}>
+     */
+    public function siteContainsSitemapReturnsTrueIfLocatedSitemapIsAvailableDataProvider(): \Generator
+    {
+        yield 'valid response' => [new Response(), true];
+        yield 'invalid response' => [new Response(null, 404), false];
     }
 
     /**

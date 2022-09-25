@@ -131,20 +131,12 @@ final class ConfigurationTest extends FunctionalTestCase
 
     /**
      * @test
+     * @dataProvider getCrawlerReturnsDefaultCrawlerIfDefinedCrawlerIsInvalidDataProvider
+     * @param string|bool $crawler
      */
-    public function getCrawlerReturnsDefaultCrawlerIfDefinedCrawlerIsEmpty(): void
+    public function getCrawlerReturnsDefaultCrawlerIfDefinedCrawlerIsInvalid($crawler): void
     {
-        $this->setExtensionConfiguration(['crawler' => '']);
-
-        self::assertSame(ConcurrentUserAgentCrawler::class, $this->subject->getCrawler());
-    }
-
-    /**
-     * @test
-     */
-    public function getCrawlerReturnsDefaultCrawlerIfDefinedCrawlerIsInvalid(): void
-    {
-        $this->setExtensionConfiguration(['crawler' => 'foo']);
+        $this->setExtensionConfiguration(['crawler' => $crawler]);
 
         self::assertSame(ConcurrentUserAgentCrawler::class, $this->subject->getCrawler());
     }
@@ -211,20 +203,12 @@ final class ConfigurationTest extends FunctionalTestCase
 
     /**
      * @test
+     * @dataProvider getVerboseCrawlerReturnsDefaultVerboseCrawlerIfDefinedVerboseCrawlerIsInvalidDataProvider
+     * @param string|bool $verboseCrawler
      */
-    public function getVerboseCrawlerReturnsDefaultVerboseCrawlerIfDefinedVerboseCrawlerIsEmpty(): void
+    public function getVerboseCrawlerReturnsDefaultVerboseCrawlerIfDefinedVerboseCrawlerIsInvalid($verboseCrawler): void
     {
-        $this->setExtensionConfiguration(['verboseCrawler' => '']);
-
-        self::assertSame(OutputtingUserAgentCrawler::class, $this->subject->getVerboseCrawler());
-    }
-
-    /**
-     * @test
-     */
-    public function getVerboseCrawlerReturnsDefaultVerboseCrawlerIfDefinedVerboseCrawlerIsInvalid(): void
-    {
-        $this->setExtensionConfiguration(['verboseCrawler' => 'foo']);
+        $this->setExtensionConfiguration(['verboseCrawler' => $verboseCrawler]);
 
         self::assertSame(OutputtingUserAgentCrawler::class, $this->subject->getVerboseCrawler());
     }
@@ -305,6 +289,26 @@ final class ConfigurationTest extends FunctionalTestCase
         $this->setExtensionConfiguration($configuration);
 
         self::assertSame($configuration, $this->subject->getAll());
+    }
+
+    /**
+     * @return \Generator<string, array{string|bool}>
+     */
+    public function getCrawlerReturnsDefaultCrawlerIfDefinedCrawlerIsInvalidDataProvider(): \Generator
+    {
+        yield 'empty string' => [''];
+        yield 'invalid type' => [false];
+        yield 'invalid class name' => ['foo'];
+    }
+
+    /**
+     * @return \Generator<string, array{string|bool}>
+     */
+    public function getVerboseCrawlerReturnsDefaultVerboseCrawlerIfDefinedVerboseCrawlerIsInvalidDataProvider(): \Generator
+    {
+        yield 'empty string' => [''];
+        yield 'invalid type' => [false];
+        yield 'invalid class name' => ['foo'];
     }
 
     /**
