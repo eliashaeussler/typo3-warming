@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Tests\Functional\Configuration;
 
+use EliasHaeussler\CacheWarmup\Crawler\ConcurrentCrawler;
+use EliasHaeussler\CacheWarmup\Crawler\OutputtingCrawler;
 use EliasHaeussler\Typo3Warming\Configuration\Configuration;
 use EliasHaeussler\Typo3Warming\Configuration\Extension;
 use EliasHaeussler\Typo3Warming\Crawler\ConcurrentUserAgentCrawler;
@@ -90,6 +92,16 @@ final class ConfigurationTest extends FunctionalTestCase
     /**
      * @test
      */
+    public function getLimitReturnsDefaultLimitIfDefinedLimitIsNotNumeric(): void
+    {
+        $this->setExtensionConfiguration(['limit' => 'foo']);
+
+        self::assertSame(250, $this->subject->getLimit());
+    }
+
+    /**
+     * @test
+     */
     public function getLimitReturnsAbsoluteValue(): void
     {
         $this->setExtensionConfiguration(['limit' => -1]);
@@ -130,11 +142,21 @@ final class ConfigurationTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getCrawlerReturnsDefinedCrawler(): void
+    public function getCrawlerReturnsDefaultCrawlerIfDefinedCrawlerIsInvalid(): void
     {
         $this->setExtensionConfiguration(['crawler' => 'foo']);
 
-        self::assertSame('foo', $this->subject->getCrawler());
+        self::assertSame(ConcurrentUserAgentCrawler::class, $this->subject->getCrawler());
+    }
+
+    /**
+     * @test
+     */
+    public function getCrawlerReturnsDefinedCrawler(): void
+    {
+        $this->setExtensionConfiguration(['crawler' => ConcurrentCrawler::class]);
+
+        self::assertSame(ConcurrentCrawler::class, $this->subject->getCrawler());
     }
 
     /**
@@ -200,11 +222,21 @@ final class ConfigurationTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function getVerboseCrawlerReturnsDefinedVerboseCrawler(): void
+    public function getVerboseCrawlerReturnsDefaultVerboseCrawlerIfDefinedVerboseCrawlerIsInvalid(): void
     {
         $this->setExtensionConfiguration(['verboseCrawler' => 'foo']);
 
-        self::assertSame('foo', $this->subject->getVerboseCrawler());
+        self::assertSame(OutputtingUserAgentCrawler::class, $this->subject->getVerboseCrawler());
+    }
+
+    /**
+     * @test
+     */
+    public function getVerboseCrawlerReturnsDefinedVerboseCrawler(): void
+    {
+        $this->setExtensionConfiguration(['verboseCrawler' => OutputtingCrawler::class]);
+
+        self::assertSame(OutputtingCrawler::class, $this->subject->getVerboseCrawler());
     }
 
     /**
