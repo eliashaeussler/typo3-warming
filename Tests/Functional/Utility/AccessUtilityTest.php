@@ -33,7 +33,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class AccessUtilityTest extends FunctionalTestCase
+final class AccessUtilityTest extends FunctionalTestCase
 {
     /**
      * @var Site

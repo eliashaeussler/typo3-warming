@@ -40,7 +40,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class RobotsTxtProviderTest extends UnitTestCase
+final class RobotsTxtProviderTest extends UnitTestCase
 {
     use ProphecyTrait;
 
