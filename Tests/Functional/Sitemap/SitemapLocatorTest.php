@@ -21,7 +21,7 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3Warming\Tests\Unit\Sitemap;
+namespace EliasHaeussler\Typo3Warming\Tests\Functional\Sitemap;
 
 use EliasHaeussler\Typo3Warming\Cache\CacheManager;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedConfigurationException;
@@ -29,15 +29,14 @@ use EliasHaeussler\Typo3Warming\Exception\UnsupportedSiteException;
 use EliasHaeussler\Typo3Warming\Sitemap\Provider\DefaultProvider;
 use EliasHaeussler\Typo3Warming\Sitemap\SiteAwareSitemap;
 use EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Cache\CacheManager as CoreCacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * SitemapLocatorTest
@@ -45,14 +44,17 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class SitemapLocatorTest extends UnitTestCase
+final class SitemapLocatorTest extends FunctionalTestCase
 {
-    use ProphecyTrait;
+    /**
+     * @var PhpFrontend
+     */
+    protected $cache;
 
     /**
-     * @var ObjectProphecy|CacheManager
+     * @var CacheManager
      */
-    protected $cacheManagerProphecy;
+    protected $cacheManager;
 
     /**
      * @var SitemapLocator
@@ -62,8 +64,18 @@ final class SitemapLocatorTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        $this->subject = new SitemapLocator(new RequestFactory(), $this->cacheManagerProphecy->reveal(), [new DefaultProvider()]);
+
+        $cache = GeneralUtility::makeInstance(CoreCacheManager::class)->getCache('core');
+
+        self::assertInstanceOf(PhpFrontend::class, $cache);
+
+        $this->cache = $cache;
+        $this->cacheManager = new CacheManager($this->cache);
+        $this->subject = new SitemapLocator(new RequestFactory(), $this->cacheManager, [new DefaultProvider()]);
+
+        $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/be_groups.csv');
+        $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/be_users.csv');
+        $this->setUpBackendUser(2);
     }
 
     /**
@@ -78,9 +90,8 @@ final class SitemapLocatorTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1619525071);
 
-        /* @noinspection PhpParamsInspection */
         /* @phpstan-ignore-next-line */
-        new SitemapLocator(new RequestFactory(), $this->cacheManagerProphecy->reveal(), $providers);
+        new SitemapLocator(new RequestFactory(), $this->cacheManager, $providers);
     }
 
     /**
@@ -95,9 +106,8 @@ final class SitemapLocatorTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1619524996);
 
-        /* @noinspection PhpParamsInspection */
         /* @phpstan-ignore-next-line */
-        new SitemapLocator(new RequestFactory(), $this->cacheManagerProphecy->reveal(), $providers);
+        new SitemapLocator(new RequestFactory(), $this->cacheManager, $providers);
     }
 
     /**
@@ -109,12 +119,11 @@ final class SitemapLocatorTest extends UnitTestCase
     public function locateBySiteReturnsCachedSitemap(?SiteLanguage $siteLanguage, string $expectedUrl): void
     {
         $site = $this->getSite([]);
+        $sitemap = new SiteAwareSitemap(new Uri($expectedUrl), $site, $siteLanguage);
 
-        $this->cacheManagerProphecy->get($site, $siteLanguage)->willReturn($expectedUrl);
+        $this->cacheManager->set($sitemap);
 
-        $expected = new SiteAwareSitemap(new Uri($expectedUrl), $site, $siteLanguage);
-
-        self::assertEquals($expected, $this->subject->locateBySite($site, $siteLanguage));
+        self::assertEquals($sitemap, $this->subject->locateBySite($site, $siteLanguage));
     }
 
     /**
@@ -127,7 +136,7 @@ final class SitemapLocatorTest extends UnitTestCase
     {
         $site = $this->getSite([]);
 
-        $this->cacheManagerProphecy->get($site, $siteLanguage)->willReturn(null);
+        $this->populateInvalidCacheForSite($site);
 
         $this->expectException(UnsupportedConfigurationException::class);
         $this->expectExceptionCode(1619168965);
@@ -144,9 +153,9 @@ final class SitemapLocatorTest extends UnitTestCase
     public function locateBySiteThrowsExceptionIfProvidersCannotResolveSitemap(?SiteLanguage $siteLanguage): void
     {
         $site = $this->getSite();
-        $subject = new SitemapLocator(new RequestFactory(), $this->cacheManagerProphecy->reveal(), []);
+        $subject = new SitemapLocator(new RequestFactory(), $this->cacheManager, []);
 
-        $this->cacheManagerProphecy->get($site, $siteLanguage)->willReturn(null);
+        $this->populateInvalidCacheForSite($site);
 
         $this->expectException(UnsupportedSiteException::class);
         $this->expectExceptionCode(1619369771);
@@ -164,12 +173,12 @@ final class SitemapLocatorTest extends UnitTestCase
     {
         $site = $this->getSite();
 
-        $this->cacheManagerProphecy->get($site, $siteLanguage)->willReturn(null);
-        $this->cacheManagerProphecy->set(Argument::type(SiteAwareSitemap::class))->shouldBeCalledOnce();
+        $this->populateInvalidCacheForSite($site);
 
         $expected = new SiteAwareSitemap(new Uri($expectedUrl), $site, $siteLanguage);
 
         self::assertEquals($expected, $this->subject->locateBySite($site, $siteLanguage));
+        self::assertSame($expectedUrl, $this->cacheManager->get($site, $siteLanguage));
     }
 
     /**
@@ -177,12 +186,6 @@ final class SitemapLocatorTest extends UnitTestCase
      */
     public function locateAllBySiteExcludesDisabledLanguages(): void
     {
-        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $backendUserProphecy->checkLanguageAccess(0)->willReturn(false);
-        $backendUserProphecy->checkLanguageAccess(1)->willReturn(true);
-
-        $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
-
         $site = $this->getSite([
             'base' => 'https://www.example.com/',
             'languages' => [
@@ -213,12 +216,6 @@ final class SitemapLocatorTest extends UnitTestCase
      */
     public function locateAllBySiteExcludesInaccessibleLanguages(): void
     {
-        $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $backendUserProphecy->checkLanguageAccess(0)->willReturn(false);
-        $backendUserProphecy->checkLanguageAccess(1)->willReturn(true);
-
-        $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
-
         $site = $this->getSite([
             'base' => 'https://www.example.com/',
             'languages' => [
@@ -236,22 +233,11 @@ final class SitemapLocatorTest extends UnitTestCase
                 1 => $this->getSiteLanguage()->toArray(),
             ],
         ]);
+        $sitemap = new SiteAwareSitemap(new Uri('https://www.example.com/'), $site, $site->getLanguageById(1));
 
-        /** @noinspection PhpParamsInspection */
-        $this->cacheManagerProphecy->get(
-            $site,
-            Argument::that(function (SiteLanguage $siteLanguage): SiteLanguage {
-                self::assertSame(1, $siteLanguage->getLanguageId());
+        $this->cacheManager->set($sitemap);
 
-                return $siteLanguage;
-            })
-        )->willReturn('https://www.example.com/');
-
-        $expected = [
-            1 => new SiteAwareSitemap(new Uri('https://www.example.com/'), $site, $site->getLanguageById(1)),
-        ];
-
-        self::assertEquals($expected, $this->subject->locateAllBySite($site));
+        self::assertEquals([1 => $sitemap], $this->subject->locateAllBySite($site));
     }
 
     /**
@@ -301,5 +287,27 @@ final class SitemapLocatorTest extends UnitTestCase
     private function getSiteLanguage(string $baseUrl = 'https://www.example.com/de/'): SiteLanguage
     {
         return new SiteLanguage(1, 'de_DE.UTF-8', new Uri($baseUrl), []);
+    }
+
+    private function populateInvalidCacheForSite(Site $site): void
+    {
+        $this->cache->set(
+            CacheManager::CACHE_IDENTIFIER,
+            sprintf(
+                'return %s;',
+                var_export([
+                    'sitemaps' => [
+                        $site->getIdentifier() => [],
+                    ],
+                ], true)
+            )
+        );
+    }
+
+    protected function tearDown(): void
+    {
+        $this->cache->remove(CacheManager::CACHE_IDENTIFIER);
+
+        parent::tearDown();
     }
 }
