@@ -28,7 +28,6 @@ use EliasHaeussler\CacheWarmup\Crawler\VerboseCrawlerInterface;
 use EliasHaeussler\Typo3Warming\Crawler\ConcurrentUserAgentCrawler;
 use EliasHaeussler\Typo3Warming\Crawler\OutputtingUserAgentCrawler;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 
 /**
@@ -67,17 +66,13 @@ final class Configuration
 
     public function getLimit(): int
     {
-        try {
-            $limit = $this->configuration->get(Extension::KEY, 'limit');
+        $limit = $this->configuration->get(Extension::KEY, 'limit');
 
-            if (!is_numeric($limit)) {
-                return self::DEFAULT_LIMIT;
-            }
-
-            return abs((int)$limit);
-        } catch (Exception $e) {
+        if (!is_numeric($limit)) {
             return self::DEFAULT_LIMIT;
         }
+
+        return abs((int)$limit);
     }
 
     /**
@@ -85,22 +80,18 @@ final class Configuration
      */
     public function getCrawler(): string
     {
-        try {
-            /** @var class-string<CrawlerInterface>|null $crawler */
-            $crawler = $this->configuration->get(Extension::KEY, 'crawler');
+        /** @var class-string<CrawlerInterface>|null $crawler */
+        $crawler = $this->configuration->get(Extension::KEY, 'crawler');
 
-            if (!\is_string($crawler)) {
-                return self::DEFAULT_CRAWLER;
-            }
-
-            if (!\in_array(CrawlerInterface::class, class_implements($crawler) ?: [])) {
-                return self::DEFAULT_CRAWLER;
-            }
-
-            return $crawler;
-        } catch (Exception $e) {
+        if (!\is_string($crawler)) {
             return self::DEFAULT_CRAWLER;
         }
+
+        if (!\in_array(CrawlerInterface::class, class_implements($crawler) ?: [])) {
+            return self::DEFAULT_CRAWLER;
+        }
+
+        return $crawler;
     }
 
     /**
@@ -108,13 +99,9 @@ final class Configuration
      */
     public function getCrawlerOptions(): array
     {
-        try {
-            $json = $this->configuration->get(Extension::KEY, 'crawlerOptions');
+        $json = $this->configuration->get(Extension::KEY, 'crawlerOptions');
 
-            return $this->parseCrawlerOptions($json);
-        } catch (Exception $e) {
-            return [];
-        }
+        return $this->parseCrawlerOptions($json);
     }
 
     /**
@@ -122,22 +109,18 @@ final class Configuration
      */
     public function getVerboseCrawler(): string
     {
-        try {
-            /** @var class-string<VerboseCrawlerInterface>|null $crawler */
-            $crawler = $this->configuration->get(Extension::KEY, 'verboseCrawler');
+        /** @var class-string<VerboseCrawlerInterface>|null $crawler */
+        $crawler = $this->configuration->get(Extension::KEY, 'verboseCrawler');
 
-            if (!\is_string($crawler)) {
-                return self::DEFAULT_VERBOSE_CRAWLER;
-            }
-
-            if (!\in_array(VerboseCrawlerInterface::class, class_implements($crawler) ?: [])) {
-                return self::DEFAULT_VERBOSE_CRAWLER;
-            }
-
-            return $crawler;
-        } catch (Exception $e) {
+        if (!\is_string($crawler)) {
             return self::DEFAULT_VERBOSE_CRAWLER;
         }
+
+        if (!\in_array(VerboseCrawlerInterface::class, class_implements($crawler) ?: [])) {
+            return self::DEFAULT_VERBOSE_CRAWLER;
+        }
+
+        return $crawler;
     }
 
     /**
@@ -145,13 +128,9 @@ final class Configuration
      */
     public function getVerboseCrawlerOptions(): array
     {
-        try {
-            $json = $this->configuration->get(Extension::KEY, 'verboseCrawlerOptions');
+        $json = $this->configuration->get(Extension::KEY, 'verboseCrawlerOptions');
 
-            return $this->parseCrawlerOptions($json);
-        } catch (Exception $e) {
-            return [];
-        }
+        return $this->parseCrawlerOptions($json);
     }
 
     public function getUserAgent(): string
@@ -164,14 +143,10 @@ final class Configuration
      */
     public function getAll(): array
     {
-        try {
-            $configuration = $this->configuration->get(Extension::KEY);
-            \assert(\is_array($configuration));
+        $configuration = $this->configuration->get(Extension::KEY);
+        \assert(\is_array($configuration));
 
-            return $configuration;
-        } catch (Exception $e) {
-            return [];
-        }
+        return $configuration;
     }
 
     /**
