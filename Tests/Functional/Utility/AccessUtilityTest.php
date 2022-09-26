@@ -64,6 +64,16 @@ final class AccessUtilityTest extends FunctionalTestCase
     /**
      * @test
      */
+    public function canWarmupCacheOfPageReturnsFalseIfPageDoesNotExist(): void
+    {
+        $this->setUpBackendUser(2);
+
+        self::assertFalse(AccessUtility::canWarmupCacheOfPage(99));
+    }
+
+    /**
+     * @test
+     */
     public function canWarmupCacheOfPageReturnsFalseIfBackendUserHasNoPagePermissions(): void
     {
         $this->setUpBackendUser(2);
@@ -90,6 +100,17 @@ final class AccessUtilityTest extends FunctionalTestCase
 
         self::assertTrue(AccessUtility::canWarmupCacheOfPage(2));
         self::assertFalse(AccessUtility::canWarmupCacheOfPage(1));
+    }
+
+    /**
+     * @test
+     * @dataProvider canWarmupCacheOfPageChecksLocalizedPageDataProvider
+     */
+    public function canWarmupCacheOfPageChecksLocalizedPage(int $userUid): void
+    {
+        $this->setUpBackendUser($userUid);
+
+        self::assertTrue(AccessUtility::canWarmupCacheOfPage(2, 1));
     }
 
     /**
@@ -130,5 +151,34 @@ final class AccessUtilityTest extends FunctionalTestCase
         $this->setUpBackendUser(3);
 
         self::assertTrue(AccessUtility::canWarmupCacheOfSite($this->site));
+    }
+
+    /**
+     * @test
+     * @dataProvider canWarmupCacheOfSiteChecksLocalizedSiteDataProvider
+     */
+    public function canWarmupCacheOfSiteChecksLocalizedSite(int $userUid): void
+    {
+        $this->setUpBackendUser($userUid);
+
+        self::assertTrue(AccessUtility::canWarmupCacheOfSite($this->site, 1));
+    }
+
+    /**
+     * @return \Generator<string, array{int}>
+     */
+    public function canWarmupCacheOfPageChecksLocalizedPageDataProvider(): \Generator
+    {
+        yield 'standard user' => [3];
+        yield 'admin user' => [1];
+    }
+
+    /**
+     * @return \Generator<string, array{int}>
+     */
+    public function canWarmupCacheOfSiteChecksLocalizedSiteDataProvider(): \Generator
+    {
+        yield 'standard user' => [3];
+        yield 'admin user' => [1];
     }
 }
