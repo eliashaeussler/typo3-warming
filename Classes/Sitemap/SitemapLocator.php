@@ -77,7 +77,7 @@ class SitemapLocator
     public function locateBySite(Site $site, SiteLanguage $siteLanguage = null): SiteAwareSitemap
     {
         // Get sitemap from cache
-        if (\is_string($sitemapUrl = $this->cacheManager->get($site, $siteLanguage))) {
+        if (($sitemapUrl = $this->cacheManager->get($site, $siteLanguage)) !== null) {
             return new SiteAwareSitemap(new Uri($sitemapUrl), $site, $siteLanguage);
         }
 

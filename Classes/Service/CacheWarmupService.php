@@ -146,7 +146,7 @@ class CacheWarmupService implements LoggerAwareInterface
         return $site->getRouter()->generateUri((string)$pageId, ['_language' => $languageId]);
     }
 
-    public function getCrawler(): ?CrawlerInterface
+    public function getCrawler(): CrawlerInterface
     {
         return $this->crawler;
     }
