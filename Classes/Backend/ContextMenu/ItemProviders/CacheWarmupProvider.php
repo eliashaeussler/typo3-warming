@@ -103,6 +103,11 @@ class CacheWarmupProvider extends PageProvider
             return true;
         }
 
+        // Language items in sub-menus are already filtered
+        if (str_starts_with($itemName, 'lang_')) {
+            return true;
+        }
+
         if (\in_array($itemName, $this->disabledItems, true)) {
             return false;
         }
