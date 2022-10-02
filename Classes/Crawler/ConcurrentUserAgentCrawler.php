@@ -25,10 +25,8 @@ namespace EliasHaeussler\Typo3Warming\Crawler;
 
 use EliasHaeussler\CacheWarmup\Crawler\ConcurrentCrawler;
 use EliasHaeussler\CacheWarmup\CrawlingState;
-use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Http\Client\GuzzleClientFactory;
 
 /**
  * ConcurrentAgentCrawler
@@ -38,6 +36,7 @@ use TYPO3\CMS\Core\Http\Client\GuzzleClientFactory;
  */
 class ConcurrentUserAgentCrawler extends ConcurrentCrawler implements RequestAwareInterface
 {
+    use ConfigurableClientTrait;
     use RequestAwareTrait;
     use UserAgentTrait;
 
@@ -47,11 +46,6 @@ class ConcurrentUserAgentCrawler extends ConcurrentCrawler implements RequestAwa
         foreach (parent::getRequests() as $request) {
             yield $this->applyUserAgentHeader($request->withMethod('GET'));
         }
-    }
-
-    protected function initializeClient(): ClientInterface
-    {
-        return GuzzleClientFactory::getClient();
     }
 
     public function onSuccess(ResponseInterface $response, int $index): void
