@@ -287,9 +287,9 @@ class CacheWarmupController
                 $siteLanguage = $sitemap->getSiteLanguage();
                 \assert($siteLanguage instanceof SiteLanguage);
 
-                $languageIdentifier = $siteLanguage === $site->getDefaultLanguage() ? 'default' : $siteLanguage->getLanguageId();
                 $sitemapConfiguration = [
                     'language' => $siteLanguage,
+                    'isDefaultLanguage' => $siteLanguage === $site->getDefaultLanguage(),
                 ];
 
                 if ($this->sitemapLocator->siteContainsSitemap($site, $siteLanguage)) {
@@ -299,7 +299,7 @@ class CacheWarmupController
                     $sitemapConfiguration['missing'] = true;
                 }
 
-                $action['sitemaps'][$languageIdentifier] = $sitemapConfiguration;
+                $action['sitemaps'][] = $sitemapConfiguration;
             }
 
             // Add flag if no site language has a sitemap

@@ -4,7 +4,9 @@
 >
 
 <f:for each="{actions}" as="action">
-    <f:render partial="ToolbarItemAction" arguments="{action: action}" />
+    <f:if condition="{action.sitemaps}">
+        <f:render partial="ToolbarItemAction" arguments="{action: action}" />
+    </f:if>
 </f:for>
 
 </html>
