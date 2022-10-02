@@ -3,13 +3,13 @@
       data-namespace-typo3-fluid="true">
 
 <div class="dropdown-table-row">
-    <f:if condition="{action.sitemaps -> f:count()} <= 1 || {action.missing}">
+    <f:if condition="({action.sitemaps -> f:count()} == 1 && {action.sitemaps.0.isDefaultLanguage}) || {action.missing}">
         <f:then>
             <f:render section="action-single-language" arguments="{
                 title: action.title,
                 pageId: action.pageId,
                 iconIdentifier: action.iconIdentifier,
-                sitemap: action.sitemaps.default
+                sitemap: action.sitemaps.0
             }" />
         </f:then>
         <f:else>
