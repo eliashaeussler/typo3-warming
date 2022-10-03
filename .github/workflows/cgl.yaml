@@ -58,3 +58,7 @@ jobs:
         run: yarn --cwd Resources/Private/Frontend lint:scss
       - name: Lint TypeScript
         run: yarn --cwd Resources/Private/Frontend lint:ts
+
+      # Migration
+      - name: Run Rector migration
+        run: composer migration:rector -- --dry-run
