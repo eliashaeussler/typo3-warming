@@ -46,6 +46,7 @@
 		"phpstan/phpstan": "^1.6",
 		"phpstan/phpstan-symfony": "^1.2",
 		"saschaegerer/phpstan-typo3": "^1.1",
+		"ssch/typo3-rector": "^1.0",
 		"typo3/coding-standards": "^0.5.0",
 		"typo3/testing-framework": "^6.11.2"
 	},
@@ -110,6 +111,10 @@
 		"lint:composer": "@composer normalize --no-check-lock --no-update-lock",
 		"lint:editorconfig": "ec --finder-config .editorconfig-lint.php --fix",
 		"lint:php": "php-cs-fixer fix",
+		"migration": [
+			"@migration:rector"
+		],
+		"migration:rector": "rector process -c rector.php",
 		"sca": [
 			"@sca:php"
 		],

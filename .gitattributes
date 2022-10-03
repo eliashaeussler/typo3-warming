@@ -18,3 +18,4 @@
 /phpstan.neon                export-ignore
 /phpunit.ci.xml              export-ignore
 /phpunit.xml                 export-ignore
+/rector.php                  export-ignore
