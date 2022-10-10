@@ -276,7 +276,7 @@ class CacheWarmupController
 
             $sitemapsFound = false;
             $action = [
-                'title' => $site->getConfiguration()['websiteTitle'] ?: BackendUtility::getRecordTitle('pages', $row),
+                'title' => ($site->getConfiguration()['websiteTitle'] ?? null) ?: BackendUtility::getRecordTitle('pages', $row),
                 'pageId' => $site->getRootPageId(),
                 'iconIdentifier' => $this->iconFactory->getIconForRecord('pages', $row)->getIdentifier(),
                 'sitemaps' => [],
