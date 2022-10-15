@@ -53,9 +53,9 @@ jobs:
 
       # Prepare version
       - id: get-version
-        run: echo ::set-output name=version::${GITHUB_REF/refs\/tags\//}
+        run: echo "version=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_OUTPUT
       - id: get-comment
-        run: echo ::set-output name=comment::See release notes at ${{ needs.release.outputs.release-notes-url }}
+        run: echo "comment=See release notes at ${{ needs.release.outputs.release-notes-url }}" >> $GITHUB_OUTPUT
 
       # Prepare environment
       - name: Setup PHP
