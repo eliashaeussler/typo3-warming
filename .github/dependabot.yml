@@ -15,8 +15,7 @@ updates:
   - package-ecosystem: npm
     directory: 'Resources/Private/Frontend'
     schedule:
-      interval: weekly
-      day: friday
+      interval: daily
     commit-message:
       prefix: '[TASK]'
     labels:
@@ -26,8 +25,7 @@ updates:
   - package-ecosystem: composer
     directory: 'Resources/Private/Libs/Build'
     schedule:
-      interval: weekly
-      day: friday
+      interval: daily
     commit-message:
       prefix: '[TASK]'
     labels:

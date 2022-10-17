@@ -12,8 +12,8 @@
 [![License](http://poser.pugx.org/eliashaeussler/typo3-warming/license)](LICENSE.md)\
 [![Version](https://shields.io/endpoint?url=https://typo3-badges.dev/badge/warming/version/shields)](https://extensions.typo3.org/extension/warming)
 [![Downloads](https://shields.io/endpoint?url=https://typo3-badges.dev/badge/warming/downloads/shields)](https://extensions.typo3.org/extension/warming)
+[![Supported TYPO3 versions](https://shields.io/endpoint?url=https://typo3-badges.dev/badge/warming/typo3/shields)](https://extensions.typo3.org/extension/warming)
 [![Extension stability](https://shields.io/endpoint?url=https://typo3-badges.dev/badge/warming/stability/shields)](https://extensions.typo3.org/extension/warming)
-[![TYPO3 badge](https://shields.io/endpoint?url=https://typo3-badges.dev/badge/typo3/shields)](https://typo3.org/)
 [![Slack](https://img.shields.io/badge/slack-%23ext--warming-4a154b?logo=slack)](https://typo3.slack.com/archives/C0400CSGWAY)
 
 **:orange_book:&nbsp;[Documentation](https://docs.typo3.org/p/eliashaeussler/typo3-warming/main/en-us/)** |

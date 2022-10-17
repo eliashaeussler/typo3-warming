@@ -99,7 +99,7 @@ jobs:
         working-directory: .Build/log/coverage
         run: sed -i 's#/var/www/html#${{ github.workspace }}#g' clover.xml
       - name: CodeClimate report
-        uses: paambaati/codeclimate-action@v3.0.0
+        uses: paambaati/codeclimate-action@v3.1.0
         if: env.CC_TEST_REPORTER_ID
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
