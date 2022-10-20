@@ -77,7 +77,7 @@ jobs:
         working-directory: .Build/log/coverage
         run: sed -i 's#/home/runner/work/typo3-warming/typo3-warming#${{ github.workspace }}#g' clover.xml
       - name: CodeClimate report
-        uses: paambaati/codeclimate-action@v3.1.0
+        uses: paambaati/codeclimate-action@v3.1.1
         if: env.CC_TEST_REPORTER_ID
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
