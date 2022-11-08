@@ -79,6 +79,12 @@ class AccessUtility
             $record = reset($record);
         }
 
+        // Early return if localized record is inaccessible
+        // (this should never happen, but makes PHPStan happy)
+        if (!\is_array($record) || $record === []) {
+            return false;
+        }
+
         return $backendUser->doesUserHaveAccess($record, $permissions);
     }
 
