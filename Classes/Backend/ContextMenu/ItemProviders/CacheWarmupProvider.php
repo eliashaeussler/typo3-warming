@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Backend\ContextMenu\ItemProviders;
 
+use EliasHaeussler\Typo3Warming\Configuration\Configuration;
 use EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator;
 use EliasHaeussler\Typo3Warming\Traits\BackendUserAuthenticationTrait;
 use EliasHaeussler\Typo3Warming\Utility\AccessUtility;
@@ -89,11 +90,17 @@ class CacheWarmupProvider extends PageProvider
      */
     protected $siteFinder;
 
+    /**
+     * @var Configuration
+     */
+    protected $configuration;
+
     public function __construct(string $table, string $identifier, string $context = '')
     {
         parent::__construct($table, $identifier, $context);
         $this->sitemapLocator = GeneralUtility::makeInstance(SitemapLocator::class);
         $this->siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+        $this->configuration = GeneralUtility::makeInstance(Configuration::class);
     }
 
     protected function canRender(string $itemName, string $type): bool
@@ -101,6 +108,12 @@ class CacheWarmupProvider extends PageProvider
         // Pseudo items (such as dividers) are always renderable
         if ($type !== 'item') {
             return true;
+        }
+
+        // Non-supported doktypes are never renderable
+        $doktype = (int)($this->record['doktype'] ?? null);
+        if ($doktype <= 0 || !\in_array($doktype, $this->configuration->getSupportedDoktypes(), true)) {
+            return false;
         }
 
         // Language items in sub-menus are already filtered
@@ -131,12 +144,18 @@ class CacheWarmupProvider extends PageProvider
      */
     public function addItems(array $items): array
     {
-        $this->initDisabledItems();
-        $this->initSubMenus();
+        $this->initialize();
+
         $localItems = $this->prepareItems($this->itemsConfiguration);
         $items += $localItems;
 
         return $items;
+    }
+
+    protected function initialize(): void
+    {
+        parent::initialize();
+        $this->initSubMenus();
     }
 
     public function getPriority(): int

@@ -71,3 +71,15 @@ The extension currently provides the following configuration options:
     :ref:`crawler <extconf-verboseCrawler>`. Applies only to crawlers implementing the
     :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\ConfigurableCrawlerInterface`.
     For more information read :ref:`configurable-crawlers`.
+
+.. _extconf-supportedDoktypes:
+
+.. confval:: supportedDoktypes
+
+    :type: string (comma-separated list)
+    :Default: 1
+
+    Comma-separated list of doktypes to be supported for cache warmup in the
+    :ref:`page tree <page-tree>` context menu. Defaults to default pages with doktype
+    :php:`1` only. If your project implements custom doktypes, you can add them here to
+    support cache warmup from the context menu.

@@ -12,3 +12,6 @@ verboseCrawler = EliasHaeussler\Typo3Warming\Crawler\OutputtingUserAgentCrawler
 
 # cat=basic/35; type=string; label=Verbose crawler options (JSON-encoded string):Provide crawler options for the verbose crawler. Applies only if the verbose crawler implements the interface "EliasHaeussler\CacheWarmup\Crawler\ConfigurableCrawlerInterface".
 verboseCrawlerOptions =
+
+# cat=pageTree/10; type=string; label=Supported doktypes in page tree:Provide a comma-separated list of doktypes for which cache warmup should be available in the page tree context menu.
+supportedDoktypes = 1

@@ -28,7 +28,9 @@ use EliasHaeussler\CacheWarmup\Crawler\VerboseCrawlerInterface;
 use EliasHaeussler\Typo3Warming\Crawler\ConcurrentUserAgentCrawler;
 use EliasHaeussler\Typo3Warming\Crawler\OutputtingUserAgentCrawler;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 
 /**
@@ -42,6 +44,9 @@ final class Configuration
     public const DEFAULT_LIMIT = 250;
     public const DEFAULT_CRAWLER = ConcurrentUserAgentCrawler::class;
     public const DEFAULT_VERBOSE_CRAWLER = OutputtingUserAgentCrawler::class;
+    public const DEFAULT_SUPPORTED_DOKTYPES = [
+        PageRepository::DOKTYPE_DEFAULT,
+    ];
 
     /**
      * @var ExtensionConfiguration
@@ -151,6 +156,24 @@ final class Configuration
             return $this->parseCrawlerOptions($json);
         } catch (Exception $e) {
             return [];
+        }
+    }
+
+    /**
+     * @return list<int>
+     */
+    public function getSupportedDoktypes(): array
+    {
+        try {
+            $doktypes = $this->configuration->get(Extension::KEY, 'supportedDoktypes');
+
+            if (!\is_string($doktypes)) {
+                return self::DEFAULT_SUPPORTED_DOKTYPES;
+            }
+
+            return GeneralUtility::intExplode(',', $doktypes, true);
+        } catch (Exception $e) {
+            return self::DEFAULT_SUPPORTED_DOKTYPES;
         }
     }
 
