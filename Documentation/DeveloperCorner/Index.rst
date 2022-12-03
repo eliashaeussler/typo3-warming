@@ -1,6 +1,6 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _developer-corner:
+..  _developer-corner:
 
 ================
 Developer corner
@@ -11,7 +11,7 @@ with custom implementations. This section provides an insight into
 which development options are available and how these can be integrated
 into the cache warmup process.
 
-.. toctree::
+..  toctree::
     :maxdepth: 3
 
     Crawlers

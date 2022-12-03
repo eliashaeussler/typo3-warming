@@ -1,12 +1,12 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _introduction:
+..  _introduction:
 
 ============
 Introduction
 ============
 
-.. _what-it-does:
+..  _what-it-does:
 
 What does it do?
 ================
@@ -14,16 +14,16 @@ What does it do?
 The extension provides a service to warm up Frontend caches based on an XML
 sitemap. Cache warmup can be triggered in various ways:
 
-- Via the :ref:`TYPO3 backend <backend-toolbar>`
-- Using a :ref:`console command <console-commands>`
-- Directly with the :ref:`PHP API <using-the-api>`
+-   Via the :ref:`TYPO3 backend <backend-toolbar>`
+-   Using a :ref:`console command <console-commands>`
+-   Directly with the :ref:`PHP API <using-the-api>`
 
 It supports multiple languages and custom crawler implementations.
 Under the hood, the extension makes use of the
 `eliashaeussler/cache-warmup <https://github.com/eliashaeussler/cache-warmup>`__
 library which provides the core cache warmup implementation.
 
-.. _features:
+..  _features:
 
 Features
 ========
@@ -38,7 +38,7 @@ Features
 -   :ref:`Console commands <console-commands>`
 -   Compatible with TYPO3 10.4 LTS and 11.5 LTS
 
-.. _support:
+..  _support:
 
 Support
 =======
@@ -48,7 +48,7 @@ There are several ways to get support for this extension:
 * Slack: https://typo3.slack.com/archives/C0400CSGWAY
 * GitHub: https://github.com/eliashaeussler/typo3-warming/issues
 
-.. _license:
+..  _license:
 
 License
 =======

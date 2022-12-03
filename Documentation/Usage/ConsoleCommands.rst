@@ -1,6 +1,6 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _console-commands:
+..  _console-commands:
 
 ================
 Console commands
@@ -8,7 +8,7 @@ Console commands
 
 The extension provides the following console commands:
 
-.. _warming-cachewarmup:
+..  _warming-cachewarmup:
 
 `warming:cachewarmup`
 =====================
@@ -16,27 +16,27 @@ The extension provides the following console commands:
 A command to trigger cache warmup of single pages and/or whole sites
 using their XML sitemaps.
 
-.. important::
+..  important::
 
     You must pass at least the `--pages` or `--sites` command option.
 
-.. tabs::
+..  tabs::
 
-    .. group-tab:: Composer-based installation
+    ..  group-tab:: Composer-based installation
 
-        .. code-block:: bash
+        ..  code-block:: bash
 
             vendor/bin/typo3 warming:cachewarmup
 
-    .. group-tab:: Legacy installation
+    ..  group-tab:: Legacy installation
 
-        .. code-block:: bash
+        ..  code-block:: bash
 
             typo3/sysext/core/bin/typo3 warming:cachewarmup
 
 The following command options are available:
 
-.. confval:: -p|--pages
+..  confval:: -p|--pages
 
     :Required: false
     :type: integer
@@ -50,23 +50,23 @@ The following command options are available:
 
     Example:
 
-    .. tabs::
+    ..  tabs::
 
-        .. group-tab:: Composer-based installation
+        ..  group-tab:: Composer-based installation
 
-            .. code-block:: bash
+            ..  code-block:: bash
 
                 vendor/bin/typo3 warming:cachewarmup -p 1 -p 2 -p 3
                 vendor/bin/typo3 warming:cachewarmup -p 1,2,3
 
-       .. group-tab:: Legacy installation
+        ..  group-tab:: Legacy installation
 
-            .. code-block:: bash
+            ..  code-block:: bash
 
                 typo3/sysext/core/bin/typo3 warming:cachewarmup -p 1 -p 2 -p 3
                 typo3/sysext/core/bin/typo3 warming:cachewarmup -p 1,2,3
 
-.. confval:: -s|--sites
+..  confval:: -s|--sites
 
     :Required: false
     :type: integer or string (site identifier)
@@ -79,23 +79,23 @@ The following command options are available:
 
     Example:
 
-    .. tabs::
+    ..  tabs::
 
-        .. group-tab:: Composer-based installation
+        ..  group-tab:: Composer-based installation
 
-            .. code-block:: bash
+            ..  code-block:: bash
 
                 vendor/bin/typo3 warming:cachewarmup -s my-cool-site
                 vendor/bin/typo3 warming:cachewarmup -s 1
 
-        .. group-tab:: Legacy installation
+        ..  group-tab:: Legacy installation
 
-            .. code-block:: bash
+            ..  code-block:: bash
 
                 typo3/sysext/core/bin/typo3 warming:cachewarmup -s my-cool-site
                 typo3/sysext/core/bin/typo3 warming:cachewarmup -s 1
 
-.. confval:: -l|--languages
+..  confval:: -l|--languages
 
     :Required: false
     :type: integer
@@ -108,23 +108,23 @@ The following command options are available:
 
     Example:
 
-    .. tabs::
+    ..  tabs::
 
-        .. group-tab:: Composer-based installation
+        ..  group-tab:: Composer-based installation
 
-            .. code-block:: bash
+            ..  code-block:: bash
 
                 vendor/bin/typo3 warming:cachewarmup -l 0 -l 1
                 vendor/bin/typo3 warming:cachewarmup -l 0,1
 
-        .. group-tab:: Legacy installation
+        ..  group-tab:: Legacy installation
 
-            .. code-block:: bash
+            ..  code-block:: bash
 
                 typo3/sysext/core/bin/typo3 warming:cachewarmup -l 0 -l 1
                 typo3/sysext/core/bin/typo3 warming:cachewarmup -l 0,1
 
-.. confval:: --limit
+..  confval:: --limit
 
     :Required: false
     :type: integer
@@ -136,7 +136,7 @@ The following command options are available:
     from :ref:`extension configuration <extension-configuration>` is
     used.
 
-.. confval:: -x|--strict
+..  confval:: -x|--strict
 
     :Required: false
     :type: boolean
@@ -146,7 +146,7 @@ The following command options are available:
     Exit with a non-zero status code in case cache warmup fails or
     errors occur during cache warmup.
 
-.. _warming-showuseragent:
+..  _warming-showuseragent:
 
 `warming:showuseragent`
 =======================
@@ -154,20 +154,20 @@ The following command options are available:
 A command that shows the custom `User-Agent` header that is used for
 cache warmup requests by default crawlers.
 
-.. note::
+..  note::
 
     This command is not :ref:`schedulable <t3coreapi:schedulable>`.
 
-.. tabs::
+..  tabs::
 
-    .. group-tab:: Composer-based installation
+    ..  group-tab:: Composer-based installation
 
-        .. code-block:: bash
+        ..  code-block:: bash
 
             vendor/bin/typo3 warming:showuseragent
 
-    .. group-tab:: Legacy installation
+    ..  group-tab:: Legacy installation
 
-        .. code-block:: bash
+        ..  code-block:: bash
 
             typo3/sysext/core/bin/typo3 warming:showuseragent

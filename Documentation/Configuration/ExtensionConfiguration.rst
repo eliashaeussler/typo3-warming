@@ -1,6 +1,6 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _extension-configuration:
+..  _extension-configuration:
 
 =======================
 Extension configuration
@@ -8,37 +8,37 @@ Extension configuration
 
 The extension currently provides the following configuration options:
 
-.. _extconf-limit:
+..  _extconf-limit:
 
-.. confval:: limit
+..  confval:: limit
 
     :type: integer
     :Default: 250
 
     Allows to limit the amount of crawled pages in one iteration.
 
-    .. tip::
+    ..  tip::
 
         Can be set to :typoscript:`0` to crawl all available pages in
         XML sitemaps.
 
-.. _extconf-crawler:
+..  _extconf-crawler:
 
-.. confval:: crawler
+..  confval:: crawler
 
     :type: string (FQCN)
     :Default: :php:class:`EliasHaeussler\\Typo3Warming\\Crawler\\ConcurrentUserAgentCrawler`
 
     Default crawler to be used for crawling the requested pages.
 
-    .. note::
+    ..  note::
 
         Custom crawlers must implement
         :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\CrawlerInterface`.
 
-.. _extconf-crawlerOptions:
+..  _extconf-crawlerOptions:
 
-.. confval:: crawlerOptions
+..  confval:: crawlerOptions
 
     :type: string (JSON)
 
@@ -47,23 +47,23 @@ The extension currently provides the following configuration options:
     :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\ConfigurableCrawlerInterface`.
     For more information read :ref:`configurable-crawlers`.
 
-.. _extconf-verboseCrawler:
+..  _extconf-verboseCrawler:
 
-.. confval:: verboseCrawler
+..  confval:: verboseCrawler
 
     :type: string (FQCN)
     :Default: :php:class:`EliasHaeussler\\Typo3Warming\\Crawler\\OutputtingUserAgentCrawler`
 
     Verbose crawler to be used for cache warmup from the command-line.
 
-    .. note::
+    ..  note::
 
         Custom verbose crawlers must implement
         :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\VerboseCrawlerInterface`.
 
-.. _extconf-verboseCrawlerOptions:
+..  _extconf-verboseCrawlerOptions:
 
-.. confval:: verboseCrawlerOptions
+..  confval:: verboseCrawlerOptions
 
     :type: string (JSON)
 
@@ -72,9 +72,9 @@ The extension currently provides the following configuration options:
     :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\ConfigurableCrawlerInterface`.
     For more information read :ref:`configurable-crawlers`.
 
-.. _extconf-supportedDoktypes:
+..  _extconf-supportedDoktypes:
 
-.. confval:: supportedDoktypes
+..  confval:: supportedDoktypes
 
     :type: string (comma-separated list)
     :Default: 1
