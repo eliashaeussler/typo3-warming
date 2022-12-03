@@ -1,17 +1,17 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _start:
+..  _start:
 
 =============================================
 Cache warmup of pages located in XML sitemaps
 =============================================
 
-.. rst-class:: horizbuttons-tip-m
+..  rst-class:: horizbuttons-tip-m
 
-- :ref:`console-commands`
-- :ref:`backend-toolbar`
-- :ref:`using-the-api`
-- :ref:`Custom crawlers <implement-a-custom-crawler>`
+-   :ref:`console-commands`
+-   :ref:`backend-toolbar`
+-   :ref:`using-the-api`
+-   :ref:`Custom crawlers <implement-a-custom-crawler>`
 
 :Extension key:
     `warming <https://extensions.typo3.org/extension/warming>`__
@@ -43,7 +43,7 @@ command. It supports multiple languages and custom crawler implementations.
 
 **Table of Contents**
 
-.. toctree::
+..  toctree::
     :maxdepth: 3
 
     Introduction/Index
@@ -53,7 +53,7 @@ command. It supports multiple languages and custom crawler implementations.
     DeveloperCorner/Index
     Contributing/Index
 
-.. toctree::
+..  toctree::
     :hidden:
 
     Sitemap

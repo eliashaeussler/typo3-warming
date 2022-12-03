@@ -1,6 +1,6 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _access-utility:
+..  _access-utility:
 
 ===============
 `AccessUtility`
@@ -30,8 +30,8 @@ caches of specific sites or pages.
         :param TYPO3\\CMS\\Core\\Site\\Entity\\Site $site: The site to be checked.
         :param int $languageId: Optional language ID to be included in the check.
 
-.. seealso::
+..  seealso::
 
     View the sources on GitHub:
 
-    - `AccessUtility <https://github.com/eliashaeussler/typo3-warming/blob/main/Classes/Utility/AccessUtility.php>`__
+    -   `AccessUtility <https://github.com/eliashaeussler/typo3-warming/blob/main/Classes/Utility/AccessUtility.php>`__

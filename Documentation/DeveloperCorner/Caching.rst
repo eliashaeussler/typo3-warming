@@ -1,6 +1,6 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _caching:
+..  _caching:
 
 =======
 Caching
@@ -32,8 +32,8 @@ to a filesystem cached located at :file:`var/cache/code/core/tx_warming.php`.
 
         :param EliasHaeussler\\Typo3Warming\\Sitemap\\SiteAwareSitemap $sitemap: The located sitemap to be cached.
 
-.. seealso::
+..  seealso::
 
     View the sources on GitHub:
 
-    - `CacheManager <https://github.com/eliashaeussler/typo3-warming/blob/main/Classes/Cache/CacheManager.php>`__
+    -   `CacheManager <https://github.com/eliashaeussler/typo3-warming/blob/main/Classes/Cache/CacheManager.php>`__

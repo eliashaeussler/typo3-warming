@@ -1,6 +1,6 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _contributing:
+..  _contributing:
 
 ============
 Contributing
@@ -16,7 +16,7 @@ To ensure the stability and cleanliness of the code, various code
 quality tools are used and most components are covered with test
 cases.
 
-.. _create-an-issue-first:
+..  _create-an-issue-first:
 
 Create an issue first
 =====================
@@ -27,53 +27,53 @@ GitHub: https://github.com/eliashaeussler/typo3-warming/issues
 Also, please check if there is already an issue on the topic you want
 to address.
 
-.. _contribution-workflow:
+..  _contribution-workflow:
 
 Contribution workflow
 =====================
 
-.. note::
+..  note::
 
     This extension follows `Semantic Versioning <https://semver.org/>`__.
 
-.. _preparation:
+..  _preparation:
 
 Preparation
 -----------
 
 Clone the repository first:
 
-.. code-block:: bash
+..  code-block:: bash
 
     git clone https://github.com/eliashaeussler/typo3-warming.git
     cd typo3-warming
 
 Now install all Composer dependencies:
 
-.. code-block:: bash
+..  code-block:: bash
 
     composer install
 
 Next, install all Node dependencies:
 
-.. code-block:: bash
+..  code-block:: bash
 
     yarn --cwd Resources/Private/Frontend
 
-.. _check-code-quality:
+..  _check-code-quality:
 
 Check code quality
 ------------------
 
-.. image:: https://github.com/eliashaeussler/typo3-warming/actions/workflows/cgl.yaml/badge.svg
+..  image:: https://github.com/eliashaeussler/typo3-warming/actions/workflows/cgl.yaml/badge.svg
     :target: https://github.com/eliashaeussler/typo3-warming/actions/workflows/cgl.yaml
 
-.. _cgl-typo3:
+..  _cgl-typo3:
 
 TYPO3
 ~~~~~
 
-.. code-block:: bash
+..  code-block:: bash
 
     # Run all linters
     composer lint
@@ -90,12 +90,12 @@ TYPO3
     # Run PHP static code analysis
     composer sca
 
-.. _cgl-frontend:
+..  _cgl-frontend:
 
 Frontend
 ~~~~~~~~
 
-.. code-block:: bash
+..  code-block:: bash
 
     # Run all linters
     yarn --cwd Resources/Private/Frontend lint
@@ -109,20 +109,20 @@ Frontend
     yarn --cwd Resources/Private/Frontend lint:ts
     yarn --cwd Resources/Private/Frontend lint:ts:fix
 
-.. _run-tests:
+..  _run-tests:
 
 Run tests
 ---------
 
-.. image:: https://github.com/eliashaeussler/typo3-warming/actions/workflows/tests.yaml/badge.svg
+..  image:: https://github.com/eliashaeussler/typo3-warming/actions/workflows/tests.yaml/badge.svg
     :target: https://github.com/eliashaeussler/typo3-warming/actions/workflows/tests.yaml
 
-.. image:: https://codecov.io/gh/eliashaeussler/typo3-warming/branch/main/graph/badge.svg?token=7M3UXACCKA
+..  image:: https://codecov.io/gh/eliashaeussler/typo3-warming/branch/main/graph/badge.svg?token=7M3UXACCKA
     :target: https://codecov.io/gh/eliashaeussler/typo3-warming
 
-.. rst-class:: mt-3
+..  rst-class:: mt-3
 
-.. code-block:: bash
+..  code-block:: bash
 
     # Run tests
     composer test
@@ -132,12 +132,12 @@ Run tests
 
 The code coverage reports will be stored in :file:`.Build/log/coverage`.
 
-.. _build-documentation:
+..  _build-documentation:
 
 Build documentation
 -------------------
 
-.. code-block:: bash
+..  code-block:: bash
 
     # Rebuild and open documentation
     composer docs
@@ -150,7 +150,7 @@ Build documentation
 
 The built docs will be stored in :file:`.Build/docs`.
 
-.. _pull-request:
+..  _pull-request:
 
 Pull Request
 ------------

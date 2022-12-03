@@ -1,6 +1,6 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _sitemap-providers:
+..  _sitemap-providers:
 
 =================
 Sitemap providers
@@ -33,21 +33,21 @@ priority) to localize XML sitemaps according to certain criteria.
 
         :returntype: int
 
-.. _default-providers:
+..  _default-providers:
 
 Default providers
 =================
 
 By default, the path to an XML sitemap is determined in three steps:
 
-.. rst-class:: bignums
+..  rst-class:: bignums
 
 1.  Site configuration
 
     Within the Sites module, one can explicitly define the path to
     the XML sitemap of a site.
 
-    .. image:: ../Images/site-configuration.png
+    ..  image:: ../Images/site-configuration.png
         :alt: Configuration of XML sitemap path within the Sites module
 
 2.  `robots.txt`
@@ -56,12 +56,12 @@ By default, the path to an XML sitemap is determined in three steps:
     `robots.txt` file is parsed for a valid `Sitemap` specification.
     Read more at `sitemaps.org <https://www.sitemaps.org/protocol.html#submit_robots>`__.
 
-    .. note::
+    ..  note::
         Only the first occurrence will be respected. In the following
         example, the resulting sitemap is
         `https://www.example.com/our-sitemap.xml`.
 
-        .. code-block:: none
+        ..  code-block:: none
             :emphasize-lines: 3
 
             User-agent: *
@@ -74,7 +74,7 @@ By default, the path to an XML sitemap is determined in three steps:
     If none of the above methods are successful, the default path
     `sitemap.xml` is used.
 
-.. _implement-a-custom-provider:
+..  _implement-a-custom-provider:
 
 Implement a custom provider
 ===========================
@@ -99,10 +99,10 @@ The order of the providers provided by default is as follows:
 Once your custom provider is ready, make sure to clear the DI
 caches in order to rebuild the service container properly.
 
-.. seealso::
+..  seealso::
     View the sources on GitHub:
 
-    - `ProviderInterface <https://github.com/eliashaeussler/typo3-warming/blob/main/Classes/Sitemap/Provider/ProviderInterface.php>`__
-    - `SiteProvider <https://github.com/eliashaeussler/typo3-warming/blob/main/Classes/Sitemap/Provider/SiteProvider.php>`__
-    - `RobotsTxtProvider <https://github.com/eliashaeussler/typo3-warming/blob/main/Classes/Sitemap/Provider/RobotsTxtProvider.php>`__
-    - `DefaultProvider <https://github.com/eliashaeussler/typo3-warming/blob/main/Classes/Sitemap/Provider/DefaultProvider.php>`__
+    -   `ProviderInterface <https://github.com/eliashaeussler/typo3-warming/blob/main/Classes/Sitemap/Provider/ProviderInterface.php>`__
+    -   `SiteProvider <https://github.com/eliashaeussler/typo3-warming/blob/main/Classes/Sitemap/Provider/SiteProvider.php>`__
+    -   `RobotsTxtProvider <https://github.com/eliashaeussler/typo3-warming/blob/main/Classes/Sitemap/Provider/RobotsTxtProvider.php>`__
+    -   `DefaultProvider <https://github.com/eliashaeussler/typo3-warming/blob/main/Classes/Sitemap/Provider/DefaultProvider.php>`__

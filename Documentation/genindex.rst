@@ -1,7 +1,7 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 =====
 Index
 =====
 
-.. Sphinx will insert here the general index automatically.
+..  Sphinx will insert here the general index automatically.

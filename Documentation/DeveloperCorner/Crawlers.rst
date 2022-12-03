@@ -1,6 +1,6 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _crawlers:
+..  _crawlers:
 
 ========
 Crawlers
@@ -35,7 +35,7 @@ implement a custom crawler on this page.
 
         :returns: A list of :php:class:`EliasHaeussler\\CacheWarmup\\CrawlingState` instances
 
-.. _default-crawlers:
+..  _default-crawlers:
 
 Default crawlers
 ================
@@ -58,12 +58,12 @@ toolbar item in the backend. Alternatively, a command
 `warming:showuseragent` is available which can be used to read the
 current `User-Agent` header.
 
-.. _implement-a-custom-crawler:
+..  _implement-a-custom-crawler:
 
 Implement a custom crawler
 ==========================
 
-.. _available-interfaces:
+..  _available-interfaces:
 
 Available interfaces
 --------------------
@@ -78,7 +78,7 @@ also a
 that redirects user-oriented output to an instance of
 :php:interface:`Symfony\\Component\\Console\\Output\\OutputInterface`.
 
-.. _configurable-crawlers:
+..  _configurable-crawlers:
 
 Configurable crawlers
 ---------------------
@@ -88,33 +88,33 @@ crawlers can also implement the
 :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\ConfigurableCrawlerInterface`,
 allowing users to configure warmup requests themselves.
 
-.. seealso::
+..  seealso::
 
     `Feature #59 - Introduce configurable crawlers <https://github.com/eliashaeussler/cache-warmup/pull/59>`__
     of `eliashaeussler/cache-warmup` library
 
-.. _steps-to-implement-a-new-crawler:
+..  _steps-to-implement-a-new-crawler:
 
 Steps to implement a new crawler
 --------------------------------
 
-.. rst-class:: bignums
+..  rst-class:: bignums
 
 1.  Create a new crawler
 
     The new crawler must implement one of the following interfaces:
 
-    - :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\CrawlerInterface`
-    - :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\VerboseCrawlerInterface`
-    - :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\ConfigurableCrawlerInterface`
+    -   :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\CrawlerInterface`
+    -   :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\VerboseCrawlerInterface`
+    -   :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\ConfigurableCrawlerInterface`
 
-    .. tip::
+    ..  tip::
 
         This extension provides some additional traits which you can
         use for your new crawler:
 
-        - :php:trait:`EliasHaeussler\\Typo3Warming\\Crawler\\RequestAwareTrait`
-        - :php:trait:`EliasHaeussler\\Typo3Warming\\Crawler\\UseAgentTrait`
+        -   :php:trait:`EliasHaeussler\\Typo3Warming\\Crawler\\RequestAwareTrait`
+        -   :php:trait:`EliasHaeussler\\Typo3Warming\\Crawler\\UseAgentTrait`
 
 2.  Configure the new crawler
 
