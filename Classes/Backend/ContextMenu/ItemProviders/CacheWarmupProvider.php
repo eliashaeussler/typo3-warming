@@ -160,7 +160,7 @@ class CacheWarmupProvider extends PageProvider
 
     public function getPriority(): int
     {
-        return 50;
+        return 45;
     }
 
     protected function initSubMenus(): void
