@@ -48,20 +48,9 @@ final class ConcurrentUserAgentCrawlerTest extends FunctionalTestCase
         'typo3conf/ext/warming',
     ];
 
-    /**
-     * @var MockHandler
-     */
-    protected $mockHandler;
-
-    /**
-     * @var ConcurrentUserAgentCrawler
-     */
-    protected $subject;
-
-    /**
-     * @var Configuration
-     */
-    protected $configuration;
+    protected MockHandler $mockHandler;
+    protected ConcurrentUserAgentCrawler $subject;
+    protected Configuration $configuration;
 
     protected function setUp(): void
     {

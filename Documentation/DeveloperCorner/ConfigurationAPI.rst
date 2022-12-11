@@ -1,6 +1,6 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _configuration-api:
+..  _configuration-api:
 
 =================
 Configuration API
@@ -58,8 +58,8 @@ an appropriate class method.
 
         :returntype: array
 
-.. seealso::
+..  seealso::
 
     View the sources on GitHub:
 
-    - `Configuration <https://github.com/eliashaeussler/typo3-warming/blob/main/Classes/Configuration/Configuration.php>`__
+    -   `Configuration <https://github.com/eliashaeussler/typo3-warming/blob/main/Classes/Configuration/Configuration.php>`__

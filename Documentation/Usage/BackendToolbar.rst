@@ -1,12 +1,12 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _backend-toolbar:
+..  _backend-toolbar:
 
 ===============
 Backend toolbar
 ===============
 
-.. note::
+..  note::
 
     The toolbar item is only visible for admins and permitted users.
     Read how to give non-admin users access to the toolbar item at
@@ -17,10 +17,10 @@ backend should appear. You can click on the toolbar item to get a list
 of all sites. If a site does not provide an XML sitemap, it cannot be
 used to warm up caches.
 
-.. image:: ../Images/toolbar-item.png
+..  image:: ../Images/toolbar-item.png
     :alt: Cache warmup toolbar item within the TYPO3 backend
 
-.. tip::
+..  tip::
 
     The toolbar item additionally outputs information about the
     `User-Agent` header used during the cache warmup. By clicking on

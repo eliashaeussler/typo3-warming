@@ -41,10 +41,7 @@ final class ShowUserAgentCommandTest extends FunctionalTestCase
         'typo3conf/ext/warming',
     ];
 
-    /**
-     * @var CommandTester
-     */
-    protected $commandTester;
+    protected CommandTester $commandTester;
 
     protected function setUp(): void
     {

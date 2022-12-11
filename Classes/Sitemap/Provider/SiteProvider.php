@@ -33,7 +33,7 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class SiteProvider extends AbstractProvider
+final class SiteProvider extends AbstractProvider
 {
     public function get(Site $site, SiteLanguage $siteLanguage = null): ?SiteAwareSitemap
     {

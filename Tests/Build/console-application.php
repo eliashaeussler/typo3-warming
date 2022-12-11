@@ -22,6 +22,7 @@ declare(strict_types=1);
  */
 
 use Composer\Autoload\ClassLoader;
+use EliasHaeussler\Typo3Warming\Command\ShowUserAgentCommand;
 use EliasHaeussler\Typo3Warming\Command\WarmupCommand;
 use Symfony\Component\Console\Application;
 use TYPO3\CMS\Core\Core\Bootstrap;
@@ -42,6 +43,7 @@ stream_wrapper_restore('phar');
 
 // Initialize application and add command
 $application = new Application();
+$application->add($container->get(ShowUserAgentCommand::class));
 $application->add($container->get(WarmupCommand::class));
 
 return $application;

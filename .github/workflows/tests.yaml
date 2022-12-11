@@ -15,15 +15,13 @@ jobs:
       fail-fast: false
       matrix:
         typo3-version: ["10.4", "11.5"]
-        php-version: ["7.3", "7.4", "8.0", "8.1"]
+        php-version: ["7.4", "8.0", "8.1"]
         dependencies: ["highest", "lowest"]
         exclude:
           - typo3-version: "10.4"
             php-version: "8.0"
           - typo3-version: "10.4"
             php-version: "8.1"
-          - typo3-version: "11.5"
-            php-version: "7.3"
     steps:
       - uses: actions/checkout@v3
         with:
@@ -109,6 +107,7 @@ jobs:
       - name: codecov report
         uses: codecov/codecov-action@v3
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           directory: .Build/log/coverage
           fail_ci_if_error: true
           verbose: true

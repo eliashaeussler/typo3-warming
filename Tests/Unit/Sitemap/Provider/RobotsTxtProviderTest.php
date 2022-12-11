@@ -40,20 +40,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class RobotsTxtProviderTest extends UnitTestCase
 {
-    /**
-     * @var DummyRequestFactory
-     */
-    protected $requestFactory;
-
-    /**
-     * @var Site
-     */
-    protected $site;
-
-    /**
-     * @var RobotsTxtProvider
-     */
-    protected $subject;
+    protected DummyRequestFactory $requestFactory;
+    protected Site $site;
+    protected RobotsTxtProvider $subject;
 
     protected function setUp(): void
     {

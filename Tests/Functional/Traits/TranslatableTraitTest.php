@@ -39,10 +39,7 @@ final class TranslatableTraitTest extends FunctionalTestCase
         'typo3conf/ext/warming',
     ];
 
-    /**
-     * @var TranslatableTraitTestClass
-     */
-    protected $subject;
+    protected TranslatableTraitTestClass $subject;
 
     protected function setUp(): void
     {

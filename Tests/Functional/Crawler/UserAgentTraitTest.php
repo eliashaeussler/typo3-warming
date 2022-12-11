@@ -41,10 +41,7 @@ final class UserAgentTraitTest extends FunctionalTestCase
         'typo3conf/ext/warming',
     ];
 
-    /**
-     * @var UserAgentTraitTestClass
-     */
-    protected $subject;
+    protected UserAgentTraitTestClass $subject;
 
     protected function setUp(): void
     {

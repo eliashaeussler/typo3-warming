@@ -1,6 +1,6 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _configuration:
+..  _configuration:
 
 =============
 Configuration
@@ -13,7 +13,7 @@ your own crawler implementations.
 
 Learn what configuration options are available on the following pages:
 
-.. toctree::
+..  toctree::
     :maxdepth: 3
 
     ExtensionConfiguration

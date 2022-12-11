@@ -49,25 +49,10 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 final class SitemapLocatorTest extends FunctionalTestCase
 {
-    /**
-     * @var DummyRequestFactory
-     */
-    protected $requestFactory;
-
-    /**
-     * @var PhpFrontend
-     */
-    protected $cache;
-
-    /**
-     * @var CacheManager
-     */
-    protected $cacheManager;
-
-    /**
-     * @var SitemapLocator
-     */
-    protected $subject;
+    protected DummyRequestFactory $requestFactory;
+    protected PhpFrontend $cache;
+    protected CacheManager $cacheManager;
+    protected SitemapLocator $subject;
 
     protected function setUp(): void
     {

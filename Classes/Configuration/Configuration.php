@@ -27,7 +27,11 @@ use EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface;
 use EliasHaeussler\CacheWarmup\Crawler\VerboseCrawlerInterface;
 use EliasHaeussler\Typo3Warming\Crawler\ConcurrentUserAgentCrawler;
 use EliasHaeussler\Typo3Warming\Crawler\OutputtingUserAgentCrawler;
+use JsonException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 
 /**
@@ -41,21 +45,13 @@ final class Configuration
     public const DEFAULT_LIMIT = 250;
     public const DEFAULT_CRAWLER = ConcurrentUserAgentCrawler::class;
     public const DEFAULT_VERBOSE_CRAWLER = OutputtingUserAgentCrawler::class;
+    public const DEFAULT_SUPPORTED_DOKTYPES = [
+        PageRepository::DOKTYPE_DEFAULT,
+    ];
 
-    /**
-     * @var ExtensionConfiguration
-     */
-    private $configuration;
-
-    /**
-     * @var HashService
-     */
-    private $hashService;
-
-    /**
-     * @var string
-     */
-    private $userAgent;
+    private ExtensionConfiguration $configuration;
+    private HashService $hashService;
+    private string $userAgent;
 
     public function __construct(ExtensionConfiguration $configuration, HashService $hashService)
     {
@@ -133,6 +129,24 @@ final class Configuration
         return $this->parseCrawlerOptions($json);
     }
 
+    /**
+     * @return list<int>
+     */
+    public function getSupportedDoktypes(): array
+    {
+        try {
+            $doktypes = $this->configuration->get(Extension::KEY, 'supportedDoktypes');
+
+            if (!\is_string($doktypes)) {
+                return self::DEFAULT_SUPPORTED_DOKTYPES;
+            }
+
+            return GeneralUtility::intExplode(',', $doktypes, true);
+        } catch (Exception $e) {
+            return self::DEFAULT_SUPPORTED_DOKTYPES;
+        }
+    }
+
     public function getUserAgent(): string
     {
         return $this->userAgent;
@@ -159,7 +173,11 @@ final class Configuration
             return [];
         }
 
-        $crawlerOptions = json_decode($json, true);
+        try {
+            $crawlerOptions = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
+        } catch (JsonException $e) {
+            return [];
+        }
 
         if (!\is_array($crawlerOptions)) {
             return [];

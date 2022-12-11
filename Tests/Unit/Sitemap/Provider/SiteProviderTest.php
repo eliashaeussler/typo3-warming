@@ -38,10 +38,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class SiteProviderTest extends UnitTestCase
 {
-    /**
-     * @var SiteProvider
-     */
-    protected $subject;
+    protected SiteProvider $subject;
 
     protected function setUp(): void
     {

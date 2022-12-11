@@ -37,10 +37,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class DefaultProviderTest extends UnitTestCase
 {
-    /**
-     * @var DefaultProvider
-     */
-    protected $subject;
+    protected DefaultProvider $subject;
 
     protected function setUp(): void
     {

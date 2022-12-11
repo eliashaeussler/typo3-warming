@@ -46,25 +46,15 @@ final class ConfigurationTest extends FunctionalTestCase
         'typo3conf/ext/warming',
     ];
 
-    /**
-     * @var string
-     */
-    protected $backedUpEncryptionKey;
+    protected string $backedUpEncryptionKey;
 
     /**
      * @var array<string, mixed>
      */
     protected $backedUpExtensionConfiguration;
 
-    /**
-     * @var ExtensionConfiguration
-     */
-    protected $extensionConfiguration;
-
-    /**
-     * @var Configuration
-     */
-    protected $subject;
+    protected ExtensionConfiguration $extensionConfiguration;
+    protected Configuration $subject;
 
     protected function setUp(): void
     {
@@ -282,6 +272,7 @@ final class ConfigurationTest extends FunctionalTestCase
             'crawler' => 'foo',
             'crawlerOptions' => '{"foo":"baz"}',
             'limit' => 'baz',
+            'supportedDoktypes' => '1',
             'verboseCrawler' => 'hello',
             'verboseCrawlerOptions' => '{"foo":"baz"}',
         ];

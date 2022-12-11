@@ -36,10 +36,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 final class ViewTraitTest extends FunctionalTestCase
 {
-    /**
-     * @var ViewTraitTestClass
-     */
-    protected $subject;
+    protected ViewTraitTestClass $subject;
 
     protected function setUp(): void
     {

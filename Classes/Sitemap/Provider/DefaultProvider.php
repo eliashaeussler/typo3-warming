@@ -33,7 +33,7 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class DefaultProvider extends AbstractProvider
+final class DefaultProvider extends AbstractProvider
 {
     public const DEFAULT_PATH = 'sitemap.xml';
 
@@ -51,6 +51,6 @@ class DefaultProvider extends AbstractProvider
      */
     public static function getPriority(): int
     {
-        return -PHP_INT_MAX;
+        return PHP_INT_MIN;
     }
 }

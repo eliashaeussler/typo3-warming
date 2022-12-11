@@ -35,10 +35,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 final class AccessUtilityTest extends FunctionalTestCase
 {
-    /**
-     * @var Site
-     */
-    protected $site;
+    protected Site $site;
 
     protected function setUp(): void
     {

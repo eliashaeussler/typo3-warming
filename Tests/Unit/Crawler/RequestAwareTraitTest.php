@@ -37,15 +37,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class RequestAwareTraitTest extends UnitTestCase
 {
-    /**
-     * @var RequestAwareTraitTestClass
-     */
-    protected $subject;
-
-    /**
-     * @var WarmupRequest
-     */
-    protected $warmupRequest;
+    protected RequestAwareTraitTestClass $subject;
+    protected WarmupRequest $warmupRequest;
 
     protected function setUp(): void
     {

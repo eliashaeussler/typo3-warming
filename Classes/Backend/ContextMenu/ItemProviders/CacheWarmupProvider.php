@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Backend\ContextMenu\ItemProviders;
 
+use EliasHaeussler\Typo3Warming\Configuration\Configuration;
 use EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator;
 use EliasHaeussler\Typo3Warming\Traits\BackendUserAuthenticationTrait;
 use EliasHaeussler\Typo3Warming\Utility\AccessUtility;
@@ -39,7 +40,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class CacheWarmupProvider extends PageProvider
+final class CacheWarmupProvider extends PageProvider
 {
     use BackendUserAuthenticationTrait;
 
@@ -79,21 +80,16 @@ class CacheWarmupProvider extends PageProvider
         ],
     ];
 
-    /**
-     * @var SitemapLocator
-     */
-    protected $sitemapLocator;
-
-    /**
-     * @var SiteFinder
-     */
-    protected $siteFinder;
+    private SitemapLocator $sitemapLocator;
+    private SiteFinder $siteFinder;
+    private Configuration $configuration;
 
     public function __construct(string $table, string $identifier, string $context = '')
     {
         parent::__construct($table, $identifier, $context);
         $this->sitemapLocator = GeneralUtility::makeInstance(SitemapLocator::class);
         $this->siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+        $this->configuration = GeneralUtility::makeInstance(Configuration::class);
     }
 
     protected function canRender(string $itemName, string $type): bool
@@ -101,6 +97,12 @@ class CacheWarmupProvider extends PageProvider
         // Pseudo items (such as dividers) are always renderable
         if ($type !== 'item') {
             return true;
+        }
+
+        // Non-supported doktypes are never renderable
+        $doktype = (int)($this->record['doktype'] ?? null);
+        if ($doktype <= 0 || !\in_array($doktype, $this->configuration->getSupportedDoktypes(), true)) {
+            return false;
         }
 
         // Language items in sub-menus are already filtered
@@ -131,20 +133,26 @@ class CacheWarmupProvider extends PageProvider
      */
     public function addItems(array $items): array
     {
-        $this->initDisabledItems();
-        $this->initSubMenus();
+        $this->initialize();
+
         $localItems = $this->prepareItems($this->itemsConfiguration);
         $items += $localItems;
 
         return $items;
     }
 
-    public function getPriority(): int
+    protected function initialize(): void
     {
-        return 50;
+        parent::initialize();
+        $this->initSubMenus();
     }
 
-    protected function initSubMenus(): void
+    public function getPriority(): int
+    {
+        return 45;
+    }
+
+    private function initSubMenus(): void
     {
         $site = $this->getCurrentSite();
 
@@ -166,13 +174,18 @@ class CacheWarmupProvider extends PageProvider
 
             // Remove sites where no XML sitemap is available
             if ($itemName === self::ITEM_MODE_SITE) {
-                $languages = array_filter($languages, function (SiteLanguage $siteLanguage): bool {
-                    return $this->canWarmupCachesOfSite($siteLanguage);
-                });
+                $languages = array_filter(
+                    $languages,
+                    fn (SiteLanguage $siteLanguage): bool => $this->canWarmupCachesOfSite($siteLanguage)
+                );
             } else {
-                $languages = array_filter($languages, function (SiteLanguage $siteLanguage): bool {
-                    return AccessUtility::canWarmupCacheOfPage((int)$this->identifier, $siteLanguage->getLanguageId());
-                });
+                $languages = array_filter(
+                    $languages,
+                    fn (SiteLanguage $siteLanguage): bool => AccessUtility::canWarmupCacheOfPage(
+                        (int)$this->identifier,
+                        $siteLanguage->getLanguageId()
+                    )
+                );
             }
 
             // Ignore item if no languages are available
@@ -217,7 +230,7 @@ class CacheWarmupProvider extends PageProvider
         return $attributes;
     }
 
-    protected function canWarmupCachesOfSite(SiteLanguage $siteLanguage = null): bool
+    private function canWarmupCachesOfSite(SiteLanguage $siteLanguage = null): bool
     {
         $site = $this->getCurrentSite();
         $languageId = $siteLanguage !== null ? $siteLanguage->getLanguageId() : null;
@@ -228,7 +241,7 @@ class CacheWarmupProvider extends PageProvider
             && $this->sitemapLocator->siteContainsSitemap($site, $siteLanguage);
     }
 
-    protected function getCurrentSite(): ?Site
+    private function getCurrentSite(): ?Site
     {
         try {
             return $this->siteFinder->getSiteByPageId((int)$this->identifier);

@@ -1,6 +1,6 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _permissions:
+..  _permissions:
 
 ===========
 Permissions
@@ -15,7 +15,7 @@ However, you can use User TSconfig to allow cache warmup for
 specific users/usergroups and sites/pages. Add the following
 configuration to the :typoscript:`options.cacheWarmup` User TSconfig:
 
-.. confval:: allowedSites
+..  confval:: allowedSites
 
     :Path: :typoscript:`options.cacheWarmup.allowedSites`
     :type: string (comma-separated list)
@@ -25,11 +25,11 @@ configuration to the :typoscript:`options.cacheWarmup` User TSconfig:
 
     Example:
 
-    .. code-block:: typoscript
+    ..  code-block:: typoscript
 
         options.cacheWarmup.allowedSites = my-dummy-site,another-dummy-site
 
-.. confval:: allowedPages
+..  confval:: allowedPages
 
     :Path: :typoscript:`options.cacheWarmup.allowedPages`
     :type: string (comma-separated list)
@@ -39,11 +39,11 @@ configuration to the :typoscript:`options.cacheWarmup` User TSconfig:
 
     Example:
 
-    .. code-block:: typoscript
+    ..  code-block:: typoscript
 
         options.cacheWarmup.allowedPages = 1,2,3
 
-.. seealso::
+..  seealso::
 
     You might also want to check out :ref:`access-utility` for the
     actual implementation of the permission check.

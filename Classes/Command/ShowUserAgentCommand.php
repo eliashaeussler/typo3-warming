@@ -34,17 +34,15 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class ShowUserAgentCommand extends Command
+final class ShowUserAgentCommand extends Command
 {
-    /**
-     * @var Configuration
-     */
-    protected $configuration;
+    private Configuration $configuration;
 
     public function __construct(Configuration $configuration, string $name = null)
     {
-        parent::__construct($name);
         $this->configuration = $configuration;
+
+        parent::__construct($name);
     }
 
     protected function configure(): void

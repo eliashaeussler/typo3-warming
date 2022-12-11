@@ -1,6 +1,6 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _using-the-api:
+..  _using-the-api:
 
 =============
 Using the API
@@ -53,7 +53,7 @@ warmup directly in PHP code.
         :param string|EliasHaeussler\\CacheWarmup\\Crawler\\CrawlerInterface $crawler: The crawler to use for cache warmup.
         :returns: The service object (fluent setter).
 
-.. _api-example:
+..  _api-example:
 
 Example
 =======

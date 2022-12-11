@@ -41,20 +41,9 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 final class CacheManagerTest extends FunctionalTestCase
 {
-    /**
-     * @var PhpFrontend
-     */
-    protected $cache;
-
-    /**
-     * @var CacheManager
-     */
-    protected $subject;
-
-    /**
-     * @var Site
-     */
-    protected $site;
+    protected PhpFrontend $cache;
+    protected CacheManager $subject;
+    protected Site $site;
 
     protected function setUp(): void
     {
