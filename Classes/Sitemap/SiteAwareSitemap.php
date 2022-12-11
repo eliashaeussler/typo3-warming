@@ -36,15 +36,8 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
  */
 class SiteAwareSitemap extends Sitemap
 {
-    /**
-     * @var Site
-     */
-    protected $site;
-
-    /**
-     * @var SiteLanguage|null
-     */
-    protected $siteLanguage;
+    protected Site $site;
+    protected ?SiteLanguage $siteLanguage;
 
     public function __construct(UriInterface $uri, Site $site, SiteLanguage $siteLanguage = null)
     {

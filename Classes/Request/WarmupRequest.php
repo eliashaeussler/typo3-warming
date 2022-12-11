@@ -37,40 +37,25 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class WarmupRequest
 {
-    /**
-     * @var string
-     */
-    protected $id;
+    protected string $id;
 
     /**
      * @var CacheWarmupController::MODE_*
      */
-    protected $mode;
-
-    /**
-     * @var int|null
-     */
-    protected $languageId;
-
-    /**
-     * @var int|null
-     */
-    protected $pageId;
-
-    /**
-     * @var Site|null
-     */
-    protected $site;
+    protected string $mode;
+    protected ?int $languageId;
+    protected ?int $pageId;
+    protected ?Site $site = null;
 
     /**
      * @var UriInterface[]
      */
-    protected $requestedUrls = [];
+    protected array $requestedUrls = [];
 
     /**
      * @var CrawlingState[]
      */
-    protected $crawlingStates = [];
+    protected array $crawlingStates = [];
 
     /**
      * @var callable|null

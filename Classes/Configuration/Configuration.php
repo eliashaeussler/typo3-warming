@@ -27,6 +27,7 @@ use EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface;
 use EliasHaeussler\CacheWarmup\Crawler\VerboseCrawlerInterface;
 use EliasHaeussler\Typo3Warming\Crawler\ConcurrentUserAgentCrawler;
 use EliasHaeussler\Typo3Warming\Crawler\OutputtingUserAgentCrawler;
+use JsonException;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception;
@@ -48,20 +49,9 @@ final class Configuration
         PageRepository::DOKTYPE_DEFAULT,
     ];
 
-    /**
-     * @var ExtensionConfiguration
-     */
-    private $configuration;
-
-    /**
-     * @var HashService
-     */
-    private $hashService;
-
-    /**
-     * @var string
-     */
-    private $userAgent;
+    private ExtensionConfiguration $configuration;
+    private HashService $hashService;
+    private string $userAgent;
 
     public function __construct(ExtensionConfiguration $configuration, HashService $hashService)
     {
@@ -207,7 +197,11 @@ final class Configuration
             return [];
         }
 
-        $crawlerOptions = json_decode($json, true);
+        try {
+            $crawlerOptions = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
+        } catch (JsonException $e) {
+            return [];
+        }
 
         if (!\is_array($crawlerOptions)) {
             return [];

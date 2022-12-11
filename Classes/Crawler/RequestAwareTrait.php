@@ -34,10 +34,7 @@ use EliasHaeussler\Typo3Warming\Request\WarmupRequest;
  */
 trait RequestAwareTrait
 {
-    /**
-     * @var WarmupRequest|null
-     */
-    protected $request;
+    protected ?WarmupRequest $request = null;
 
     public function setRequest(WarmupRequest $request): void
     {

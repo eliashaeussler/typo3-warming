@@ -40,7 +40,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class CacheWarmupProvider extends PageProvider
+final class CacheWarmupProvider extends PageProvider
 {
     use BackendUserAuthenticationTrait;
 
@@ -80,20 +80,9 @@ class CacheWarmupProvider extends PageProvider
         ],
     ];
 
-    /**
-     * @var SitemapLocator
-     */
-    protected $sitemapLocator;
-
-    /**
-     * @var SiteFinder
-     */
-    protected $siteFinder;
-
-    /**
-     * @var Configuration
-     */
-    protected $configuration;
+    private SitemapLocator $sitemapLocator;
+    private SiteFinder $siteFinder;
+    private Configuration $configuration;
 
     public function __construct(string $table, string $identifier, string $context = '')
     {
@@ -163,7 +152,7 @@ class CacheWarmupProvider extends PageProvider
         return 45;
     }
 
-    protected function initSubMenus(): void
+    private function initSubMenus(): void
     {
         $site = $this->getCurrentSite();
 
@@ -185,13 +174,18 @@ class CacheWarmupProvider extends PageProvider
 
             // Remove sites where no XML sitemap is available
             if ($itemName === self::ITEM_MODE_SITE) {
-                $languages = array_filter($languages, function (SiteLanguage $siteLanguage): bool {
-                    return $this->canWarmupCachesOfSite($siteLanguage);
-                });
+                $languages = array_filter(
+                    $languages,
+                    fn (SiteLanguage $siteLanguage): bool => $this->canWarmupCachesOfSite($siteLanguage)
+                );
             } else {
-                $languages = array_filter($languages, function (SiteLanguage $siteLanguage): bool {
-                    return AccessUtility::canWarmupCacheOfPage((int)$this->identifier, $siteLanguage->getLanguageId());
-                });
+                $languages = array_filter(
+                    $languages,
+                    fn (SiteLanguage $siteLanguage): bool => AccessUtility::canWarmupCacheOfPage(
+                        (int)$this->identifier,
+                        $siteLanguage->getLanguageId()
+                    )
+                );
             }
 
             // Ignore item if no languages are available
@@ -236,7 +230,7 @@ class CacheWarmupProvider extends PageProvider
         return $attributes;
     }
 
-    protected function canWarmupCachesOfSite(SiteLanguage $siteLanguage = null): bool
+    private function canWarmupCachesOfSite(SiteLanguage $siteLanguage = null): bool
     {
         $site = $this->getCurrentSite();
         $languageId = $siteLanguage !== null ? $siteLanguage->getLanguageId() : null;
@@ -247,7 +241,7 @@ class CacheWarmupProvider extends PageProvider
             && $this->sitemapLocator->siteContainsSitemap($site, $siteLanguage);
     }
 
-    protected function getCurrentSite(): ?Site
+    private function getCurrentSite(): ?Site
     {
         try {
             return $this->siteFinder->getSiteByPageId((int)$this->identifier);

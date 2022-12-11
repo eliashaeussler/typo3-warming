@@ -45,19 +45,15 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class SitemapLocatorTest extends UnitTestCase
+final class SitemapLocatorTest extends UnitTestCase
 {
     use ProphecyTrait;
 
     /**
      * @var ObjectProphecy|CacheManager
      */
-    protected $cacheManagerProphecy;
-
-    /**
-     * @var SitemapLocator
-     */
-    protected $subject;
+    protected ObjectProphecy $cacheManagerProphecy;
+    protected SitemapLocator $subject;
 
     protected function setUp(): void
     {

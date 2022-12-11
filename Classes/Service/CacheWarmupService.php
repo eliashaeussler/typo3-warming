@@ -46,29 +46,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class CacheWarmupService implements LoggerAwareInterface
+final class CacheWarmupService implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var SiteFinder
-     */
-    protected $siteFinder;
-
-    /**
-     * @var SitemapLocator
-     */
-    protected $sitemapLocator;
-
-    /**
-     * @var int
-     */
-    protected $limit;
-
-    /**
-     * @var CrawlerInterface
-     */
-    protected $crawler;
+    private SiteFinder $siteFinder;
+    private SitemapLocator $sitemapLocator;
+    private int $limit;
+    private CrawlerInterface $crawler;
 
     /**
      * @throws UnsupportedConfigurationException
@@ -167,7 +152,7 @@ class CacheWarmupService implements LoggerAwareInterface
      * @param array<string, mixed> $options
      * @throws UnsupportedConfigurationException
      */
-    protected function initializeCrawler($crawler, array $options = []): CrawlerInterface
+    private function initializeCrawler($crawler, array $options = []): CrawlerInterface
     {
         if ($crawler instanceof CrawlerInterface) {
             goto configurableCrawler;

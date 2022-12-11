@@ -58,7 +58,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class CacheWarmupController
+final class CacheWarmupController
 {
     use BackendUserAuthenticationTrait;
     use TranslatableTrait;
@@ -72,30 +72,11 @@ class CacheWarmupController
     public const STATE_SUCCESS = 'success';
     public const STATE_UNKNOWN = 'unknown';
 
-    /**
-     * @var SiteFinder
-     */
-    protected $siteFinder;
-
-    /**
-     * @var CacheWarmupService
-     */
-    protected $warmupService;
-
-    /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
-     * @var SitemapLocator
-     */
-    protected $sitemapLocator;
-
-    /**
-     * @var DenormalizerInterface
-     */
-    protected $denormalizer;
+    private SiteFinder $siteFinder;
+    private CacheWarmupService $warmupService;
+    private IconFactory $iconFactory;
+    private SitemapLocator $sitemapLocator;
+    private DenormalizerInterface $denormalizer;
 
     public function __construct(
         SiteFinder $siteFinder,
@@ -177,13 +158,13 @@ class CacheWarmupController
     /**
      * @param array<string, mixed> $eventData
      */
-    protected function sendServerEvent(string $id, string $eventName, array $eventData, int $retry = null): void
+    private function sendServerEvent(string $id, string $eventName, array $eventData, int $retry = null): void
     {
         // Build event
         $event = [
             'id' => $id,
             'event' => $eventName,
-            'data' => json_encode($eventData),
+            'data' => json_encode($eventData, JSON_THROW_ON_ERROR),
         ];
         if ($retry !== null && $retry > 0) {
             $event['retry'] = $retry;
@@ -236,7 +217,7 @@ class CacheWarmupController
      * @throws UnsupportedConfigurationException
      * @throws UnsupportedSiteException
      */
-    protected function performCacheWarmup(WarmupRequest $warmupRequest): CrawlerInterface
+    private function performCacheWarmup(WarmupRequest $warmupRequest): CrawlerInterface
     {
         switch ($warmupRequest->getMode()) {
             case self::MODE_PAGE:
@@ -320,7 +301,7 @@ class CacheWarmupController
      * @param array<string, mixed> $queryParams
      * @throws ExceptionInterface
      */
-    protected function createWarmupRequest(array $queryParams): WarmupRequest
+    private function createWarmupRequest(array $queryParams): WarmupRequest
     {
         return $this->denormalizer->denormalize($queryParams, WarmupRequest::class);
     }
@@ -329,7 +310,7 @@ class CacheWarmupController
      * @throws MissingPageIdException
      * @throws SiteNotFoundException
      */
-    protected function determineSite(?int $pageId): Site
+    private function determineSite(?int $pageId): Site
     {
         $allSites = $this->siteFinder->getAllSites();
 
@@ -344,7 +325,7 @@ class CacheWarmupController
         return end($allSites);
     }
 
-    protected function getRedirectUrl(ServerRequestInterface $request): string
+    private function getRedirectUrl(ServerRequestInterface $request): string
     {
         $parsedBody = $request->getParsedBody();
 
@@ -354,7 +335,7 @@ class CacheWarmupController
             $redirect = $parsedBody->redirect;
         }
 
-        $redirect = $redirect ?? $request->getQueryParams()['redirect'] ?? '';
+        $redirect ??= $request->getQueryParams()['redirect'] ?? '';
 
         return GeneralUtility::sanitizeLocalUrl($redirect);
     }
@@ -363,7 +344,7 @@ class CacheWarmupController
      * @return array<string, mixed>
      * @throws MissingPageIdException
      */
-    protected function buildJsonResponseData(WarmupRequest $warmupRequest, CrawlerInterface $crawler): array
+    private function buildJsonResponseData(WarmupRequest $warmupRequest, CrawlerInterface $crawler): array
     {
         $successfulCount = \count($crawler->getSuccessfulUrls());
         $failedCount = \count($crawler->getFailedUrls());
@@ -406,7 +387,7 @@ class CacheWarmupController
         return $data;
     }
 
-    protected function buildBadRequestResponse(string $reason = 'Invalid Request Headers'): ResponseInterface
+    private function buildBadRequestResponse(string $reason = 'Invalid Request Headers'): ResponseInterface
     {
         return new Response(null, 400, [], $reason);
     }
@@ -414,7 +395,7 @@ class CacheWarmupController
     /**
      * @throws MissingPageIdException
      */
-    protected function getPageTitle(int $pageId): string
+    private function getPageTitle(int $pageId): string
     {
         $record = BackendUtility::getRecord('pages', $pageId);
 
@@ -425,7 +406,7 @@ class CacheWarmupController
         return BackendUtility::getRecordTitle('pages', $record);
     }
 
-    protected function determineCrawlState(int $successfulCount, int $failedCount): string
+    private function determineCrawlState(int $successfulCount, int $failedCount): string
     {
         if ($failedCount > 0 && $successfulCount === 0) {
             return self::STATE_FAILED;
@@ -440,7 +421,7 @@ class CacheWarmupController
         return self::STATE_UNKNOWN;
     }
 
-    public function decorateCrawlingState(CrawlingState $crawlingState): string
+    private function decorateCrawlingState(CrawlingState $crawlingState): string
     {
         return (string)$crawlingState->getUri();
     }

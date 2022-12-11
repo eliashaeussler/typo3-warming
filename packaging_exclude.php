@@ -53,5 +53,6 @@ return [
         'phpstan.neon',
         'phpunit.ci.xml',
         'phpunit.xml',
+        'rector.php',
     ],
 ];

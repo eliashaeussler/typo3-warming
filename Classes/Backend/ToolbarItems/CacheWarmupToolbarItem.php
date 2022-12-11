@@ -37,20 +37,13 @@ use TYPO3\CMS\Core\Site\SiteFinder;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class CacheWarmupToolbarItem implements ToolbarItemInterface
+final class CacheWarmupToolbarItem implements ToolbarItemInterface
 {
     use TranslatableTrait;
     use ViewTrait;
 
-    /**
-     * @var Configuration
-     */
-    protected $configuration;
-
-    /**
-     * @var SiteFinder
-     */
-    protected $siteFinder;
+    private Configuration $configuration;
+    private SiteFinder $siteFinder;
 
     public function __construct(Configuration $configuration, SiteFinder $siteFinder, PageRenderer $pageRenderer)
     {

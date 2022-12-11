@@ -49,34 +49,15 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class WarmupCommand extends Command
+final class WarmupCommand extends Command
 {
     private const ALL_LANGUAGES = -1;
 
-    /**
-     * @var CacheWarmupService
-     */
-    protected $warmupService;
-
-    /**
-     * @var Configuration
-     */
-    protected $configuration;
-
-    /**
-     * @var SitemapLocator
-     */
-    protected $sitemapLocator;
-
-    /**
-     * @var SiteFinder
-     */
-    protected $siteFinder;
-
-    /**
-     * @var SymfonyStyle
-     */
-    protected $io;
+    private CacheWarmupService $warmupService;
+    private Configuration $configuration;
+    private SitemapLocator $sitemapLocator;
+    private SiteFinder $siteFinder;
+    private SymfonyStyle $io;
 
     public function __construct(
         CacheWarmupService $warmupService,
@@ -223,7 +204,7 @@ class WarmupCommand extends Command
         return 0;
     }
 
-    protected function initializeSubCommandInput(CacheWarmupCommand $subCommand, InputInterface $input): ArrayInput
+    private function initializeSubCommandInput(CacheWarmupCommand $subCommand, InputInterface $input): ArrayInput
     {
         // Resolve input options
         $languages = $this->resolveLanguages($input->getOption('languages'));
@@ -250,7 +231,7 @@ class WarmupCommand extends Command
 
         // Add crawler options to sub-command parameters
         if ($subCommand->getDefinition()->hasOption('crawler-options')) {
-            $subCommandParameters['--crawler-options'] = json_encode($crawlerOptions);
+            $subCommandParameters['--crawler-options'] = json_encode($crawlerOptions, JSON_THROW_ON_ERROR);
         } else {
             $this->io->writeln([
                 '<comment>This version of eliashaeussler/cache-warmup does not yet support crawler options.</comment>',
@@ -267,7 +248,7 @@ class WarmupCommand extends Command
      * @return list<UriInterface>
      * @throws SiteNotFoundException
      */
-    protected function resolveUrls(array $pages, array $languages): array
+    private function resolveUrls(array $pages, array $languages): array
     {
         $resolvedUrls = [];
 
@@ -295,7 +276,7 @@ class WarmupCommand extends Command
      * @throws UnsupportedConfigurationException
      * @throws UnsupportedSiteException
      */
-    protected function resolveSitemaps(array $sites, array $languages): array
+    private function resolveSitemaps(array $sites, array $languages): array
     {
         $resolvedSitemaps = [];
 
@@ -323,7 +304,7 @@ class WarmupCommand extends Command
      * @param list<string|int> $languages
      * @return list<int>
      */
-    protected function resolveLanguages(array $languages): array
+    private function resolveLanguages(array $languages): array
     {
         $resolvedLanguages = [];
 

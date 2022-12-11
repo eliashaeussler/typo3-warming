@@ -93,7 +93,7 @@ The order of the providers provided by default is as follows:
 +---------------------------------------------------------------------------------+---------------------+
 | :php:class:`EliasHaeussler\\Typo3Warming\\Sitemap\\Provider\\RobotsTxtProvider` | 100                 |
 +---------------------------------------------------------------------------------+---------------------+
-| :php:class:`EliasHaeussler\\Typo3Warming\\Sitemap\\Provider\\DefaultProvider`   | :php:`-PHP_INT_MAX` |
+| :php:class:`EliasHaeussler\\Typo3Warming\\Sitemap\\Provider\\DefaultProvider`   | :php:`PHP_INT_MIN` |
 +---------------------------------------------------------------------------------+---------------------+
 
 Once your custom provider is ready, make sure to clear the DI

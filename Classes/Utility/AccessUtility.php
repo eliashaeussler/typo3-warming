@@ -35,27 +35,27 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class AccessUtility
+final class AccessUtility
 {
     use BackendUserAuthenticationTrait;
 
     public static function canWarmupCacheOfPage(int $pageId, int $languageId = null): bool
     {
-        return static::checkPagePermissions($pageId, $languageId)
-            && static::isPageAccessible($pageId)
-            && ($languageId !== null ? static::isLanguageAccessible($languageId) : true);
+        return self::checkPagePermissions($pageId, $languageId)
+            && self::isPageAccessible($pageId)
+            && ($languageId !== null ? self::isLanguageAccessible($languageId) : true);
     }
 
     public static function canWarmupCacheOfSite(Site $site, int $languageId = null): bool
     {
-        return static::checkPagePermissions($site->getRootPageId(), $languageId)
-            && static::isSiteAccessible($site->getIdentifier())
-            && ($languageId !== null ? static::isLanguageAccessible($languageId) : true);
+        return self::checkPagePermissions($site->getRootPageId(), $languageId)
+            && self::isSiteAccessible($site->getIdentifier())
+            && ($languageId !== null ? self::isLanguageAccessible($languageId) : true);
     }
 
-    protected static function checkPagePermissions(int $pageId, int $languageId = null, int $permissions = Permission::PAGE_SHOW): bool
+    private static function checkPagePermissions(int $pageId, int $languageId = null, int $permissions = Permission::PAGE_SHOW): bool
     {
-        $backendUser = static::getBackendUser();
+        $backendUser = self::getBackendUser();
 
         if ($languageId === null && $backendUser->isAdmin()) {
             return true;
@@ -88,9 +88,9 @@ class AccessUtility
         return $backendUser->doesUserHaveAccess($record, $permissions);
     }
 
-    protected static function isPageAccessible(int $pageId): bool
+    private static function isPageAccessible(int $pageId): bool
     {
-        $backendUser = static::getBackendUser();
+        $backendUser = self::getBackendUser();
 
         if ($backendUser->isAdmin()) {
             return true;
@@ -102,9 +102,9 @@ class AccessUtility
         return GeneralUtility::inList($allowedPages, (string)$pageId);
     }
 
-    protected static function isSiteAccessible(string $siteIdentifier): bool
+    private static function isSiteAccessible(string $siteIdentifier): bool
     {
-        $backendUser = static::getBackendUser();
+        $backendUser = self::getBackendUser();
 
         if ($backendUser->isAdmin()) {
             return true;
@@ -116,9 +116,9 @@ class AccessUtility
         return GeneralUtility::inList($allowedSites, $siteIdentifier);
     }
 
-    protected static function isLanguageAccessible(int $languageId): bool
+    private static function isLanguageAccessible(int $languageId): bool
     {
-        $backendUser = static::getBackendUser();
+        $backendUser = self::getBackendUser();
 
         if ($backendUser->isAdmin()) {
             return true;
