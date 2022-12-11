@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "088ed5d6a43583c29e91d80960b99b5f",
+    "content-hash": "2410044cc5b9a7878b8196e1705ac7a9",
     "packages": [
         {
             "name": "eliashaeussler/cache-warmup",
