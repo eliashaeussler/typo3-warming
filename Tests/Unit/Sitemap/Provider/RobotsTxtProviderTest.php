@@ -40,24 +40,16 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class RobotsTxtProviderTest extends UnitTestCase
+final class RobotsTxtProviderTest extends UnitTestCase
 {
     use ProphecyTrait;
 
     /**
      * @var ObjectProphecy|RequestFactory
      */
-    protected $requestFactoryProphecy;
-
-    /**
-     * @var Site
-     */
-    protected $site;
-
-    /**
-     * @var RobotsTxtProvider
-     */
-    protected $subject;
+    protected ObjectProphecy $requestFactoryProphecy;
+    protected Site $site;
+    protected RobotsTxtProvider $subject;
 
     protected function setUp(): void
     {

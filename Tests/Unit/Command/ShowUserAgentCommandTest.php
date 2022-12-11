@@ -35,14 +35,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class ShowUserAgentCommandTest extends UnitTestCase
+final class ShowUserAgentCommandTest extends UnitTestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @var CommandTester
-     */
-    protected $commandTester;
+    protected CommandTester $commandTester;
 
     protected function setUp(): void
     {

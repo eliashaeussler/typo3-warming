@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
 use Rector\Core\ValueObject\PhpVersion;
+use Rector\Php74\Rector\LNumber\AddLiteralSeparatorToNumberRector;
 use Rector\Set\ValueObject\LevelSetList;
 use Ssch\TYPO3Rector\Configuration\Typo3Option;
 use Ssch\TYPO3Rector\FileProcessor\TypoScript\Rector\v10\v0\ExtbasePersistenceTypoScriptRector;
@@ -33,7 +34,7 @@ use Ssch\TYPO3Rector\Set\Typo3LevelSetList;
 
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->sets([
-        LevelSetList::UP_TO_PHP_71,
+        LevelSetList::UP_TO_PHP_74,
         Typo3LevelSetList::UP_TO_TYPO3_10,
     ]);
 
@@ -48,7 +49,7 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->importNames(false);
 
     // Define your target version which you want to support
-    $rectorConfig->phpVersion(PhpVersion::PHP_71);
+    $rectorConfig->phpVersion(PhpVersion::PHP_74);
 
     // If you only want to process one/some TYPO3 extension(s), you can specify its path(s) here.
     // If you use the option --config change __DIR__ to getcwd()
@@ -64,6 +65,8 @@ return static function (RectorConfig $rectorConfig): void {
         __DIR__ . '/config/*',
         __DIR__ . '/Resources/Private/Frontend/*',
         __DIR__ . '/var/*',
+
+        AddLiteralSeparatorToNumberRector::class,
     ]);
 
     // Rewrite your extbase persistence class mapping from typoscript into php according to official docs.

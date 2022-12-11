@@ -36,12 +36,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class WarmupRequestTest extends UnitTestCase
+final class WarmupRequestTest extends UnitTestCase
 {
-    /**
-     * @var WarmupRequest
-     */
-    protected $subject;
+    protected WarmupRequest $subject;
 
     protected function setUp(): void
     {
@@ -234,9 +231,7 @@ class WarmupRequestTest extends UnitTestCase
     {
         self::assertNull($this->subject->getUpdateCallback());
 
-        $callback = function (): bool {
-            return true;
-        };
+        $callback = fn (): bool => true;
         $this->subject->setUpdateCallback($callback);
 
         self::assertIsCallable($this->subject->getUpdateCallback());

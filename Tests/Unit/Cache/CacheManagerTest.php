@@ -38,19 +38,15 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class CacheManagerTest extends UnitTestCase
+final class CacheManagerTest extends UnitTestCase
 {
     use ProphecyTrait;
 
     /**
      * @var ObjectProphecy|PhpFrontend
      */
-    protected $cacheProphecy;
-
-    /**
-     * @var CacheManager
-     */
-    protected $subject;
+    protected ObjectProphecy $cacheProphecy;
+    protected CacheManager $subject;
 
     protected function setUp(): void
     {

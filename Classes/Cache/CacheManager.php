@@ -34,14 +34,11 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class CacheManager
+final class CacheManager
 {
     public const CACHE_IDENTIFIER = 'tx_warming';
 
-    /**
-     * @var PhpFrontend
-     */
-    protected $cache;
+    private PhpFrontend $cache;
 
     public function __construct(PhpFrontend $cache)
     {
@@ -84,7 +81,7 @@ class CacheManager
         );
     }
 
-    protected function buildLanguageIdentifier(Site $site, SiteLanguage $siteLanguage = null): string
+    private function buildLanguageIdentifier(Site $site, SiteLanguage $siteLanguage = null): string
     {
         $languageIdentifier = 'default';
         if ($siteLanguage !== null && $siteLanguage !== $site->getDefaultLanguage()) {

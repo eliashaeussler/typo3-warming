@@ -36,14 +36,11 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class RobotsTxtProvider extends AbstractProvider
+final class RobotsTxtProvider extends AbstractProvider
 {
-    protected const SITEMAP_PATTERN = '#^Sitemap:\s*(?P<url>https?://[^\r\n]+)#im';
+    private const SITEMAP_PATTERN = '#^Sitemap:\s*(?P<url>https?://[^\r\n]+)#im';
 
-    /**
-     * @var RequestFactory
-     */
-    protected $requestFactory;
+    private RequestFactory $requestFactory;
 
     public function __construct(RequestFactory $requestFactory)
     {
@@ -69,7 +66,7 @@ class RobotsTxtProvider extends AbstractProvider
         return new SiteAwareSitemap($uri, $site, $siteLanguage);
     }
 
-    protected function fetchRobotsTxt(UriInterface $uri): ?string
+    private function fetchRobotsTxt(UriInterface $uri): ?string
     {
         try {
             $response = $this->requestFactory->request((string)$uri);

@@ -39,24 +39,17 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class SitemapLocator
+final class SitemapLocator
 {
     use BackendUserAuthenticationTrait;
 
-    /**
-     * @var RequestFactory
-     */
-    protected $requestFactory;
-
-    /**
-     * @var CacheManager
-     */
-    protected $cacheManager;
+    private RequestFactory $requestFactory;
+    private CacheManager $cacheManager;
 
     /**
      * @var iterable<ProviderInterface>
      */
-    protected $providers = [];
+    private iterable $providers;
 
     /**
      * @param iterable<ProviderInterface> $providers
@@ -129,7 +122,7 @@ class SitemapLocator
         }
     }
 
-    protected function resolveSitemap(Site $site, SiteLanguage $siteLanguage = null): ?SiteAwareSitemap
+    private function resolveSitemap(Site $site, SiteLanguage $siteLanguage = null): ?SiteAwareSitemap
     {
         foreach ($this->providers as $provider) {
             if (($sitemap = $provider->get($site, $siteLanguage)) !== null) {
@@ -140,7 +133,7 @@ class SitemapLocator
         return null;
     }
 
-    protected function validateProviders(): void
+    private function validateProviders(): void
     {
         foreach ($this->providers as $provider) {
             if (!\is_object($provider)) {

@@ -34,7 +34,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class SiteAwareSitemapTest extends UnitTestCase
+final class SiteAwareSitemapTest extends UnitTestCase
 {
     /**
      * @test

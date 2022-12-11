@@ -29,7 +29,7 @@ namespace EliasHaeussler\Typo3Warming\Exception;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class MissingPageIdException extends \Exception
+final class MissingPageIdException extends \Exception
 {
     public static function create(): self
     {

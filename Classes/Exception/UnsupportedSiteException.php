@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Site\Entity\Site;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class UnsupportedSiteException extends \Exception
+final class UnsupportedSiteException extends \Exception
 {
     public static function forMissingSitemap(Site $site): self
     {

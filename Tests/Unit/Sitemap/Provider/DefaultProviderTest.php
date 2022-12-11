@@ -35,12 +35,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class DefaultProviderTest extends UnitTestCase
+final class DefaultProviderTest extends UnitTestCase
 {
-    /**
-     * @var DefaultProvider
-     */
-    protected $subject;
+    protected DefaultProvider $subject;
 
     protected function setUp(): void
     {
