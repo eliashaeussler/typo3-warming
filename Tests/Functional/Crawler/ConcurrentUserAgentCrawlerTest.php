@@ -58,7 +58,11 @@ final class ConcurrentUserAgentCrawlerTest extends FunctionalTestCase
 
         $this->mockHandler = new MockHandler();
 
-        GeneralUtility::addInstance(Client::class, new Client(['handler' => $this->mockHandler]));
+        // We need to inject the client twice due to the internal
+        // crawler behavior within eliashaeussler/cache-warmup
+        $client = new Client(['handler' => $this->mockHandler]);
+        GeneralUtility::addInstance(Client::class, $client);
+        GeneralUtility::addInstance(Client::class, $client);
 
         $this->subject = new ConcurrentUserAgentCrawler();
         $this->configuration = GeneralUtility::makeInstance(Configuration::class);
