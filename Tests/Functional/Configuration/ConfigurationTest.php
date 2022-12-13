@@ -314,15 +314,16 @@ final class ConfigurationTest extends FunctionalTestCase
             return;
         }
 
-        if ($typo3Version->getMajorVersion() > 10) {
+        if ($typo3Version->getMajorVersion() >= 11) {
             $this->extensionConfiguration->set(Extension::KEY, $configuration);
             return;
         }
 
         foreach ($configuration as $key => $value) {
-            /** @noinspection PhpMethodParametersCountMismatchInspection */
-            /** @phpstan-ignore-next-line */
-            $this->extensionConfiguration->set(Extension::KEY, $key, $value);
+            // We avoid calling $this->extensionConfiguration->set() directly
+            // as it causes a lot of trouble with code analyzers due to the
+            // changed method signature.
+            \call_user_func_array([$this->extensionConfiguration, 'set'], [Extension::KEY, $key, $value]);
         }
     }
 
