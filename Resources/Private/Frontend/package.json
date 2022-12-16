@@ -34,7 +34,7 @@
     "clean-webpack-plugin": "^4.0.0",
     "clipboard-polyfill": "^3.0.3",
     "cross-env": "^7.0.3",
-    "css-loader": "^6.7.2",
+    "css-loader": "^6.7.3",
     "eslint": "^7.30.0",
     "eslint-plugin-sonarjs": "^0.17.0",
     "ignore-emit-webpack-plugin": "^2.0.6",
