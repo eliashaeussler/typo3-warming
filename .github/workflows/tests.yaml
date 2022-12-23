@@ -75,12 +75,6 @@ jobs:
       # Setup DDEV
       - name: Setup DDEV
         uses: jonaseberle/github-action-setup-ddev@v1
-        with:
-          autostart: false
-      - name: Configure and start DDEV
-        run: |
-          ddev config --project-type=typo3 --php-version=8.1 --xdebug-enabled=true
-          ddev start
 
       # Install dependencies
       - name: Install Composer dependencies
