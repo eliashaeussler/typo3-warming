@@ -60,5 +60,3 @@ icon from TYPO3 core which is originally licensed under
 ## :star: License
 
 This project is licensed under [GNU General Public License 2.0 (or later)](LICENSE.md).
-
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Feliashaeussler%2Ftypo3-warming.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Feliashaeussler%2Ftypo3-warming?ref=badge_large)
