@@ -21,6 +21,7 @@ jobs:
         with:
           php-version: 8.1
           tools: composer:v2, composer-require-checker, composer-unused
+          coverage: none
 
       # Validation
       - name: Validate composer.json
