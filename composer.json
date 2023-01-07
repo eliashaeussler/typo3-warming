@@ -37,7 +37,6 @@
 	},
 	"require-dev": {
 		"armin/editorconfig-cli": "^1.5",
-		"captainhook/plugin-composer": "^5.3",
 		"dg/bypass-finals": "^1.3",
 		"ergebnis/composer-normalize": "^2.8",
 		"helhum/typo3-console": "^6.3.2 || ^7.0",
@@ -66,11 +65,11 @@
 	},
 	"config": {
 		"allow-plugins": {
-			"captainhook/plugin-composer": true,
 			"ergebnis/composer-normalize": true,
 			"phpstan/extension-installer": true,
 			"typo3/class-alias-loader": true,
-			"typo3/cms-composer-installers": true
+			"typo3/cms-composer-installers": true,
+			"captainhook/plugin-composer": false
 		},
 		"bin-dir": ".Build/bin",
 		"sort-packages": true,
