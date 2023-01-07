@@ -37,7 +37,6 @@ return [
     ],
     'files' => [
         'DS_Store',
-        'captainhook.json',
         'codecov.yml',
         'CODEOWNERS',
         'composer.lock',
