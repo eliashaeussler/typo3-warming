@@ -20,8 +20,8 @@ be used. The following configuration options are available for this purpose:
     :Path: xml_sitemap_path
     :type: string
 
-    Path to the XML sitemap of the configured site's base language. It
-    must be relative to the entry point of the site.
+    Path to the XML sitemap of the configured site's **base language**.
+    It must be relative to the entry point of the site.
 
     ..  image:: ../Images/site-configuration.png
         :alt: Configuration of XML sitemap path within the Sites module
@@ -31,8 +31,8 @@ be used. The following configuration options are available for this purpose:
     :Path: languages > (site language) > xml_sitemap_path
     :type: string
 
-    Path to the XML sitemap of an additional site language. It must be
-    relative to the entry point of the site language.
+    Path to the XML sitemap of an **additional site language**.
+    It must be relative to the entry point of the site language.
 
 ..  seealso::
 
