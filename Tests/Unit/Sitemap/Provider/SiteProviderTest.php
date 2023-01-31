@@ -58,31 +58,55 @@ final class SiteProviderTest extends UnitTestCase
 
     /**
      * @test
+     * @dataProvider getReturnsSitemapWithUrlPathFromSiteDataProvider
      */
-    public function getReturnsSitemapWithUrlPathFromSite(): void
+    public function getReturnsSitemapWithUrlPathFromSite(string $path, string $expected): void
     {
         $site = new Site('foo', 1, [
             'base' => 'https://www.example.com/',
-            'xml_sitemap_path' => 'baz.xml',
+            'xml_sitemap_path' => $path,
         ]);
-        $expected = new SiteAwareSitemap(new Uri('https://www.example.com/baz.xml'), $site);
 
-        self::assertEquals($expected, $this->subject->get($site));
+        self::assertEquals(
+            new SiteAwareSitemap(new Uri($expected), $site),
+            $this->subject->get($site)
+        );
     }
 
     /**
      * @test
+     * @dataProvider getReturnsSitemapWithUrlPathFromSiteLanguageDataProvider
      */
-    public function getReturnsSitemapWithUrlPathFromSiteLanguage(): void
+    public function getReturnsSitemapWithUrlPathFromSiteLanguage(string $path, string $expected): void
     {
         $site = new Site('foo', 1, [
             'base' => 'https://www.example.com/',
         ]);
         $siteLanguage = new SiteLanguage(1, 'de_DE.UTF-8', new Uri('https://www.example.com/de'), [
-            'xml_sitemap_path' => 'baz.xml',
+            'xml_sitemap_path' => $path,
         ]);
-        $expected = new SiteAwareSitemap(new Uri('https://www.example.com/de/baz.xml'), $site, $siteLanguage);
 
-        self::assertEquals($expected, $this->subject->get($site, $siteLanguage));
+        self::assertEquals(
+            new SiteAwareSitemap(new Uri($expected), $site, $siteLanguage),
+            $this->subject->get($site, $siteLanguage)
+        );
+    }
+
+    /**
+     * @return \Generator<string, array{string, string}>
+     */
+    public function getReturnsSitemapWithUrlPathFromSiteDataProvider(): \Generator
+    {
+        yield 'path only' => ['baz.xml', 'https://www.example.com/baz.xml'];
+        yield 'path with query string' => ['baz.xml?foo=baz', 'https://www.example.com/baz.xml?foo=baz'];
+    }
+
+    /**
+     * @return \Generator<string, array{string, string}>
+     */
+    public function getReturnsSitemapWithUrlPathFromSiteLanguageDataProvider(): \Generator
+    {
+        yield 'path only' => ['baz.xml', 'https://www.example.com/de/baz.xml'];
+        yield 'path with query string' => ['baz.xml?foo=baz', 'https://www.example.com/de/baz.xml?foo=baz'];
     }
 }
