@@ -28,6 +28,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
 
 /**
  * AccessUtility
@@ -97,9 +98,39 @@ final class AccessUtility
         }
 
         $userTsConfig = $backendUser->getTSConfig();
-        $allowedPages = (string)($userTsConfig['options.']['cacheWarmup.']['allowedPages'] ?? '');
+        $allowedPages = GeneralUtility::trimExplode(',', (string)($userTsConfig['options.']['cacheWarmup.']['allowedPages'] ?? ''), true);
 
-        return GeneralUtility::inList($allowedPages, (string)$pageId);
+        // Early return if no allowed pages are configured
+        if ($allowedPages === []) {
+            return false;
+        }
+
+        // Fetch rootline of current page id
+        $rootline = GeneralUtility::makeInstance(RootlineUtility::class, $pageId)->get();
+        $rootlineIds = array_column($rootline, 'uid');
+
+        foreach ($allowedPages as $allowedPage) {
+            $recursiveLookup = str_ends_with($allowedPage, '+');
+            $normalizedPageId = rtrim($allowedPage, '+');
+
+            // Continue if configured page must not be checked recursively
+            // or configured page is not numeric
+            if (!$recursiveLookup || !is_numeric($normalizedPageId)) {
+                continue;
+            }
+
+            // Check if configured page id matches current page id
+            if ((int)$normalizedPageId === $pageId) {
+                return true;
+            }
+
+            // Check if current page is in rootline of configured page id
+            if (\in_array((int)$normalizedPageId, $rootlineIds, true)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private static function isSiteAccessible(string $siteIdentifier): bool
