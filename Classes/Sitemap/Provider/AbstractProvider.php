@@ -40,6 +40,11 @@ abstract class AbstractProvider implements ProviderInterface
         $baseUrl = $siteLanguage !== null ? $siteLanguage->getBase() : $site->getBase();
         $fullPath = rtrim($baseUrl->getPath(), '/') . '/' . ltrim($path, '/');
 
+        if (str_contains($fullPath, '?')) {
+            [$fullPath, $queryString] = explode('?', $fullPath, 2);
+            $baseUrl = $baseUrl->withQuery($queryString);
+        }
+
         return $baseUrl->withPath($fullPath);
     }
 }
