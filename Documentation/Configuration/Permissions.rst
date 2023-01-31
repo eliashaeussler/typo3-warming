@@ -35,13 +35,14 @@ configuration to the :typoscript:`options.cacheWarmup` User TSconfig:
     :type: string (comma-separated list)
 
     Provide a comma-separated list of pages. Those pages can
-    then be warmed by the backend user.
+    then be warmed by the backend user. Pages can be suffixed
+    by a `+` sign to recursively include all subpages.
 
     Example:
 
     ..  code-block:: typoscript
 
-        options.cacheWarmup.allowedPages = 1,2,3
+        options.cacheWarmup.allowedPages = 1,2,3+
 
 ..  seealso::
 
