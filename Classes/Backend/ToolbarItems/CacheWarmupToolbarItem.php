@@ -86,6 +86,11 @@ final class CacheWarmupToolbarItem implements ToolbarItemInterface
 
     public function checkAccess(): bool
     {
+        // Early return if cache warmup from backend toolbar is disabled globally
+        if (!$this->configuration->isEnabledInToolbar()) {
+            return false;
+        }
+
         foreach ($this->siteFinder->getAllSites() as $site) {
             if (AccessUtility::canWarmupCacheOfSite($site)) {
                 return true;
