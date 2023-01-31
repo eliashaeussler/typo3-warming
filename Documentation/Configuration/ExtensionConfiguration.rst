@@ -72,6 +72,16 @@ The extension currently provides the following configuration options:
     :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\ConfigurableCrawlerInterface`.
     For more information read :ref:`configurable-crawlers`.
 
+..  _extconf-enablePageTree:
+
+..  confval:: enablePageTree
+
+    :type: boolean
+    :Default: 1
+
+    Enable cache warmup in the :ref:`page tree <page-tree>` context menu. This affects
+    all users, including administrators.
+
 ..  _extconf-supportedDoktypes:
 
 ..  confval:: supportedDoktypes
@@ -83,3 +93,13 @@ The extension currently provides the following configuration options:
     :ref:`page tree <page-tree>` context menu. Defaults to default pages with doktype
     :php:`1` only. If your project implements custom doktypes, you can add them here to
     support cache warmup from the context menu.
+
+..  _extconf-enableToolbar:
+
+..  confval:: enableToolbar
+
+    :type: boolean
+    :Default: 1
+
+    Enable cache warmup in the :ref:`backend toolbar <backend-toolbar>`. This affects
+    all users, including administrators.

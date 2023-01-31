@@ -94,6 +94,11 @@ final class CacheWarmupProvider extends PageProvider
 
     protected function canRender(string $itemName, string $type): bool
     {
+        // Early return if cache warmup from page tree is disabled globally
+        if (!$this->configuration->isEnabledInPageTree()) {
+            return false;
+        }
+
         // Pseudo items (such as dividers) are always renderable
         if ($type !== 'item') {
             return true;

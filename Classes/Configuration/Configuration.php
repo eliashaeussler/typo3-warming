@@ -149,6 +149,28 @@ final class Configuration
         }
     }
 
+    public function isEnabledInPageTree(): bool
+    {
+        try {
+            $enablePageTree = $this->configuration->get(Extension::KEY, 'enablePageTree');
+
+            return (bool)$enablePageTree;
+        } catch (Exception $e) {
+            return true;
+        }
+    }
+
+    public function isEnabledInToolbar(): bool
+    {
+        try {
+            $enableToolbar = $this->configuration->get(Extension::KEY, 'enableToolbar');
+
+            return (bool)$enableToolbar;
+        } catch (Exception $e) {
+            return true;
+        }
+    }
+
     /**
      * @return list<int>
      */
