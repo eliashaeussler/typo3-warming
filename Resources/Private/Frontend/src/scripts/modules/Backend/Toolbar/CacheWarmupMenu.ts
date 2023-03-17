@@ -20,7 +20,7 @@
  */
 
 import 'select2';
-import * as clipboard from 'clipboard-polyfill/text';
+import * as clipboard from 'clipboard-polyfill';
 
 import IconIdentifiers from '../../../lib/Enums/IconIdentifiers';
 import LanguageKeys from '../../../lib/Enums/LanguageKeys';
