@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.21.3",
-    "@babel/plugin-transform-runtime": "^7.21.0",
+    "@babel/plugin-transform-runtime": "^7.21.4",
     "@babel/preset-env": "^7.21.4",
     "@babel/preset-typescript": "^7.21.4",
     "@types/jquery": "^3.5.16",
