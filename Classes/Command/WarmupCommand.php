@@ -28,9 +28,7 @@ use EliasHaeussler\Typo3Warming\Configuration\Configuration;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedConfigurationException;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedSiteException;
 use EliasHaeussler\Typo3Warming\Service\CacheWarmupService;
-use EliasHaeussler\Typo3Warming\Sitemap\SiteAwareSitemap;
 use EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator;
-use Psr\Http\Message\UriInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -209,8 +207,8 @@ final class WarmupCommand extends Command
         // Resolve input options
         $languages = $this->resolveLanguages($input->getOption('languages'));
         $urls = array_unique($this->resolveUrls($input->getOption('pages'), $languages));
-        $sitemaps = array_unique($this->resolveSitemaps($input->getOption('sites'), $languages), SORT_REGULAR);
-        $limit = abs((int)$input->getOption('limit'));
+        $sitemaps = array_unique($this->resolveSitemaps($input->getOption('sites'), $languages));
+        $limit = max(0, (int)$input->getOption('limit'));
 
         // Fetch crawler and crawler options
         $crawler = $this->configuration->getVerboseCrawler();
@@ -245,7 +243,7 @@ final class WarmupCommand extends Command
     /**
      * @param list<string|int> $pages
      * @param list<int> $languages
-     * @return list<UriInterface>
+     * @return list<string>
      * @throws SiteNotFoundException
      */
     private function resolveUrls(array $pages, array $languages): array
@@ -260,7 +258,7 @@ final class WarmupCommand extends Command
                     $languageIds = array_keys($site->getLanguages());
                 }
                 foreach ($languageIds as $languageId) {
-                    $resolvedUrls[] = $this->warmupService->generateUri($page, $languageId);
+                    $resolvedUrls[] = (string)$this->warmupService->generateUri($page, $languageId);
                 }
             }
         }
@@ -271,7 +269,7 @@ final class WarmupCommand extends Command
     /**
      * @param list<string|int> $sites
      * @param list<int> $languages
-     * @return list<SiteAwareSitemap>
+     * @return list<string>
      * @throws SiteNotFoundException
      * @throws UnsupportedConfigurationException
      * @throws UnsupportedSiteException
@@ -292,7 +290,10 @@ final class WarmupCommand extends Command
                     $languageIds = array_keys($site->getLanguages());
                 }
                 foreach ($languageIds as $languageId) {
-                    $resolvedSitemaps[] = $this->sitemapLocator->locateBySite($site, $site->getLanguageById($languageId));
+                    $resolvedSitemaps[] = (string)$this->sitemapLocator->locateBySite(
+                        $site,
+                        $site->getLanguageById($languageId)
+                    )->getUri();
                 }
             }
         }
