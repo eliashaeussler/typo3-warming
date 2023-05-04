@@ -23,10 +23,8 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Command;
 
-use EliasHaeussler\Typo3Warming\Configuration\Configuration;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
+use EliasHaeussler\Typo3Warming\Configuration;
+use Symfony\Component\Console;
 
 /**
  * ShowUserAgentCommand
@@ -34,15 +32,12 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class ShowUserAgentCommand extends Command
+final class ShowUserAgentCommand extends Console\Command\Command
 {
-    private Configuration $configuration;
-
-    public function __construct(Configuration $configuration, string $name = null)
-    {
-        $this->configuration = $configuration;
-
-        parent::__construct($name);
+    public function __construct(
+        private readonly Configuration\Configuration $configuration,
+    ) {
+        parent::__construct();
     }
 
     protected function configure(): void
@@ -50,10 +45,10 @@ final class ShowUserAgentCommand extends Command
         $this->setDescription('Show custom "User-Agent" header to be used for Frontend requests by default crawlers.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output): int
     {
         $output->write($this->configuration->getUserAgent());
 
-        return 0;
+        return self::SUCCESS;
     }
 }

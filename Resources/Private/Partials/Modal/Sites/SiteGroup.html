@@ -1,0 +1,142 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:c="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
+<li>
+    <f:if condition="{siteGroup.hasOnlyDefaultLanguage} || {siteGroup.missing}">
+        <f:then>
+            <f:render section="single-language" arguments="{
+                site: siteGroup.site,
+                title: siteGroup.title,
+                iconIdentifier: siteGroup.iconIdentifier,
+                item: siteGroup.items.0
+            }" />
+        </f:then>
+        <f:else>
+            <f:render section="multiple-languages" arguments="{siteGroup: siteGroup}" />
+        </f:else>
+    </f:if>
+</li>
+
+<f:section name="single-language">
+    <f:if condition="{item.missing}">
+        <f:then>
+            <div class="tx-warming-sites-group tx-warming-sites-group-single-language tx-warming-sites-group-disabled">
+                <f:render partial="Modal/Sites/SiteGroupItem" section="checkbox" arguments="{
+                    identifier: 'tx-warming-checkbox-{site.identifier}',
+                    siteIdentifier: site.identifier,
+                    disabled: 1
+                }" />
+
+                <f:render partial="Modal/Sites/SiteGroupItem" section="icon" arguments="{
+                    identifier: iconIdentifier,
+                    overlay: 'overlay-warning'
+                }" />
+
+                <f:render partial="Modal/Sites/SiteGroupItem" section="content" arguments="{
+                    title: title,
+                    id: site.rootPageId,
+                    disabled: 1,
+                    description: '{f:translate(key: \'LLL:EXT:warming/Resources/Private/Language/locallang.xlf:modal.sites.siteGroup.missing\')}'
+                }" />
+            </div>
+        </f:then>
+        <f:else>
+            <label for="tx-warming-checkbox-{site.identifier}"
+                   class="tx-warming-sites-group tx-warming-sites-group-single-language"
+                   title="{title}"
+            >
+                <f:render partial="Modal/Sites/SiteGroupItem" section="checkbox" arguments="{
+                    identifier: 'tx-warming-checkbox-{site.identifier}',
+                    siteIdentifier: site.identifier
+                }" />
+
+                <f:render partial="Modal/Sites/SiteGroupItem" section="icon" arguments="{
+                    identifier: iconIdentifier
+                }" />
+
+                <f:render partial="Modal/Sites/SiteGroupItem" section="content" arguments="{
+                    title: title,
+                    id: site.rootPageId,
+                    description: item.url
+                }" />
+            </label>
+        </f:else>
+    </f:if>
+</f:section>
+
+<f:section name="multiple-languages">
+    <label for="tx-warming-checkbox-{siteGroup.site.identifier}-group"
+           class="tx-warming-sites-group tx-warming-sites-group-multiple-languages"
+           title="{siteGroup.title}"
+    >
+        <f:render partial="Modal/Sites/SiteGroupItem" section="checkbox" arguments="{
+            identifier: 'tx-warming-checkbox-{siteGroup.site.identifier}-group',
+            siteIdentifier: siteGroup.site.identifier,
+            group: 1
+        }" />
+
+        <f:render partial="Modal/Sites/SiteGroupItem" section="icon" arguments="{
+            identifier: siteGroup.iconIdentifier
+        }" />
+
+        <f:render partial="Modal/Sites/SiteGroupItem" section="content" arguments="{
+            title: siteGroup.title,
+            id: siteGroup.site.rootPageId,
+            description: siteGroup.site.base
+        }" />
+    </label>
+
+    <f:for each="{siteGroup.items}" as="item">
+        <f:if condition="{item.missing}">
+            <f:then>
+                <div class="tx-warming-sites-group-item tx-warming-sites-group-item-disabled">
+                    <f:render partial="Modal/Sites/SiteGroupItem" section="checkbox" arguments="{
+                        identifier: 'tx-warming-checkbox-{siteGroup.site.identifier}-{item.language.languageId}',
+                        siteIdentifier: siteGroup.site.identifier,
+                        languageIdentifier: item.language.languageId,
+                        group: 1,
+                        disabled: 1
+                    }" />
+
+                    <f:render partial="Modal/Sites/SiteGroupItem" section="icon" arguments="{
+                        identifier: item.language.flagIdentifier,
+                        overlay: 'overlay-warning'
+                    }" />
+
+                    <f:render partial="Modal/Sites/SiteGroupItem" section="content" arguments="{
+                        title: item.language.title,
+                        id: item.language.languageId,
+                        disabled: 1,
+                        description: '{f:translate(key: \'LLL:EXT:warming/Resources/Private/Language/locallang.xlf:modal.sites.siteGroupItem.missing\')}'
+                    }" />
+                </div>
+            </f:then>
+            <f:else>
+                <label for="tx-warming-checkbox-{siteGroup.site.identifier}-{item.language.languageId}"
+                       class="tx-warming-sites-group-item"
+                       title="{item.language.title}"
+                >
+                    <f:render partial="Modal/Sites/SiteGroupItem" section="checkbox" arguments="{
+                        identifier: 'tx-warming-checkbox-{siteGroup.site.identifier}-{item.language.languageId}',
+                        siteIdentifier: siteGroup.site.identifier,
+                        languageIdentifier: item.language.languageId,
+                        group: 1
+                    }" />
+
+                    <f:render partial="Modal/Sites/SiteGroupItem" section="icon" arguments="{
+                        identifier: item.language.flagIdentifier
+                    }" />
+
+                    <f:render partial="Modal/Sites/SiteGroupItem" section="content" arguments="{
+                        title: item.language.title,
+                        id: item.language.languageId,
+                        description: item.url
+                    }" />
+                </label>
+            </f:else>
+        </f:if>
+    </f:for>
+</f:section>
+
+</html>

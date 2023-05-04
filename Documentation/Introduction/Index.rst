@@ -11,10 +11,10 @@ Introduction
 What does it do?
 ================
 
-The extension provides a service to warm up Frontend caches based on an XML
-sitemap. Cache warmup can be triggered in various ways:
+The extension provides a service to warm up Frontend caches based on XML
+sitemaps. Cache warmup can be triggered in various ways:
 
--   Via the :ref:`TYPO3 backend <backend-toolbar>`
+-   From the :ref:`TYPO3 backend <backend-toolbar>`
 -   Using a :ref:`console command <console-commands>`
 -   Directly with the :ref:`PHP API <using-the-api>`
 
@@ -34,9 +34,10 @@ Features
 -   Support of various :ref:`sitemap providers <sitemap-providers>`
     (e.g. `robots.txt` or custom location)
 -   Multi-language support of configured sites
--   Support for :ref:`custom crawlers <crawlers>`
+-   Support for :ref:`custom crawlers <crawlers>` and
+    :ref:`crawling strategies <crawling-strategies>`
 -   :ref:`Console commands <console-commands>`
--   Compatible with TYPO3 10.4 LTS and 11.5 LTS
+-   Compatible with TYPO3 12.4 LTS (see :ref:`version matrix <version-matrix>`)
 
 ..  _support:
 

@@ -24,6 +24,7 @@ declare(strict_types=1);
 return [
     'directories' => [
         '.build',
+        '.ddev',
         '.git',
         '.github',
         'bin',
@@ -50,9 +51,10 @@ return [
         'gitignore',
         'packaging_exclude.php',
         'php-cs-fixer.php',
-        'phpstan.neon',
-        'phpunit.ci.xml',
-        'phpunit.xml',
+        'phpstan.php',
+        'phpstan-baseline.neon',
+        'phpunit.functional.xml',
+        'phpunit.unit.xml',
         'rector.php',
     ],
 ];

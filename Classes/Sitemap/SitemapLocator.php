@@ -23,15 +23,11 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Sitemap;
 
-use EliasHaeussler\Typo3Warming\Cache\CacheManager;
-use EliasHaeussler\Typo3Warming\Exception\UnsupportedConfigurationException;
-use EliasHaeussler\Typo3Warming\Exception\UnsupportedSiteException;
-use EliasHaeussler\Typo3Warming\Sitemap\Provider\ProviderInterface;
-use EliasHaeussler\Typo3Warming\Traits\BackendUserAuthenticationTrait;
-use TYPO3\CMS\Core\Http\RequestFactory;
-use TYPO3\CMS\Core\Http\Uri;
-use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use EliasHaeussler\CacheWarmup;
+use EliasHaeussler\Typo3Warming\Cache;
+use EliasHaeussler\Typo3Warming\Exception;
+use EliasHaeussler\Typo3Warming\Utility;
+use TYPO3\CMS\Core;
 
 /**
  * SitemapLocator
@@ -41,67 +37,61 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
  */
 final class SitemapLocator
 {
-    use BackendUserAuthenticationTrait;
-
-    private RequestFactory $requestFactory;
-    private CacheManager $cacheManager;
-
     /**
-     * @var iterable<ProviderInterface>
+     * @param iterable<Provider\Provider> $providers
+     * @throws Exception\InvalidProviderException
      */
-    private iterable $providers;
-
-    /**
-     * @param iterable<ProviderInterface> $providers
-     */
-    public function __construct(RequestFactory $requestFactory, CacheManager $cacheManager, iterable $providers)
-    {
-        $this->requestFactory = $requestFactory;
-        $this->cacheManager = $cacheManager;
-        $this->providers = $providers;
-
+    public function __construct(
+        private readonly Core\Http\RequestFactory $requestFactory,
+        private readonly Cache\SitemapsCache $cache,
+        private readonly iterable $providers,
+    ) {
         $this->validateProviders();
     }
 
     /**
-     * @throws UnsupportedConfigurationException
-     * @throws UnsupportedSiteException
+     * @throws CacheWarmup\Exception\InvalidUrlException
+     * @throws Exception\UnsupportedConfigurationException
+     * @throws Exception\UnsupportedSiteException
      */
-    public function locateBySite(Site $site, SiteLanguage $siteLanguage = null): SiteAwareSitemap
-    {
+    public function locateBySite(
+        Core\Site\Entity\Site $site,
+        Core\Site\Entity\SiteLanguage $siteLanguage = null,
+    ): SiteAwareSitemap {
         // Get sitemap from cache
-        if (($sitemapUrl = $this->cacheManager->get($site, $siteLanguage)) !== null) {
-            return new SiteAwareSitemap(new Uri($sitemapUrl), $site, $siteLanguage);
+        if (($sitemap = $this->cache->get($site, $siteLanguage)) !== null) {
+            return $sitemap;
         }
 
         // Build and validate base URL
         $baseUrl = $siteLanguage !== null ? $siteLanguage->getBase() : $site->getBase();
         if ($baseUrl->getHost() === '') {
-            throw UnsupportedConfigurationException::forBaseUrl((string)$baseUrl);
+            throw Exception\UnsupportedConfigurationException::forBaseUrl((string)$baseUrl);
         }
 
         // Resolve and validate sitemap
         $sitemap = $this->resolveSitemap($site, $siteLanguage);
         if ($sitemap === null) {
-            throw UnsupportedSiteException::forMissingSitemap($site);
+            throw Exception\UnsupportedSiteException::forMissingSitemap($site);
         }
 
         // Store resolved sitemap in cache
-        $this->cacheManager->set($sitemap);
+        $this->cache->set($sitemap);
 
         return $sitemap;
     }
 
     /**
      * @return array<int, SiteAwareSitemap>
-     * @throws UnsupportedConfigurationException
-     * @throws UnsupportedSiteException
+     * @throws CacheWarmup\Exception\InvalidUrlException
+     * @throws Exception\UnsupportedConfigurationException
+     * @throws Exception\UnsupportedSiteException
      */
-    public function locateAllBySite(Site $site): array
+    public function locateAllBySite(Core\Site\Entity\Site $site): array
     {
         $sitemaps = [];
 
-        foreach ($site->getAvailableLanguages(static::getBackendUser()) as $siteLanguage) {
+        foreach ($site->getAvailableLanguages(Utility\BackendUtility::getBackendUser()) as $siteLanguage) {
             if ($siteLanguage->isEnabled()) {
                 $sitemaps[$siteLanguage->getLanguageId()] = $this->locateBySite($site, $siteLanguage);
             }
@@ -110,20 +100,25 @@ final class SitemapLocator
         return $sitemaps;
     }
 
-    public function siteContainsSitemap(Site $site, SiteLanguage $siteLanguage = null): bool
-    {
+    // @todo think about the locate <> contains behavior
+    public function siteContainsSitemap(
+        Core\Site\Entity\Site $site,
+        Core\Site\Entity\SiteLanguage $siteLanguage = null,
+    ): bool {
         try {
             $sitemap = $this->locateBySite($site, $siteLanguage);
             $response = $this->requestFactory->request((string)$sitemap->getUri(), 'HEAD');
 
             return $response->getStatusCode() < 400;
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return false;
         }
     }
 
-    private function resolveSitemap(Site $site, SiteLanguage $siteLanguage = null): ?SiteAwareSitemap
-    {
+    private function resolveSitemap(
+        Core\Site\Entity\Site $site,
+        Core\Site\Entity\SiteLanguage $siteLanguage = null,
+    ): ?SiteAwareSitemap {
         foreach ($this->providers as $provider) {
             if (($sitemap = $provider->get($site, $siteLanguage)) !== null) {
                 return $sitemap;
@@ -133,24 +128,19 @@ final class SitemapLocator
         return null;
     }
 
+    /**
+     * @throws Exception\InvalidProviderException
+     */
     private function validateProviders(): void
     {
         foreach ($this->providers as $provider) {
+            /* @phpstan-ignore-next-line */
             if (!\is_object($provider)) {
-                throw new \InvalidArgumentException(
-                    sprintf('Providers must be of type object, "%s" given.', \gettype($provider)),
-                    1619525071
-                );
+                throw Exception\InvalidProviderException::forInvalidType($provider);
             }
-            if (!\in_array(ProviderInterface::class, class_implements($provider) ?: [])) {
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        'The given provider "%s" does not implement the interface "%s".',
-                        \get_class($provider),
-                        ProviderInterface::class
-                    ),
-                    1619524996
-                );
+
+            if (!is_a($provider, Provider\Provider::class)) {
+                throw Exception\InvalidProviderException::create($provider);
             }
         }
     }

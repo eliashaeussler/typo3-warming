@@ -23,22 +23,17 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Service;
 
-use EliasHaeussler\CacheWarmup\CacheWarmer;
-use EliasHaeussler\CacheWarmup\Crawler\ConfigurableCrawlerInterface;
-use EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface;
-use EliasHaeussler\Typo3Warming\Configuration\Configuration;
-use EliasHaeussler\Typo3Warming\Crawler\RequestAwareInterface;
-use EliasHaeussler\Typo3Warming\Exception\UnsupportedConfigurationException;
-use EliasHaeussler\Typo3Warming\Exception\UnsupportedSiteException;
-use EliasHaeussler\Typo3Warming\Request\WarmupRequest;
-use EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator;
-use Psr\Http\Message\UriInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use EliasHaeussler\CacheWarmup;
+use EliasHaeussler\Typo3Warming\Configuration;
+use EliasHaeussler\Typo3Warming\Crawler;
+use EliasHaeussler\Typo3Warming\Exception;
+use EliasHaeussler\Typo3Warming\Http;
+use EliasHaeussler\Typo3Warming\Result;
+use EliasHaeussler\Typo3Warming\Sitemap;
+use EliasHaeussler\Typo3Warming\Utility;
+use EliasHaeussler\Typo3Warming\ValueObject;
+use GuzzleHttp\Exception\GuzzleException;
+use TYPO3\CMS\Core;
 
 /**
  * CacheWarmupService
@@ -46,147 +41,118 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class CacheWarmupService implements LoggerAwareInterface
+final class CacheWarmupService
 {
-    use LoggerAwareTrait;
-
-    private SiteFinder $siteFinder;
-    private SitemapLocator $sitemapLocator;
-    private int $limit;
-    private CrawlerInterface $crawler;
+    private CacheWarmup\Crawler\CrawlerInterface $crawler;
 
     /**
-     * @throws UnsupportedConfigurationException
+     * @throws CacheWarmup\Exception\InvalidCrawlerException
      */
     public function __construct(
-        SiteFinder $siteFinder,
-        SitemapLocator $sitemapLocator,
-        Configuration $configuration
+        private readonly Http\Client\ClientFactory $clientFactory,
+        private readonly Configuration\Configuration $configuration,
+        private readonly CacheWarmup\Crawler\CrawlerFactory $crawlerFactory,
+        private readonly Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
+        private readonly Sitemap\SitemapLocator $sitemapLocator,
     ) {
-        $this->siteFinder = $siteFinder;
-        $this->sitemapLocator = $sitemapLocator;
-        $this->limit = $configuration->getLimit();
-        $this->crawler = $this->initializeCrawler(
-            $configuration->getCrawler(),
-            $configuration->getCrawlerOptions()
+        $this->setCrawler(
+            $this->configuration->getCrawler(),
+            $this->configuration->getCrawlerOptions(),
         );
     }
 
     /**
-     * @param Site[] $sites
-     * @throws UnsupportedConfigurationException
-     * @throws UnsupportedSiteException
+     * @param list<ValueObject\Request\SiteWarmupRequest> $sites
+     * @param list<ValueObject\Request\PageWarmupRequest> $pages
+     * @throws CacheWarmup\Exception\Exception
+     * @throws Core\Exception\SiteNotFoundException
+     * @throws Exception\UnsupportedConfigurationException
+     * @throws Exception\UnsupportedSiteException
+     * @throws GuzzleException
      */
-    public function warmupSites(array $sites, WarmupRequest $request): CrawlerInterface
-    {
-        $cacheWarmer = new CacheWarmer();
-        $cacheWarmer->setLimit($this->limit);
+    public function warmup(
+        array $sites = [],
+        array $pages = [],
+        int $limit = null,
+        string $strategy = null,
+    ): Result\CacheWarmupResult {
+        $cacheWarmer = new CacheWarmup\CacheWarmer(
+            $limit ?? $this->configuration->getLimit(),
+            $this->clientFactory->get(),
+            $this->crawler,
+            $this->createCrawlingStrategy($strategy),
+            true,
+            $this->configuration->getExcludePatterns(),
+        );
 
-        foreach ($sites as $site) {
-            $siteLanguage = null;
-            if ($request->getLanguageId() !== null) {
-                $siteLanguage = $site->getLanguageById($request->getLanguageId());
+        foreach ($sites as $siteWarmupRequest) {
+            foreach ($siteWarmupRequest->getLanguageIds() as $languageId) {
+                $siteLanguage = $siteWarmupRequest->getSite()->getLanguageById($languageId);
+                $sitemap = $this->sitemapLocator->locateBySite($siteWarmupRequest->getSite(), $siteLanguage);
+                $cacheWarmer->addSitemaps($sitemap);
             }
-            $sitemap = $this->sitemapLocator->locateBySite($site, $siteLanguage);
-            $cacheWarmer->addSitemaps($sitemap);
         }
 
-        if ($this->crawler instanceof RequestAwareInterface) {
-            $request->setRequestedUrls($cacheWarmer->getUrls());
-            $this->crawler->setRequest($request);
+        foreach ($pages as $pageWarmupRequest) {
+            $languageIds = [null];
+
+            if ($pageWarmupRequest->getLanguageIds() !== []) {
+                $languageIds = $pageWarmupRequest->getLanguageIds();
+            }
+
+            foreach ($languageIds as $languageId) {
+                $url = Utility\HttpUtility::generateUri($pageWarmupRequest->getPage(), $languageId);
+
+                if ($url !== null) {
+                    $cacheWarmer->addUrl((string)$url);
+                }
+            }
         }
 
-        return $cacheWarmer->run($this->crawler);
+        return new Result\CacheWarmupResult(
+            $cacheWarmer->run(),
+            $cacheWarmer->getExcludedSitemaps(),
+            $cacheWarmer->getExcludedUrls(),
+        );
     }
 
-    /**
-     * @param int[] $pageIds
-     * @throws SiteNotFoundException
-     */
-    public function warmupPages(array $pageIds, WarmupRequest $request): CrawlerInterface
-    {
-        $cacheWarmer = new CacheWarmer();
-        $cacheWarmer->setLimit($this->limit);
-
-        foreach ($pageIds as $pageId) {
-            $url = $this->generateUri($pageId, $request->getLanguageId());
-            $cacheWarmer->addUrl($url);
-        }
-
-        if ($this->crawler instanceof RequestAwareInterface) {
-            $request->setRequestedUrls($cacheWarmer->getUrls());
-            $this->crawler->setRequest($request);
-        }
-
-        return $cacheWarmer->run($this->crawler);
-    }
-
-    /**
-     * @throws SiteNotFoundException
-     */
-    public function generateUri(int $pageId, int $languageId = null): UriInterface
-    {
-        $site = $this->siteFinder->getSiteByPageId($pageId);
-
-        return $site->getRouter()->generateUri((string)$pageId, ['_language' => $languageId]);
-    }
-
-    public function getCrawler(): CrawlerInterface
+    public function getCrawler(): CacheWarmup\Crawler\CrawlerInterface
     {
         return $this->crawler;
     }
 
     /**
-     * @param class-string<CrawlerInterface>|CrawlerInterface $crawler
+     * @param class-string<CacheWarmup\Crawler\CrawlerInterface>|CacheWarmup\Crawler\CrawlerInterface $crawler
      * @param array<string, mixed> $options
-     * @throws UnsupportedConfigurationException
+     * @throws CacheWarmup\Exception\InvalidCrawlerException
      */
-    public function setCrawler($crawler, array $options = []): self
+    public function setCrawler(string|CacheWarmup\Crawler\CrawlerInterface $crawler, array $options = []): self
     {
-        $this->crawler = $this->initializeCrawler($crawler, $options);
-        return $this;
-    }
-
-    /**
-     * @param class-string<CrawlerInterface>|CrawlerInterface $crawler
-     * @param array<string, mixed> $options
-     * @throws UnsupportedConfigurationException
-     */
-    private function initializeCrawler($crawler, array $options = []): CrawlerInterface
-    {
-        if ($crawler instanceof CrawlerInterface) {
-            goto configurableCrawler;
+        if ($options !== []) {
+            $options = $this->crawlerFactory->parseCrawlerOptions($options);
         }
 
-        // Use default crawler if no custom crawler is given
-        if (empty($crawler)) {
-            $crawler = Configuration::DEFAULT_CRAWLER;
-        }
-
-        // Throw exception if crawler variable type is unsupported
-        if (!\is_string($crawler)) {
-            throw UnsupportedConfigurationException::forTypeMismatch('string', \gettype($crawler));
-        }
-
-        // Throw exception if crawler class does not exist
-        if (!class_exists($crawler)) {
-            throw UnsupportedConfigurationException::forUnresolvableClass($crawler);
-        }
-
-        // Throw exception if crawler class is invalid
-        if (!\in_array(CrawlerInterface::class, class_implements($crawler) ?: [])) {
-            throw UnsupportedConfigurationException::forMissingImplementation($crawler, CrawlerInterface::class);
-        }
-
-        // Instantiate crawler
-        $crawler = GeneralUtility::makeInstance($crawler);
-
-        // Apply crawler options to configurable crawler
-        configurableCrawler:
-        if ($crawler instanceof ConfigurableCrawlerInterface) {
+        if ($crawler instanceof CacheWarmup\Crawler\ConfigurableCrawlerInterface && $options !== []) {
             $crawler->setOptions($options);
         }
 
-        return $crawler;
+        if (\is_string($crawler)) {
+            $this->crawler = $this->crawlerFactory->get($crawler, $options);
+        } else {
+            $this->crawler = $crawler;
+        }
+
+        return $this;
+    }
+
+    private function createCrawlingStrategy(string $strategy = null): ?CacheWarmup\Crawler\Strategy\CrawlingStrategy
+    {
+        $strategy ??= $this->configuration->getStrategy();
+
+        if ($strategy !== null) {
+            return $this->crawlingStrategyFactory->get($strategy);
+        }
+
+        return null;
     }
 }

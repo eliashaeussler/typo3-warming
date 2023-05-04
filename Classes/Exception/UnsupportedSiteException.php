@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Exception;
 
-use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core;
 
 /**
  * UnsupportedSiteException
@@ -31,9 +31,9 @@ use TYPO3\CMS\Core\Site\Entity\Site;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class UnsupportedSiteException extends \Exception
+final class UnsupportedSiteException extends Exception
 {
-    public static function forMissingSitemap(Site $site): self
+    public static function forMissingSitemap(Core\Site\Entity\Site $site): self
     {
         return new self(
             sprintf('The site "%s" is not supported since it does not provide a sitemap.', $site->getIdentifier()),

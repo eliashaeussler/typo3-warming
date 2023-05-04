@@ -22,11 +22,9 @@ declare(strict_types=1);
  */
 
 use Composer\Autoload\ClassLoader;
-use EliasHaeussler\Typo3Warming\Command\ShowUserAgentCommand;
-use EliasHaeussler\Typo3Warming\Command\WarmupCommand;
-use Symfony\Component\Console\Application;
-use TYPO3\CMS\Core\Core\Bootstrap;
-use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use EliasHaeussler\Typo3Warming\Command;
+use Symfony\Component\Console;
+use TYPO3\CMS\Core;
 
 /** @var ClassLoader $classLoader */
 $classLoader = require \dirname(__DIR__, 2) . '/.Build/vendor/autoload.php';
@@ -35,15 +33,15 @@ $classLoader = require \dirname(__DIR__, 2) . '/.Build/vendor/autoload.php';
 $classLoader->register(true);
 
 // Build environment and initialize the service container
-SystemEnvironmentBuilder::run(0, SystemEnvironmentBuilder::REQUESTTYPE_CLI);
-$container = Bootstrap::init($classLoader);
+Core\Core\SystemEnvironmentBuilder::run(0, Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_CLI);
+$container = Core\Core\Bootstrap::init($classLoader);
 
 // Disable TYPO3's phar stream wrapper to allow execution of PHPStan
 stream_wrapper_restore('phar');
 
 // Initialize application and add command
-$application = new Application();
-$application->add($container->get(ShowUserAgentCommand::class));
-$application->add($container->get(WarmupCommand::class));
+$application = new Console\Application();
+$application->add($container->get(Command\ShowUserAgentCommand::class));
+$application->add($container->get(Command\WarmupCommand::class));
 
 return $application;

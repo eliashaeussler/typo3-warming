@@ -22,6 +22,7 @@ caches of specific sites or pages.
 
         :param int $pageId: ID of the page to be checked.
         :param int $languageId: Optional language ID to be included in the check.
+        :returntype: bool
 
     ..  php:method:: canWarmupCacheOfSite($site, $languageId = null)
 
@@ -29,6 +30,7 @@ caches of specific sites or pages.
 
         :param TYPO3\\CMS\\Core\\Site\\Entity\\Site $site: The site to be checked.
         :param int $languageId: Optional language ID to be included in the check.
+        :returntype: bool
 
 ..  seealso::
 

@@ -1,0 +1,22 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:c="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
+<c:icon identifier="apps-pagetree-page-domain" size="large" overlay="overlay-warning" />
+
+<h2>
+    <f:translate key="LLL:EXT:warming/Resources/Private/Language/locallang.xlf:modal.alert.noSitesConfigured.title" />
+</h2>
+
+<p>
+    <f:translate key="LLL:EXT:warming/Resources/Private/Language/locallang.xlf:modal.alert.noSitesConfigured.message" />
+</p>
+
+<p>
+    <f:be.link route="site_configuration" class="btn btn-primary">
+        <c:icon identifier="actions-list" />
+        <f:translate key="LLL:EXT:warming/Resources/Private/Language/locallang.xlf:modal.alert.noSitesConfigured.button" />
+    </f:be.link>
+</p>
+
+</html>

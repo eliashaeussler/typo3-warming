@@ -1,0 +1,8 @@
+"pages",,,,,
+,"uid","pid","title","sys_language_uid","l10n_parent","is_siteroot","slug"
+,1,0,"Root",0,0,1,"/"
+,2,1,"Subsite 1",0,0,0,"/subsite-1"
+,3,1,"Subsite 2",0,0,0,"/subsite-2"
+,4,3,"Subsite 2-1",0,0,0,"/subsite-2/subsite-2-1"
+,5,0,"Root L=1",1,1,1,"/"
+,6,1,"Subsite 1 L=1",1,2,0,"/subsite-1-l-1"

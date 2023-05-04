@@ -23,9 +23,9 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Sitemap\Provider;
 
-use EliasHaeussler\Typo3Warming\Sitemap\SiteAwareSitemap;
-use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use EliasHaeussler\Typo3Warming\Sitemap;
+use EliasHaeussler\Typo3Warming\Utility;
+use TYPO3\CMS\Core;
 
 /**
  * DefaultProvider
@@ -33,16 +33,18 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class DefaultProvider extends AbstractProvider
+final class DefaultProvider implements Provider
 {
     public const DEFAULT_PATH = 'sitemap.xml';
 
-    public function get(Site $site, SiteLanguage $siteLanguage = null): ?SiteAwareSitemap
-    {
-        return new SiteAwareSitemap(
-            $this->getSiteUrlWithPath($site, self::DEFAULT_PATH, $siteLanguage),
+    public function get(
+        Core\Site\Entity\Site $site,
+        Core\Site\Entity\SiteLanguage $siteLanguage = null,
+    ): ?Sitemap\SiteAwareSitemap {
+        return new Sitemap\SiteAwareSitemap(
+            Utility\HttpUtility::getSiteUrlWithPath($site, self::DEFAULT_PATH, $siteLanguage),
             $site,
-            $siteLanguage
+            $siteLanguage ?? $site->getDefaultLanguage(),
         );
     }
 

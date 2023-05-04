@@ -1,0 +1,14 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:c="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+      data-namespace-typo3-fluid="true"
+>
+
+<div class="tx-warming-sidebar">
+    <f:render partial="Modal/Sidebar/UserAgent" arguments="{_all}" />
+
+    <f:if condition="{isAdmin}">
+        <f:render partial="Modal/Sidebar/Settings" arguments="{_all}" />
+    </f:if>
+</div>
+
+</html>

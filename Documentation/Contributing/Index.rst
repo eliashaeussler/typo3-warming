@@ -14,7 +14,9 @@ The development of this extension follows the official
 `TYPO3 coding standards <https://github.com/TYPO3/coding-standards>`__.
 To ensure the stability and cleanliness of the code, various code
 quality tools are used and most components are covered with test
-cases.
+cases. In addition, we use `DDEV <https://ddev.readthedocs.io/en/stable/>`__
+for local development. Make sure to set it up as described below. For
+continuous integration, we use GitHub Actions.
 
 ..  _create-an-issue-first:
 
@@ -48,17 +50,20 @@ Clone the repository first:
     git clone https://github.com/eliashaeussler/typo3-warming.git
     cd typo3-warming
 
-Now install all Composer dependencies:
+Now start DDEV:
 
 ..  code-block:: bash
 
-    composer install
+    ddev start
 
-Next, install all Node dependencies:
+Next, install all dependencies:
 
 ..  code-block:: bash
 
-    yarn --cwd Resources/Private/Frontend
+    ddev composer install
+    ddev frontend install
+
+You can access the DDEV site at https://typo3-ext-warming.ddev.site/.
 
 ..  _check-code-quality:
 
@@ -75,20 +80,27 @@ TYPO3
 
 ..  code-block:: bash
 
-    # Run all linters
-    composer lint
+    # All linters
+    ddev composer lint
 
-    # Run Composer linter only
-    composer lint:composer
+    # Specific linters
+    ddev composer lint:composer
+    ddev composer lint:editorconfig
+    ddev composer lint:php
 
-    # Run PHP linter only
-    composer lint:php
+    # Fix all CGL issues
+    ddev composer fix
 
-    # Run TypoScript linter only
-    composer lint:typoscript
+    # Fix specific CGL issues
+    ddev composer fix:composer
+    ddev composer fix:editorconfig
+    ddev composer fix:php
 
-    # Run PHP static code analysis
-    composer sca
+    # All static code analyzers
+    ddev composer sca
+
+    # Specific static code analyzers
+    ddev composer sca:php
 
 ..  _cgl-frontend:
 
@@ -97,17 +109,19 @@ Frontend
 
 ..  code-block:: bash
 
-    # Run all linters
-    yarn --cwd Resources/Private/Frontend lint
-    yarn --cwd Resources/Private/Frontend lint:fix
+    # All linters
+    ddev frontend lint
 
-    # Run SCSS linter only
-    yarn --cwd Resources/Private/Frontend lint:scss
-    yarn --cwd Resources/Private/Frontend lint:scss:fix
+    # Specific linters
+    ddev frontend lint:scss
+    ddev frontend lint:ts
 
-    # Run TypeScript linter only
-    yarn --cwd Resources/Private/Frontend lint:ts
-    yarn --cwd Resources/Private/Frontend lint:ts:fix
+    # Fix all CGL issues
+    ddev frontend fix
+
+    # Fix specific CGL issues
+    ddev frontend fix:scss
+    ddev frontend fix:ts
 
 ..  _run-tests:
 
@@ -117,20 +131,36 @@ Run tests
 ..  image:: https://github.com/eliashaeussler/typo3-warming/actions/workflows/tests.yaml/badge.svg
     :target: https://github.com/eliashaeussler/typo3-warming/actions/workflows/tests.yaml
 
+..  rst-class:: d-inline-block mb-3
+
 ..  image:: https://codecov.io/gh/eliashaeussler/typo3-warming/branch/main/graph/badge.svg?token=7M3UXACCKA
     :target: https://codecov.io/gh/eliashaeussler/typo3-warming
 
-..  rst-class:: mt-3
+..  code-block:: bash
+
+    # All tests
+    ddev composer test
+
+    # Specific tests
+    ddev composer test:functional
+    ddev composer test:unit
+
+    # All tests with code coverage
+    ddev composer test:coverage
+
+    # Specific tests with code coverage
+    ddev composer test:coverage:functional
+    ddev composer test:coverage:unit
+
+    # Merge code coverage of all test suites
+    ddev composer test:coverage:merge
+
+Code coverage reports are written to :file:`.Build/coverage`. You can
+open the last merged HTML report like follows:
 
 ..  code-block:: bash
 
-    # Run tests
-    composer test
-
-    # Run tests with code coverage
-    composer test:ci
-
-The code coverage reports will be stored in :file:`.Build/log/coverage`.
+    open .Build/coverage/html/_merged/index.html
 
 ..  _build-documentation:
 
@@ -155,5 +185,10 @@ The built docs will be stored in :file:`.Build/docs`.
 Pull Request
 ------------
 
-When you have finished developing your contribution, simply submit a
-pull request on GitHub: https://github.com/eliashaeussler/typo3-warming/pulls
+Once you have finished your work, please **submit a pull request** and describe
+what you've done: https://github.com/eliashaeussler/typo3-warming/pulls
+
+Ideally, your PR references an issue describing the problem
+you're trying to solve. All described code quality tools are automatically
+executed on each pull request for all currently supported PHP versions and TYPO3
+versions.

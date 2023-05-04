@@ -26,6 +26,7 @@ return \Symfony\Component\Finder\Finder::create()
     ->in(__DIR__)
     ->ignoreVCSIgnored(true)
     ->exclude([
+        'Resources/Public/Css',
         'Resources/Public/JavaScript',
     ])
 ;

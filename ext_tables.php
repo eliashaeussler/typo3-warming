@@ -19,4 +19,4 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-\EliasHaeussler\Typo3Warming\Configuration\Extension::registerCustomStyles();
+\EliasHaeussler\Typo3Warming\Extension::registerCustomStyles();

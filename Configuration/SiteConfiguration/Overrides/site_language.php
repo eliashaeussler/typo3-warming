@@ -20,8 +20,8 @@
  */
 
 $GLOBALS['SiteConfiguration']['site_language']['columns']['xml_sitemap_path'] = [
-    'label' => 'LLL:EXT:warming/Resources/Private/Language/locallang_db.xlf:sites.xml_sitemap_path.label',
-    'description' => 'LLL:EXT:warming/Resources/Private/Language/locallang_db.xlf:sites.xml_sitemap_path.description',
+    'label' => \EliasHaeussler\Typo3Warming\Configuration\Localization::translate('sites.xml_sitemap_path.label', type: 'db'),
+    'description' => \EliasHaeussler\Typo3Warming\Configuration\Localization::translate('sites.xml_sitemap_path.description', type: 'db'),
     'displayCond' => 'FIELD:languageId:>:0',
     'config' => [
         'type' => 'input',
@@ -40,5 +40,5 @@ $GLOBALS['SiteConfiguration']['site_language']['columns']['xml_sitemap_path'] = 
 $GLOBALS['SiteConfiguration']['site_language']['types']['1']['showitem'] = str_replace(
     '--palette--;;default,',
     '--palette--;;default, xml_sitemap_path,',
-    $GLOBALS['SiteConfiguration']['site_language']['types']['1']['showitem']
+    (string)$GLOBALS['SiteConfiguration']['site_language']['types']['1']['showitem'],
 );

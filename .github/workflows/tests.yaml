@@ -14,16 +14,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        typo3-version: ["10.4", "11.5"]
-        php-version: ["7.4", "8.0", "8.1", "8.2"]
+        php-version: ["8.1", "8.2"]
+        typo3-version: ["12.4"]
         dependencies: ["highest", "lowest"]
-        exclude:
-          - typo3-version: "10.4"
-            php-version: "8.0"
-          - typo3-version: "10.4"
-            php-version: "8.1"
-          - typo3-version: "10.4"
-            php-version: "8.2"
+    env:
+      typo3DatabaseName: typo3
+      typo3DatabaseHost: '127.0.0.1'
+      typo3DatabaseUsername: root
+      typo3DatabasePassword: root
     steps:
       - uses: actions/checkout@v3
         with:
@@ -36,6 +34,10 @@ jobs:
           php-version: ${{ matrix.php-version }}
           tools: composer:v2
           coverage: none
+
+      # Start MySQL service
+      - name: Start MySQL
+        run: sudo /etc/init.d/mysql start
 
       # Install dependencies
       - name: Install Composer dependencies
@@ -51,6 +53,11 @@ jobs:
   coverage:
     name: Test coverage
     runs-on: ubuntu-latest
+    env:
+      typo3DatabaseName: typo3
+      typo3DatabaseHost: '127.0.0.1'
+      typo3DatabaseUsername: root
+      typo3DatabasePassword: root
     steps:
       - uses: actions/checkout@v3
         with:
@@ -64,17 +71,21 @@ jobs:
           tools: composer:v2
           coverage: pcov
 
+      # Start MySQL service
+      - name: Start MySQL
+        run: sudo /etc/init.d/mysql start
+
       # Install dependencies
       - name: Install Composer dependencies
         uses: ramsey/composer-install@v2
 
       # Run tests
       - name: Run tests
-        run: composer test:ci
+        run: composer test:coverage
 
       # Report coverage
       - name: Fix coverage path
-        working-directory: .Build/log/coverage
+        working-directory: .Build/coverage
         run: sed -i 's#/home/runner/work/typo3-warming/typo3-warming#${{ github.workspace }}#g' clover.xml
       - name: CodeClimate report
         uses: paambaati/codeclimate-action@v4.0.0
@@ -83,11 +94,11 @@ jobs:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
           coverageLocations: |
-            ${{ github.workspace }}/.Build/log/coverage/clover.xml:clover
+            ${{ github.workspace }}/.Build/coverage/clover.xml:clover
       - name: codecov report
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          directory: .Build/log/coverage
+          directory: .Build/coverage
           fail_ci_if_error: true
           verbose: true

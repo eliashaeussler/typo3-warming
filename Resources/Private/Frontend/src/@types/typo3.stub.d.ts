@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
@@ -17,56 +19,61 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 declare const TYPO3: any;
 declare const nothing: any;
-/* eslint-enable @typescript-eslint/no-explicit-any */
 
 /**
- * @see https://github.com/TYPO3/TYPO3.CMS/blob/11.5/Build/Sources/TypeScript/backend/Resources/Public/TypeScript/ActionButton/ImmediateAction.ts
+ * @see https://github.com/TYPO3/typo3/blob/v12.4.0/Build/Sources/TypeScript/backend/action-button/immediate-action.ts
  */
-declare module 'TYPO3/CMS/Backend/ActionButton/ImmediateAction' {
+declare module '@typo3/backend/action-button/immediate-action.js' {
   export default nothing;
 }
 
 /**
- * @see https://github.com/TYPO3/TYPO3.CMS/blob/11.5/Build/Sources/TypeScript/backend/Resources/Public/TypeScript/Icons.ts
+ * @see https://github.com/TYPO3/typo3/blob/v12.4.0/Build/Sources/TypeScript/backend/icons.ts
  */
-declare module 'TYPO3/CMS/Backend/Icons' {
+declare module '@typo3/backend/icons.js' {
   export default nothing;
 }
 
 /**
- * @see https://github.com/TYPO3/TYPO3.CMS/blob/11.5/Build/Sources/TypeScript/backend/Resources/Public/TypeScript/Modal.ts
+ * @see https://github.com/TYPO3/typo3/blob/v12.4.0/Build/Sources/TypeScript/backend/modal.ts
  */
-declare module 'TYPO3/CMS/Backend/Modal' {
+declare module '@typo3/backend/modal.js' {
   export default nothing;
 }
 
 /**
- * @see https://github.com/TYPO3/TYPO3.CMS/blob/11.5/Build/Sources/TypeScript/backend/Resources/Public/TypeScript/Notification.ts
+ * @see https://github.com/TYPO3/typo3/blob/v12.4.0/Build/Sources/TypeScript/backend/notification.ts
  */
-declare module 'TYPO3/CMS/Backend/Notification' {
+declare module '@typo3/backend/notification.js' {
   export default nothing;
 }
 
 /**
- * @see https://github.com/TYPO3/TYPO3.CMS/blob/11.5/Build/Sources/TypeScript/backend/Resources/Public/TypeScript/Viewport.ts
+ * @see https://github.com/TYPO3/typo3/blob/v12.4.0/Build/Sources/TypeScript/core/ajax/ajax-request.ts
  */
-declare module 'TYPO3/CMS/Backend/Viewport' {
+declare module '@typo3/core/ajax/ajax-request.js' {
   export default nothing;
 }
 
 /**
- * @see https://github.com/TYPO3/TYPO3.CMS/blob/11.5/Build/Sources/TypeScript/core/Resources/Public/TypeScript/Ajax/AjaxRequest.ts
+ * @see https://github.com/TYPO3/typo3/blob/v12.4.0/Build/Sources/TypeScript/core/ajax/ajax-response.ts
  */
-declare module 'TYPO3/CMS/Core/Ajax/AjaxRequest' {
+declare module '@typo3/core/ajax/ajax-response.js' {
   export default nothing;
 }
 
 /**
- * @see https://github.com/TYPO3/TYPO3.CMS/blob/11.5/Build/Sources/TypeScript/core/Resources/Public/TypeScript/Ajax/AjaxResponse.ts
+ * @see https://github.com/TYPO3/typo3/blob/v12.4.0/Build/Sources/TypeScript/core/document-service.ts
  */
-declare module 'TYPO3/CMS/Core/Ajax/AjaxResponse' {
+declare module '@typo3/core/document-service.js' {
+  export default nothing;
+}
+
+/**
+ * @see https://github.com/TYPO3/typo3/blob/v12.4.0/Build/Sources/TypeScript/core/event/regular-event.ts
+ */
+declare module '@typo3/core/event/regular-event.js' {
   export default nothing;
 }

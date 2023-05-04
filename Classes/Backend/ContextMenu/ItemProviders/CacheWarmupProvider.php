@@ -23,16 +23,11 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Backend\ContextMenu\ItemProviders;
 
-use EliasHaeussler\Typo3Warming\Configuration\Configuration;
-use EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator;
-use EliasHaeussler\Typo3Warming\Traits\BackendUserAuthenticationTrait;
-use EliasHaeussler\Typo3Warming\Utility\AccessUtility;
-use TYPO3\CMS\Backend\ContextMenu\ItemProviders\PageProvider;
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use EliasHaeussler\Typo3Warming\Configuration;
+use EliasHaeussler\Typo3Warming\Sitemap;
+use EliasHaeussler\Typo3Warming\Utility;
+use TYPO3\CMS\Backend;
+use TYPO3\CMS\Core;
 
 /**
  * CacheWarmupProvider
@@ -40,12 +35,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class CacheWarmupProvider extends PageProvider
+final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PageProvider
 {
-    use BackendUserAuthenticationTrait;
-
-    protected const ITEM_MODE_PAGE = 'cacheWarmupPage';
-    protected const ITEM_MODE_SITE = 'cacheWarmupSite';
+    private const ITEM_MODE_PAGE = 'cacheWarmupPage';
+    private const ITEM_MODE_SITE = 'cacheWarmupSite';
 
     /**
      * @var array<string, array{
@@ -80,16 +73,12 @@ final class CacheWarmupProvider extends PageProvider
         ],
     ];
 
-    private SitemapLocator $sitemapLocator;
-    private SiteFinder $siteFinder;
-    private Configuration $configuration;
-
-    public function __construct(string $table, string $identifier, string $context = '')
-    {
-        parent::__construct($table, $identifier, $context);
-        $this->sitemapLocator = GeneralUtility::makeInstance(SitemapLocator::class);
-        $this->siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
-        $this->configuration = GeneralUtility::makeInstance(Configuration::class);
+    public function __construct(
+        private readonly Sitemap\SitemapLocator $sitemapLocator,
+        private readonly Core\Site\SiteFinder $siteFinder,
+        private readonly Configuration\Configuration $configuration,
+    ) {
+        parent::__construct();
     }
 
     protected function canRender(string $itemName, string $type): bool
@@ -111,7 +100,7 @@ final class CacheWarmupProvider extends PageProvider
         }
 
         // Language items in sub-menus are already filtered
-        if (str_starts_with($itemName, 'lang_')) {
+        if (str_contains($itemName, '_lang_')) {
             return true;
         }
 
@@ -129,7 +118,7 @@ final class CacheWarmupProvider extends PageProvider
             return $this->canWarmupCachesOfSite();
         }
 
-        return AccessUtility::canWarmupCacheOfPage((int)$this->identifier);
+        return Utility\AccessUtility::canWarmupCacheOfPage((int)$this->identifier);
     }
 
     /**
@@ -175,20 +164,20 @@ final class CacheWarmupProvider extends PageProvider
 
             // Get all languages of current site that are available
             // for the current Backend user
-            $languages = $site->getAvailableLanguages(static::getBackendUser());
+            $languages = $site->getAvailableLanguages($this->backendUser);
 
             // Remove sites where no XML sitemap is available
             if ($itemName === self::ITEM_MODE_SITE) {
                 $languages = array_filter(
                     $languages,
-                    fn (SiteLanguage $siteLanguage): bool => $this->canWarmupCachesOfSite($siteLanguage)
+                    fn (Core\Site\Entity\SiteLanguage $siteLanguage): bool => $this->canWarmupCachesOfSite($siteLanguage)
                 );
             } else {
                 $languages = array_filter(
                     $languages,
-                    fn (SiteLanguage $siteLanguage): bool => AccessUtility::canWarmupCacheOfPage(
+                    fn (Core\Site\Entity\SiteLanguage $siteLanguage): bool => Utility\AccessUtility::canWarmupCacheOfPage(
                         (int)$this->identifier,
-                        $siteLanguage->getLanguageId()
+                        $siteLanguage->getLanguageId(),
                     )
                 );
             }
@@ -205,7 +194,7 @@ final class CacheWarmupProvider extends PageProvider
 
             // Add each site language as child element of the current item
             foreach ($languages as $language) {
-                $configuration['childItems']['lang_' . $language->getLanguageId()] = [
+                $configuration['childItems'][$itemName . '_lang_' . $language->getLanguageId()] = [
                     'label' => $language->getTitle(),
                     'iconIdentifier' => $language->getFlagIdentifier(),
                     'callbackAction' => $configuration['callbackAction'] ?? null,
@@ -223,34 +212,44 @@ final class CacheWarmupProvider extends PageProvider
     protected function getAdditionalAttributes(string $itemName): array
     {
         $attributes = [
-            'data-callback-module' => 'TYPO3/CMS/Warming/Backend/ContextMenu/CacheWarmupContextMenuAction',
+            'data-callback-module' => '@eliashaeussler/typo3-warming/backend/context-menu-action',
         ];
 
-        // Add language ID as data attribute if current item is part
-        // of a submenu within the configured context menu items
-        if (str_starts_with($itemName, 'lang_')) {
-            $attributes['data-language-id'] = (int)substr($itemName, 5);
+        // Early return if current item is not part of a submenu
+        // within the configured context menu items
+        if (!str_contains($itemName, '_lang_')) {
+            return $attributes;
         }
+
+        [$parentItem, $languageId] = explode('_lang_', $itemName);
+
+        // Add site identifier as data attribute
+        if ($parentItem === self::ITEM_MODE_SITE) {
+            $attributes['data-site-identifier'] = $this->getCurrentSite()?->getIdentifier();
+        }
+
+        // Add language ID as data attribute
+        $attributes['data-language-id'] = (int)$languageId;
 
         return $attributes;
     }
 
-    private function canWarmupCachesOfSite(SiteLanguage $siteLanguage = null): bool
+    private function canWarmupCachesOfSite(Core\Site\Entity\SiteLanguage $siteLanguage = null): bool
     {
         $site = $this->getCurrentSite();
-        $languageId = $siteLanguage !== null ? $siteLanguage->getLanguageId() : null;
+        $languageId = $siteLanguage?->getLanguageId();
 
         return $site !== null
             && $site->getRootPageId() === (int)$this->identifier
-            && AccessUtility::canWarmupCacheOfSite($site, $languageId)
+            && Utility\AccessUtility::canWarmupCacheOfSite($site, $languageId)
             && $this->sitemapLocator->siteContainsSitemap($site, $siteLanguage);
     }
 
-    private function getCurrentSite(): ?Site
+    private function getCurrentSite(): ?Core\Site\Entity\Site
     {
         try {
             return $this->siteFinder->getSiteByPageId((int)$this->identifier);
-        } catch (SiteNotFoundException $e) {
+        } catch (Core\Exception\SiteNotFoundException) {
             return null;
         }
     }

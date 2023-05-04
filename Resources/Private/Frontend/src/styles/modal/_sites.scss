@@ -1,0 +1,129 @@
+/*
+ * This file is part of the TYPO3 CMS extension "warming".
+ *
+ * Copyright (C) 2023 Elias Häußler <elias@haeussler.dev>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+
+.tx-warming-sites-modal {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    overflow: auto;
+    margin: 0 calc(var(--bs-modal-padding) * -1);
+}
+
+.tx-warming-sites,
+.tx-warming-sidebar {
+    position: relative;
+    flex-grow: 1;
+    overflow: auto;
+    padding: 0 var(--bs-modal-padding);
+}
+
+.tx-warming-sites {
+    display: flex;
+    flex-direction: column;
+    flex-basis: var(--tx-warming-modal-sites-width);
+    gap: 1px;
+
+    > ul {
+        padding: 0;
+        margin: 0;
+    }
+
+    > ul > li {
+        list-style: none;
+    }
+}
+
+.tx-warming-sites-group,
+.tx-warming-sites-group-item {
+    display: flex;
+    flex: 1;
+    font-size: var(--typo3-component-font-size);
+    line-height: var(--typo3-component-line-height);
+    padding: var(--typo3-list-item-padding-y) var(--typo3-list-item-padding-x);
+    border-radius: calc(var(--typo3-component-border-radius) - var(--typo3-component-border-width));
+    color: var(--typo3-light-color);
+    background-color: var(--typo3-light-bg);
+    pointer-events: all;
+
+    &-disabled {
+        pointer-events: none;
+        opacity: 0.5;
+    }
+
+    &-select-all {
+        background-color: var(--bs-gray-100);
+        outline: 1px solid var(--bs-gray-200);
+        outline-offset: -1px;
+        z-index: 1;
+    }
+
+    &:not(.tx-warming-sites-group-disabled) {
+        cursor: pointer;
+
+        &:hover,
+        &:focus,
+        &.active {
+            z-index: 1;
+            outline-offset: -1px;
+            text-decoration: underline;
+        }
+
+        &:hover {
+            background-color: var(--typo3-light-hover-bg);
+            outline: 1px solid var(--typo3-light-hover-border-color);
+        }
+
+        &:focus,
+        &.active {
+            background-color: var(--typo3-light-focus-bg);
+            outline: 1px solid var(--typo3-light-focus-border-color);
+        }
+    }
+
+    > .tx-warming-sites-group-selector {
+        width: var(--tx-warming-modal-action-selector-width);
+
+        > input {
+            vertical-align: text-top;
+        }
+    }
+
+    > .tx-warming-sites-group-icon {
+        flex-grow: 0;
+        flex-shrink: 0;
+        width: var(--tx-warming-modal-action-icon-width);
+    }
+
+    > .tx-warming-sites-group-content {
+        flex-grow: 1;
+        word-break: break-word;
+
+        small {
+            opacity: 0.5;
+        }
+    }
+}
+
+.tx-warming-sites-group-item {
+    margin-left: var(--tx-warming-modal-action-selector-width);
+}
+
+.tx-warming-sidebar {
+    flex-basis: var(--tx-warming-modal-sidebar-width);
+}

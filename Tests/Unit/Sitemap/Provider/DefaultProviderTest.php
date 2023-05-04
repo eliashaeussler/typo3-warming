@@ -23,11 +23,10 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Tests\Unit\Sitemap\Provider;
 
-use EliasHaeussler\Typo3Warming\Sitemap\Provider\DefaultProvider;
-use EliasHaeussler\Typo3Warming\Sitemap\SiteAwareSitemap;
-use TYPO3\CMS\Core\Http\Uri;
-use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use EliasHaeussler\Typo3Warming as Src;
+use PHPUnit\Framework;
+use TYPO3\CMS\Core;
+use TYPO3\TestingFramework;
 
 /**
  * DefaultProviderTest
@@ -35,23 +34,26 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class DefaultProviderTest extends UnitTestCase
+#[Framework\Attributes\CoversClass(Src\Sitemap\Provider\DefaultProvider::class)]
+final class DefaultProviderTest extends TestingFramework\Core\Unit\UnitTestCase
 {
-    protected DefaultProvider $subject;
+    protected Src\Sitemap\Provider\DefaultProvider $subject;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->subject = new DefaultProvider();
+        $this->subject = new Src\Sitemap\Provider\DefaultProvider();
     }
 
-    /**
-     * @test
-     */
+    #[Framework\Attributes\Test]
     public function getReturnsSitemapWithDefaultPath(): void
     {
-        $site = new Site('foo', 1, ['base' => 'https://www.example.com/']);
-        $expected = new SiteAwareSitemap(new Uri('https://www.example.com/sitemap.xml'), $site);
+        $site = new Core\Site\Entity\Site('foo', 1, ['base' => 'https://www.example.com/']);
+        $expected = new Src\Sitemap\SiteAwareSitemap(
+            new Core\Http\Uri('https://www.example.com/sitemap.xml'),
+            $site,
+            $site->getDefaultLanguage(),
+        );
 
         self::assertEquals($expected, $this->subject->get($site));
     }

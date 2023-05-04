@@ -1,0 +1,22 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
+<li>
+    <label for="tx-warming-sites-select-all" class="tx-warming-sites-group tx-warming-sites-group-select-all">
+        <f:render partial="Modal/Sites/SiteGroupItem" section="checkbox" arguments="{
+            identifier: 'tx-warming-sites-select-all',
+            all: 1
+        }" />
+
+        <f:render partial="Modal/Sites/SiteGroupItem" section="icon" arguments="{
+            identifier: 'actions-selection-elements-all'
+        }" />
+
+        <f:render partial="Modal/Sites/SiteGroupItem" section="content" arguments="{
+            title: '{f:translate(key: \'LLL:EXT:warming/Resources/Private/Language/locallang.xlf:modal.sites.siteGroup.selectAll\')}',
+            light: 1
+        }" />
+    </label>
+</li>
+
+</html>

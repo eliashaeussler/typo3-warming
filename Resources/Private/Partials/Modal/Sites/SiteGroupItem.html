@@ -1,0 +1,108 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:c="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
+<f:section name="checkbox">
+    {f:if(condition: group, then: siteIdentifier) -> f:variable(name: 'groupName')}
+    {f:if(condition: disabled, then: 'disabled', else: '') -> f:variable(name: 'disabledAttribute')}
+
+    <f:if condition="!{all}">
+        <f:if condition="{groupName}">
+            <f:then>
+                {f:format.json(value: '{site: siteIdentifier, language: languageIdentifier, group: groupName}') -> f:variable(name: 'value')}
+            </f:then>
+            <f:else>
+                {f:format.json(value: '{site: siteIdentifier, language: languageIdentifier, group: null}') -> f:variable(name: 'value')}
+            </f:else>
+        </f:if>
+    </f:if>
+
+    <span class="tx-warming-sites-group-selector {f:if(condition: disabled, then: 'tx-warming-sites-group-selector-disabled')}">
+        <f:if condition="{groupName}">
+            <f:then>
+                <f:if condition="{languageIdentifier} != ">
+                    <f:then>
+                        <input type="checkbox"
+                               id="{identifier}"
+                               name="site"
+                               value="{value}"
+                               data-group="{groupName}"
+                               {disabledAttribute} />
+                    </f:then>
+                    <f:else>
+                        <input type="checkbox"
+                               id="{identifier}"
+                               name="site"
+                               value="{value}"
+                               data-group-root="{groupName}"
+                               {disabledAttribute} />
+                    </f:else>
+                </f:if>
+            </f:then>
+            <f:else>
+                <f:if condition="{all}">
+                    <f:then>
+                        <input type="checkbox"
+                               id="{identifier}"
+                               name="site"
+                               value="{value}"
+                               data-select-all="1"
+                               {disabledAttribute} />
+                    </f:then>
+                    <f:else>
+                        <input type="checkbox"
+                               id="{identifier}"
+                               name="site"
+                               value="{value}"
+                               {disabledAttribute} />
+                    </f:else>
+                </f:if>
+            </f:else>
+        </f:if>
+    </span>
+</f:section>
+
+<f:section name="icon">
+    <span class="tx-warming-sites-group-icon">
+        <c:icon identifier="{identifier}" size="small" overlay="{overlay}" />
+    </span>
+</f:section>
+
+<f:section name="content">
+    <span class="tx-warming-sites-group-content">
+        <f:if condition="{light}">
+            <f:then>
+                {title}
+            </f:then>
+            <f:else>
+                <strong>{title}</strong>
+            </f:else>
+        </f:if>
+        <f:if condition="{id} != ">
+            <f:if condition="{disabled}">
+                <f:then>
+                    [{id}]
+                </f:then>
+                <f:else>
+                    <span class="text-muted">[{id}]</span>
+                </f:else>
+            </f:if>
+        </f:if>
+        <f:if condition="{description}">
+            <br>
+            <f:if condition="{disabled}">
+                <f:then>
+                    <span class="badge badge-warning">{description}</span>
+                </f:then>
+                <f:else>
+                    <small>{description}</small>
+                </f:else>
+            </f:if>
+        </f:if>
+        <f:if condition="{content}">
+            {content -> f:format.raw()}
+        </f:if>
+    </span>
+</f:section>
+
+</html>

@@ -1,4 +1,5 @@
 *                            text=auto
+/.ddev                       export-ignore
 /.github                     export-ignore
 /Resources/Private/Frontend  export-ignore
 /Resources/Private/Libs      export-ignore
@@ -15,7 +16,8 @@
 /dependency-checker.json     export-ignore
 /docker-compose.yml          export-ignore
 /packaging_exclude.php       export-ignore
-/phpstan.neon                export-ignore
-/phpunit.ci.xml              export-ignore
-/phpunit.xml                 export-ignore
+/phpstan.php                 export-ignore
+/phpstan-baseline.neon       export-ignore
+/phpunit.functional.xml      export-ignore
+/phpunit.unit.xml            export-ignore
 /rector.php                  export-ignore

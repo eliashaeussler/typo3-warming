@@ -29,39 +29,10 @@ namespace EliasHaeussler\Typo3Warming\Exception;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class UnsupportedConfigurationException extends \Exception
+final class UnsupportedConfigurationException extends Exception
 {
     public static function forBaseUrl(string $baseUrl): self
     {
         return new self(sprintf('The given base URL "%s" is not supported.', $baseUrl), 1619168965);
-    }
-
-    public static function forMissingPageId(): self
-    {
-        return new self('No page ID given. Omitting the page ID is not supported.', 1619190793);
-    }
-
-    public static function forTypeMismatch(string $expectedType, string $actualType): self
-    {
-        return new self(
-            sprintf('Expected variable of type "%s", got "%s" instead.', $expectedType, $actualType),
-            1619196807
-        );
-    }
-
-    public static function forUnresolvableClass(string $className): self
-    {
-        return new self(
-            sprintf('Given class "%s" does not exist or cannot be resolved.', $className),
-            1619196886
-        );
-    }
-
-    public static function forMissingImplementation(string $expectedInterface, string $actualClassName): self
-    {
-        return new self(
-            sprintf('Given class "%s" does not implement the expected interface "%s".', $actualClassName, $expectedInterface),
-            1619196994
-        );
     }
 }

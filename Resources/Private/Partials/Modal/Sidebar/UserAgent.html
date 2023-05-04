@@ -1,0 +1,26 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:c="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+      data-namespace-typo3-fluid="true"
+>
+
+<div class="tx-warming-user-agent">
+    <h6 class="tx-warming-modal-header">
+        <f:translate key="LLL:EXT:warming/Resources/Private/Language/locallang.xlf:modal.sites.userAgent.header" />
+    </h6>
+
+    <p>
+        {f:translate(key: 'LLL:EXT:warming/Resources/Private/Language/locallang.xlf:modal.sites.userAgent.description') -> f:format.raw()}
+    </p>
+
+    <p>
+        <button class="btn btn-xs btn-default tx-warming-user-agent-copy-action" data-text="{userAgent}" type="button">
+            <c:icon identifier="actions-clipboard" size="small" />
+
+            <span class="tx-warming-user-agent-copy-text">
+                <f:translate key="LLL:EXT:warming/Resources/Private/Language/locallang.xlf:modal.sites.userAgent.action" />
+            </span>
+        </button>
+    </p>
+</div>
+
+</html>

@@ -16,17 +16,11 @@ an appropriate class method.
 
     API to access all available extension configuration options.
 
-    ..  php:method:: getLimit()
-
-        Get the configured :ref:`crawler limit <extconf-limit>`.
-
-        :returntype: int
-
     ..  php:method:: getCrawler()
 
         Get the configured :ref:`crawler class <extconf-crawler>`.
 
-        :returntype: class-string<EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface>
+        :returntype: :php:`class-string<EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface>`
 
     ..  php:method:: getCrawlerOptions()
 
@@ -38,7 +32,7 @@ an appropriate class method.
 
         Get the configured :ref:`verbose crawler class <extconf-verboseCrawler>`.
 
-        :returntype: class-string<EliasHaeussler\CacheWarmup\Crawler\VerboseCrawlerInterface>
+        :returntype: :php:`class-string<EliasHaeussler\CacheWarmup\Crawler\VerboseCrawlerInterface>`
 
     ..  php:method:: getVerboseCrawlerOptions()
 
@@ -46,17 +40,48 @@ an appropriate class method.
 
         :returntype: array
 
+    ..  php:method:: getLimit()
+
+        Get the configured :ref:`crawler limit <extconf-limit>`.
+
+        :returntype: int
+
+    ..  php:method:: getExcludePatterns()
+
+        Get the configured :ref:`exclude patterns <extconf-exclude>`.
+
+        :returntype: :php:`list<string>`
+
+    ..  php:method:: getStrategy()
+
+        Get the configured :ref:`crawling strategy <extconf-strategy>`.
+
+        :returntype: string|null
+
+    ..  php:method:: isEnabledInPageTree()
+
+        Check whether cache warmup from :ref:`page tree <extconf-enablePageTree>` is enabled.
+
+        :returntype: bool
+
+    ..  php:method:: getSupportedDoktypes()
+
+        Get all :ref:`doktypes <t3coreapi:list-of-page-types>` that support cache warmup from
+        page tree.
+
+        :returntype: :php:`list<int>`
+
+    ..  php:method:: isEnabledInToolbar()
+
+        Check whether cache warmup from :ref:`toolbar <extconf-enableToolbar>` is enabled.
+
+        :returntype: bool
+
     ..  php:method:: getUserAgent()
 
         Get the calculated user-agent.
 
         :returntype: string
-
-    ..  php:method:: getAll()
-
-        Get all extension configuration options of this extension.
-
-        :returntype: array
 
 ..  seealso::
 

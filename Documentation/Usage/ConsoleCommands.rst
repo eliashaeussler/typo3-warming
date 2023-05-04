@@ -136,6 +136,49 @@ The following command options are available:
     from :ref:`extension configuration <extension-configuration>` is
     used.
 
+    Example:
+
+    ..  tabs::
+
+        ..  group-tab:: Composer-based installation
+
+            ..  code-block:: bash
+
+                vendor/bin/typo3 warming:cachewarmup --limit 100
+
+        ..  group-tab:: Legacy installation
+
+            ..  code-block:: bash
+
+                typo3/sysext/core/bin/typo3 warming:cachewarmup --limit 100
+
+..  confval:: --strategy
+
+    :Required: false
+    :type: string
+    :Default: :typoscript:`strategy` value from :ref:`extension configuration <extension-configuration>`
+    :Multiple allowed: false
+
+    Name of an available crawling strategy to use for cache warmup. If
+    this option is omitted, the :typoscript:`strategy` value from
+    :ref:`extension configuration <extension-configuration>` is used.
+
+    Example:
+
+    ..  tabs::
+
+        ..  group-tab:: Composer-based installation
+
+            ..  code-block:: bash
+
+                vendor/bin/typo3 warming:cachewarmup --strategy sort-by-priority
+
+        ..  group-tab:: Legacy installation
+
+            ..  code-block:: bash
+
+                typo3/sysext/core/bin/typo3 warming:cachewarmup --strategy sort-by-priority
+
 ..  confval:: -x|--strict
 
     :Required: false
@@ -145,6 +188,22 @@ The following command options are available:
 
     Exit with a non-zero status code in case cache warmup fails or
     errors occur during cache warmup.
+
+    Example:
+
+    ..  tabs::
+
+        ..  group-tab:: Composer-based installation
+
+            ..  code-block:: bash
+
+                vendor/bin/typo3 warming:cachewarmup --strict
+
+        ..  group-tab:: Legacy installation
+
+            ..  code-block:: bash
+
+                typo3/sysext/core/bin/typo3 warming:cachewarmup --strict
 
 ..  _warming-showuseragent:
 

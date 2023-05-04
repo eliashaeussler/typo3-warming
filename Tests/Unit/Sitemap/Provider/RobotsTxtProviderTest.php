@@ -23,16 +23,12 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Tests\Unit\Sitemap\Provider;
 
-use EliasHaeussler\Typo3Warming\Sitemap\Provider\RobotsTxtProvider;
-use EliasHaeussler\Typo3Warming\Sitemap\SiteAwareSitemap;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
-use TYPO3\CMS\Core\Http\RequestFactory;
-use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Core\Http\Stream;
-use TYPO3\CMS\Core\Http\Uri;
-use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use EliasHaeussler\Typo3Warming as Src;
+use EliasHaeussler\Typo3Warming\Tests;
+use Exception;
+use PHPUnit\Framework;
+use TYPO3\CMS\Core;
+use TYPO3\TestingFramework;
 
 /**
  * RobotsTxtProviderTest
@@ -40,64 +36,58 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class RobotsTxtProviderTest extends UnitTestCase
+#[Framework\Attributes\CoversClass(Src\Sitemap\Provider\RobotsTxtProvider::class)]
+final class RobotsTxtProviderTest extends TestingFramework\Core\Unit\UnitTestCase
 {
-    use ProphecyTrait;
-
-    /**
-     * @var ObjectProphecy|RequestFactory
-     */
-    protected ObjectProphecy $requestFactoryProphecy;
-    protected Site $site;
-    protected RobotsTxtProvider $subject;
+    protected Tests\Unit\Fixtures\DummyRequestFactory $requestFactory;
+    protected Core\Site\Entity\Site $site;
+    protected Src\Sitemap\Provider\RobotsTxtProvider $subject;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->requestFactoryProphecy = $this->prophesize(RequestFactory::class);
-        $this->site = new Site('foo', 1, ['base' => 'https://www.example.com/']);
-        $this->subject = new RobotsTxtProvider($this->requestFactoryProphecy->reveal());
+        $this->requestFactory = new Tests\Unit\Fixtures\DummyRequestFactory();
+        $this->site = new Core\Site\Entity\Site('foo', 1, ['base' => 'https://www.example.com/']);
+        $this->subject = new Src\Sitemap\Provider\RobotsTxtProvider($this->requestFactory);
     }
 
-    /**
-     * @test
-     */
+    #[Framework\Attributes\Test]
     public function getReturnsNullIfNoRobotsTxtExists(): void
     {
-        $this->requestFactoryProphecy->request('https://www.example.com/robots.txt')->willThrow(\Exception::class);
+        $this->requestFactory->exception = new Exception();
 
         self::assertNull($this->subject->get($this->site));
     }
 
-    /**
-     * @test
-     */
+    #[Framework\Attributes\Test]
     public function getReturnsNullIfNoRobotsTxtDoesNotContainSitemapConfiguration(): void
     {
-        $body = new Stream('php://temp', 'rw');
+        $response = new Core\Http\Response();
+        $body = $response->getBody();
         $body->write('foo');
         $body->rewind();
-        $response = new Response($body);
 
-        $this->requestFactoryProphecy->request('https://www.example.com/robots.txt')->willReturn($response);
+        $this->requestFactory->response = $response;
 
         self::assertNull($this->subject->get($this->site));
     }
 
-    /**
-     * @test
-     */
+    #[Framework\Attributes\Test]
     public function getReturnsSitemapIfRobotsTxtContainsSitemapConfiguration(): void
     {
-        $body = new Stream('php://temp', 'rw');
+        $response = new Core\Http\Response();
+        $body = $response->getBody();
         $body->write('Sitemap: https://www.example.com/baz.xml');
         $body->rewind();
-        $response = new Response($body);
 
-        $this->requestFactoryProphecy->request('https://www.example.com/robots.txt')->willReturn($response);
+        $this->requestFactory->response = $response;
 
-        $expected = new SiteAwareSitemap(new Uri('https://www.example.com/baz.xml'), $this->site);
+        $expected = new Src\Sitemap\SiteAwareSitemap(
+            new Core\Http\Uri('https://www.example.com/baz.xml'),
+            $this->site,
+            $this->site->getDefaultLanguage(),
+        );
 
         self::assertEquals($expected, $this->subject->get($this->site));
     }

@@ -23,16 +23,11 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Configuration;
 
-use EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface;
-use EliasHaeussler\CacheWarmup\Crawler\VerboseCrawlerInterface;
-use EliasHaeussler\Typo3Warming\Crawler\ConcurrentUserAgentCrawler;
-use EliasHaeussler\Typo3Warming\Crawler\OutputtingUserAgentCrawler;
-use JsonException;
-use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Exception;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
+use EliasHaeussler\CacheWarmup;
+use EliasHaeussler\Typo3Warming\Crawler;
+use EliasHaeussler\Typo3Warming\Extension;
+use TYPO3\CMS\Core;
+use TYPO3\CMS\Extbase;
 
 /**
  * Configuration
@@ -42,58 +37,43 @@ use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
  */
 final class Configuration
 {
-    public const DEFAULT_LIMIT = 250;
-    public const DEFAULT_CRAWLER = ConcurrentUserAgentCrawler::class;
-    public const DEFAULT_VERBOSE_CRAWLER = OutputtingUserAgentCrawler::class;
-    public const DEFAULT_SUPPORTED_DOKTYPES = [
-        PageRepository::DOKTYPE_DEFAULT,
+    private const DEFAULT_CRAWLER = Crawler\ConcurrentUserAgentCrawler::class;
+    private const DEFAULT_VERBOSE_CRAWLER = Crawler\OutputtingUserAgentCrawler::class;
+    private const DEFAULT_LIMIT = 250;
+    private const DEFAULT_SUPPORTED_DOKTYPES = [
+        Core\Domain\Repository\PageRepository::DOKTYPE_DEFAULT,
     ];
 
-    private ExtensionConfiguration $configuration;
-    private HashService $hashService;
-    private string $userAgent;
+    private readonly string $userAgent;
 
-    public function __construct(ExtensionConfiguration $configuration, HashService $hashService)
-    {
-        $this->configuration = $configuration;
-        $this->hashService = $hashService;
+    public function __construct(
+        private readonly Core\Configuration\ExtensionConfiguration $configuration,
+        private readonly CacheWarmup\Crawler\CrawlerFactory $crawlerFactory,
+        private readonly Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
+        private readonly Extbase\Security\Cryptography\HashService $hashService,
+    ) {
         $this->userAgent = $this->generateUserAgent();
     }
 
-    public function getLimit(): int
-    {
-        try {
-            $limit = $this->configuration->get(Extension::KEY, 'limit');
-
-            if (!is_numeric($limit)) {
-                return self::DEFAULT_LIMIT;
-            }
-
-            return abs((int)$limit);
-        } catch (Exception $e) {
-            return self::DEFAULT_LIMIT;
-        }
-    }
-
     /**
-     * @return class-string<CrawlerInterface>
+     * @return class-string<CacheWarmup\Crawler\CrawlerInterface>
      */
     public function getCrawler(): string
     {
         try {
-            /** @var class-string<CrawlerInterface>|null $crawler */
+            /** @var class-string<CacheWarmup\Crawler\CrawlerInterface>|null $crawler */
             $crawler = $this->configuration->get(Extension::KEY, 'crawler');
 
             if (!\is_string($crawler)) {
                 return self::DEFAULT_CRAWLER;
             }
 
-            if (!\in_array(CrawlerInterface::class, class_implements($crawler) ?: [])) {
+            if (!is_a($crawler, CacheWarmup\Crawler\CrawlerInterface::class, true)) {
                 return self::DEFAULT_CRAWLER;
             }
 
             return $crawler;
-        } catch (Exception $e) {
+        } catch (Core\Exception) {
             return self::DEFAULT_CRAWLER;
         }
     }
@@ -106,31 +86,36 @@ final class Configuration
         try {
             $json = $this->configuration->get(Extension::KEY, 'crawlerOptions');
 
-            return $this->parseCrawlerOptions($json);
-        } catch (Exception $e) {
+            // Early return if no crawler options are configured
+            if (!\is_string($json) || $json === '') {
+                return [];
+            }
+
+            return $this->crawlerFactory->parseCrawlerOptions($json);
+        } catch (Core\Exception) {
             return [];
         }
     }
 
     /**
-     * @return class-string<VerboseCrawlerInterface>
+     * @return class-string<CacheWarmup\Crawler\VerboseCrawlerInterface>
      */
     public function getVerboseCrawler(): string
     {
         try {
-            /** @var class-string<VerboseCrawlerInterface>|null $crawler */
+            /** @var class-string<CacheWarmup\Crawler\VerboseCrawlerInterface>|null $crawler */
             $crawler = $this->configuration->get(Extension::KEY, 'verboseCrawler');
 
             if (!\is_string($crawler)) {
                 return self::DEFAULT_VERBOSE_CRAWLER;
             }
 
-            if (!\in_array(VerboseCrawlerInterface::class, class_implements($crawler) ?: [])) {
+            if (!is_a($crawler, CacheWarmup\Crawler\VerboseCrawlerInterface::class, true)) {
                 return self::DEFAULT_VERBOSE_CRAWLER;
             }
 
             return $crawler;
-        } catch (Exception $e) {
+        } catch (Core\Exception) {
             return self::DEFAULT_VERBOSE_CRAWLER;
         }
     }
@@ -143,9 +128,69 @@ final class Configuration
         try {
             $json = $this->configuration->get(Extension::KEY, 'verboseCrawlerOptions');
 
-            return $this->parseCrawlerOptions($json);
-        } catch (Exception $e) {
+            // Early return if no crawler options are configured
+            if (!\is_string($json) || $json === '') {
+                return [];
+            }
+
+            return $this->crawlerFactory->parseCrawlerOptions($json);
+        } catch (Core\Exception) {
             return [];
+        }
+    }
+
+    public function getLimit(): int
+    {
+        try {
+            $limit = $this->configuration->get(Extension::KEY, 'limit');
+
+            if (!is_numeric($limit)) {
+                return self::DEFAULT_LIMIT;
+            }
+
+            return abs((int)$limit);
+        } catch (Core\Exception) {
+            return self::DEFAULT_LIMIT;
+        }
+    }
+
+    /**
+     * @return list<string>
+     */
+    public function getExcludePatterns(): array
+    {
+        try {
+            $exclude = $this->configuration->get(Extension::KEY, 'exclude');
+
+            // Early return if no exclude patterns are configured
+            if (!\is_string($exclude) || $exclude === '') {
+                return [];
+            }
+
+            return Core\Utility\GeneralUtility::trimExplode(',', $exclude, true);
+        } catch (Core\Exception) {
+            return [];
+        }
+    }
+
+    public function getStrategy(): ?string
+    {
+        try {
+            $strategy = $this->configuration->get(Extension::KEY, 'strategy');
+
+            // Early return if no crawling strategy is configured
+            if (!\is_string($strategy) || $strategy === '') {
+                return null;
+            }
+
+            // Early return if configured crawling strategy is invalid
+            if (!$this->crawlingStrategyFactory->has($strategy)) {
+                return null;
+            }
+
+            return $strategy;
+        } catch (Core\Exception) {
+            return null;
         }
     }
 
@@ -155,18 +200,7 @@ final class Configuration
             $enablePageTree = $this->configuration->get(Extension::KEY, 'enablePageTree');
 
             return (bool)$enablePageTree;
-        } catch (Exception $e) {
-            return true;
-        }
-    }
-
-    public function isEnabledInToolbar(): bool
-    {
-        try {
-            $enableToolbar = $this->configuration->get(Extension::KEY, 'enableToolbar');
-
-            return (bool)$enableToolbar;
-        } catch (Exception $e) {
+        } catch (Core\Exception) {
             return true;
         }
     }
@@ -183,53 +217,26 @@ final class Configuration
                 return self::DEFAULT_SUPPORTED_DOKTYPES;
             }
 
-            return GeneralUtility::intExplode(',', $doktypes, true);
-        } catch (Exception $e) {
+            return array_values(Core\Utility\GeneralUtility::intExplode(',', $doktypes, true));
+        } catch (Core\Exception) {
             return self::DEFAULT_SUPPORTED_DOKTYPES;
+        }
+    }
+
+    public function isEnabledInToolbar(): bool
+    {
+        try {
+            $enableToolbar = $this->configuration->get(Extension::KEY, 'enableToolbar');
+
+            return (bool)$enableToolbar;
+        } catch (Core\Exception) {
+            return true;
         }
     }
 
     public function getUserAgent(): string
     {
         return $this->userAgent;
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function getAll(): array
-    {
-        try {
-            $configuration = $this->configuration->get(Extension::KEY);
-            \assert(\is_array($configuration));
-
-            return $configuration;
-        } catch (Exception $e) {
-            return [];
-        }
-    }
-
-    /**
-     * @param mixed $json
-     * @return array<string, mixed>
-     */
-    private function parseCrawlerOptions($json): array
-    {
-        if (!\is_string($json)) {
-            return [];
-        }
-
-        try {
-            $crawlerOptions = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
-        } catch (JsonException $e) {
-            return [];
-        }
-
-        if (!\is_array($crawlerOptions)) {
-            return [];
-        }
-
-        return $crawlerOptions;
     }
 
     private function generateUserAgent(): string

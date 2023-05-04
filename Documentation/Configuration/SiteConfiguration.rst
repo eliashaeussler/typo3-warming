@@ -11,9 +11,9 @@ Site configuration
     Caches can be warmed up only if the entry point of the site
     contains the full domain name.
 
-The cache warmup is based of the configured sites in the TYPO3 installation.
-Therefore, in order to control the cache warmup behavior, the site configuration can
-be used. The following configuration options are available for this purpose:
+Cache warmup is based on the configured sites in the TYPO3 installation. Therefore,
+in order to control the cache warmup behavior, the site configuration can be used.
+The following configuration options are available for this purpose:
 
 ..  confval:: xml_sitemap_path (site)
 
