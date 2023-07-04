@@ -23,25 +23,99 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Crawler;
 
-use EliasHaeussler\CacheWarmup\Crawler\OutputtingCrawler;
-use GuzzleHttp\Psr7\Request;
+use EliasHaeussler\CacheWarmup;
+use EliasHaeussler\Typo3Warming\Configuration;
+use EliasHaeussler\Typo3Warming\Http;
+use GuzzleHttp\ClientInterface;
+use Symfony\Component\Console;
+use TYPO3\CMS\Core;
 
 /**
  * OutputtingUserAgentCrawler
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
+ *
+ * @extends CacheWarmup\Crawler\AbstractConfigurableCrawler<array{
+ *     concurrency: int,
+ *     request_method: string,
+ *     request_headers: array<string, string>,
+ *     request_options: array<string, mixed>,
+ *     client_config: array<string, mixed>,
+ * }>
  */
-class OutputtingUserAgentCrawler extends OutputtingCrawler
+final class OutputtingUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfigurableCrawler implements CacheWarmup\Crawler\VerboseCrawlerInterface
 {
-    use ConfigurableClientTrait;
-    use UserAgentTrait;
+    use CacheWarmup\Crawler\ConcurrentCrawlerTrait {
+        getRequestHeaders as getDefaultRequestHeaders;
+    }
 
-    protected function getRequests(): \Iterator
+    protected static array $defaultOptions = [
+        'concurrency' => 5,
+        'request_method' => 'GET',
+        'request_headers' => [],
+        'request_options' => [],
+        'client_config' => [],
+    ];
+
+    private readonly Http\Client\ClientFactory $clientFactory;
+    private readonly Configuration\Configuration $configuration;
+    private Console\Output\OutputInterface $output;
+    private ClientInterface $client;
+
+    public function __construct(array $options = [])
     {
-        /** @var Request $request */
-        foreach (parent::getRequests() as $request) {
-            yield $this->applyUserAgentHeader($request->withMethod('GET'));
+        $this->clientFactory = Core\Utility\GeneralUtility::makeInstance(Http\Client\ClientFactory::class);
+        $this->configuration = Core\Utility\GeneralUtility::makeInstance(Configuration\Configuration::class);
+        $this->output = new Console\Output\ConsoleOutput();
+
+        parent::__construct($options);
+    }
+
+    public function crawl(array $urls): CacheWarmup\Result\CacheWarmupResult
+    {
+        $numberOfUrls = \count($urls);
+        $resultHandler = new CacheWarmup\Http\Message\Handler\ResultCollectorHandler();
+
+        // Create progress response handler (depends on the available output)
+        if ($this->output instanceof Console\Output\ConsoleOutputInterface && $this->output->isVerbose()) {
+            $progressBarHandler = new CacheWarmup\Http\Message\Handler\VerboseProgressHandler($this->output, $numberOfUrls);
+        } else {
+            $progressBarHandler = new CacheWarmup\Http\Message\Handler\CompactProgressHandler($this->output, $numberOfUrls);
         }
+
+        // Create request pool
+        $pool = $this->createPool($urls, $this->client, [$resultHandler, $progressBarHandler]);
+
+        // Start crawling
+        $progressBarHandler->startProgressBar();
+        $pool->promise()->wait();
+        $progressBarHandler->finishProgressBar();
+
+        return $resultHandler->getResult();
+    }
+
+    public function setOptions(array $options): void
+    {
+        parent::setOptions($options);
+
+        // Recreate client with updated client config
+        $this->client = $this->clientFactory->get($this->options['client_config']);
+    }
+
+    public function setOutput(Console\Output\OutputInterface $output): void
+    {
+        $this->output = $output;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    protected function getRequestHeaders(): array
+    {
+        $headers = $this->getDefaultRequestHeaders();
+        $headers['User-Agent'] = $this->configuration->getUserAgent();
+
+        return $headers;
     }
 }

@@ -8,19 +8,10 @@ Extension configuration
 
 The extension currently provides the following configuration options:
 
-..  _extconf-limit:
+..  _extension-configuration-crawler:
 
-..  confval:: limit
-
-    :type: integer
-    :Default: 250
-
-    Allows to limit the amount of crawled pages in one iteration.
-
-    ..  tip::
-
-        Can be set to :typoscript:`0` to crawl all available pages in
-        XML sitemaps.
+Crawler
+=======
 
 ..  _extconf-crawler:
 
@@ -67,10 +58,61 @@ The extension currently provides the following configuration options:
 
     :type: string (JSON)
 
-    JSON-encoded string of custom crawler options for the verbose
-    :ref:`crawler <extconf-verboseCrawler>`. Applies only to crawlers implementing the
-    :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\ConfigurableCrawlerInterface`.
+    JSON-encoded string of custom crawler options for the
+    :ref:`verbose crawler <extconf-verboseCrawler>`. Applies only to crawlers implementing
+    the :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\ConfigurableCrawlerInterface`.
     For more information read :ref:`configurable-crawlers`.
+
+..  _extension-configuration-options:
+
+Options
+=======
+
+..  _extconf-limit:
+
+..  confval:: limit
+
+    :type: integer
+    :Default: 250
+
+    Allows to limit the number of crawled pages in one iteration.
+
+    ..  tip::
+
+        Can be set to :typoscript:`0` to crawl all available pages in
+        XML sitemaps.
+
+..  _extconf-exclude:
+
+..  confval:: exclude
+
+    :type: string (comma-separated list)
+
+    Comma-separated list of exclude patterns to exclude URLs from cache
+    warmup. The following formats are currently supported:
+
+    -   Regular expressions with delimiter :php:`#`, e.g. :php:`#(no_cache|no_warming)=1#`
+    -   Any pattern processable by the native PHP function `fnmatch <https://www.php.net/manual/de/function.fnmatch.php>`__,
+        e.g. :php:`*no_cache=1*`
+
+..  _extconf-strategy:
+
+..  confval:: strategy
+
+    :type: string
+
+    Name of an available crawling strategy to use for cache warmup. Crawling
+    strategies are used to prepare URLs before actually crawling them. This can
+    be helpful to prioritize crawling of important URLs.
+
+    ..  seealso::
+
+        Read more at :ref:`crawling-strategies`.
+
+..  _extension-configuration-page-tree:
+
+Page tree
+=========
 
 ..  _extconf-enablePageTree:
 
@@ -79,8 +121,8 @@ The extension currently provides the following configuration options:
     :type: boolean
     :Default: 1
 
-    Enable cache warmup in the :ref:`page tree <page-tree>` context menu. This affects
-    all users, including administrators.
+    Enable cache warmup in the :ref:`page tree <page-tree>` context menu. This setting
+    affects all users, including administrators.
 
 ..  _extconf-supportedDoktypes:
 
@@ -94,6 +136,11 @@ The extension currently provides the following configuration options:
     :php:`1` only. If your project implements custom doktypes, you can add them here to
     support cache warmup from the context menu.
 
+..  _extension-configuration-toolbar:
+
+Toolbar
+=======
+
 ..  _extconf-enableToolbar:
 
 ..  confval:: enableToolbar
@@ -101,5 +148,5 @@ The extension currently provides the following configuration options:
     :type: boolean
     :Default: 1
 
-    Enable cache warmup in the :ref:`backend toolbar <backend-toolbar>`. This affects
-    all users, including administrators.
+    Enable cache warmup in the :ref:`backend toolbar <backend-toolbar>`. This setting
+    affects all users, including administrators.

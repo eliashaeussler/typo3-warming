@@ -21,66 +21,59 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+use EliasHaeussler\RectorConfig\Config\Config;
 use Rector\Config\RectorConfig;
-use Rector\Core\ValueObject\PhpVersion;
-use Rector\Php74\Rector\LNumber\AddLiteralSeparatorToNumberRector;
-use Rector\Set\ValueObject\LevelSetList;
-use Ssch\TYPO3Rector\Configuration\Typo3Option;
-use Ssch\TYPO3Rector\FileProcessor\TypoScript\Rector\v10\v0\ExtbasePersistenceTypoScriptRector;
-use Ssch\TYPO3Rector\FileProcessor\TypoScript\Rector\v9\v0\FileIncludeToImportStatementTypoScriptRector;
-use Ssch\TYPO3Rector\Rector\General\ConvertImplicitVariablesToExplicitGlobalsRector;
-use Ssch\TYPO3Rector\Rector\General\ExtEmConfRector;
-use Ssch\TYPO3Rector\Set\Typo3LevelSetList;
+use Rector\Php80\Rector\Class_\AnnotationToAttributeRector;
+use Rector\Privatization\Rector\Class_\ChangeReadOnlyVariableWithDefaultValueToConstantRector;
+use Rector\Privatization\Rector\Class_\FinalizeClassesWithoutChildrenRector;
+use Rector\Privatization\Rector\Property\PrivatizeFinalClassPropertyRector;
+use Rector\Symfony\Rector\Class_\CommandDescriptionToPropertyRector;
+use Rector\Symfony\Rector\Class_\CommandPropertyToAttributeRector;
 
 return static function (RectorConfig $rectorConfig): void {
-    $rectorConfig->sets([
-        LevelSetList::UP_TO_PHP_74,
-        Typo3LevelSetList::UP_TO_TYPO3_10,
-    ]);
+    Config::create($rectorConfig)
+        ->in(
+            __DIR__,
+        )
+        ->not(
+            __DIR__ . '/.Build/*',
+            __DIR__ . '/.ddev/*',
+            __DIR__ . '/.github/*',
+            __DIR__ . '/config/*',
+            __DIR__ . '/Resources/Private/Frontend/*',
+            __DIR__ . '/Resources/Private/Libs/*',
+            __DIR__ . '/Tests/Build/Configuration/*',
+            __DIR__ . '/var/*',
+        )
+        ->withPHPUnit()
+        ->withSymfony()
+        ->withTYPO3()
+        ->skip(AnnotationToAttributeRector::class, [
+            __DIR__ . '/Classes/Extension.php',
+            __DIR__ . '/Classes/Sitemap/Provider/DefaultProvider.php',
+            __DIR__ . '/Classes/Sitemap/Provider/PageTypeProvider.php',
+            __DIR__ . '/Classes/Sitemap/Provider/RobotsTxtProvider.php',
+            __DIR__ . '/Classes/Sitemap/Provider/SiteProvider.php',
+            __DIR__ . '/Tests/Build/DependencyInjection/CompilerPass/ContainerBuilderDebugDumpPass.php',
+            __DIR__ . '/Tests/Build/DependencyInjection/CompilerPass/PublicServicePass.php',
+        ])
+        ->skip(ChangeReadOnlyVariableWithDefaultValueToConstantRector::class, [
+            __DIR__ . '/Tests/Functional/*',
+            __DIR__ . '/Tests/Unit/*',
+        ])
+        ->skip(CommandDescriptionToPropertyRector::class)
+        ->skip(CommandPropertyToAttributeRector::class)
+        ->skip(FinalizeClassesWithoutChildrenRector::class, [
+            // We keep the main sitemap class open for extensions
+            __DIR__ . '/Classes/Sitemap/SiteAwareSitemap.php',
+        ])
+        ->skip(PrivatizeFinalClassPropertyRector::class, [
+            // Test properties must not be private, otherwise TF cannot perform GC tasks
+            __DIR__ . '/Tests/Functional/*',
+            __DIR__ . '/Tests/Unit/*',
+        ])
+        ->apply()
+    ;
 
-    // In order to have a better analysis from phpstan we teach it here some more things
-    $rectorConfig->phpstanConfig(Typo3Option::PHPSTAN_FOR_RECTOR_PATH);
-
-    // Disable parallel otherwise non php file processing is not working i.e. typoscript
-    $rectorConfig->disableParallel();
-
-    // this will not import root namespace classes, like \DateTime or \Exception
-    $rectorConfig->importShortClasses(false);
-    $rectorConfig->importNames(false);
-
-    // Define your target version which you want to support
-    $rectorConfig->phpVersion(PhpVersion::PHP_74);
-
-    // If you only want to process one/some TYPO3 extension(s), you can specify its path(s) here.
-    // If you use the option --config change __DIR__ to getcwd()
-    $rectorConfig->paths([
-       __DIR__,
-    ]);
-
-    // If you use importNames(), you should consider excluding some TYPO3 files.
-    $rectorConfig->skip([
-        __DIR__ . '/.Build/*',
-        __DIR__ . '/.ddev/*',
-        __DIR__ . '/.github/*',
-        __DIR__ . '/config/*',
-        __DIR__ . '/Resources/Private/Frontend/*',
-        __DIR__ . '/var/*',
-
-        AddLiteralSeparatorToNumberRector::class,
-    ]);
-
-    // Rewrite your extbase persistence class mapping from typoscript into php according to official docs.
-    // This processor will create a summarized file with all the typoscript rewrites combined into a single file.
-    $rectorConfig->ruleWithConfiguration(ExtbasePersistenceTypoScriptRector::class, [
-        ExtbasePersistenceTypoScriptRector::FILENAME => __DIR__ . '/Configuration/Extbase/Persistence/Classes.php',
-    ]);
-
-    // Add some general TYPO3 rules
-    $rectorConfig->rule(ConvertImplicitVariablesToExplicitGlobalsRector::class);
-    $rectorConfig->ruleWithConfiguration(ExtEmConfRector::class, [
-        ExtEmConfRector::ADDITIONAL_VALUES_TO_BE_REMOVED => [],
-    ]);
-
-    // Modernize your TypoScript include statements for files and move from <INCLUDE /> to @import use the FileIncludeToImportStatementVisitor (introduced with TYPO3 9.0)
-    $rectorConfig->rule(FileIncludeToImportStatementTypoScriptRector::class);
+    $rectorConfig->importNames(false, false);
 };

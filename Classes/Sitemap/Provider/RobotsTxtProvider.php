@@ -23,12 +23,11 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Sitemap\Provider;
 
-use EliasHaeussler\Typo3Warming\Sitemap\SiteAwareSitemap;
-use Psr\Http\Message\UriInterface;
-use TYPO3\CMS\Core\Http\RequestFactory;
-use TYPO3\CMS\Core\Http\Uri;
-use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use EliasHaeussler\Typo3Warming\Sitemap;
+use EliasHaeussler\Typo3Warming\Utility;
+use Exception;
+use Psr\Http\Message;
+use TYPO3\CMS\Core;
 
 /**
  * RobotsTxtProvider
@@ -36,43 +35,46 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class RobotsTxtProvider extends AbstractProvider
+final class RobotsTxtProvider implements Provider
 {
     private const SITEMAP_PATTERN = '#^Sitemap:\s*(?P<url>https?://[^\r\n]+)#im';
 
-    private RequestFactory $requestFactory;
-
-    public function __construct(RequestFactory $requestFactory)
-    {
-        $this->requestFactory = $requestFactory;
+    public function __construct(
+        private readonly Core\Http\RequestFactory $requestFactory,
+    ) {
     }
 
-    public function get(Site $site, SiteLanguage $siteLanguage = null): ?SiteAwareSitemap
-    {
-        $robotsTxt = $this->fetchRobotsTxt($this->getSiteUrlWithPath($site, 'robots.txt', $siteLanguage));
+    public function get(
+        Core\Site\Entity\Site $site,
+        Core\Site\Entity\SiteLanguage $siteLanguage = null,
+    ): ?Sitemap\SiteAwareSitemap {
+        $robotsTxtUri = Utility\HttpUtility::getSiteUrlWithPath($site, 'robots.txt', $siteLanguage);
+        $robotsTxt = $this->fetchRobotsTxt($robotsTxtUri);
 
         // Early return if no robots.txt exists
-        if (empty($robotsTxt)) {
+        if ($robotsTxt === null || trim($robotsTxt) === '') {
             return null;
         }
 
         // Early return if no sitemap is specified in robots.txt
-        if (!preg_match(self::SITEMAP_PATTERN, $robotsTxt, $matches)) {
+        if (preg_match(self::SITEMAP_PATTERN, $robotsTxt, $matches) !== 1) {
             return null;
         }
 
-        $uri = new Uri($matches['url']);
-
-        return new SiteAwareSitemap($uri, $site, $siteLanguage);
+        return new Sitemap\SiteAwareSitemap(
+            new Core\Http\Uri($matches['url']),
+            $site,
+            $siteLanguage ?? $site->getDefaultLanguage(),
+        );
     }
 
-    private function fetchRobotsTxt(UriInterface $uri): ?string
+    private function fetchRobotsTxt(Message\UriInterface $uri): ?string
     {
         try {
             $response = $this->requestFactory->request((string)$uri);
 
             return $response->getBody()->getContents();
-        } catch (\Exception $e) {
+        } catch (Exception) {
             return null;
         }
     }

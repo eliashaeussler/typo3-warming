@@ -1,0 +1,26 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:c="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+      data-namespace-typo3-fluid="true"
+>
+
+<div class="tx-warming-sites">
+    <h6 class="tx-warming-modal-header">
+        <f:translate key="LLL:EXT:warming/Resources/Private/Language/locallang.xlf:modal.sites.sites.header" />
+    </h6>
+
+    <p>
+        <f:translate key="LLL:EXT:warming/Resources/Private/Language/locallang.xlf:modal.sites.sites.description" />
+    </p>
+
+    <ul>
+        <f:render partial="Modal/Sites/SelectAllGroup" />
+
+        <f:for each="{siteGroups}" as="siteGroup">
+            <f:if condition="{siteGroup.items}">
+                <f:render partial="Modal/Sites/SiteGroup" arguments="{siteGroup: siteGroup}" />
+            </f:if>
+        </f:for>
+    </ul>
+</div>
+
+</html>

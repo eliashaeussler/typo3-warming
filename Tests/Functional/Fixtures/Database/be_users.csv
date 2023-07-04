@@ -1,0 +1,5 @@
+"be_users",,,,,,,
+,"uid","pid","username","usergroup","admin","allowed_languages","db_mountpoints","TSconfig"
+,1,0,"test1","1",0,"0","1","options.cacheWarmup.allowedPages = 1,3+"
+,2,0,"test2","1",0,"1","1","options.cacheWarmup.allowedSites = test-site"
+,3,0,"admin",,1,,,

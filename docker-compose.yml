@@ -2,7 +2,7 @@ version: '3.6'
 
 services:
   docs:
-    image: ghcr.io/t3docs/render-documentation:develop
+    image: ghcr.io/t3docs/render-documentation
     command: makehtml
     volumes:
       - .:/PROJECT:ro

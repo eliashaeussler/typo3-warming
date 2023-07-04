@@ -1,0 +1,45 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      data-namespace-typo3-fluid="true"
+>
+
+<div class="tx-warming-settings">
+    <h6 class="tx-warming-modal-header">
+        <f:translate key="LLL:EXT:warming/Resources/Private/Language/locallang.xlf:modal.sites.settings.header" />
+    </h6>
+
+    <p>
+        <f:translate key="LLL:EXT:warming/Resources/Private/Language/locallang.xlf:modal.sites.settings.description" />
+    </p>
+
+    <p>
+        <label for="tx-warming-settings-limit" class="form-label">
+            <f:translate key="LLL:EXT:warming/Resources/Private/Language/locallang.xlf:label.limit" />
+        </label>
+        <input type="number"
+               name="limit"
+               id="tx-warming-settings-limit"
+               class="form-control"
+               value="{configuration.limit}"
+               min="0"
+        />
+    </p>
+
+    <p>
+        <label for="tx-warming-settings-strategy" class="form-label">
+            <f:translate key="LLL:EXT:warming/Resources/Private/Language/locallang.xlf:label.strategy" />
+        </label>
+        <select name="strategy" id="tx-warming-settings-strategy" class="form-select">
+            <option disabled {f:if(condition: strategy, else: 'selected')}>
+                <f:translate key="LLL:EXT:warming/Resources/Private/Language/locallang.xlf:label.strategy.none" />
+            </option>
+
+            <f:for each="{availableStrategies}" as="strategy">
+                <option value="{strategy}" {f:if(condition: '{strategy} == {configuration.strategy}', then: 'selected')}>
+                    <f:translate key="LLL:EXT:warming/Resources/Private/Language/locallang.xlf:label.strategy.{strategy}" />
+                </option>
+            </f:for>
+        </select>
+    </p>
+</div>
+
+</html>

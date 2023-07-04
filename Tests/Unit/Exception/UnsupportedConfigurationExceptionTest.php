@@ -23,8 +23,9 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Tests\Unit\Exception;
 
-use EliasHaeussler\Typo3Warming\Exception\UnsupportedConfigurationException;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use EliasHaeussler\Typo3Warming as Src;
+use PHPUnit\Framework;
+use TYPO3\TestingFramework;
 
 /**
  * UnsupportedConfigurationExceptionTest
@@ -32,65 +33,15 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class UnsupportedConfigurationExceptionTest extends UnitTestCase
+#[Framework\Attributes\CoversClass(Src\Exception\UnsupportedConfigurationException::class)]
+final class UnsupportedConfigurationExceptionTest extends TestingFramework\Core\Unit\UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Framework\Attributes\Test]
     public function forBaseUrlReturnsExceptionForBaseUrl(): void
     {
-        $subject = UnsupportedConfigurationException::forBaseUrl('foo');
+        $subject = Src\Exception\UnsupportedConfigurationException::forBaseUrl('foo');
 
-        self::assertInstanceOf(UnsupportedConfigurationException::class, $subject);
         self::assertSame('The given base URL "foo" is not supported.', $subject->getMessage());
         self::assertSame(1619168965, $subject->getCode());
-    }
-
-    /**
-     * @test
-     */
-    public function forMissingPageIdReturnsExceptionForMissingPageId(): void
-    {
-        $subject = UnsupportedConfigurationException::forMissingPageId();
-
-        self::assertInstanceOf(UnsupportedConfigurationException::class, $subject);
-        self::assertSame('No page ID given. Omitting the page ID is not supported.', $subject->getMessage());
-        self::assertSame(1619190793, $subject->getCode());
-    }
-
-    /**
-     * @test
-     */
-    public function forTypeMismatchReturnsExceptionForTypeMismatch(): void
-    {
-        $subject = UnsupportedConfigurationException::forTypeMismatch('foo', 'baz');
-
-        self::assertInstanceOf(UnsupportedConfigurationException::class, $subject);
-        self::assertSame('Expected variable of type "foo", got "baz" instead.', $subject->getMessage());
-        self::assertSame(1619196807, $subject->getCode());
-    }
-
-    /**
-     * @test
-     */
-    public function forUnresolvableClassReturnsExceptionForUnresolvableClass(): void
-    {
-        $subject = UnsupportedConfigurationException::forUnresolvableClass('foo');
-
-        self::assertInstanceOf(UnsupportedConfigurationException::class, $subject);
-        self::assertSame('Given class "foo" does not exist or cannot be resolved.', $subject->getMessage());
-        self::assertSame(1619196886, $subject->getCode());
-    }
-
-    /**
-     * @test
-     */
-    public function forMissingImplementationReturnsExceptionForMissingImplementation(): void
-    {
-        $subject = UnsupportedConfigurationException::forMissingImplementation('foo', 'baz');
-
-        self::assertInstanceOf(UnsupportedConfigurationException::class, $subject);
-        self::assertSame('Given class "baz" does not implement the expected interface "foo".', $subject->getMessage());
-        self::assertSame(1619196994, $subject->getCode());
     }
 }

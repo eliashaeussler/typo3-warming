@@ -19,36 +19,35 @@
 		"rss": "https://github.com/eliashaeussler/typo3-warming/releases.atom"
 	},
 	"require": {
-		"php": "~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0",
+		"php": "~8.1.0 || ~8.2.0",
 		"ext-json": "*",
-		"eliashaeussler/cache-warmup": "~0.5",
-		"guzzlehttp/guzzle": "^6.3 || ^7.0",
-		"guzzlehttp/psr7": "^1.4 || ^2.0",
-		"psr/http-message": "^1.0",
-		"psr/log": "^1.0",
-		"symfony/console": "^4.4 || ^5.4 || ^6.0",
-		"symfony/polyfill-php80": "^1.23",
-		"symfony/polyfill-php81": "^1.26",
-		"symfony/serializer": "^4.4 || ^5.4 || ^6.0",
-		"typo3/cms-backend": "~10.4.0 || ~11.5.0",
-		"typo3/cms-core": "~10.4.0 || ~11.5.0",
-		"typo3/cms-extbase": "~10.4.0 || ~11.5.0",
-		"typo3/cms-fluid": "~10.4.0 || ~11.5.0"
+		"cuyz/valinor": "^1.3",
+		"eliashaeussler/cache-warmup": "^2.3",
+		"eliashaeussler/sse": "^1.0",
+		"guzzlehttp/guzzle": "^7.5",
+		"psr/http-message": "^1.1 || ^2.0",
+		"psr/log": "^1.0 || ^2.0 || ^3.0",
+		"symfony/console": "^6.0",
+		"symfony/dependency-injection": "^6.0",
+		"typo3/cms-backend": "*",
+		"typo3/cms-core": "~12.4.0",
+		"typo3/cms-extbase": "~12.4.0",
+		"typo3/cms-fluid": "~12.4.0"
 	},
 	"require-dev": {
 		"armin/editorconfig-cli": "^1.5",
-		"dg/bypass-finals": "^1.3",
-		"ergebnis/composer-normalize": "^2.8",
-		"helhum/typo3-console": "^6.3.2 || ^7.0",
-		"jangregor/phpstan-prophecy": "^1.0",
-		"phpspec/prophecy-phpunit": "^2.0",
-		"phpstan/extension-installer": "^1.2",
-		"phpstan/phpstan": "^1.6",
-		"phpstan/phpstan-symfony": "^1.2",
-		"saschaegerer/phpstan-typo3": "^1.1",
-		"ssch/typo3-rector": "^1.0",
-		"typo3/coding-standards": "^0.5.0",
-		"typo3/testing-framework": "^6.11.2"
+		"eliashaeussler/phpstan-config": "^2.1",
+		"eliashaeussler/rector-config": "^1.4",
+		"ergebnis/composer-normalize": "^2.30",
+		"helhum/typo3-console": "^8.0",
+		"phpstan/extension-installer": "^1.3",
+		"phpstan/phpstan-symfony": "^1.3",
+		"phpunit/phpcov": "^9.0",
+		"saschaegerer/phpstan-typo3": "^1.8",
+		"ssch/typo3-rector": "^1.2",
+		"symfony/config": "^6.0",
+		"typo3/coding-standards": "^0.7.1",
+		"typo3/testing-framework": "^8.0"
 	},
 	"autoload": {
 		"psr-4": {
@@ -66,10 +65,10 @@
 	"config": {
 		"allow-plugins": {
 			"ergebnis/composer-normalize": true,
+			"php-http/discovery": false,
 			"phpstan/extension-installer": true,
 			"typo3/class-alias-loader": true,
-			"typo3/cms-composer-installers": true,
-			"captainhook/plugin-composer": false
+			"typo3/cms-composer-installers": true
 		},
 		"bin-dir": ".Build/bin",
 		"sort-packages": true,
@@ -98,20 +97,30 @@
 			"@environment:prepare:typo3"
 		],
 		"environment:prepare:extension": [
-			"mkdir -p .Build/web/typo3conf/ext/",
-			"[ -L .Build/web/typo3conf/ext/warming ] || ln -snvf ../../../../. .Build/web/typo3conf/ext/warming"
+			"[ -L config ] || ln -snvf Tests/Build/Configuration config"
 		],
 		"environment:prepare:typo3": [
-			"typo3cms install:setup --no-interaction --force --install-steps-config Tests/Build/Installation/install-steps.yaml"
+			"typo3 install:setup --no-interaction --force --install-steps-config Tests/Build/Installation/install-steps.yaml"
 		],
+		"fix": [
+			"@fix:composer",
+			"@fix:editorconfig",
+			"@fix:php"
+		],
+		"fix:composer": [
+			"@composer normalize",
+			"@composer normalize Resources/Private/Libs/Build/composer.json"
+		],
+		"fix:editorconfig": "@lint:editorconfig --fix",
+		"fix:php": "php-cs-fixer fix",
 		"lint": [
 			"@lint:composer",
 			"@lint:editorconfig",
 			"@lint:php"
 		],
-		"lint:composer": "@composer normalize --no-check-lock --no-update-lock",
-		"lint:editorconfig": "ec --finder-config .editorconfig-lint.php --fix",
-		"lint:php": "php-cs-fixer fix",
+		"lint:composer": "@fix:composer --dry-run",
+		"lint:editorconfig": "ec --finder-config .editorconfig-lint.php",
+		"lint:php": "@fix:php --dry-run",
 		"migration": [
 			"@migration:rector"
 		],
@@ -119,14 +128,23 @@
 		"sca": [
 			"@sca:php"
 		],
-		"sca:php": "phpstan analyse -c phpstan.neon",
+		"sca:php": [
+			"@php Tests/Build/phpstan-bootstrap.php",
+			"phpstan analyse -c phpstan.php"
+		],
 		"test": [
+			"@test:functional",
 			"@test:unit"
 		],
-		"test:ci": [
-			"@test:ci:unit"
+		"test:coverage": [
+			"@test:coverage:functional",
+			"@test:coverage:unit",
+			"@test:coverage:merge"
 		],
-		"test:ci:unit": "phpunit -c phpunit.ci.xml",
-		"test:unit": "phpunit -c phpunit.xml"
+		"test:coverage:functional": "phpunit -c phpunit.functional.xml",
+		"test:coverage:merge": "phpcov merge --html .Build/coverage/html/_merged --clover .Build/coverage/clover.xml --text php://stdout .Build/coverage/php",
+		"test:coverage:unit": "phpunit -c phpunit.unit.xml",
+		"test:functional": "@test:coverage:functional --no-coverage",
+		"test:unit": "@test:coverage:unit --no-coverage"
 	}
 }

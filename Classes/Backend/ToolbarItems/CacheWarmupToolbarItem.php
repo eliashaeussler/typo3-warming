@@ -23,13 +23,11 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Backend\ToolbarItems;
 
-use EliasHaeussler\Typo3Warming\Configuration\Configuration;
-use EliasHaeussler\Typo3Warming\Traits\TranslatableTrait;
-use EliasHaeussler\Typo3Warming\Traits\ViewTrait;
-use EliasHaeussler\Typo3Warming\Utility\AccessUtility;
-use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
-use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Site\SiteFinder;
+use EliasHaeussler\Typo3Warming\Configuration;
+use EliasHaeussler\Typo3Warming\Utility;
+use EliasHaeussler\Typo3Warming\View;
+use TYPO3\CMS\Backend;
+use TYPO3\CMS\Core;
 
 /**
  * CacheWarmupToolbarItem
@@ -37,50 +35,53 @@ use TYPO3\CMS\Core\Site\SiteFinder;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class CacheWarmupToolbarItem implements ToolbarItemInterface
+final class CacheWarmupToolbarItem implements Backend\Toolbar\ToolbarItemInterface
 {
-    use TranslatableTrait;
-    use ViewTrait;
-
-    private Configuration $configuration;
-    private SiteFinder $siteFinder;
-
-    public function __construct(Configuration $configuration, SiteFinder $siteFinder, PageRenderer $pageRenderer)
-    {
-        $this->configuration = $configuration;
-        $this->siteFinder = $siteFinder;
-
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Warming/Backend/Toolbar/CacheWarmupMenu');
+    public function __construct(
+        private readonly Configuration\Configuration $configuration,
+        private readonly View\TemplateRenderer $renderer,
+        private readonly Core\Site\SiteFinder $siteFinder,
+        Core\Page\PageRenderer $pageRenderer,
+    ) {
+        $pageRenderer->loadJavaScriptModule('@eliashaeussler/typo3-warming/backend/toolbar-menu.js');
         $pageRenderer->addInlineLanguageLabelArray([
-            // Toolbar
-            'cacheWarmup.toolbar.sitemap.missing' => static::translate('toolbar.sitemap.missing'),
-            'cacheWarmup.toolbar.sitemap.placeholder' => static::translate('toolbar.sitemap.placeholder'),
-            'cacheWarmup.toolbar.copy.successful' => static::translate('toolbar.copy.successful'),
-
             // Notification
-            'cacheWarmup.notification.aborted.title' => static::translate('notification.aborted.title'),
-            'cacheWarmup.notification.aborted.message' => static::translate('notification.aborted.message'),
-            'cacheWarmup.notification.error.title' => static::translate('notification.error.title'),
-            'cacheWarmup.notification.error.message' => static::translate('notification.error.message'),
-            'cacheWarmup.notification.action.showReport' => static::translate('notification.action.showReport'),
-            'cacheWarmup.notification.action.retry' => static::translate('notification.action.retry'),
-
-            // Report Modal
-            'cacheWarmup.modal.report.title' => static::translate('modal.report.title'),
-            'cacheWarmup.modal.report.panel.failed' => static::translate('modal.report.panel.failed'),
-            'cacheWarmup.modal.report.panel.successful' => static::translate('modal.report.panel.successful'),
-            'cacheWarmup.modal.report.action.view' => static::translate('modal.report.action.view'),
-            'cacheWarmup.modal.report.message.total' => static::translate('modal.report.message.total'),
-            'cacheWarmup.modal.report.message.noUrlsCrawled' => static::translate('modal.report.message.noUrlsCrawled'),
+            'warming.notification.aborted.title' => Configuration\Localization::translate('notification.aborted.title'),
+            'warming.notification.aborted.message' => Configuration\Localization::translate('notification.aborted.message'),
+            'warming.notification.error.title' => Configuration\Localization::translate('notification.error.title'),
+            'warming.notification.error.message' => Configuration\Localization::translate('notification.error.message'),
+            'warming.notification.action.showReport' => Configuration\Localization::translate('notification.action.showReport'),
+            'warming.notification.action.retry' => Configuration\Localization::translate('notification.action.retry'),
+            'warming.notification.noSitesSelected.title' => Configuration\Localization::translate('notification.noSitesSelected.title'),
+            'warming.notification.noSitesSelected.message' => Configuration\Localization::translate('notification.noSitesSelected.message'),
 
             // Progress Modal
-            'cacheWarmup.modal.progress.title' => static::translate('modal.progress.title'),
-            'cacheWarmup.modal.progress.button.report' => static::translate('modal.progress.button.report'),
-            'cacheWarmup.modal.progress.button.retry' => static::translate('modal.progress.button.retry'),
-            'cacheWarmup.modal.progress.button.close' => static::translate('modal.progress.button.close'),
-            'cacheWarmup.modal.progress.failedCounter' => static::translate('modal.progress.failedCounter'),
-            'cacheWarmup.modal.progress.allCounter' => static::translate('modal.progress.allCounter'),
-            'cacheWarmup.modal.progress.placeholder' => static::translate('modal.progress.placeholder'),
+            'warming.modal.progress.title' => Configuration\Localization::translate('modal.progress.title'),
+            'warming.modal.progress.button.report' => Configuration\Localization::translate('modal.progress.button.report'),
+            'warming.modal.progress.button.retry' => Configuration\Localization::translate('modal.progress.button.retry'),
+            'warming.modal.progress.button.close' => Configuration\Localization::translate('modal.progress.button.close'),
+            'warming.modal.progress.failedCounter' => Configuration\Localization::translate('modal.progress.failedCounter'),
+            'warming.modal.progress.allCounter' => Configuration\Localization::translate('modal.progress.allCounter'),
+            'warming.modal.progress.placeholder' => Configuration\Localization::translate('modal.progress.placeholder'),
+
+            // Report Modal
+            'warming.modal.report.title' => Configuration\Localization::translate('modal.report.title'),
+            'warming.modal.report.panel.failed' => Configuration\Localization::translate('modal.report.panel.failed'),
+            'warming.modal.report.panel.failed.summary' => Configuration\Localization::translate('modal.report.panel.failed.summary'),
+            'warming.modal.report.panel.successful' => Configuration\Localization::translate('modal.report.panel.successful'),
+            'warming.modal.report.panel.successful.summary' => Configuration\Localization::translate('modal.report.panel.successful.summary'),
+            'warming.modal.report.panel.excluded' => Configuration\Localization::translate('modal.report.panel.excluded'),
+            'warming.modal.report.panel.excluded.summary' => Configuration\Localization::translate('modal.report.panel.excluded.summary'),
+            'warming.modal.report.panel.excluded.sitemaps' => Configuration\Localization::translate('modal.report.panel.excluded.sitemaps'),
+            'warming.modal.report.panel.excluded.urls' => Configuration\Localization::translate('modal.report.panel.excluded.urls'),
+            'warming.modal.report.action.view' => Configuration\Localization::translate('modal.report.action.view'),
+            'warming.modal.report.message.total' => Configuration\Localization::translate('modal.report.message.total'),
+            'warming.modal.report.message.noUrlsCrawled' => Configuration\Localization::translate('modal.report.message.noUrlsCrawled'),
+
+            // Sites Modal
+            'warming.modal.sites.title' => Configuration\Localization::translate('modal.sites.title'),
+            'warming.modal.sites.userAgent.action.successful' => Configuration\Localization::translate('modal.sites.userAgent.action.successful'),
+            'warming.modal.sites.button.start' => Configuration\Localization::translate('modal.sites.button.start'),
         ]);
     }
 
@@ -92,7 +93,7 @@ final class CacheWarmupToolbarItem implements ToolbarItemInterface
         }
 
         foreach ($this->siteFinder->getAllSites() as $site) {
-            if (AccessUtility::canWarmupCacheOfSite($site)) {
+            if (Utility\AccessUtility::canWarmupCacheOfSite($site)) {
                 return true;
             }
         }
@@ -102,20 +103,17 @@ final class CacheWarmupToolbarItem implements ToolbarItemInterface
 
     public function getItem(): string
     {
-        return $this->buildView('CacheWarmupToolbarItem.html')->render();
+        return $this->renderer->render('Toolbar/CacheWarmupToolbarItem');
     }
 
     public function hasDropDown(): bool
     {
-        return true;
+        return false;
     }
 
     public function getDropDown(): string
     {
-        $view = $this->buildView('CacheWarmupToolbarItemDropDown.html');
-        $view->assign('userAgent', $this->configuration->getUserAgent());
-
-        return $view->render();
+        return '';
     }
 
     /**
@@ -123,7 +121,9 @@ final class CacheWarmupToolbarItem implements ToolbarItemInterface
      */
     public function getAdditionalAttributes(): array
     {
-        return [];
+        return [
+            'class' => 'tx-warming-toolbar-item',
+        ];
     }
 
     public function getIndex(): int

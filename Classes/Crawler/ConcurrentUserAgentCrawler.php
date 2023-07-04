@@ -23,48 +23,93 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Crawler;
 
-use EliasHaeussler\CacheWarmup\Crawler\ConcurrentCrawler;
-use EliasHaeussler\CacheWarmup\CrawlingState;
-use GuzzleHttp\Psr7\Request;
-use Psr\Http\Message\ResponseInterface;
+use EliasHaeussler\CacheWarmup;
+use EliasHaeussler\SSE;
+use EliasHaeussler\Typo3Warming\Configuration;
+use EliasHaeussler\Typo3Warming\Http;
+use GuzzleHttp\ClientInterface;
+use TYPO3\CMS\Core;
 
 /**
  * ConcurrentAgentCrawler
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
+ *
+ * @extends CacheWarmup\Crawler\AbstractConfigurableCrawler<array{
+ *     concurrency: int,
+ *     request_method: string,
+ *     request_headers: array<string, string>,
+ *     request_options: array<string, mixed>,
+ *     client_config: array<string, mixed>,
+ * }>
  */
-class ConcurrentUserAgentCrawler extends ConcurrentCrawler implements RequestAwareInterface
+final class ConcurrentUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfigurableCrawler implements StreamableCrawler
 {
-    use ConfigurableClientTrait;
-    use RequestAwareTrait;
-    use UserAgentTrait;
+    use CacheWarmup\Crawler\ConcurrentCrawlerTrait {
+        getRequestHeaders as getDefaultRequestHeaders;
+    }
 
-    protected function getRequests(): \Iterator
+    protected static array $defaultOptions = [
+        'concurrency' => 5,
+        'request_method' => 'GET',
+        'request_headers' => [],
+        'request_options' => [],
+        'client_config' => [],
+    ];
+
+    private readonly Http\Client\ClientFactory $clientFactory;
+    private readonly Configuration\Configuration $configuration;
+    private ClientInterface $client;
+    private ?SSE\Stream\EventStream $stream = null;
+
+    public function __construct(array $options = [])
     {
-        /** @var Request $request */
-        foreach (parent::getRequests() as $request) {
-            yield $this->applyUserAgentHeader($request->withMethod('GET'));
+        $this->clientFactory = Core\Utility\GeneralUtility::makeInstance(Http\Client\ClientFactory::class);
+        $this->configuration = Core\Utility\GeneralUtility::makeInstance(Configuration\Configuration::class);
+
+        parent::__construct($options);
+    }
+
+    public function crawl(array $urls): CacheWarmup\Result\CacheWarmupResult
+    {
+        $numberOfUrls = \count($urls);
+        $resultHandler = new CacheWarmup\Http\Message\Handler\ResultCollectorHandler();
+        $handlers = [$resultHandler];
+
+        if ($this->stream !== null) {
+            $streamHandler = new Http\Message\Handler\StreamResponseHandler($this->stream, $numberOfUrls);
+            $handlers[] = $streamHandler;
         }
+
+        // Start crawling
+        $pool = $this->createPool($urls, $this->client, $handlers);
+        $pool->promise()->wait();
+
+        return $resultHandler->getResult();
     }
 
-    public function onSuccess(ResponseInterface $response, int $index): void
+    public function setOptions(array $options): void
     {
-        $data = [
-            'response' => $response,
-        ];
+        parent::setOptions($options);
 
-        $this->successfulUrls[] = $crawlingState = CrawlingState::createSuccessful($this->urls[$index], $data);
-        $this->updateRequest($crawlingState);
+        // Recreate client with updated client config
+        $this->client = $this->clientFactory->get($this->options['client_config']);
     }
 
-    public function onFailure(\Throwable $exception, int $index): void
+    public function setStream(SSE\Stream\EventStream $stream): void
     {
-        $data = [
-            'exception' => $exception,
-        ];
+        $this->stream = $stream;
+    }
 
-        $this->failedUrls[] = $crawlingState = CrawlingState::createFailed($this->urls[$index], $data);
-        $this->updateRequest($crawlingState);
+    /**
+     * @return array<string, string>
+     */
+    protected function getRequestHeaders(): array
+    {
+        $headers = $this->getDefaultRequestHeaders();
+        $headers['User-Agent'] = $this->configuration->getUserAgent();
+
+        return $headers;
     }
 }

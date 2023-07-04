@@ -23,9 +23,9 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Sitemap\Provider;
 
-use EliasHaeussler\Typo3Warming\Sitemap\SiteAwareSitemap;
-use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use EliasHaeussler\Typo3Warming\Sitemap;
+use EliasHaeussler\Typo3Warming\Utility;
+use TYPO3\CMS\Core;
 
 /**
  * SiteProvider
@@ -33,24 +33,27 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class SiteProvider extends AbstractProvider
+final class SiteProvider implements Provider
 {
-    public function get(Site $site, SiteLanguage $siteLanguage = null): ?SiteAwareSitemap
-    {
+    public function get(
+        Core\Site\Entity\Site $site,
+        Core\Site\Entity\SiteLanguage $siteLanguage = null,
+    ): ?Sitemap\SiteAwareSitemap {
         if ($siteLanguage !== null && $siteLanguage !== $site->getDefaultLanguage()) {
             $sitemapPath = $siteLanguage->toArray()['xml_sitemap_path'] ?? null;
         } else {
             $sitemapPath = $site->getConfiguration()['xml_sitemap_path'] ?? null;
         }
 
-        if (empty($sitemapPath)) {
+        // Early return if no sitemap path is configured
+        if (!\is_string($sitemapPath) || trim($sitemapPath) === '') {
             return null;
         }
 
-        return new SiteAwareSitemap(
-            $this->getSiteUrlWithPath($site, $sitemapPath, $siteLanguage),
+        return new Sitemap\SiteAwareSitemap(
+            Utility\HttpUtility::getSiteUrlWithPath($site, $sitemapPath, $siteLanguage),
             $site,
-            $siteLanguage
+            $siteLanguage ?? $site->getDefaultLanguage(),
         );
     }
 

@@ -15,6 +15,7 @@ into the cache warmup process.
     :maxdepth: 3
 
     Crawlers
+    CrawlingStrategies
     SitemapProviders
     Caching
     ConfigurationAPI

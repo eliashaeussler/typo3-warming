@@ -23,12 +23,12 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Tests\Unit\Sitemap\Provider;
 
-use EliasHaeussler\Typo3Warming\Sitemap\Provider\SiteProvider;
-use EliasHaeussler\Typo3Warming\Sitemap\SiteAwareSitemap;
-use TYPO3\CMS\Core\Http\Uri;
-use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use EliasHaeussler\Typo3Warming as Src;
+use Generator;
+use GuzzleHttp\Psr7\Uri;
+use PHPUnit\Framework;
+use TYPO3\CMS\Core;
+use TYPO3\TestingFramework;
 
 /**
  * SiteProviderTest
@@ -36,75 +36,75 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class SiteProviderTest extends UnitTestCase
+#[Framework\Attributes\CoversClass(Src\Sitemap\Provider\SiteProvider::class)]
+final class SiteProviderTest extends TestingFramework\Core\Unit\UnitTestCase
 {
-    protected SiteProvider $subject;
+    protected Src\Sitemap\Provider\SiteProvider $subject;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->subject = new SiteProvider();
+        $this->subject = new Src\Sitemap\Provider\SiteProvider();
     }
 
-    /**
-     * @test
-     */
+    #[Framework\Attributes\Test]
     public function getReturnsNullIfSitemapPathIsNotConfiguredInSite(): void
     {
-        $site = new Site('foo', 1, []);
+        $site = new Core\Site\Entity\Site('foo', 1, []);
 
         self::assertNull($this->subject->get($site));
     }
 
-    /**
-     * @test
-     * @dataProvider getReturnsSitemapWithUrlPathFromSiteDataProvider
-     */
+    #[Framework\Attributes\Test]
+    #[Framework\Attributes\DataProvider('getReturnsSitemapWithUrlPathFromSiteDataProvider')]
     public function getReturnsSitemapWithUrlPathFromSite(string $path, string $expected): void
     {
-        $site = new Site('foo', 1, [
+        $site = new Core\Site\Entity\Site('foo', 1, [
             'base' => 'https://www.example.com/',
             'xml_sitemap_path' => $path,
         ]);
 
         self::assertEquals(
-            new SiteAwareSitemap(new Uri($expected), $site),
-            $this->subject->get($site)
+            new Src\Sitemap\SiteAwareSitemap(new Core\Http\Uri($expected), $site, $site->getDefaultLanguage()),
+            $this->subject->get($site),
         );
     }
 
-    /**
-     * @test
-     * @dataProvider getReturnsSitemapWithUrlPathFromSiteLanguageDataProvider
-     */
+    #[Framework\Attributes\Test]
+    #[Framework\Attributes\DataProvider('getReturnsSitemapWithUrlPathFromSiteLanguageDataProvider')]
     public function getReturnsSitemapWithUrlPathFromSiteLanguage(string $path, string $expected): void
     {
-        $site = new Site('foo', 1, [
+        $site = new Core\Site\Entity\Site('foo', 1, [
             'base' => 'https://www.example.com/',
         ]);
-        $siteLanguage = new SiteLanguage(1, 'de_DE.UTF-8', new Uri('https://www.example.com/de'), [
-            'xml_sitemap_path' => $path,
-        ]);
+        $siteLanguage = new Core\Site\Entity\SiteLanguage(
+            1,
+            'de_DE.UTF-8',
+            new Uri('https://www.example.com/de'),
+            [
+                'xml_sitemap_path' => $path,
+            ],
+        );
 
         self::assertEquals(
-            new SiteAwareSitemap(new Uri($expected), $site, $siteLanguage),
-            $this->subject->get($site, $siteLanguage)
+            new Src\Sitemap\SiteAwareSitemap(new Uri($expected), $site, $siteLanguage),
+            $this->subject->get($site, $siteLanguage),
         );
     }
 
     /**
-     * @return \Generator<string, array{string, string}>
+     * @return Generator<string, array{string, string}>
      */
-    public function getReturnsSitemapWithUrlPathFromSiteDataProvider(): \Generator
+    public static function getReturnsSitemapWithUrlPathFromSiteDataProvider(): Generator
     {
         yield 'path only' => ['baz.xml', 'https://www.example.com/baz.xml'];
         yield 'path with query string' => ['baz.xml?foo=baz', 'https://www.example.com/baz.xml?foo=baz'];
     }
 
     /**
-     * @return \Generator<string, array{string, string}>
+     * @return Generator<string, array{string, string}>
      */
-    public function getReturnsSitemapWithUrlPathFromSiteLanguageDataProvider(): \Generator
+    public static function getReturnsSitemapWithUrlPathFromSiteLanguageDataProvider(): Generator
     {
         yield 'path only' => ['baz.xml', 'https://www.example.com/de/baz.xml'];
         yield 'path with query string' => ['baz.xml?foo=baz', 'https://www.example.com/de/baz.xml?foo=baz'];

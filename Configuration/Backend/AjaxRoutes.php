@@ -22,14 +22,14 @@
 return [
     'tx_warming_cache_warmup' => [
         'path' => '/warming/cache-warmup',
-        'target' => \EliasHaeussler\Typo3Warming\Controller\CacheWarmupController::class . '::mainAction',
+        'target' => \EliasHaeussler\Typo3Warming\Controller\CacheWarmupController::class,
     ],
     'tx_warming_cache_warmup_legacy' => [
         'path' => '/warming/cache-warmup-legacy',
-        'target' => \EliasHaeussler\Typo3Warming\Controller\CacheWarmupController::class . '::legacyWarmupAction',
+        'target' => \EliasHaeussler\Typo3Warming\Controller\CacheWarmupLegacyController::class,
     ],
     'tx_warming_fetch_sites' => [
         'path' => '/warming/fetch-sites',
-        'target' => \EliasHaeussler\Typo3Warming\Controller\CacheWarmupController::class . '::fetchSitesAction',
+        'target' => \EliasHaeussler\Typo3Warming\Controller\FetchSitesController::class,
     ],
 ];

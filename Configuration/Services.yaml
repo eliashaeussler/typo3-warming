@@ -6,20 +6,36 @@ services:
 
   EliasHaeussler\Typo3Warming\:
     resource: '../Classes/*'
+    exclude:
+      - '../Classes/DependencyInjection/*'
+      - '../Classes/Enums/*'
+      - '../Classes/Exception/*'
+      - '../Classes/Http/Message/Event/*'
+      - '../Classes/Http/Message/EventStream.php'
+      - '../Classes/Http/Message/Handler/*'
+      - '../Classes/Result/*'
+      - '../Classes/Sitemap/SiteAwareSitemap.php'
+      - '../Classes/ValueObject/*'
 
-  EliasHaeussler\Typo3Warming\Backend\ToolbarItems\CacheWarmupToolbarItem:
-    public: true
-  EliasHaeussler\Typo3Warming\Cache\CacheManager:
+  EliasHaeussler\Typo3Warming\Cache\SitemapsCache:
     arguments:
-      $cache: '@cache.core'
+      $cache: '@cache.warming'
   EliasHaeussler\Typo3Warming\Configuration\Configuration:
     public: true
   EliasHaeussler\Typo3Warming\Controller\CacheWarmupController:
     public: true
+  EliasHaeussler\Typo3Warming\Controller\CacheWarmupLegacyController:
+    public: true
+  EliasHaeussler\Typo3Warming\Controller\FetchSitesController:
+    public: true
+  EliasHaeussler\Typo3Warming\Crawler\Strategy\CrawlingStrategyFactory:
+    arguments:
+      $strategies: !tagged_locator { tag: 'warming.crawling_strategy', default_index_method: 'getName' }
+  EliasHaeussler\Typo3Warming\Http\Client\ClientFactory:
+    public: true
   EliasHaeussler\Typo3Warming\Service\CacheWarmupService:
     public: true
   EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator:
-    public: true
     arguments:
       $providers: !tagged_iterator { tag: 'warming.sitemap_provider', default_priority_method: 'getPriority' }
 
@@ -35,6 +51,16 @@ services:
         command: warming:cachewarmup
         description: 'Warm up Frontend caches of single pages and/or whole sites using their XML sitemaps.'
 
-  cache.core:
+  CuyZ\Valinor\Mapper\TreeMapper:
+    factory: ['@EliasHaeussler\Typo3Warming\Mapper\MapperFactory', 'get']
+
+  # Default crawling strategies
+  EliasHaeussler\CacheWarmup\Crawler\Strategy\SortByChangeFrequencyStrategy:
+  EliasHaeussler\CacheWarmup\Crawler\Strategy\SortByLastModificationDateStrategy:
+  EliasHaeussler\CacheWarmup\Crawler\Strategy\SortByPriorityStrategy:
+
+  cache.warming:
+    class: 'TYPO3\CMS\Core\Cache\Frontend\PhpFrontend'
     factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
-    arguments: ['core']
+    arguments:
+      - !php/const EliasHaeussler\Typo3Warming\Extension::KEY

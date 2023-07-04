@@ -21,15 +21,20 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3Warming\DependencyInjection;
-
+use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3Warming\Sitemap;
-use Symfony\Component\DependencyInjection as SymfonyDI;
+use Symfony\Component\DependencyInjection;
 
 return static function (
-    SymfonyDI\Loader\Configurator\ContainerConfigurator $containerConfigurator,
-    SymfonyDI\ContainerBuilder $container
+    DependencyInjection\Loader\Configurator\ContainerConfigurator $containerConfigurator,
+    DependencyInjection\ContainerBuilder $container,
 ): void {
-    $container->registerForAutoconfiguration(Sitemap\Provider\ProviderInterface::class)
+    $container->registerForAutoconfiguration(CacheWarmup\Crawler\Strategy\CrawlingStrategy::class)
+        ->addTag('warming.crawling_strategy');
+    $container->registerForAutoconfiguration(Sitemap\Provider\Provider::class)
         ->addTag('warming.sitemap_provider');
+
+    // External services
+    $services = $containerConfigurator->services();
+    $services->set(CacheWarmup\Crawler\CrawlerFactory::class);
 };

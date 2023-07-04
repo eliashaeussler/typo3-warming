@@ -23,9 +23,10 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Tests\Unit\Exception;
 
-use EliasHaeussler\Typo3Warming\Exception\UnsupportedSiteException;
-use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use EliasHaeussler\Typo3Warming as Src;
+use PHPUnit\Framework;
+use TYPO3\CMS\Core;
+use TYPO3\TestingFramework;
 
 /**
  * UnsupportedSiteExceptionTest
@@ -33,17 +34,15 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class UnsupportedSiteExceptionTest extends UnitTestCase
+#[Framework\Attributes\CoversClass(Src\Exception\UnsupportedSiteException::class)]
+final class UnsupportedSiteExceptionTest extends TestingFramework\Core\Unit\UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Framework\Attributes\Test]
     public function forMissingSitemapReturnsExceptionForMissingSitemap(): void
     {
-        $site = new Site('foo', 1, []);
-        $subject = UnsupportedSiteException::forMissingSitemap($site);
+        $site = new Core\Site\Entity\Site('foo', 1, []);
+        $subject = Src\Exception\UnsupportedSiteException::forMissingSitemap($site);
 
-        self::assertInstanceOf(UnsupportedSiteException::class, $subject);
         self::assertSame('The site "foo" is not supported since it does not provide a sitemap.', $subject->getMessage());
         self::assertSame(1619369771, $subject->getCode());
     }

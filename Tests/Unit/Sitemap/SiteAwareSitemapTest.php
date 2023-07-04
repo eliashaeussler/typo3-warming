@@ -23,10 +23,10 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Tests\Unit\Sitemap;
 
-use EliasHaeussler\Typo3Warming\Sitemap\SiteAwareSitemap;
-use TYPO3\CMS\Core\Http\Uri;
-use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use EliasHaeussler\Typo3Warming as Src;
+use PHPUnit\Framework;
+use TYPO3\CMS\Core;
+use TYPO3\TestingFramework;
 
 /**
  * SiteAwareSitemapTest
@@ -34,41 +34,33 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class SiteAwareSitemapTest extends UnitTestCase
+#[Framework\Attributes\CoversClass(Src\Sitemap\SiteAwareSitemap::class)]
+final class SiteAwareSitemapTest extends TestingFramework\Core\Unit\UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Framework\Attributes\Test]
     public function getSiteReturnsSite(): void
     {
-        $site = new Site('foo', 1, []);
-        $subject = new SiteAwareSitemap(new Uri('https://www.example.com'), $site);
+        $site = new Core\Site\Entity\Site('foo', 1, []);
+
+        $subject = new Src\Sitemap\SiteAwareSitemap(
+            new Core\Http\Uri('https://www.example.com'),
+            $site,
+            $site->getDefaultLanguage(),
+        );
 
         self::assertSame($site, $subject->getSite());
     }
 
-    /**
-     * @test
-     */
+    #[Framework\Attributes\Test]
     public function getSiteLanguageReturnsSiteLanguage(): void
     {
-        $site = new Site('foo', 1, []);
-        $subject = new SiteAwareSitemap(new Uri('https://www.example.com'), $site, $site->getDefaultLanguage());
+        $site = new Core\Site\Entity\Site('foo', 1, []);
 
-        self::assertSame($site->getDefaultLanguage(), $subject->getSiteLanguage());
-    }
-
-    /**
-     * @test
-     */
-    public function setSiteLanguageSetsSiteLanguage(): void
-    {
-        $site = new Site('foo', 1, []);
-        $subject = new SiteAwareSitemap(new Uri('https://www.example.com'), $site);
-
-        self::assertNull($subject->getSiteLanguage());
-
-        $subject->setSiteLanguage($site->getDefaultLanguage());
+        $subject = new Src\Sitemap\SiteAwareSitemap(
+            new Core\Http\Uri('https://www.example.com'),
+            $site,
+            $site->getDefaultLanguage(),
+        );
 
         self::assertSame($site->getDefaultLanguage(), $subject->getSiteLanguage());
     }

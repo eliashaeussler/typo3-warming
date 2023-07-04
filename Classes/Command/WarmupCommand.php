@@ -23,23 +23,16 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Command;
 
-use EliasHaeussler\CacheWarmup\Command\CacheWarmupCommand;
-use EliasHaeussler\Typo3Warming\Configuration\Configuration;
-use EliasHaeussler\Typo3Warming\Exception\UnsupportedConfigurationException;
-use EliasHaeussler\Typo3Warming\Exception\UnsupportedSiteException;
-use EliasHaeussler\Typo3Warming\Service\CacheWarmupService;
-use EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator;
-use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
+use EliasHaeussler\CacheWarmup;
+use EliasHaeussler\Typo3Warming\Configuration;
+use EliasHaeussler\Typo3Warming\Crawler;
+use EliasHaeussler\Typo3Warming\Exception;
+use EliasHaeussler\Typo3Warming\Http;
+use EliasHaeussler\Typo3Warming\Sitemap;
+use EliasHaeussler\Typo3Warming\Utility;
+use JsonException;
+use Symfony\Component\Console;
+use TYPO3\CMS\Core;
 
 /**
  * WarmupCommand
@@ -47,29 +40,18 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class WarmupCommand extends Command
+final class WarmupCommand extends Console\Command\Command
 {
     private const ALL_LANGUAGES = -1;
 
-    private CacheWarmupService $warmupService;
-    private Configuration $configuration;
-    private SitemapLocator $sitemapLocator;
-    private SiteFinder $siteFinder;
-    private SymfonyStyle $io;
-
     public function __construct(
-        CacheWarmupService $warmupService,
-        Configuration $configuration,
-        SitemapLocator $sitemapLocator,
-        SiteFinder $siteFinder,
-        string $name = null
+        private readonly Http\Client\ClientFactory $clientFactory,
+        private readonly Configuration\Configuration $configuration,
+        private readonly Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
+        private readonly Sitemap\SitemapLocator $sitemapLocator,
+        private readonly Core\Site\SiteFinder $siteFinder,
     ) {
-        $this->warmupService = $warmupService;
-        $this->configuration = $configuration;
-        $this->sitemapLocator = $sitemapLocator;
-        $this->siteFinder = $siteFinder;
-
-        parent::__construct($name);
+        parent::__construct();
     }
 
     protected function configure(): void
@@ -116,7 +98,7 @@ final class WarmupCommand extends Command
             '  │  if individual caches warm up incorrectly.',
             '  │  This is especially useful for automated execution of cache warmups.',
             '  ├─ Default: <info>false</info>',
-            '  └─ Example: <comment>warming:cachewarmup -s 1 -x</comment>',
+            '  └─ Example: <comment>warming:cachewarmup -s 1 --strict</comment>',
             '',
             '* <comment>Crawl limit</comment>',
             '  ├─ The maximum number of pages to be warmed up can be defined via the extension configuration <info>limit</info>.',
@@ -125,6 +107,24 @@ final class WarmupCommand extends Command
             '  ├─ Default: <info>' . $this->configuration->getLimit() . '</info>',
             '  ├─ Example: <comment>warming:cachewarmup -s 1 --limit 100</comment> (limits crawling to 100 pages)',
             '  └─ Example: <comment>warming:cachewarmup -s 1 --limit 0</comment> (no limit)',
+            '',
+            '* <comment>Crawling strategy</comment>',
+            '  ├─ A crawling strategy defines how URLs will be crawled, e.g. by sorting them by a specific property.',
+            '  │  It can be defined via the extension configuration <info>strategy</info> or by using the <info>--strategy</info> option.',
+            '  │  The following strategies are currently available:',
+            ...array_map(
+                static fn (string $strategy) => '  │  * <info>' . $strategy . '</info>',
+                array_keys($this->crawlingStrategyFactory->getAll()),
+            ),
+            '  ├─ Default: <info>' . ($this->configuration->getStrategy() ?? 'none') . '</info>',
+            '  └─ Example: <comment>warming:cachewarmup --strategy ' . CacheWarmup\Crawler\Strategy\SortByPriorityStrategy::getName() . '</comment>',
+            '',
+            '* <comment>Format output</comment>',
+            '  ├─ By default, all user-oriented output is printed as plain text to the console.',
+            '  │  However, you can use other formatters by using the <info>--format</info> (or <info>-f</info>) option.',
+            '  ├─ Default: <info>' . CacheWarmup\Formatter\TextFormatter::getType() . '</info>',
+            '  ├─ Example: <comment>warming:cachewarmup --format ' . CacheWarmup\Formatter\TextFormatter::getType() . '</comment> (normal output as plaintext)',
+            '  └─ Example: <comment>warming:cachewarmup --format ' . CacheWarmup\Formatter\JsonFormatter::getType() . '</comment> (displays output as JSON)',
             '',
             '<info>Crawling configuration</info>',
             '<info>======================</info>',
@@ -146,50 +146,70 @@ final class WarmupCommand extends Command
         $this->addOption(
             'pages',
             'p',
-            InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-            'Pages whose Frontend caches are to be warmed up.'
+            Console\Input\InputOption::VALUE_REQUIRED | Console\Input\InputOption::VALUE_IS_ARRAY,
+            'Pages whose Frontend caches are to be warmed up.',
         );
         $this->addOption(
             'sites',
             's',
-            InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-            'Site identifiers or root page IDs of sites whose caches are to be warmed up.'
+            Console\Input\InputOption::VALUE_REQUIRED | Console\Input\InputOption::VALUE_IS_ARRAY,
+            'Site identifiers or root page IDs of sites whose caches are to be warmed up.',
         );
         $this->addOption(
             'languages',
             'l',
-            InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-            'Optional identifiers of languages for which caches are to be warmed up.'
+            Console\Input\InputOption::VALUE_REQUIRED | Console\Input\InputOption::VALUE_IS_ARRAY,
+            'Optional identifiers of languages for which caches are to be warmed up.',
         );
         $this->addOption(
             'limit',
             null,
-            InputOption::VALUE_REQUIRED,
+            Console\Input\InputOption::VALUE_REQUIRED,
             'Maximum number of pages to be crawled. Set to <info>0</info> to disable the limit.',
-            $this->configuration->getLimit()
+            $this->configuration->getLimit(),
+        );
+        $this->addOption(
+            'strategy',
+            null,
+            Console\Input\InputOption::VALUE_REQUIRED,
+            'Optional strategy to prepare URLs before crawling them.',
+            $this->configuration->getStrategy(),
+        );
+        $this->addOption(
+            'format',
+            'f',
+            Console\Input\InputOption::VALUE_REQUIRED,
+            'Formatter used to print the cache warmup result',
+            CacheWarmup\Formatter\TextFormatter::getType(),
         );
         $this->addOption(
             'strict',
             'x',
-            InputOption::VALUE_NONE,
-            'Fail if an error occurred during cache warmup.'
+            Console\Input\InputOption::VALUE_NONE,
+            'Fail if an error occurred during cache warmup.',
         );
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output): void
+    /**
+     * @throws CacheWarmup\Exception\InvalidUrlException
+     * @throws Console\Exception\ExceptionInterface
+     * @throws Core\Exception\SiteNotFoundException
+     * @throws Exception\UnsupportedConfigurationException
+     * @throws Exception\UnsupportedSiteException
+     * @throws JsonException
+     */
+    protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output): int
     {
-        $this->io = new SymfonyStyle($input, $output);
-    }
+        // Initialize sub command
+        $subCommand = new CacheWarmup\Command\CacheWarmupCommand($this->clientFactory->get());
+        $subCommand->setApplication($this->getApplication() ?? new Console\Application());
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        // Initialize sub-command
-        $subCommand = new CacheWarmupCommand();
-        $subCommand->setApplication($this->getApplication() ?? new Application());
-        $subCommandInput = $this->initializeSubCommandInput($subCommand, $input);
+        // Initialize sub command input
+        $subCommandInput = new Console\Input\ArrayInput(
+            $this->prepareCommandParameters($input),
+            $subCommand->getDefinition(),
+        );
         $subCommandInput->setInteractive(false);
-
-        $output->writeln('Running <info>cache warmup</info> by <info>Elias Häußler</info> and contributors.');
 
         // Run cache warmup in sub command from eliashaeussler/cache-warmup
         $statusCode = $subCommand->run($subCommandInput, $output);
@@ -199,16 +219,27 @@ final class WarmupCommand extends Command
             return $statusCode;
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 
-    private function initializeSubCommandInput(CacheWarmupCommand $subCommand, InputInterface $input): ArrayInput
+    /**
+     * @return array<string, mixed>
+     * @throws CacheWarmup\Exception\InvalidUrlException
+     * @throws Core\Exception\SiteNotFoundException
+     * @throws Exception\UnsupportedConfigurationException
+     * @throws Exception\UnsupportedSiteException
+     * @throws JsonException
+     */
+    private function prepareCommandParameters(Console\Input\InputInterface $input): array
     {
         // Resolve input options
         $languages = $this->resolveLanguages($input->getOption('languages'));
-        $urls = array_unique($this->resolveUrls($input->getOption('pages'), $languages));
-        $sitemaps = array_unique($this->resolveSitemaps($input->getOption('sites'), $languages));
+        $urls = array_unique($this->resolvePages($input->getOption('pages'), $languages));
+        $sitemaps = array_unique($this->resolveSites($input->getOption('sites'), $languages));
         $limit = max(0, (int)$input->getOption('limit'));
+        $strategy = $input->getOption('strategy');
+        $format = $input->getOption('format');
+        $excludePatterns = $this->configuration->getExcludePatterns();
 
         // Fetch crawler and crawler options
         $crawler = $this->configuration->getVerboseCrawler();
@@ -220,45 +251,54 @@ final class WarmupCommand extends Command
             '--urls' => $urls,
             '--limit' => $limit,
             '--crawler' => $crawler,
+            '--format' => $format,
         ];
 
-        // Early return if no crawler options are given
-        if ($crawlerOptions === []) {
-            return new ArrayInput($subCommandParameters, $subCommand->getDefinition());
-        }
-
         // Add crawler options to sub-command parameters
-        if ($subCommand->getDefinition()->hasOption('crawler-options')) {
+        if ($crawlerOptions !== []) {
             $subCommandParameters['--crawler-options'] = json_encode($crawlerOptions, JSON_THROW_ON_ERROR);
-        } else {
-            $this->io->writeln([
-                '<comment>This version of eliashaeussler/cache-warmup does not yet support crawler options.</comment>',
-                '<comment>Please upgrade to version 0.7.13 or any later version.</comment>',
-            ]);
         }
 
-        return new ArrayInput($subCommandParameters, $subCommand->getDefinition());
+        // Add exclude patterns
+        if ($excludePatterns !== []) {
+            $subCommandParameters['--exclude'] = $excludePatterns;
+        }
+
+        // Add crawling strategy
+        if ($strategy !== null) {
+            $subCommandParameters['--strategy'] = $strategy;
+        }
+
+        return $subCommandParameters;
     }
 
     /**
-     * @param list<string|int> $pages
+     * @param array<string> $pages
      * @param list<int> $languages
      * @return list<string>
-     * @throws SiteNotFoundException
+     * @throws Core\Exception\SiteNotFoundException
      */
-    private function resolveUrls(array $pages, array $languages): array
+    private function resolvePages(array $pages, array $languages): array
     {
         $resolvedUrls = [];
 
         foreach ($pages as $pageList) {
-            foreach (GeneralUtility::intExplode(',', (string)$pageList, true) as $page) {
+            $normalizedPages = Core\Utility\GeneralUtility::intExplode(',', $pageList, true);
+
+            foreach ($normalizedPages as $page) {
                 $languageIds = $languages;
+
                 if ($languageIds === [self::ALL_LANGUAGES]) {
                     $site = $this->siteFinder->getSiteByPageId($page);
                     $languageIds = array_keys($site->getLanguages());
                 }
+
                 foreach ($languageIds as $languageId) {
-                    $resolvedUrls[] = (string)$this->warmupService->generateUri($page, $languageId);
+                    $uri = Utility\HttpUtility::generateUri($page, $languageId);
+
+                    if ($uri !== null) {
+                        $resolvedUrls[] = (string)$uri;
+                    }
                 }
             }
         }
@@ -267,28 +307,32 @@ final class WarmupCommand extends Command
     }
 
     /**
-     * @param list<string|int> $sites
+     * @param array<string> $sites
      * @param list<int> $languages
      * @return list<string>
-     * @throws SiteNotFoundException
-     * @throws UnsupportedConfigurationException
-     * @throws UnsupportedSiteException
+     * @throws CacheWarmup\Exception\InvalidUrlException
+     * @throws Core\Exception\SiteNotFoundException
+     * @throws Exception\UnsupportedConfigurationException
+     * @throws Exception\UnsupportedSiteException
      */
-    private function resolveSitemaps(array $sites, array $languages): array
+    private function resolveSites(array $sites, array $languages): array
     {
         $resolvedSitemaps = [];
 
         foreach ($sites as $siteList) {
-            foreach (GeneralUtility::trimExplode(',', (string)$siteList, true) as $site) {
-                if (MathUtility::canBeInterpretedAsInteger($site)) {
+            foreach (Core\Utility\GeneralUtility::trimExplode(',', $siteList, true) as $site) {
+                if (Core\Utility\MathUtility::canBeInterpretedAsInteger($site)) {
                     $site = $this->siteFinder->getSiteByRootPageId((int)$site);
                 } else {
                     $site = $this->siteFinder->getSiteByIdentifier($site);
                 }
+
                 $languageIds = $languages;
+
                 if ([self::ALL_LANGUAGES] === $languageIds) {
                     $languageIds = array_keys($site->getLanguages());
                 }
+
                 foreach ($languageIds as $languageId) {
                     $resolvedSitemaps[] = (string)$this->sitemapLocator->locateBySite(
                         $site,
@@ -302,7 +346,7 @@ final class WarmupCommand extends Command
     }
 
     /**
-     * @param list<string|int> $languages
+     * @param array<string> $languages
      * @return list<int>
      */
     private function resolveLanguages(array $languages): array
@@ -315,7 +359,9 @@ final class WarmupCommand extends Command
         }
 
         foreach ($languages as $languageList) {
-            foreach (GeneralUtility::intExplode(',', (string)$languageList, true) as $languageId) {
+            $normalizedLanguages = Core\Utility\GeneralUtility::intExplode(',', $languageList, true);
+
+            foreach ($normalizedLanguages as $languageId) {
                 $resolvedLanguages[] = $languageId;
             }
         }

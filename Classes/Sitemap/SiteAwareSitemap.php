@@ -23,10 +23,9 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Sitemap;
 
-use EliasHaeussler\CacheWarmup\Sitemap;
-use Psr\Http\Message\UriInterface;
-use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use EliasHaeussler\CacheWarmup;
+use Psr\Http\Message;
+use TYPO3\CMS\Core;
 
 /**
  * SiteAwareSitemap
@@ -34,31 +33,23 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-class SiteAwareSitemap extends Sitemap
+class SiteAwareSitemap extends CacheWarmup\Sitemap\Sitemap
 {
-    protected Site $site;
-    protected ?SiteLanguage $siteLanguage;
-
-    public function __construct(UriInterface $uri, Site $site, SiteLanguage $siteLanguage = null)
-    {
+    public function __construct(
+        Message\UriInterface $uri,
+        protected readonly Core\Site\Entity\Site $site,
+        protected readonly Core\Site\Entity\SiteLanguage $siteLanguage,
+    ) {
         parent::__construct($uri);
-        $this->site = $site;
-        $this->siteLanguage = $siteLanguage;
     }
 
-    public function getSite(): Site
+    public function getSite(): Core\Site\Entity\Site
     {
         return $this->site;
     }
 
-    public function getSiteLanguage(): ?SiteLanguage
+    public function getSiteLanguage(): Core\Site\Entity\SiteLanguage
     {
         return $this->siteLanguage;
-    }
-
-    public function setSiteLanguage(SiteLanguage $siteLanguage): self
-    {
-        $this->siteLanguage = $siteLanguage;
-        return $this;
     }
 }

@@ -1,0 +1,20 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:c="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+      data-namespace-typo3-fluid="true"
+>
+
+<f:if condition="{siteGroups}">
+    <f:then>
+        <form class="tx-warming-sites-modal">
+            <f:render partial="Modal/Sites" arguments="{_all}" />
+            <f:render partial="Modal/Sidebar" arguments="{_all}" />
+        </form>
+    </f:then>
+    <f:else>
+        <div class="tx-warming-alert-modal">
+            <f:render partial="Modal/Alert/NoSites" />
+        </div>
+    </f:else>
+</f:if>
+
+</html>

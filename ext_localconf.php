@@ -19,6 +19,4 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-\EliasHaeussler\Typo3Warming\Configuration\Extension::registerContextMenuProvider();
-\EliasHaeussler\Typo3Warming\Configuration\Extension::registerIcons();
-\EliasHaeussler\Typo3Warming\Configuration\Extension::registerToolbarItem();
+\EliasHaeussler\Typo3Warming\Extension::registerCaches();

@@ -1,0 +1,26 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^PHPDoc type array\\<string, array\\<string, array\\<string, array\\<string, string\\>\\>\\|string\\>\\> of property EliasHaeussler\\\\Typo3Warming\\\\Backend\\\\ContextMenu\\\\ItemProviders\\\\CacheWarmupProvider\\:\\:\\$itemsConfiguration is not the same as PHPDoc type array of overridden property TYPO3\\\\CMS\\\\Backend\\\\ContextMenu\\\\ItemProviders\\\\PageProvider\\:\\:\\$itemsConfiguration\\.$#"
+			count: 1
+			path: Classes/Backend/ContextMenu/ItemProviders/CacheWarmupProvider.php
+
+		-
+			message: "#^Parameter \\#1 \\$items \\(array\\<string, array\\<string, mixed\\>\\>\\) of method EliasHaeussler\\\\Typo3Warming\\\\Backend\\\\ContextMenu\\\\ItemProviders\\\\CacheWarmupProvider\\:\\:addItems\\(\\) should be contravariant with parameter \\$items \\(array\\) of method TYPO3\\\\CMS\\\\Backend\\\\ContextMenu\\\\ItemProviders\\\\ProviderInterface\\:\\:addItems\\(\\)$#"
+			count: 1
+			path: Classes/Backend/ContextMenu/ItemProviders/CacheWarmupProvider.php
+
+		-
+			message: "#^Parameter \\#1 \\$items \\(array\\<string, array\\<string, mixed\\>\\>\\) of method EliasHaeussler\\\\Typo3Warming\\\\Backend\\\\ContextMenu\\\\ItemProviders\\\\CacheWarmupProvider\\:\\:addItems\\(\\) should be contravariant with parameter \\$items \\(array\\) of method TYPO3\\\\CMS\\\\Backend\\\\ContextMenu\\\\ItemProviders\\\\RecordProvider\\:\\:addItems\\(\\)$#"
+			count: 1
+			path: Classes/Backend/ContextMenu/ItemProviders/CacheWarmupProvider.php
+
+		-
+			message: "#^Parameter \\#3 \\$options \\(array\\<string, mixed\\>\\) of method EliasHaeussler\\\\Typo3Warming\\\\Tests\\\\Unit\\\\Fixtures\\\\DummyRequestFactory\\:\\:request\\(\\) should be contravariant with parameter \\$options \\(array\\) of method TYPO3\\\\CMS\\\\Core\\\\Http\\\\RequestFactory\\:\\:request\\(\\)$#"
+			count: 1
+			path: Tests/Unit/Fixtures/DummyRequestFactory.php
+
+		-
+			message: "#^EliasHaeussler\\\\Typo3Warming\\\\Tests\\\\Unit\\\\Fixtures\\\\DummySiteFinder\\:\\:__construct\\(\\) does not call parent constructor from TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteFinder\\.$#"
+			count: 1
+			path: Tests/Unit/Fixtures/DummySiteFinder.php

@@ -1,0 +1,48 @@
+/*
+ * This file is part of the TYPO3 CMS extension "warming".
+ *
+ * Copyright (C) 2023 Elias Häußler <elias@haeussler.dev>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+
+:root {
+    --tx-warming-modal-sites-width: 60%;
+    --tx-warming-modal-sidebar-width: calc(100% - var(--tx-warming-modal-sites-width));
+    --tx-warming-modal-action-selector-width: 1.5rem;
+    --tx-warming-modal-action-icon-width: 1.375rem;
+}
+
+.tx-warming-modal {
+    &-header {
+        font-weight: bold;
+        line-height: inherit;
+        padding: 0 0 var(--typo3-list-item-padding-y);
+        border-bottom: 1px solid rgba(0, 0, 0, .1);
+        margin-bottom: var(--typo3-list-item-padding-y);
+        background-color: var(--typo3-light-bg);
+        position: sticky;
+        top: 0;
+        z-index: 20;
+    }
+
+    &-footer {
+        opacity: 1;
+        transition: opacity 0.1s ease-in-out;
+
+        &.visually-hidden {
+            opacity: 0;
+        }
+    }
+}

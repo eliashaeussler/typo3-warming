@@ -40,11 +40,11 @@ jobs:
 
       # Linting
       - name: Lint composer.json
-        run: composer lint:composer -- --dry-run
+        run: composer lint:composer
       - name: Lint Editorconfig
-        run: .Build/bin/ec --finder-config .editorconfig-lint.php
+        run: composer lint:editorconfig
       - name: Lint PHP
-        run: composer lint:php -- --dry-run
+        run: composer lint:php
 
       # SCA
       - name: SCA PHP

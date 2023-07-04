@@ -1,23 +1,32 @@
-# cat=basic/10; type=int+; label=Crawl limit:Define maximum number of pages to crawl in one iteration. Set to "0" to disable the limit.
-limit = 250
+# customsubcategory=crawler=Crawler
+# customsubcategory=options=Options
 
-# cat=basic/20; type=string; label=Default crawler:Provide the FQCN of the crawler to be used for standard warmup requests. A crawler must implement the interface "EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface".
+# cat=basic/crawler/10; type=string; label=Default crawler:Provide the FQCN of the crawler to be used for standard warmup requests. A crawler must implement the interface "EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface".
 crawler = EliasHaeussler\Typo3Warming\Crawler\ConcurrentUserAgentCrawler
 
-# cat=basic/25; type=string; label=Default crawler options (JSON-encoded string):Provide crawler options for the default crawler. Applies only if the default crawler implements the interface "EliasHaeussler\CacheWarmup\Crawler\ConfigurableCrawlerInterface".
+# cat=basic/crawler/20; type=string; label=Default crawler options (JSON-encoded string):Provide crawler options for the default crawler. Applies only if the default crawler implements the interface "EliasHaeussler\CacheWarmup\Crawler\ConfigurableCrawlerInterface".
 crawlerOptions =
 
-# cat=basic/30; type=string; label=Verbose crawler:Provide the FQCN of the crawler to be used for verbose warmup requests. A crawler must implement the interface "EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface".
+# cat=basic/crawler/30; type=string; label=Verbose crawler:Provide the FQCN of the crawler to be used for verbose warmup requests. A crawler must implement the interface "EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface".
 verboseCrawler = EliasHaeussler\Typo3Warming\Crawler\OutputtingUserAgentCrawler
 
-# cat=basic/35; type=string; label=Verbose crawler options (JSON-encoded string):Provide crawler options for the verbose crawler. Applies only if the verbose crawler implements the interface "EliasHaeussler\CacheWarmup\Crawler\ConfigurableCrawlerInterface".
+# cat=basic/crawler/40; type=string; label=Verbose crawler options (JSON-encoded string):Provide crawler options for the verbose crawler. Applies only if the verbose crawler implements the interface "EliasHaeussler\CacheWarmup\Crawler\ConfigurableCrawlerInterface".
 verboseCrawlerOptions =
 
-# cat=pageTree/10; type=boolean; label=Enable cache warmup from page tree
+# cat=basic/options/10; type=int+; label=Crawl limit:Define maximum number of pages to crawl in one iteration. Set to "0" to disable the limit.
+limit = 250
+
+# cat=basic/options/20; type=string; label=Exclude patterns:Define patterns for URLs to be excluded from cache warmup. Patterns can be either regular expressions with delimiter "#" (e.g. #(no_cache|no_warming)=1#) or any patterns processable by the native PHP function "fnmatch()" (e.g. *no_cache=1*). Separate multiple patterns by comma.
+exclude =
+
+# cat=basic/options/30; type=options[=,Sort by change frequency=sort-by-changefreq,Sort by last modification date=sort-by-lastmod,Sort by priority=sort-by-priority]; label=Crawling strategy:Define a strategy used to crawl URLs. This can be helpful to prioritize crawling of important URLs.
+strategy =
+
+# cat=pageTree/enable/10; type=boolean; label=Enable cache warmup from page tree
 enablePageTree = 1
 
-# cat=pageTree/20; type=string; label=Supported doktypes in page tree:Provide a comma-separated list of doktypes for which cache warmup should be available in the page tree context menu.
+# cat=pageTree/options/10; type=string; label=Supported doktypes in page tree:Provide a comma-separated list of doktypes for which cache warmup should be available in the page tree context menu.
 supportedDoktypes = 1
 
-# cat=toolbar/10; type=boolean; label=Enable cache warmup from backend toolbar
+# cat=toolbar/enable/10; type=boolean; label=Enable cache warmup from backend toolbar
 enableToolbar = 1

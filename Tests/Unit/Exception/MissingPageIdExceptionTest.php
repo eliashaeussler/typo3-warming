@@ -23,8 +23,9 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Tests\Unit\Exception;
 
-use EliasHaeussler\Typo3Warming\Exception\MissingPageIdException;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use EliasHaeussler\Typo3Warming as Src;
+use PHPUnit\Framework;
+use TYPO3\TestingFramework;
 
 /**
  * MissingPageIdExceptionTest
@@ -32,16 +33,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class MissingPageIdExceptionTest extends UnitTestCase
+#[Framework\Attributes\CoversClass(Src\Exception\MissingPageIdException::class)]
+final class MissingPageIdExceptionTest extends TestingFramework\Core\Unit\UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Framework\Attributes\Test]
     public function createReturnsExceptionForMissingPageId(): void
     {
-        $subject = MissingPageIdException::create();
+        $subject = Src\Exception\MissingPageIdException::create();
 
-        self::assertInstanceOf(MissingPageIdException::class, $subject);
         self::assertSame('Page id is missing or invalid.', $subject->getMessage());
         self::assertSame(1619168744, $subject->getCode());
     }
