@@ -51,6 +51,7 @@ command. It supports multiple languages and custom crawler implementations.
     Configuration/Index
     Usage/Index
     DeveloperCorner/Index
+    Migration/Index
     Contributing/Index
 
 ..  toctree::
