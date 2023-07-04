@@ -21,38 +21,39 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3Warming\Tests\Build\DependencyInjection\CompilerPass;
+namespace EliasHaeussler\Typo3Warming\Tests\Functional\View;
 
-use Symfony\Component\DependencyInjection;
+use EliasHaeussler\Typo3Warming as Src;
+use PHPUnit\Framework;
+use TYPO3\TestingFramework;
 
 /**
- * PublicServicePass.
+ * TemplateRendererTest
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
- *
- * @internal Only to be used for testing purposes
- *
- * @codeCoverageIgnore
  */
-final class PublicServicePass implements DependencyInjection\Compiler\CompilerPassInterface
+#[Framework\Attributes\CoversClass(Src\View\TemplateRenderer::class)]
+final class TemplateRendererTest extends TestingFramework\Core\Functional\FunctionalTestCase
 {
-    public function __construct(
-        private readonly string $definitionPattern,
-    ) {
+    protected array $testExtensionsToLoad = [
+        'warming',
+    ];
+
+    protected Src\View\TemplateRenderer $subject;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->subject = new Src\View\TemplateRenderer();
     }
 
-    public static function fromClass(string $className): self
+    #[Framework\Attributes\Test]
+    public function renderRendersTemplate(): void
     {
-        return new self('/^' . preg_quote($className) . '$/');
-    }
+        $actual = $this->subject->render('Toolbar/CacheWarmupToolbarItem');
 
-    public function process(DependencyInjection\ContainerBuilder $container): void
-    {
-        foreach ($container->getDefinitions() as $id => $definition) {
-            if (preg_match($this->definitionPattern, $id) === 1) {
-                $definition->setPublic(true);
-            }
-        }
+        self::assertNotEmpty($actual);
     }
 }

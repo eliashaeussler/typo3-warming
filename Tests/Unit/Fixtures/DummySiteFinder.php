@@ -21,38 +21,30 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3Warming\Tests\Build\DependencyInjection\CompilerPass;
+namespace EliasHaeussler\Typo3Warming\Tests\Unit\Fixtures;
 
-use Symfony\Component\DependencyInjection;
+use TYPO3\CMS\Core;
 
 /**
- * PublicServicePass.
+ * DummySiteFinder
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
- *
- * @internal Only to be used for testing purposes
- *
- * @codeCoverageIgnore
+ * @internal
  */
-final class PublicServicePass implements DependencyInjection\Compiler\CompilerPassInterface
+final class DummySiteFinder extends Core\Site\SiteFinder
 {
-    public function __construct(
-        private readonly string $definitionPattern,
-    ) {
+    public ?Core\Site\Entity\Site $expectedSite = null;
+
+    /** @noinspection PhpMissingParentConstructorInspection */
+    public function __construct()
+    {
+        // Parent call missing on purpose.
     }
 
-    public static function fromClass(string $className): self
+    public function getSiteByIdentifier(string $identifier): Core\Site\Entity\Site
     {
-        return new self('/^' . preg_quote($className) . '$/');
-    }
-
-    public function process(DependencyInjection\ContainerBuilder $container): void
-    {
-        foreach ($container->getDefinitions() as $id => $definition) {
-            if (preg_match($this->definitionPattern, $id) === 1) {
-                $definition->setPublic(true);
-            }
-        }
+        return $this->expectedSite
+            ?? throw new Core\Exception\SiteNotFoundException('No site found for identifier ' . $identifier, 1521716628);
     }
 }

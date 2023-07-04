@@ -21,38 +21,52 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3Warming\Tests\Build\DependencyInjection\CompilerPass;
+namespace EliasHaeussler\Typo3Warming\Tests\Unit\Fixtures;
 
-use Symfony\Component\DependencyInjection;
+use EliasHaeussler\SSE;
+use Psr\Http\Message;
 
 /**
- * PublicServicePass.
+ * DummyEventStream
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
- *
- * @internal Only to be used for testing purposes
- *
- * @codeCoverageIgnore
+ * @internal
  */
-final class PublicServicePass implements DependencyInjection\Compiler\CompilerPassInterface
+final class DummyEventStream implements SSE\Stream\EventStream
 {
-    public function __construct(
-        private readonly string $definitionPattern,
-    ) {
+    /**
+     * @var list<SSE\Event\Event>
+     */
+    public array $receivedEvents = [];
+
+    public function open(): void
+    {
+        // Intentionally left blank.
     }
 
-    public static function fromClass(string $className): self
+    public function close(string $eventName = 'done'): void
     {
-        return new self('/^' . preg_quote($className) . '$/');
+        // Intentionally left blank.
     }
 
-    public function process(DependencyInjection\ContainerBuilder $container): void
+    public function sendEvent(SSE\Event\Event $event): void
     {
-        foreach ($container->getDefinitions() as $id => $definition) {
-            if (preg_match($this->definitionPattern, $id) === 1) {
-                $definition->setPublic(true);
-            }
-        }
+        $this->receivedEvents[] = $event;
+    }
+
+    public function sendMessage(string $name = 'message', float|bool|int|string $data = null): void
+    {
+        // Intentionally left blank.
+    }
+
+    public function isActive(): bool
+    {
+        return true;
+    }
+
+    public static function canHandle(Message\ServerRequestInterface $request): bool
+    {
+        return true;
     }
 }

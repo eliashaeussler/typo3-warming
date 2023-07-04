@@ -21,6 +21,7 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3Warming\Tests;
 use Symfony\Component\DependencyInjection as SymfonyDI;
 use TYPO3\CMS\Core;
@@ -44,12 +45,17 @@ return static function (SymfonyDI\ContainerBuilder $containerBuilder): void {
         200,
     );
     $containerBuilder->addCompilerPass(
-        new Tests\Build\DependencyInjection\CompilerPass\PublicServicePass('/^TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\ExtensionConfiguration$/'),
+        Tests\Build\DependencyInjection\CompilerPass\PublicServicePass::fromClass(Core\Configuration\ExtensionConfiguration::class),
         SymfonyDI\Compiler\PassConfig::TYPE_BEFORE_REMOVING,
         200,
     );
     $containerBuilder->addCompilerPass(
-        new Tests\Build\DependencyInjection\CompilerPass\PublicServicePass('/^TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteFinder$/'),
+        Tests\Build\DependencyInjection\CompilerPass\PublicServicePass::fromClass(Core\Site\SiteFinder::class),
+        SymfonyDI\Compiler\PassConfig::TYPE_BEFORE_REMOVING,
+        200,
+    );
+    $containerBuilder->addCompilerPass(
+        Tests\Build\DependencyInjection\CompilerPass\PublicServicePass::fromClass(CacheWarmup\Crawler\CrawlerFactory::class),
         SymfonyDI\Compiler\PassConfig::TYPE_BEFORE_REMOVING,
         200,
     );

@@ -41,7 +41,8 @@ use TYPO3\TestingFramework;
 #[Framework\Attributes\CoversClass(Src\Command\WarmupCommand::class)]
 final class WarmupCommandTest extends TestingFramework\Core\Functional\FunctionalTestCase
 {
-    private const SITE_IDENTIFIER = 'test-site';
+    use Tests\Functional\ClientMockTrait;
+    use Tests\Functional\SiteTrait;
 
     protected array $testExtensionsToLoad = [
         'warming',
@@ -57,7 +58,6 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
 
     protected Src\Configuration\Configuration $configuration;
     protected Core\Configuration\ExtensionConfiguration $extensionConfiguration;
-    protected Tests\Functional\Fixtures\Classes\DummyGuzzleClientFactory $guzzleClientFactory;
     protected Console\Tester\CommandTester $commandTester;
 
     protected function setUp(): void
@@ -122,8 +122,7 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
     #[Framework\Attributes\Test]
     public function executeCrawlsGivenSitesByRootPageId(): void
     {
-        $this->mockSitemapResponse('en');
-        $this->mockSitemapResponse('de');
+        $this->mockSitemapResponse('en', 'de', 'fr');
 
         $originEN = new CacheWarmup\Sitemap\Sitemap(new Psr7\Uri('https://typo3-testing.local/sitemap.xml'));
         $originDE = new CacheWarmup\Sitemap\Sitemap(new Psr7\Uri('https://typo3-testing.local/de/sitemap.xml'));
@@ -147,8 +146,7 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
     #[Framework\Attributes\Test]
     public function executeCrawlsGivenSitesByIdentifier(): void
     {
-        $this->mockSitemapResponse('en');
-        $this->mockSitemapResponse('de');
+        $this->mockSitemapResponse('en', 'de', 'fr');
 
         $originEN = new CacheWarmup\Sitemap\Sitemap(new Psr7\Uri('https://typo3-testing.local/sitemap.xml'));
         $originDE = new CacheWarmup\Sitemap\Sitemap(new Psr7\Uri('https://typo3-testing.local/de/sitemap.xml'));
@@ -162,7 +160,7 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
         ];
 
         $this->commandTester->execute([
-            '--sites' => [self::SITE_IDENTIFIER],
+            '--sites' => [self::$testSiteIdentifier],
         ]);
 
         self::assertSame(Console\Command\Command::SUCCESS, $this->commandTester->getStatusCode());
@@ -249,8 +247,7 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
     #[Framework\Attributes\Test]
     public function executeRespectsStrategy(): void
     {
-        $this->mockSitemapResponse('en');
-        $this->mockSitemapResponse('de');
+        $this->mockSitemapResponse('en', 'de', 'fr');
 
         $originEN = new CacheWarmup\Sitemap\Sitemap(new Psr7\Uri('https://typo3-testing.local/sitemap.xml'));
         $originDE = new CacheWarmup\Sitemap\Sitemap(new Psr7\Uri('https://typo3-testing.local/de/sitemap.xml'));
@@ -289,50 +286,6 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
     {
         parent::tearDown();
 
-        Tests\Functional\Fixtures\Classes\DummyVerboseCrawler::$crawledUrls = [];
-        Tests\Functional\Fixtures\Classes\DummyVerboseCrawler::$failOnNextIteration = false;
-        Tests\Functional\Fixtures\Classes\DummyVerboseCrawler::$options = [];
-    }
-
-    private function mockSitemapResponse(string $language): void
-    {
-        $filename = sprintf(\dirname(__DIR__) . '/Fixtures/Files/sitemap_%s.xml', $language);
-        $sitemapXml = fopen($filename, 'r');
-
-        self::assertIsResource($sitemapXml);
-
-        $this->guzzleClientFactory->handler->append(
-            new Core\Http\Response(Psr7\Utils::streamFor($sitemapXml)),
-        );
-    }
-
-    private function createSite(): void
-    {
-        $siteConfiguration = new Core\Configuration\SiteConfiguration(
-            $this->instancePath . '/typo3conf/sites',
-            new Core\EventDispatcher\NoopEventDispatcher(),
-        );
-
-        $siteConfiguration->createNewBasicSite(
-            self::SITE_IDENTIFIER,
-            1,
-            'https://typo3-testing.local/',
-        );
-
-        $rawConfig = $siteConfiguration->load(self::SITE_IDENTIFIER);
-        $rawConfig['languages'][1] = [
-            'title' => 'German',
-            'enabled' => true,
-            'locale' => 'de_DE',
-            'base' => '/de/',
-            'websiteTitle' => '',
-            'navigationTitle' => 'Deutsch',
-            'fallbackType' => 'strict',
-            'fallbacks' => '',
-            'flag' => 'de',
-            'languageId' => 1,
-        ];
-
-        $siteConfiguration->write(self::SITE_IDENTIFIER, $rawConfig);
+        Tests\Functional\Fixtures\Classes\DummyVerboseCrawler::reset();
     }
 }

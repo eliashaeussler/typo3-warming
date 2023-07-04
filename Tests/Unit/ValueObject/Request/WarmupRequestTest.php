@@ -21,7 +21,7 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3Warming\Tests\Unit\ValueObject;
+namespace EliasHaeussler\Typo3Warming\Tests\Unit\ValueObject\Request;
 
 use EliasHaeussler\Typo3Warming as Src;
 use PHPUnit\Framework;

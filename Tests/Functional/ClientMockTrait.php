@@ -21,38 +21,33 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3Warming\Tests\Build\DependencyInjection\CompilerPass;
+namespace EliasHaeussler\Typo3Warming\Tests\Functional;
 
-use Symfony\Component\DependencyInjection;
+use EliasHaeussler\Typo3Warming\Tests;
+use GuzzleHttp\Psr7;
+use TYPO3\CMS\Core;
 
 /**
- * PublicServicePass.
+ * ClientMockTrait
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
- *
- * @internal Only to be used for testing purposes
- *
- * @codeCoverageIgnore
  */
-final class PublicServicePass implements DependencyInjection\Compiler\CompilerPassInterface
+trait ClientMockTrait
 {
-    public function __construct(
-        private readonly string $definitionPattern,
-    ) {
-    }
+    protected Tests\Functional\Fixtures\Classes\DummyGuzzleClientFactory $guzzleClientFactory;
 
-    public static function fromClass(string $className): self
+    private function mockSitemapResponse(string ...$languages): void
     {
-        return new self('/^' . preg_quote($className) . '$/');
-    }
+        foreach ($languages as $language) {
+            $filename = sprintf(__DIR__ . '/Fixtures/Files/sitemap_%s.xml', $language);
+            $sitemapXml = fopen($filename, 'r');
 
-    public function process(DependencyInjection\ContainerBuilder $container): void
-    {
-        foreach ($container->getDefinitions() as $id => $definition) {
-            if (preg_match($this->definitionPattern, $id) === 1) {
-                $definition->setPublic(true);
-            }
+            self::assertIsResource($sitemapXml);
+
+            $this->guzzleClientFactory->handler->append(
+                new Core\Http\Response(Psr7\Utils::streamFor($sitemapXml)),
+            );
         }
     }
 }

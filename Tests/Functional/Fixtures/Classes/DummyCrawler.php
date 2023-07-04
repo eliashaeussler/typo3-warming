@@ -25,16 +25,15 @@ namespace EliasHaeussler\Typo3Warming\Tests\Functional\Fixtures\Classes;
 
 use EliasHaeussler\CacheWarmup;
 use Psr\Http\Message;
-use Symfony\Component\Console;
 
 /**
- * DummyVerboseCrawler
+ * DummyCrawler
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  * @internal
  */
-final class DummyVerboseCrawler implements CacheWarmup\Crawler\VerboseCrawlerInterface, CacheWarmup\Crawler\ConfigurableCrawlerInterface
+final class DummyCrawler implements CacheWarmup\Crawler\CrawlerInterface, CacheWarmup\Crawler\ConfigurableCrawlerInterface
 {
     /**
      * @var list<Message\UriInterface>
@@ -67,11 +66,6 @@ final class DummyVerboseCrawler implements CacheWarmup\Crawler\VerboseCrawlerInt
         self::$failOnNextIteration = false;
 
         return $result;
-    }
-
-    public function setOutput(Console\Output\OutputInterface $output): void
-    {
-        // Intentionally left blank.
     }
 
     public function setOptions(array $options): void
