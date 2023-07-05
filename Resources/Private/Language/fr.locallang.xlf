@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:warming/Resources/Private/Language/locallang.xlf" date="2022-04-21T20:54:27Z" product-name="warming" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="cacheWarmupToolbarItem.title" resname="cacheWarmupToolbarItem.title">
+        <source>Warmup cache</source>
+        <target state="needs-translation">Warmup cache</target>
+      </trans-unit>
+      <trans-unit id="cacheWarmupToolbarItem.loading" resname="cacheWarmupToolbarItem.loading">
+        <source>Sites are being loaded...</source>
+        <target state="needs-translation">Sites are being loaded...</target>
+      </trans-unit>
+      <trans-unit id="cacheWarmupToolbarItem.description.invalid" resname="cacheWarmupToolbarItem.description.invalid">
+        <source>No XML sitemap found for this site.</source>
+        <target state="needs-translation">No XML sitemap found for this site.</target>
+      </trans-unit>
+      <trans-unit id="cacheWarmupToolbarItem.userAgent.description" resname="cacheWarmupToolbarItem.userAgent.description">
+        <source><![CDATA[A custom <code>User-Agent</code> header is used for cache warmup requests. You can copy it here to exclude the requests from your site statistics, for example.]]></source>
+        <target state="needs-translation"><![CDATA[A custom <code>User-Agent</code> header is used for cache warmup requests. You can copy it here to exclude the requests from your site statistics, for example.]]></target>
+      </trans-unit>
+      <trans-unit id="cacheWarmupToolbarItem.userAgent.action" resname="cacheWarmupToolbarItem.userAgent.action">
+        <source>Copy to clipboard</source>
+        <target state="needs-translation">Copy to clipboard</target>
+      </trans-unit>
+      <trans-unit id="toolbar.sitemap.missing" resname="toolbar.sitemap.missing">
+        <source>No XML sitemap found for this language.</source>
+        <target state="needs-translation">No XML sitemap found for this language.</target>
+      </trans-unit>
+      <trans-unit id="toolbar.sitemap.placeholder" resname="toolbar.sitemap.placeholder">
+        <source>Select a language</source>
+        <target state="needs-translation">Select a language</target>
+      </trans-unit>
+      <trans-unit id="toolbar.copy.successful" resname="toolbar.copy.successful">
+        <source>Copied</source>
+        <target state="needs-translation">Copied</target>
+      </trans-unit>
+      <trans-unit id="notification.title.failed" resname="notification.title.failed">
+        <source>Cache warmup failed</source>
+        <target state="needs-translation">Cache warmup failed</target>
+      </trans-unit>
+      <trans-unit id="notification.title.warning" resname="notification.title.warning">
+        <source>Cache warmup finished with errors</source>
+        <target state="needs-translation">Cache warmup finished with errors</target>
+      </trans-unit>
+      <trans-unit id="notification.title.success" resname="notification.title.success">
+        <source>Cache warmup successful</source>
+        <target state="needs-translation">Cache warmup successful</target>
+      </trans-unit>
+      <trans-unit id="notification.title.unknown" resname="notification.title.unknown">
+        <source>Cache warmup finished</source>
+        <target state="needs-translation">Cache warmup finished</target>
+      </trans-unit>
+      <trans-unit id="notification.message.site" resname="notification.message.site">
+        <source>Caches for page "%1$s [%2$d]" have been warmed up with the following result:
+
+%3$d successful, %4$d failed</source>
+        <target state="needs-translation">Caches for page "%1$s [%2$d]" have been warmed up with the following result:
+
+%3$d successful, %4$d failed</target>
+      </trans-unit>
+      <trans-unit id="notification.message.page.error" resname="notification.message.page.error">
+        <source>Cache could not be warmed up for "%1$s [%2$d]".</source>
+        <target state="needs-translation">Cache could not be warmed up for "%1$s [%2$d]".</target>
+      </trans-unit>
+      <trans-unit id="notification.message.page.success" resname="notification.message.page.success">
+        <source>Cache of page "%1$s [%2$d]" was successfully warmed up.</source>
+        <target state="needs-translation">Cache of page "%1$s [%2$d]" was successfully warmed up.</target>
+      </trans-unit>
+      <trans-unit id="notification.message.page.unknown" resname="notification.message.page.unknown">
+        <source>Warming up the cache for page "%1$s [%2$d]" ended unexpectedly.</source>
+        <target state="needs-translation">Warming up the cache for page "%1$s [%2$d]" ended unexpectedly.</target>
+      </trans-unit>
+      <trans-unit id="notification.aborted.title" resname="notification.aborted.title">
+        <source>Cache warmup aborted</source>
+        <target state="needs-translation">Cache warmup aborted</target>
+      </trans-unit>
+      <trans-unit id="notification.aborted.message" resname="notification.aborted.message">
+        <source>The cache warmup was stopped prematurely and therefore could not be completed.</source>
+        <target state="needs-translation">The cache warmup was stopped prematurely and therefore could not be completed.</target>
+      </trans-unit>
+      <trans-unit id="notification.error.title" resname="notification.error.title">
+        <source>An error occurred</source>
+        <target state="needs-translation">An error occurred</target>
+      </trans-unit>
+      <trans-unit id="notification.error.message" resname="notification.error.message">
+        <source>An error occurred while warming up caches. This could be related to an incorrect extension configuration.</source>
+        <target state="needs-translation">An error occurred while warming up caches. This could be related to an incorrect extension configuration.</target>
+      </trans-unit>
+      <trans-unit id="notification.action.showReport" resname="notification.action.showReport">
+        <source>View report</source>
+        <target state="needs-translation">View report</target>
+      </trans-unit>
+      <trans-unit id="notification.action.retry" resname="notification.action.retry">
+        <source>Run again</source>
+        <target state="needs-translation">Run again</target>
+      </trans-unit>
+      <trans-unit id="modal.report.title" resname="modal.report.title">
+        <source>Cache warmup report</source>
+        <target state="needs-translation">Cache warmup report</target>
+      </trans-unit>
+      <trans-unit id="modal.report.panel.failed" resname="modal.report.panel.failed">
+        <source>Failed</source>
+        <target state="needs-translation">Failed</target>
+      </trans-unit>
+      <trans-unit id="modal.report.panel.successful" resname="modal.report.panel.successful">
+        <source>Successful</source>
+        <target state="needs-translation">Successful</target>
+      </trans-unit>
+      <trans-unit id="modal.report.action.view" resname="modal.report.action.view">
+        <source>View</source>
+        <target state="needs-translation">View</target>
+      </trans-unit>
+      <trans-unit id="modal.report.message.total" resname="modal.report.message.total">
+        <source>Total number of crawled URLs:</source>
+        <target state="needs-translation">Total number of crawled URLs:</target>
+      </trans-unit>
+      <trans-unit id="modal.report.message.noUrlsCrawled" resname="modal.report.message.noUrlsCrawled">
+        <source>No URLs were crawled for cache warmup.</source>
+        <target state="needs-translation">No URLs were crawled for cache warmup.</target>
+      </trans-unit>
+      <trans-unit id="modal.progress.title" resname="modal.progress.title">
+        <source>Cache warmup is in progress</source>
+        <target state="needs-translation">Cache warmup is in progress</target>
+      </trans-unit>
+      <trans-unit id="modal.progress.button.report" resname="modal.progress.button.report">
+        <source>Show report</source>
+        <target state="needs-translation">Show report</target>
+      </trans-unit>
+      <trans-unit id="modal.progress.button.retry" resname="modal.progress.button.retry">
+        <source>Run again</source>
+        <target state="needs-translation">Run again</target>
+      </trans-unit>
+      <trans-unit id="modal.progress.button.close" resname="modal.progress.button.close">
+        <source>Close</source>
+        <target state="needs-translation">Close</target>
+      </trans-unit>
+      <trans-unit id="modal.progress.failedCounter" resname="modal.progress.failedCounter">
+        <source>Failed: {0}</source>
+        <target state="needs-translation">Failed: {0}</target>
+      </trans-unit>
+      <trans-unit id="modal.progress.allCounter" resname="modal.progress.allCounter">
+        <source><![CDATA[Processed: <strong>{0}</strong><br>Total: <strong>{1}</strong>]]></source>
+        <target state="needs-translation"><![CDATA[Processed: <strong>{0}</strong><br>Total: <strong>{1}</strong>]]></target>
+      </trans-unit>
+      <trans-unit id="modal.progress.placeholder" resname="modal.progress.placeholder">
+        <source>Crawling sitemaps...</source>
+        <target state="needs-translation">Crawling sitemaps...</target>
+      </trans-unit>
+      <trans-unit id="contextMenu.item.cacheWarmup" resname="contextMenu.item.cacheWarmup">
+        <source>Warmup cache for this page</source>
+        <target state="needs-translation">Warmup cache for this page</target>
+      </trans-unit>
+      <trans-unit id="contextMenu.item.cacheWarmupAll" resname="contextMenu.item.cacheWarmupAll">
+        <source>Warmup all caches</source>
+        <target state="needs-translation">Warmup all caches</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
