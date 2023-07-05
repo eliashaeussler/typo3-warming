@@ -2564,10 +2564,10 @@ rollup-plugin-delete@^2.0.0:
   dependencies:
     del "^5.1.0"
 
-rollup-plugin-no-emit@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-no-emit/-/rollup-plugin-no-emit-0.0.1.tgz#066565f0f20c568d18532337feecaf2ea508b1bd"
-  integrity sha512-nNMGtFN1GY7vRzI0lYlZfH53jVs1hY/XY7Z0ZbTJIborw3QqIjJuxbD/NMhDY+Uh2uXsT1ccGjRThspPUqL1OQ==
+rollup-plugin-no-emit@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-no-emit/-/rollup-plugin-no-emit-1.0.1.tgz#37817203035d91a65cfac50c7904a30ed7b921ea"
+  integrity sha512-k59j7g4gACaChF8+POmIMK6Wam/07qlMuqOhoCngYywS3rVvvF0kyU01fChSkIiMjYQBb66j84aSM/fmzCCpHg==
 
 rollup-plugin-postcss@^4.0.2:
   version "4.0.2"
