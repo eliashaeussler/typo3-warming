@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:warming/Resources/Private/Language/locallang_db.xlf" date="2022-04-21T20:54:27Z" product-name="warming" target-language="ar">
+    <header/>
+    <body>
+      <trans-unit id="sites.xml_sitemap_path.label" resname="sites.xml_sitemap_path.label">
+        <source>Path to XML sitemap</source>
+        <target state="needs-translation">Path to XML sitemap</target>
+      </trans-unit>
+      <trans-unit id="sites.xml_sitemap_path.description" resname="sites.xml_sitemap_path.description">
+        <source>Specify the path to the XML sitemap, relative to the entry point of the site.
+Note that caches can be warmed up only if the entry point of the site contains the full domain name.</source>
+        <target state="needs-translation">Specify the path to the XML sitemap, relative to the entry point of the site.
+Note that caches can be warmed up only if the entry point of the site contains the full domain name.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
