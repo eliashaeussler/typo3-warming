@@ -32,7 +32,7 @@
 		"eslint": "^8.39.0",
 		"eslint-plugin-sonarjs": "^0.19.0",
 		"npm-run-all": "^4.1.5",
-		"postcss": "^8.4.24",
+		"postcss": "^8.4.25",
 		"rollup": "^3.26.2",
 		"rollup-plugin-delete": "^2.0.0",
 		"rollup-plugin-no-emit": "^1.0.1",
