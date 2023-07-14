@@ -42,6 +42,7 @@ return static function (RectorConfig $rectorConfig): void {
             __DIR__ . '/config/*',
             __DIR__ . '/Resources/Private/Frontend/*',
             __DIR__ . '/Resources/Private/Libs/*',
+            __DIR__ . '/Tests/Acceptance/Support/_generated/*',
             __DIR__ . '/Tests/Build/Configuration/*',
             __DIR__ . '/var/*',
         )

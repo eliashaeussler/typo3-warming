@@ -1,12 +1,11 @@
 /.Build
 /config
-/Tests/Build/Configuration/*
-!/Tests/Build/Configuration/system/
-/Tests/Build/Configuration/system/*
-!/Tests/Build/Configuration/system/services.php
-/var/
 /Resources/Private/Libs/Build/vendor
 /Resources/Private/Libs/vendors.phar
+/Tests/Acceptance/Support/_generated
+/Tests/Build/Configuration/system/settings.php
+/var/
 /.php-cs-fixer.cache
 /.phpunit.result.cache
+/c3.php
 /composer.lock

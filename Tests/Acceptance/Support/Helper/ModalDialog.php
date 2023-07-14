@@ -21,29 +21,21 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-use EliasHaeussler\PHPStanConfig;
+namespace EliasHaeussler\Typo3Warming\Tests\Acceptance\Support\Helper;
 
-$symfonySet = PHPStanConfig\Set\SymfonySet::create()
-    ->withConsoleApplicationLoader('Tests/Build/console-application.php')
-    ->withContainerXmlPath('var/cache/data/di/DependencyInjectionContainer.xml')
-;
+use EliasHaeussler\Typo3Warming\Tests;
+use TYPO3\TestingFramework;
 
-return PHPStanConfig\Config\Config::create(__DIR__)
-    ->in(
-        'Classes',
-        'Configuration',
-        'Tests',
-    )
-    ->not(
-        'Tests/Acceptance/Support/_generated/*',
-        'Tests/Build',
-    )
-    ->withBaseline()
-    ->withBleedingEdge([
-        // Avoids errors with $GLOBALS['TYPO3_CONF_VARS'] access
-        'explicitMixedForGlobalVariables' => false,
-    ])
-    ->level(8)
-    ->withSets($symfonySet)
-    ->toArray()
-;
+/**
+ * ModalDialog
+ *
+ * @author Elias Häußler <elias@haeussler.dev>
+ * @license GPL-2.0-or-later
+ */
+final class ModalDialog extends TestingFramework\Core\Acceptance\Helper\AbstractModalDialog
+{
+    public function __construct(Tests\Acceptance\Support\AcceptanceTester $tester)
+    {
+        $this->tester = $tester;
+    }
+}

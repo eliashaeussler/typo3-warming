@@ -13,11 +13,14 @@ database:
     version: "10.4"
 nfs_mount_enabled: false
 mutagen_enabled: false
-omit_containers: [dba]
+omit_containers: [dba, ddev-ssh-agent]
 webimage_extra_packages: [php8.1-pcov]
 use_dns_when_possible: true
 composer_version: "2"
+disable_settings_management: true
 web_environment:
+    - TESTING_DOMAIN=$DDEV_HOSTNAME
+    - XDEBUG_MODE=coverage
     - TYPO3_CONTEXT=Development/DDEV
     - typo3DatabaseHost=db
     - typo3DatabaseUsername=root

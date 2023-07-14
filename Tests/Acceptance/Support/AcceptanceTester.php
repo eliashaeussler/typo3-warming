@@ -21,29 +21,25 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-use EliasHaeussler\PHPStanConfig;
+namespace EliasHaeussler\Typo3Warming\Tests\Acceptance\Support;
 
-$symfonySet = PHPStanConfig\Set\SymfonySet::create()
-    ->withConsoleApplicationLoader('Tests/Build/console-application.php')
-    ->withContainerXmlPath('var/cache/data/di/DependencyInjectionContainer.xml')
-;
+use Codeception\Actor;
 
-return PHPStanConfig\Config\Config::create(__DIR__)
-    ->in(
-        'Classes',
-        'Configuration',
-        'Tests',
-    )
-    ->not(
-        'Tests/Acceptance/Support/_generated/*',
-        'Tests/Build',
-    )
-    ->withBaseline()
-    ->withBleedingEdge([
-        // Avoids errors with $GLOBALS['TYPO3_CONF_VARS'] access
-        'explicitMixedForGlobalVariables' => false,
-    ])
-    ->level(8)
-    ->withSets($symfonySet)
-    ->toArray()
-;
+/**
+ * @method void wantTo($text)
+ * @method void wantToTest($text)
+ * @method void execute($callable)
+ * @method void expectTo($prediction)
+ * @method void expect($prediction)
+ * @method void amGoingTo($argumentation)
+ * @method void am($role)
+ * @method void lookForwardTo($achieveValue)
+ * @method void comment($description)
+ * @method void pause($vars = [])
+ *
+ * @SuppressWarnings(PHPMD)
+*/
+final class AcceptanceTester extends Actor
+{
+    use _generated\AcceptanceTesterActions;
+}

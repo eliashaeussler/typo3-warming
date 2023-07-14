@@ -43,6 +43,7 @@ enum CacheWarmupProgressModalButtonNames {
 export class ProgressModal {
   private $modal!: JQuery;
   private $progressBar!: JQuery;
+  private $placeholder!: JQuery;
   private $allCounter!: JQuery;
   private $failedCounter!: JQuery;
   private $currentUrl!: JQuery;
@@ -94,6 +95,11 @@ export class ProgressModal {
     this.$progressBar.attr('aria-valuemax', total);
     this.$progressBar.css('width', `${percent}%`);
     this.$progressBar.html(`${percent.toFixed(2)}%`);
+
+    // Remove placeholder
+    if (this.$placeholder.length > 0) {
+      this.$placeholder.remove();
+    }
 
     if (failedCount > 0) {
       this.$progressBar.addClass('progress-bar-warning bg-warning');
@@ -185,7 +191,8 @@ export class ProgressModal {
       .attr('aria-valuemax', 0)
       .attr('aria-valuenow', 0)
     ;
-    this.$allCounter = $('<div>').html(TYPO3.lang[LanguageKeys.modalProgressPlaceholder]);
+    this.$placeholder = $('<div class="tx-warming-progress-placeholder">').html(TYPO3.lang[LanguageKeys.modalProgressPlaceholder]);
+    this.$allCounter = $('<div>');
     this.$failedCounter = $('<div class="badge badge-danger">');
     this.$currentUrl = $('<div class="tx-warming-progress-modal-current-url">');
 
@@ -195,7 +202,7 @@ export class ProgressModal {
     // Append progress bar, counter and current url
     $content
       .append($('<div class="tx-warming-progress-modal-progress progress">').append(this.$progressBar))
-      .append($('<div class="tx-warming-progress-modal-counter">').append(this.$allCounter, this.$failedCounter))
+      .append($('<div class="tx-warming-progress-modal-counter">').append(this.$placeholder, this.$allCounter, this.$failedCounter))
       .append(this.$currentUrl)
     ;
 
