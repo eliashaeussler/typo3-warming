@@ -34,42 +34,31 @@ use EliasHaeussler\Typo3Warming\Tests;
  */
 final class CacheWarmupToolbarItemCest
 {
-    public function canSeeToolbarItemAsAdmin(
-        Tests\Acceptance\Support\AcceptanceTester $I,
-        Tests\Acceptance\Support\Helper\Backend $backend,
-    ): void {
-        $backend->loginAsAdmin();
-
+    public function canSeeToolbarItemAsAdmin(Tests\Acceptance\Support\AcceptanceTester $I): void
+    {
+        $I->loginAs('admin');
         $I->seeElement(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
     }
 
-    public function cannotSeeToolbarItemAsNonPermittedUser(
-        Tests\Acceptance\Support\AcceptanceTester $I,
-        Tests\Acceptance\Support\Helper\Backend $backend,
-    ): void {
-        $backend->loginAs('editor.1');
-
+    public function cannotSeeToolbarItemAsNonPermittedUser(Tests\Acceptance\Support\AcceptanceTester $I): void
+    {
+        $I->loginAs('editor.1');
         $I->dontSeeElement(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
     }
 
-    public function canSeeToolbarItemAsPermittedUser(
-        Tests\Acceptance\Support\AcceptanceTester $I,
-        Tests\Acceptance\Support\Helper\Backend $backend,
-    ): void {
-        $backend->loginAs('editor.2');
-
+    public function canSeeToolbarItemAsPermittedUser(Tests\Acceptance\Support\AcceptanceTester $I): void
+    {
+        $I->loginAs('editor.2');
         $I->seeElement(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
     }
 
     public function cannotSeeToolbarItemIfDisabledInExtensionConfiguration(
         Tests\Acceptance\Support\AcceptanceTester $I,
-        Tests\Acceptance\Support\Helper\Backend $backend,
         Tests\Acceptance\Support\Helper\ExtensionConfiguration $extensionConfiguration,
     ): void {
         $extensionConfiguration->write('enableToolbar', false);
 
-        $backend->loginAsAdmin();
-
+        $I->loginAs('admin');
         $I->dontSeeElement(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
 
         $extensionConfiguration->write('enableToolbar', true);
@@ -77,11 +66,9 @@ final class CacheWarmupToolbarItemCest
 
     public function canOpenCacheWarmupModal(
         Tests\Acceptance\Support\AcceptanceTester $I,
-        Tests\Acceptance\Support\Helper\Backend $backend,
         Tests\Acceptance\Support\Helper\ModalDialog $modalDialog,
     ): void {
-        $backend->loginAsAdmin();
-
+        $I->loginAs('admin');
         $I->click(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
 
         $modalDialog->canSeeDialog();
@@ -91,11 +78,9 @@ final class CacheWarmupToolbarItemCest
 
     public function canSeeAllSitesAndLanguagesInCacheWarmupModalAsAdmin(
         Tests\Acceptance\Support\AcceptanceTester $I,
-        Tests\Acceptance\Support\Helper\Backend $backend,
         Tests\Acceptance\Support\Helper\ModalDialog $modalDialog,
     ): void {
-        $backend->loginAsAdmin();
-
+        $I->loginAs('admin');
         $I->click(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
 
         $modalDialog->canSeeDialog();
@@ -108,11 +93,9 @@ final class CacheWarmupToolbarItemCest
 
     public function canSeeOnlyPermittedSitesAndLanguagesInCacheWarmupModalAsPermittedUser(
         Tests\Acceptance\Support\AcceptanceTester $I,
-        Tests\Acceptance\Support\Helper\Backend $backend,
         Tests\Acceptance\Support\Helper\ModalDialog $modalDialog,
     ): void {
-        $backend->loginAs('editor.2');
-
+        $I->loginAs('editor.2');
         $I->click(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
 
         $modalDialog->canSeeDialog();
@@ -125,11 +108,9 @@ final class CacheWarmupToolbarItemCest
 
     public function canRunCacheWarmupFromModal(
         Tests\Acceptance\Support\AcceptanceTester $I,
-        Tests\Acceptance\Support\Helper\Backend $backend,
         Tests\Acceptance\Support\Helper\ModalDialog $modalDialog,
     ): void {
-        $backend->loginAsAdmin();
-
+        $I->loginAs('admin');
         $I->click(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
 
         $modalDialog->canSeeDialog();
@@ -147,12 +128,10 @@ final class CacheWarmupToolbarItemCest
 
     public function canChangeCacheWarmupSettings(
         Tests\Acceptance\Support\AcceptanceTester $I,
-        Tests\Acceptance\Support\Helper\Backend $backend,
         Tests\Acceptance\Support\Helper\ExtensionConfiguration $extensionConfiguration,
         Tests\Acceptance\Support\Helper\ModalDialog $modalDialog,
     ): void {
-        $backend->loginAsAdmin();
-
+        $I->loginAs('admin');
         $I->click(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
 
         $modalDialog->canSeeDialog();
@@ -182,11 +161,9 @@ final class CacheWarmupToolbarItemCest
 
     public function canCopyUserAgentToClipboard(
         Tests\Acceptance\Support\AcceptanceTester $I,
-        Tests\Acceptance\Support\Helper\Backend $backend,
         Tests\Acceptance\Support\Helper\ModalDialog $modalDialog,
     ): void {
-        $backend->loginAsAdmin();
-
+        $I->loginAs('admin');
         $I->click(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
 
         $modalDialog->canSeeDialog();

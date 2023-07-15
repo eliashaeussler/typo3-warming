@@ -35,10 +35,9 @@ final class CacheWarmupProviderCest
 {
     public function canSeeContextMenuItemsAsAdmin(
         Tests\Acceptance\Support\AcceptanceTester $I,
-        Tests\Acceptance\Support\Helper\Backend $backend,
         Tests\Acceptance\Support\Helper\PageTree $pageTree,
     ): void {
-        $backend->loginAsAdmin();
+        $I->loginAs('admin');
 
         $pageTree->openContextMenu(['Main']);
 
@@ -48,10 +47,9 @@ final class CacheWarmupProviderCest
 
     public function cannotSeeContextMenuItemsAsNonPermittedUser(
         Tests\Acceptance\Support\AcceptanceTester $I,
-        Tests\Acceptance\Support\Helper\Backend $backend,
         Tests\Acceptance\Support\Helper\PageTree $pageTree,
     ): void {
-        $backend->loginAs('editor.1');
+        $I->loginAs('editor.1');
 
         $pageTree->openContextMenu(['Main']);
 
@@ -61,10 +59,9 @@ final class CacheWarmupProviderCest
 
     public function canSeeContextMenuItemsAsPermittedUser(
         Tests\Acceptance\Support\AcceptanceTester $I,
-        Tests\Acceptance\Support\Helper\Backend $backend,
         Tests\Acceptance\Support\Helper\PageTree $pageTree,
     ): void {
-        $backend->loginAs('editor.2');
+        $I->loginAs('editor.2');
 
         $pageTree->openContextMenu(['Main']);
 
@@ -74,13 +71,12 @@ final class CacheWarmupProviderCest
 
     public function cannotSeeContextMenuItemsIfDisabledInExtensionConfiguration(
         Tests\Acceptance\Support\AcceptanceTester $I,
-        Tests\Acceptance\Support\Helper\Backend $backend,
         Tests\Acceptance\Support\Helper\ExtensionConfiguration $extensionConfiguration,
         Tests\Acceptance\Support\Helper\PageTree $pageTree,
     ): void {
         $extensionConfiguration->write('enablePageTree', false);
 
-        $backend->loginAsAdmin();
+        $I->loginAs('admin');
 
         $pageTree->openContextMenu(['Main']);
 
@@ -92,10 +88,9 @@ final class CacheWarmupProviderCest
 
     public function canSeeAllLanguagesAsAdmin(
         Tests\Acceptance\Support\AcceptanceTester $I,
-        Tests\Acceptance\Support\Helper\Backend $backend,
         Tests\Acceptance\Support\Helper\PageTree $pageTree,
     ): void {
-        $backend->loginAsAdmin();
+        $I->loginAs('admin');
 
         $pageTree->openContextMenu(['Main']);
         $pageTree->selectInContextMenu(['Warmup cache for this page']);
@@ -106,10 +101,9 @@ final class CacheWarmupProviderCest
 
     public function canSeeOnlyPermittedLanguagesAsPermittedUser(
         Tests\Acceptance\Support\AcceptanceTester $I,
-        Tests\Acceptance\Support\Helper\Backend $backend,
         Tests\Acceptance\Support\Helper\PageTree $pageTree,
     ): void {
-        $backend->loginAs('editor.2');
+        $I->loginAs('editor.2');
 
         $pageTree->openContextMenu(['Main']);
         $pageTree->selectInContextMenu(['Warmup cache for this page']);
@@ -120,11 +114,10 @@ final class CacheWarmupProviderCest
 
     public function canRunCacheWarmupForSite(
         Tests\Acceptance\Support\AcceptanceTester $I,
-        Tests\Acceptance\Support\Helper\Backend $backend,
         Tests\Acceptance\Support\Helper\ModalDialog $modalDialog,
         Tests\Acceptance\Support\Helper\PageTree $pageTree,
     ): void {
-        $backend->loginAsAdmin();
+        $I->loginAs('admin');
 
         $pageTree->openContextMenu(['Main']);
         $pageTree->selectInContextMenu(['Warmup all caches', 'English']);
@@ -139,11 +132,10 @@ final class CacheWarmupProviderCest
 
     public function canRunCacheWarmupForPage(
         Tests\Acceptance\Support\AcceptanceTester $I,
-        Tests\Acceptance\Support\Helper\Backend $backend,
         Tests\Acceptance\Support\Helper\ModalDialog $modalDialog,
         Tests\Acceptance\Support\Helper\PageTree $pageTree,
     ): void {
-        $backend->loginAsAdmin();
+        $I->loginAs('admin');
 
         $pageTree->openContextMenu(['Main', 'Subsite 1']);
         $pageTree->selectInContextMenu(['Warmup cache for this page', 'English']);

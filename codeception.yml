@@ -28,6 +28,11 @@ suites:
             populate: true
             waitlock: 5
         - Asserts
+        - EliasHaeussler\Typo3CodeceptionHelper\Codeception\Module\Backend:
+            userCredentials:
+              admin: password
+              editor.1: password
+              editor.2: password
 
 actor_suffix: Tester
 extensions:
