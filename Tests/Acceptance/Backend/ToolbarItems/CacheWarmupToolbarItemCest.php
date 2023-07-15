@@ -69,6 +69,8 @@ final class CacheWarmupToolbarItemCest
         Tests\Acceptance\Support\Helper\ModalDialog $modalDialog,
     ): void {
         $I->loginAs('admin');
+
+        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
         $I->click(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
 
         $modalDialog->canSeeDialog();
@@ -81,6 +83,8 @@ final class CacheWarmupToolbarItemCest
         Tests\Acceptance\Support\Helper\ModalDialog $modalDialog,
     ): void {
         $I->loginAs('admin');
+
+        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
         $I->click(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
 
         $modalDialog->canSeeDialog();
@@ -96,6 +100,8 @@ final class CacheWarmupToolbarItemCest
         Tests\Acceptance\Support\Helper\ModalDialog $modalDialog,
     ): void {
         $I->loginAs('editor.2');
+
+        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
         $I->click(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
 
         $modalDialog->canSeeDialog();
@@ -111,6 +117,8 @@ final class CacheWarmupToolbarItemCest
         Tests\Acceptance\Support\Helper\ModalDialog $modalDialog,
     ): void {
         $I->loginAs('admin');
+
+        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
         $I->click(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
 
         $modalDialog->canSeeDialog();
@@ -132,6 +140,8 @@ final class CacheWarmupToolbarItemCest
         Tests\Acceptance\Support\Helper\ModalDialog $modalDialog,
     ): void {
         $I->loginAs('admin');
+
+        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
         $I->click(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
 
         $modalDialog->canSeeDialog();
@@ -164,6 +174,8 @@ final class CacheWarmupToolbarItemCest
         Tests\Acceptance\Support\Helper\ModalDialog $modalDialog,
     ): void {
         $I->loginAs('admin');
+
+        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
         $I->click(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
 
         $modalDialog->canSeeDialog();
