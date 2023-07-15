@@ -45,6 +45,10 @@ final class PageTree extends TestingFramework\Core\Acceptance\Helper\AbstractPag
      */
     public function openContextMenu(array $path): void
     {
+        $I = $this->tester;
+
+        $I->waitForElementVisible(self::$pageTreeFrameSelector);
+
         $context = $this->getPageTreeElement();
 
         foreach ($path as $pageName) {
@@ -53,7 +57,6 @@ final class PageTree extends TestingFramework\Core\Acceptance\Helper\AbstractPag
 
         $contextMenu = $context->findElement(WebDriver\WebDriverBy::cssSelector(self::$treeItemAnchorSelector));
 
-        $I = $this->tester;
         $I->executeInSelenium(function (WebDriver\Remote\RemoteWebDriver $webDriver) use ($contextMenu): void {
             $webDriver->getMouse()->contextClick($contextMenu->getCoordinates());
         });
