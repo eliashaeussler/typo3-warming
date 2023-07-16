@@ -42,7 +42,7 @@
 		"codeception/module-webdriver": "^4.0",
 		"eliashaeussler/phpstan-config": "^2.1",
 		"eliashaeussler/rector-config": "^1.4",
-		"eliashaeussler/typo3-codeception-helper": "dev-feature/backend-helper",
+		"eliashaeussler/typo3-codeception-helper": "^1.0",
 		"ergebnis/composer-normalize": "^2.30",
 		"helhum/typo3-console": "^8.0",
 		"phpstan/extension-installer": "^1.3",
