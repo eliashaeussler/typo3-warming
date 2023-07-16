@@ -58,10 +58,6 @@ final class AccessUtility
     {
         $backendUser = self::getBackendUser();
 
-        if ($languageId === null && $backendUser->isAdmin()) {
-            return true;
-        }
-
         // Fetch record and record localization (if language is given and is not default language),
         // additionally check for available pages by adding hidden=0 as additional WHERE clause
         $record = BackendUtility::getRecord('pages', $pageId, '*', 'hidden = 0');
@@ -72,6 +68,11 @@ final class AccessUtility
         // Early return if record is inaccessible
         if (!\is_array($record) || $record === []) {
             return false;
+        }
+
+        // Early return if backend user has admin privileges
+        if ($backendUser->isAdmin()) {
+            return true;
         }
 
         // Select first record inside list of records which is potentially returned by
