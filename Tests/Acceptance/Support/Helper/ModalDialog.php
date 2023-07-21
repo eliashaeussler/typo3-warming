@@ -34,6 +34,11 @@ use TYPO3\TestingFramework;
  */
 final class ModalDialog extends TestingFramework\Core\Acceptance\Helper\AbstractModalDialog
 {
+    /**
+     * @var Tests\Acceptance\Support\AcceptanceTester
+     */
+    protected $tester;
+
     public function __construct(Tests\Acceptance\Support\AcceptanceTester $tester)
     {
         $this->tester = $tester;

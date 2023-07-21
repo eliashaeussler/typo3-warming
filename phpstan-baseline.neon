@@ -16,6 +16,16 @@ parameters:
 			path: Classes/Backend/ContextMenu/ItemProviders/CacheWarmupProvider.php
 
 		-
+			message: "#^PHPDoc type EliasHaeussler\\\\Typo3Warming\\\\Tests\\\\Acceptance\\\\Support\\\\AcceptanceTester of property EliasHaeussler\\\\Typo3Warming\\\\Tests\\\\Acceptance\\\\Support\\\\Helper\\\\ModalDialog\\:\\:\\$tester is not the same as PHPDoc type TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Acceptance\\\\Support\\\\ApplicationTester of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Acceptance\\\\Helper\\\\AbstractModalDialog\\:\\:\\$tester\\.$#"
+			count: 1
+			path: Tests/Acceptance/Support/Helper/ModalDialog.php
+
+		-
+			message: "#^PHPDoc type EliasHaeussler\\\\Typo3Warming\\\\Tests\\\\Acceptance\\\\Support\\\\AcceptanceTester of property EliasHaeussler\\\\Typo3Warming\\\\Tests\\\\Acceptance\\\\Support\\\\Helper\\\\PageTree\\:\\:\\$tester is not the same as PHPDoc type AcceptanceTester of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Acceptance\\\\Helper\\\\AbstractPageTree\\:\\:\\$tester\\.$#"
+			count: 1
+			path: Tests/Acceptance/Support/Helper/PageTree.php
+
+		-
 			message: "#^Parameter \\#3 \\$options \\(array\\<string, mixed\\>\\) of method EliasHaeussler\\\\Typo3Warming\\\\Tests\\\\Unit\\\\Fixtures\\\\DummyRequestFactory\\:\\:request\\(\\) should be contravariant with parameter \\$options \\(array\\) of method TYPO3\\\\CMS\\\\Core\\\\Http\\\\RequestFactory\\:\\:request\\(\\)$#"
 			count: 1
 			path: Tests/Unit/Fixtures/DummyRequestFactory.php

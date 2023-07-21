@@ -35,6 +35,11 @@ use TYPO3\TestingFramework;
  */
 final class PageTree extends TestingFramework\Core\Acceptance\Helper\AbstractPageTree
 {
+    /**
+     * @var Tests\Acceptance\Support\AcceptanceTester
+     */
+    protected $tester;
+
     public function __construct(Tests\Acceptance\Support\AcceptanceTester $tester)
     {
         $this->tester = $tester;
@@ -60,9 +65,12 @@ final class PageTree extends TestingFramework\Core\Acceptance\Helper\AbstractPag
         $I->executeInSelenium(function (WebDriver\Remote\RemoteWebDriver $webDriver) use ($contextMenu): void {
             $webDriver->getMouse()->contextClick($contextMenu->getCoordinates());
         });
-        $I->waitForElementVisible(WebDriver\WebDriverBy::cssSelector('.context-menu'));
+        $I->waitForElementVisible('.context-menu');
     }
 
+    /**
+     * @param list<non-empty-string> $path
+     */
     public function selectInContextMenu(array $path): void
     {
         $I = $this->tester;
