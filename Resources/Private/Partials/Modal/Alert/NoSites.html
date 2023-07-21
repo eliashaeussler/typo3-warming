@@ -12,11 +12,13 @@
     <f:translate key="LLL:EXT:warming/Resources/Private/Language/locallang.xlf:modal.alert.noSitesConfigured.message" />
 </p>
 
-<p>
-    <f:be.link route="site_configuration" class="btn btn-primary">
-        <c:icon identifier="actions-list" />
-        <f:translate key="LLL:EXT:warming/Resources/Private/Language/locallang.xlf:modal.alert.noSitesConfigured.button" />
-    </f:be.link>
-</p>
+<f:if condition="{isAdmin}">
+    <p>
+        <f:be.link route="site_configuration" class="btn btn-primary">
+            <c:icon identifier="actions-list" />
+            <f:translate key="LLL:EXT:warming/Resources/Private/Language/locallang.xlf:modal.alert.noSitesConfigured.button" />
+        </f:be.link>
+    </p>
+</f:if>
 
 </html>
