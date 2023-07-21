@@ -1,7 +1,7 @@
 name: typo3-ext-warming
 type: typo3
 docroot: .Build/web
-php_version: "8.1"
+php_version: "8.2"
 webserver_type: nginx-fpm
 router_http_port: "80"
 router_https_port: "443"
@@ -14,7 +14,7 @@ database:
 nfs_mount_enabled: false
 mutagen_enabled: false
 omit_containers: [dba, ddev-ssh-agent]
-webimage_extra_packages: [php8.1-pcov]
+webimage_extra_packages: [php8.2-pcov]
 use_dns_when_possible: true
 composer_version: "2"
 disable_settings_management: true
