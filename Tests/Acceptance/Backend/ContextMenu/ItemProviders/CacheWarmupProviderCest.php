@@ -86,6 +86,30 @@ final class CacheWarmupProviderCest
         $extensionConfiguration->write('enablePageTree', true);
     }
 
+    public function cannotSeeContextMenuItemForSiteIfNoSiteIsConfiguredForRootPage(
+        Tests\Acceptance\Support\AcceptanceTester $I,
+        Tests\Acceptance\Support\Helper\PageTree $pageTree,
+    ): void {
+        $I->loginAs('admin');
+
+        $pageTree->openContextMenu(['Root 3']);
+
+        $I->see('Warmup cache for this page', Tests\Acceptance\Support\Enums\Selectors::ContextMenu->value);
+        $I->dontSee('Warmup all caches', Tests\Acceptance\Support\Enums\Selectors::ContextMenu->value);
+    }
+
+    public function cannotSeeContextMenuItemsIfNoLanguagesAreAllowed(
+        Tests\Acceptance\Support\AcceptanceTester $I,
+        Tests\Acceptance\Support\Helper\PageTree $pageTree,
+    ): void {
+        $I->loginAs('editor.3');
+
+        $pageTree->openContextMenu(['Main']);
+
+        $I->dontSee('Warmup cache for this page', Tests\Acceptance\Support\Enums\Selectors::ContextMenu->value);
+        $I->dontSee('Warmup all caches', Tests\Acceptance\Support\Enums\Selectors::ContextMenu->value);
+    }
+
     public function canSeeAllLanguagesAsAdmin(
         Tests\Acceptance\Support\AcceptanceTester $I,
         Tests\Acceptance\Support\Helper\PageTree $pageTree,
