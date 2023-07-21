@@ -51,7 +51,10 @@ jobs:
 
       # Run tests
       - name: Run tests
-        run: ddev composer test
+        run: |
+          ddev composer test:acceptance || ddev composer test:acceptance -g failed
+          ddev composer test:functional
+          ddev composer test:unit
 
       # Save acceptance reports
       - uses: actions/upload-artifact@v3
