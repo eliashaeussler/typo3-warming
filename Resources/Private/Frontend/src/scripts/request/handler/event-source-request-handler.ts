@@ -115,7 +115,7 @@ export class EventSourceRequestHandler implements RequestHandler {
     const data = JSON.parse(event.data);
     this.progress.update(data);
 
-    // Pass update upgraded progress to progress modal
+    // Pass updated progress to progress modal
     this.progressModal.updateProgress(this.progress);
   }
 
@@ -132,6 +132,9 @@ export class EventSourceRequestHandler implements RequestHandler {
 
     // Ensure event source is closed to stop future retries
     this.closeSource();
+
+    // Pass updated progress to progress modal
+    this.progressModal.updateProgress(this.progress);
 
     // Finish progress within modal
     this.progressModal.finishProgress(this.progress, retryFunction);
