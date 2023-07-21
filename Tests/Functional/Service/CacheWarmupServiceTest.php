@@ -56,6 +56,7 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
     ];
 
     protected Core\Site\Entity\Site $site;
+    protected Tests\Functional\Fixtures\Classes\DummyEventDispatcher $eventDispatcher;
     protected Tests\Functional\Fixtures\Classes\DummyGuzzleClientFactory $guzzleClientFactory;
     protected Src\Service\CacheWarmupService $subject;
 
@@ -71,12 +72,14 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
         Core\Core\Bootstrap::initializeLanguageObject();
 
         $this->site = $this->createSite();
+        $this->eventDispatcher = new Tests\Functional\Fixtures\Classes\DummyEventDispatcher();
         $this->guzzleClientFactory = new Tests\Functional\Fixtures\Classes\DummyGuzzleClientFactory();
         $this->subject = new Src\Service\CacheWarmupService(
             new Src\Http\Client\ClientFactory($this->guzzleClientFactory),
             $this->get(Src\Configuration\Configuration::class),
             $this->get(CacheWarmup\Crawler\CrawlerFactory::class),
             $this->get(Src\Crawler\Strategy\CrawlingStrategyFactory::class),
+            $this->eventDispatcher,
             $this->get(Src\Sitemap\SitemapLocator::class),
         );
     }
@@ -237,6 +240,80 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
 
         self::assertEquals(new Src\Result\CacheWarmupResult($cacheWarmupResult), $actual);
         self::assertEquals($expected, Tests\Functional\Fixtures\Classes\DummyCrawler::$crawledUrls);
+    }
+
+    #[Framework\Attributes\Test]
+    public function warmupDispatchesBeforeCacheWarmupEvent(): void
+    {
+        $this->mockSitemapResponse('en');
+
+        $site = new Src\ValueObject\Request\SiteWarmupRequest($this->site);
+        $page = new Src\ValueObject\Request\PageWarmupRequest(1);
+
+        $this->subject->warmup(
+            [$site],
+            [$page],
+            50,
+            CacheWarmup\Crawler\Strategy\SortByPriorityStrategy::getName(),
+        );
+
+        self::assertCount(2, $this->eventDispatcher->dispatchedEvents);
+
+        $actual = $this->eventDispatcher->dispatchedEvents[0];
+
+        self::assertInstanceOf(Src\Event\BeforeCacheWarmupEvent::class, $actual);
+        self::assertSame([$site], $actual->getSites());
+        self::assertSame([$page], $actual->getPages());
+        self::assertInstanceOf(CacheWarmup\Crawler\Strategy\SortByPriorityStrategy::class, $actual->getCrawlingStrategy());
+        self::assertInstanceOf(Tests\Functional\Fixtures\Classes\DummyCrawler::class, $actual->getCrawler());
+        self::assertSame(50, $actual->getCacheWarmer()->getLimit());
+    }
+
+    #[Framework\Attributes\Test]
+    public function warmupDispatchesAfterCacheWarmupEvent(): void
+    {
+        $this->mockSitemapResponse('en');
+
+        $origin = new Src\Sitemap\SiteAwareSitemap(
+            new Core\Http\Uri('https://typo3-testing.local/sitemap.xml'),
+            $this->site,
+            $this->site->getDefaultLanguage(),
+        );
+
+        $expected = [
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/', 1.0, origin: $origin),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-2', 0.7, origin: $origin),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-1', 0.5, origin: $origin),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-2/subsite-2-1', 0.5, origin: $origin),
+        ];
+
+        $cacheWarmupResult = new CacheWarmup\Result\CacheWarmupResult();
+
+        foreach ($expected as $url) {
+            $cacheWarmupResult->addResult(
+                CacheWarmup\Result\CrawlingResult::createSuccessful($url),
+            );
+        }
+
+        $this->subject->warmup(
+            [
+                new Src\ValueObject\Request\SiteWarmupRequest($this->site),
+            ],
+            [
+                new Src\ValueObject\Request\PageWarmupRequest(1),
+            ],
+            50,
+            CacheWarmup\Crawler\Strategy\SortByPriorityStrategy::getName(),
+        );
+
+        self::assertCount(2, $this->eventDispatcher->dispatchedEvents);
+
+        $actual = $this->eventDispatcher->dispatchedEvents[1];
+
+        self::assertInstanceOf(Src\Event\AfterCacheWarmupEvent::class, $actual);
+        self::assertEquals($cacheWarmupResult, $actual->getResult()->getResult());
+        self::assertInstanceOf(Tests\Functional\Fixtures\Classes\DummyCrawler::class, $actual->getCrawler());
+        self::assertSame(50, $actual->getCacheWarmer()->getLimit());
     }
 
     #[Framework\Attributes\Test]

@@ -9,6 +9,7 @@ services:
     exclude:
       - '../Classes/DependencyInjection/*'
       - '../Classes/Enums/*'
+      - '../Classes/Event/*'
       - '../Classes/Exception/*'
       - '../Classes/Http/Message/Event/*'
       - '../Classes/Http/Message/EventStream.php'
