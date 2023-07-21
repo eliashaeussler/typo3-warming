@@ -19,11 +19,6 @@ jobs:
         php-version: ["8.1", "8.2"]
         typo3-version: ["12.4"]
         dependencies: ["highest", "lowest"]
-    env:
-      typo3DatabaseName: typo3
-      typo3DatabaseHost: '127.0.0.1'
-      typo3DatabaseUsername: root
-      typo3DatabasePassword: root
     steps:
       - uses: actions/checkout@v3
         with:
@@ -37,9 +32,15 @@ jobs:
           tools: composer:v2
           coverage: none
 
-      # Start MySQL service
-      - name: Start MySQL
-        run: sudo /etc/init.d/mysql start
+      # Setup DDEV
+      - name: Setup DDEV
+        uses: ddev/github-action-setup-ddev@v1
+        with:
+          autostart: false
+      - name: Configure and start DDEV
+        run: |
+          ddev config --project-type=typo3 --php-version=${{ matrix.php-version }} --webimage-extra-packages=
+          ddev start
 
       # Install dependencies
       - name: Install Composer dependencies
@@ -50,16 +51,18 @@ jobs:
 
       # Run tests
       - name: Run tests
-        run: composer test
+        run: ddev composer test
+
+      # Save acceptance reports
+      - uses: actions/upload-artifact@v3
+        with:
+          name: acceptance-reports-${{ matrix.php-version }}-${{ matrix.typo3-version }}-${{ matrix.dependencies }}
+          path: .Build/log/acceptance-reports
+        if: failure()
 
   coverage:
     name: Test coverage
     runs-on: ubuntu-latest
-    env:
-      typo3DatabaseName: typo3
-      typo3DatabaseHost: '127.0.0.1'
-      typo3DatabaseUsername: root
-      typo3DatabasePassword: root
     steps:
       - uses: actions/checkout@v3
         with:
@@ -71,11 +74,17 @@ jobs:
         with:
           php-version: 8.1
           tools: composer:v2
-          coverage: pcov
+          coverage: none
 
-      # Start MySQL service
-      - name: Start MySQL
-        run: sudo /etc/init.d/mysql start
+      # Setup DDEV
+      - name: Setup DDEV
+        uses: ddev/github-action-setup-ddev@v1
+        with:
+          autostart: false
+      - name: Configure and start DDEV
+        run: |
+          ddev config --project-type=typo3 --php-version=8.1 --xdebug-enabled=true --webimage-extra-packages=
+          ddev start
 
       # Install dependencies
       - name: Install Composer dependencies
@@ -83,12 +92,12 @@ jobs:
 
       # Run tests
       - name: Run tests
-        run: composer test:coverage
+        run: ddev composer test:coverage
 
       # Report coverage
       - name: Fix coverage path
         working-directory: .Build/coverage
-        run: sed -i 's#/home/runner/work/typo3-warming/typo3-warming#${{ github.workspace }}#g' clover.xml
+        run: sed -i 's#/var/www/html#${{ github.workspace }}#g' clover.xml
       - name: CodeClimate report
         uses: paambaati/codeclimate-action@v5.0.0
         if: env.CC_TEST_REPORTER_ID
@@ -104,3 +113,10 @@ jobs:
           directory: .Build/coverage
           fail_ci_if_error: true
           verbose: true
+
+      # Save acceptance reports
+      - uses: actions/upload-artifact@v3
+        with:
+          name: acceptance-reports-coverage
+          path: .Build/log/acceptance-reports
+        if: failure()

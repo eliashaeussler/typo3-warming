@@ -1,0 +1,25 @@
+base: 'https://typo3-ext-warming.ddev.site/root-2/'
+languages:
+  -
+    title: English
+    enabled: true
+    languageId: 0
+    base: /
+    locale: en_US.UTF-8
+    navigationTitle: English
+    flag: us
+  -
+    title: German
+    enabled: true
+    locale: de_DE
+    base: /de/
+    xml_sitemap_path: ''
+    websiteTitle: ''
+    navigationTitle: Deutsch
+    fallbackType: strict
+    fallbacks: ''
+    flag: de
+    languageId: 1
+rootPageId: 7
+websiteTitle: ''
+xml_sitemap_path: ''

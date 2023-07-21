@@ -112,6 +112,7 @@ export class SitesModal {
     $(this.modal).find('.modal-footer').addClass('tx-warming-modal-footer').addClass('visually-hidden');
 
     // Run cache warmup
+    $(modalBody).off('submit', SitesModalSelectors.form);
     $(modalBody).on('submit', SitesModalSelectors.form, (event: JQuery.TriggeredEvent): false => {
       event.preventDefault();
 

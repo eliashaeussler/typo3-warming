@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC2086
+set -e
+
+## Description: Initialize TYPO3 installation
+## Usage: init-typo3
+## Example: ddev init-typo3
+
+readonly dbHost="db"
+readonly dbUser="db"
+readonly dbPassword="db"
+readonly dbName="db"
+readonly dbCredentials="-h${dbHost} -u${dbUser} -p${dbPassword}"
+readonly fixturePath="/var/www/html/Tests/Acceptance/Data/Fixtures"
+readonly typo3Binary="/var/www/html/.Build/bin/typo3"
+
+function _progress() {
+    printf "%s... " "$1"
+}
+
+function _done() {
+    printf "\e[32mDone\e[39m\n"
+}
+
+# Create empty database
+_progress "Creating empty database"
+mysql -Nse "SHOW TABLES" $dbCredentials "$dbName" | while read -r table; do
+    mysql -e "DROP TABLE ${table}" $dbCredentials "$dbName"
+done
+_done
+
+# Prepare setup environment
+export TYPO3_DB_DRIVER=mysqli
+export TYPO3_DB_USERNAME="$dbUser"
+export TYPO3_DB_PASSWORD="$dbPassword"
+export TYPO3_DB_PORT=3306
+export TYPO3_DB_HOST="$dbHost"
+export TYPO3_DB_DBNAME="$dbName"
+export TYPO3_SETUP_ADMIN_EMAIL=admin@example.com
+export TYPO3_SETUP_ADMIN_USERNAME=admin
+export TYPO3_SETUP_ADMIN_PASSWORD=Passw0rd!
+export TYPO3_PROJECT_NAME="EXT:warming"
+
+# Set up environment
+_progress "Setting up TYPO3 installation"
+"$typo3Binary" setup --no-interaction --force --quiet
+_done
+
+# Import DB fixtures
+for file in "$fixturePath"/*.sql; do
+    _progress "Importing DB fixture \"$(basename "$file")\""
+    mysql $dbCredentials "$dbName" < "$file"
+    _done
+done

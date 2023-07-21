@@ -24,7 +24,7 @@ declare(strict_types=1);
 use EliasHaeussler\RectorConfig\Config\Config;
 use Rector\Config\RectorConfig;
 use Rector\Php80\Rector\Class_\AnnotationToAttributeRector;
-use Rector\Privatization\Rector\Class_\ChangeReadOnlyVariableWithDefaultValueToConstantRector;
+use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 use Rector\Privatization\Rector\Class_\FinalizeClassesWithoutChildrenRector;
 use Rector\Privatization\Rector\Property\PrivatizeFinalClassPropertyRector;
 use Rector\Symfony\Rector\Class_\CommandDescriptionToPropertyRector;
@@ -33,7 +33,9 @@ use Rector\Symfony\Rector\Class_\CommandPropertyToAttributeRector;
 return static function (RectorConfig $rectorConfig): void {
     Config::create($rectorConfig)
         ->in(
-            __DIR__,
+            __DIR__ . '/Classes',
+            __DIR__ . '/Configuration',
+            __DIR__ . '/Tests',
         )
         ->not(
             __DIR__ . '/.Build/*',
@@ -42,6 +44,7 @@ return static function (RectorConfig $rectorConfig): void {
             __DIR__ . '/config/*',
             __DIR__ . '/Resources/Private/Frontend/*',
             __DIR__ . '/Resources/Private/Libs/*',
+            __DIR__ . '/Tests/Acceptance/Support/_generated/*',
             __DIR__ . '/Tests/Build/Configuration/*',
             __DIR__ . '/var/*',
         )
@@ -57,9 +60,10 @@ return static function (RectorConfig $rectorConfig): void {
             __DIR__ . '/Tests/Build/DependencyInjection/CompilerPass/ContainerBuilderDebugDumpPass.php',
             __DIR__ . '/Tests/Build/DependencyInjection/CompilerPass/PublicServicePass.php',
         ])
-        ->skip(ChangeReadOnlyVariableWithDefaultValueToConstantRector::class, [
-            __DIR__ . '/Tests/Functional/*',
-            __DIR__ . '/Tests/Unit/*',
+        ->skip(ClassPropertyAssignToConstructorPromotionRector::class, [
+            // We cannot use CPP for properties that are declared in abstract classes
+            __DIR__ . '/Tests/Acceptance/Support/Helper/ModalDialog.php',
+            __DIR__ . '/Tests/Acceptance/Support/Helper/PageTree.php',
         ])
         ->skip(CommandDescriptionToPropertyRector::class)
         ->skip(CommandPropertyToAttributeRector::class)

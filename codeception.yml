@@ -1,0 +1,61 @@
+namespace: EliasHaeussler\Typo3Warming\Tests\Acceptance\Support
+
+suites:
+  Acceptance:
+    actor: AcceptanceTester
+    path: .
+    modules:
+      enabled:
+        - WebDriver:
+            url: https://%TESTING_DOMAIN%/
+            browser: chrome
+            wait: 5
+            host: selenium-chrome
+            port: 4444
+            capabilities:
+              acceptInsecureCerts: true
+              chromeOptions:
+                args: ['--disable-dev-shm-usage']
+                prefs:
+                  profile.content_settings.exceptions.clipboard:
+                    '[*.],*':
+                      last_modified: 1688930908
+                      setting: 1
+        - Db:
+            dsn: 'mysql:host=db;dbname=db'
+            user: 'root'
+            password: 'root'
+            populate: true
+            waitlock: 5
+        - Asserts
+        - EliasHaeussler\Typo3CodeceptionHelper\Codeception\Module\Backend:
+            userCredentials:
+              admin: password
+              editor.1: password
+              editor.2: password
+              editor.3: password
+
+actor_suffix: Tester
+extensions:
+  enabled:
+    - Codeception\Extension\RunFailed
+    - Codeception\Extension\Recorder:
+        delete_successful: true
+    - EliasHaeussler\Typo3CodeceptionHelper\Codeception\Extension\ApplicationEntrypointModifier:
+        entrypoints:
+          - web-dir: .Build/web
+          - web-dir: .Build/web/typo3
+
+coverage:
+  enabled: true
+  include:
+    - Classes/*
+
+paths:
+  tests: Tests/Acceptance
+  output: .Build/log/acceptance-reports
+  data: Tests/Acceptance/Data
+  support: Tests/Acceptance/Support
+
+params:
+  - env
