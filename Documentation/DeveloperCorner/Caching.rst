@@ -19,17 +19,17 @@ which defaults to a filesystem cache located at :file:`var/cache/code/warming/si
 
     ..  php:method:: get($site, $siteLanguage = null)
 
-        Get the located sitemap of a given site.
+        Get the located sitemaps of a given site.
 
         :param TYPO3\\CMS\\Core\\Site\\Entity\\Site $site: The sitemap's site object.
         :param TYPO3\\CMS\\Core\\Site\\Entity\\SiteLanguage $siteLanguage: An optional site language.
-        :returns: Located sitemap of a given site.
+        :returns: Located sitemaps of a given site.
 
-    ..  php:method:: set($sitemap)
+    ..  php:method:: set($sitemaps)
 
-        Add the located sitemap to the `warming` cache.
+        Add the located sitemaps to the `warming` cache.
 
-        :param EliasHaeussler\\Typo3Warming\\Sitemap\\SiteAwareSitemap $sitemap: The located sitemap to be cached.
+        :param array $sitemaps: The located sitemaps to be cached.
 
 ..  seealso::
 

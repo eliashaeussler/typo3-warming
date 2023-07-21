@@ -93,20 +93,22 @@ final class FetchSitesController
         $items = [];
 
         // Check all available languages for possible sitemaps
-        foreach ($this->sitemapLocator->locateAllBySite($site) as $sitemap) {
-            $siteLanguage = $sitemap->getSiteLanguage();
-            $url = null;
+        foreach ($this->sitemapLocator->locateAllBySite($site) as $i => $sitemaps) {
+            foreach ($sitemaps as $sitemap) {
+                $siteLanguage = $sitemap->getSiteLanguage();
+                $url = null;
 
-            // Check if sitemap is accessible
-            if ($this->sitemapLocator->siteContainsSitemap($site, $siteLanguage)) {
-                $url = (string)$sitemap->getUri();
+                // Check if sitemap exists
+                if ($this->sitemapLocator->sitemapExists($sitemap)) {
+                    $url = (string)$sitemap->getUri();
+                }
+
+                $items[] = new ValueObject\Modal\SiteGroupItem(
+                    $siteLanguage,
+                    $siteLanguage === $site->getDefaultLanguage(),
+                    $url,
+                );
             }
-
-            $items[] = new ValueObject\Modal\SiteGroupItem(
-                $siteLanguage,
-                $siteLanguage === $site->getDefaultLanguage(),
-                $url,
-            );
         }
 
         // Early return if no languages are available

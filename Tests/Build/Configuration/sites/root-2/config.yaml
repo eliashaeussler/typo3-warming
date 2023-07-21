@@ -22,4 +22,4 @@ languages:
     languageId: 1
 rootPageId: 7
 websiteTitle: ''
-xml_sitemap_path: ''
+xml_sitemap_path: 'invalid-sitemap.xml'

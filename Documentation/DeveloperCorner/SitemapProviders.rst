@@ -19,11 +19,11 @@ priority) to localize XML sitemaps according to certain criteria.
 
     ..  php:method:: get($site, $siteLanguage = null)
 
-        Locate the XML sitemap path of the given site.
+        Locate the XML sitemaps of the given site.
 
         :param TYPO3\\CMS\\Core\\Site\\Entity\\Site $site: The site whose XML sitemap path should be located.
         :param TYPO3\\CMS\\Core\\Site\\Entity\\SiteLanguage $siteLanguage: An optional site language to include while locating the XML sitemap path.
-        :returns: An instance of :php:class:`EliasHaeussler\\Typo3Warming\\Sitemap\\SiteAwareSitemap` or :php:`null`.
+        :returns: An array of instances of :php:class:`EliasHaeussler\\Typo3Warming\\Sitemap\\SiteAwareSitemap`.
 
     ..  php:staticmethod:: getPriority()
 
@@ -63,17 +63,14 @@ By default, the path to an XML sitemap is determined in three steps:
     Read more at `sitemaps.org <https://www.sitemaps.org/protocol.html#submit_robots>`__.
 
     ..  note::
-        Only the first occurrence will be respected. In the following
-        example, the resulting sitemap is
-        `https://www.example.com/our-sitemap.xml`.
 
-        ..  code-block:: none
-            :emphasize-lines: 3
+        ..  versionadded:: 1.0.0
 
-            User-agent: *
-            Disallow: /tmp/
-            Sitemap: https://www.example.com/our-sitemap.xml
-            Sitemap: https://www.example.com/our-other-sitemap.xml
+            `Feature #336 – Support multiple sitemaps to be located <https://github.com/eliashaeussler/typo3-warming/issues/336>`__
+
+        Since version 1.0.0 of EXT:warming, all sitemaps in `robots.txt`
+        are captured. Prior to this version, only the first occurrence was
+        respected.
 
 4.  Default path
 

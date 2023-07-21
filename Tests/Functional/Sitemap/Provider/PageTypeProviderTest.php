@@ -52,21 +52,21 @@ final class PageTypeProviderTest extends TestingFramework\Core\Functional\Functi
     }
 
     #[Framework\Attributes\Test]
-    public function getReturnsNullIfSeoExtensionIsNotLoaded(): void
+    public function getReturnsEmptyArrayIfSeoExtensionIsNotLoaded(): void
     {
         $site = new Core\Site\Entity\Site('foo', 1, []);
 
-        self::assertNull($this->subject->get($site));
+        self::assertSame([], $this->subject->get($site));
     }
 
     #[Framework\Attributes\Test]
-    public function getReturnsNullIfPageTypeIsNotConfigured(): void
+    public function getReturnsEmptyArrayIfPageTypeIsNotConfigured(): void
     {
         $this->packageManager->loadedExtensions = ['seo'];
 
         $site = new Core\Site\Entity\Site('foo', 1, []);
 
-        self::assertNull($this->subject->get($site));
+        self::assertSame([], $this->subject->get($site));
     }
 
     #[Framework\Attributes\Test]
@@ -86,11 +86,13 @@ final class PageTypeProviderTest extends TestingFramework\Core\Functional\Functi
             ],
         ]);
 
-        $expected = new Src\Sitemap\SiteAwareSitemap(
-            new Core\Http\Uri('https://www.example.com/baz.xml'),
-            $site,
-            $site->getDefaultLanguage(),
-        );
+        $expected = [
+            new Src\Sitemap\SiteAwareSitemap(
+                new Core\Http\Uri('https://www.example.com/baz.xml'),
+                $site,
+                $site->getDefaultLanguage(),
+            ),
+        ];
 
         self::assertEquals($expected, $this->subject->get($site));
     }
@@ -113,11 +115,13 @@ final class PageTypeProviderTest extends TestingFramework\Core\Functional\Functi
         ]);
         $siteLanguage = new Core\Site\Entity\SiteLanguage(1, 'de_DE.UTF-8', new Core\Http\Uri('https://www.example.com/de/'), []);
 
-        $expected = new Src\Sitemap\SiteAwareSitemap(
-            new Core\Http\Uri('https://www.example.com/de/baz.xml'),
-            $site,
-            $siteLanguage,
-        );
+        $expected = [
+            new Src\Sitemap\SiteAwareSitemap(
+                new Core\Http\Uri('https://www.example.com/de/baz.xml'),
+                $site,
+                $siteLanguage,
+            ),
+        ];
 
         self::assertEquals($expected, $this->subject->get($site, $siteLanguage));
     }

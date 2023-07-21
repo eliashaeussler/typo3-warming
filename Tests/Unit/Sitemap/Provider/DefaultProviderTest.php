@@ -49,11 +49,13 @@ final class DefaultProviderTest extends TestingFramework\Core\Unit\UnitTestCase
     public function getReturnsSitemapWithDefaultPath(): void
     {
         $site = new Core\Site\Entity\Site('foo', 1, ['base' => 'https://www.example.com/']);
-        $expected = new Src\Sitemap\SiteAwareSitemap(
-            new Core\Http\Uri('https://www.example.com/sitemap.xml'),
-            $site,
-            $site->getDefaultLanguage(),
-        );
+        $expected = [
+            new Src\Sitemap\SiteAwareSitemap(
+                new Core\Http\Uri('https://www.example.com/sitemap.xml'),
+                $site,
+                $site->getDefaultLanguage(),
+            ),
+        ];
 
         self::assertEquals($expected, $this->subject->get($site));
     }

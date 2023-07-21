@@ -43,40 +43,54 @@ final class SitemapsCache
     }
 
     /**
+     * @return list<Sitemap\SiteAwareSitemap>
      * @throws Exception\InvalidUrlException
      */
     public function get(
         Core\Site\Entity\Site $site,
         Core\Site\Entity\SiteLanguage $siteLanguage = null,
-    ): Sitemap\SiteAwareSitemap|null {
-        /** @var array<string, array<string, string>>|false $cacheData */
+    ): array {
+        /** @var array<string, array<string, string|list<string>>>|false $cacheData */
         $cacheData = $this->cache->require(self::ENTRY_IDENTIFIER);
 
         // Early return if cache is empty
         if ($cacheData === false) {
-            return null;
+            return [];
         }
 
-        // Fetch sitemap from cache data
+        // Fetch sitemaps from cache data
         $siteIdentifier = $site->getIdentifier();
         $languageIdentifier = $this->buildLanguageIdentifier($site, $siteLanguage);
-        $sitemap = $cacheData[$siteIdentifier][$languageIdentifier] ?? null;
+        $sitemaps = $cacheData[$siteIdentifier][$languageIdentifier] ?? null;
 
-        // Early return if sitemap is not cached
-        if (!\is_string($sitemap)) {
-            return null;
+        // BC: Convert single sitemap to sitemaps array
+        if (\is_string($sitemaps)) {
+            $sitemaps = [$sitemaps];
         }
 
-        return new Sitemap\SiteAwareSitemap(
-            new Core\Http\Uri($sitemap),
-            $site,
-            $siteLanguage ?? $site->getDefaultLanguage(),
+        // Early return if sitemaps are not cached
+        if (!\is_array($sitemaps)) {
+            return [];
+        }
+
+        return array_values(
+            array_map(
+                static fn (string $sitemapUrl) => new Sitemap\SiteAwareSitemap(
+                    new Core\Http\Uri($sitemapUrl),
+                    $site,
+                    $siteLanguage ?? $site->getDefaultLanguage(),
+                ),
+                array_filter($sitemaps, 'is_string'),
+            ),
         );
     }
 
-    public function set(Sitemap\SiteAwareSitemap $sitemap): void
+    /**
+     * @param list<Sitemap\SiteAwareSitemap> $sitemaps
+     */
+    public function set(array $sitemaps): void
     {
-        /** @var array<string, array<string, string>>|false $cacheData */
+        /** @var array<string, array<string, string|list<string>>>|false $cacheData */
         $cacheData = $this->cache->require(self::ENTRY_IDENTIFIER);
 
         // Enforce array for cached data
@@ -84,10 +98,18 @@ final class SitemapsCache
             $cacheData = [];
         }
 
-        // Append sitemap url to cache data
-        $siteIdentifier = $sitemap->getSite()->getIdentifier();
-        $languageIdentifier = $this->buildLanguageIdentifier($sitemap->getSite(), $sitemap->getSiteLanguage());
-        $cacheData[$siteIdentifier][$languageIdentifier] = (string)$sitemap->getUri();
+        $cachedUrls = [];
+
+        // Append sitemap urls to cache data
+        foreach ($sitemaps as $sitemap) {
+            $siteIdentifier = $sitemap->getSite()->getIdentifier();
+            $languageIdentifier = $this->buildLanguageIdentifier($sitemap->getSite(), $sitemap->getSiteLanguage());
+
+            $cachedUrls[$siteIdentifier][$languageIdentifier] ??= [];
+            $cachedUrls[$siteIdentifier][$languageIdentifier][] = (string)$sitemap->getUri();
+        }
+
+        $cacheData = array_replace_recursive($cacheData, $cachedUrls);
 
         $this->cache->set(
             self::ENTRY_IDENTIFIER,
