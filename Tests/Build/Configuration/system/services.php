@@ -21,42 +21,48 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+use CuyZ\Valinor;
 use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3Warming\Tests;
-use Symfony\Component\DependencyInjection as SymfonyDI;
+use Symfony\Component\DependencyInjection;
 use TYPO3\CMS\Core;
 
-return static function (SymfonyDI\ContainerBuilder $containerBuilder): void {
+return static function (DependencyInjection\ContainerBuilder $containerBuilder): void {
     $cachePath = Core\Core\Environment::getVarPath() . '/cache/data/di/DependencyInjectionContainer.xml';
 
     $containerBuilder->addCompilerPass(
         new Tests\Build\DependencyInjection\CompilerPass\ContainerBuilderDebugDumpPass($cachePath),
-        SymfonyDI\Compiler\PassConfig::TYPE_AFTER_REMOVING,
+        DependencyInjection\Compiler\PassConfig::TYPE_AFTER_REMOVING,
         100,
     );
     $containerBuilder->addCompilerPass(
         new Tests\Build\DependencyInjection\CompilerPass\PublicServicePass('/^EliasHaeussler\\\\Typo3Warming\\\\/'),
-        SymfonyDI\Compiler\PassConfig::TYPE_BEFORE_REMOVING,
+        DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_REMOVING,
         200,
     );
     $containerBuilder->addCompilerPass(
         new Tests\Build\DependencyInjection\CompilerPass\PublicServicePass('/^cache\\.warming$/'),
-        SymfonyDI\Compiler\PassConfig::TYPE_BEFORE_REMOVING,
+        DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_REMOVING,
         200,
     );
     $containerBuilder->addCompilerPass(
         Tests\Build\DependencyInjection\CompilerPass\PublicServicePass::fromClass(Core\Configuration\ExtensionConfiguration::class),
-        SymfonyDI\Compiler\PassConfig::TYPE_BEFORE_REMOVING,
+        DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_REMOVING,
         200,
     );
     $containerBuilder->addCompilerPass(
         Tests\Build\DependencyInjection\CompilerPass\PublicServicePass::fromClass(Core\Site\SiteFinder::class),
-        SymfonyDI\Compiler\PassConfig::TYPE_BEFORE_REMOVING,
+        DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_REMOVING,
         200,
     );
     $containerBuilder->addCompilerPass(
         Tests\Build\DependencyInjection\CompilerPass\PublicServicePass::fromClass(CacheWarmup\Crawler\CrawlerFactory::class),
-        SymfonyDI\Compiler\PassConfig::TYPE_BEFORE_REMOVING,
+        DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_REMOVING,
+        200,
+    );
+    $containerBuilder->addCompilerPass(
+        Tests\Build\DependencyInjection\CompilerPass\PublicServicePass::fromClass(Valinor\Mapper\TreeMapper::class),
+        DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_REMOVING,
         200,
     );
 };
