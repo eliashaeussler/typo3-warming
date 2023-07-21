@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 use EliasHaeussler\RectorConfig\Config\Config;
 use Rector\Config\RectorConfig;
+use Rector\Core\ValueObject\PhpVersion;
 use Rector\Php80\Rector\Class_\AnnotationToAttributeRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 use Rector\Privatization\Rector\Class_\FinalizeClassesWithoutChildrenRector;
@@ -31,7 +32,7 @@ use Rector\Symfony\Rector\Class_\CommandDescriptionToPropertyRector;
 use Rector\Symfony\Rector\Class_\CommandPropertyToAttributeRector;
 
 return static function (RectorConfig $rectorConfig): void {
-    Config::create($rectorConfig)
+    Config::create($rectorConfig, PhpVersion::PHP_81)
         ->in(
             __DIR__ . '/Classes',
             __DIR__ . '/Configuration',
