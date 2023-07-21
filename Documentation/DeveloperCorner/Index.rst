@@ -20,3 +20,4 @@ into the cache warmup process.
     Caching
     ConfigurationAPI
     AccessUtility
+    Events

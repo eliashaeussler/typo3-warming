@@ -82,6 +82,7 @@ final class CacheWarmupLegacyControllerTest extends TestingFramework\Core\Functi
                 $this->get(Src\Configuration\Configuration::class),
                 $this->get(CacheWarmup\Crawler\CrawlerFactory::class),
                 $this->get(Src\Crawler\Strategy\CrawlingStrategyFactory::class),
+                new Core\EventDispatcher\NoopEventDispatcher(),
                 $this->get(Src\Sitemap\SitemapLocator::class),
             ),
         );

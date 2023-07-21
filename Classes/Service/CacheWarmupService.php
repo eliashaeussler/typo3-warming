@@ -26,6 +26,7 @@ namespace EliasHaeussler\Typo3Warming\Service;
 use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3Warming\Configuration;
 use EliasHaeussler\Typo3Warming\Crawler;
+use EliasHaeussler\Typo3Warming\Event;
 use EliasHaeussler\Typo3Warming\Exception;
 use EliasHaeussler\Typo3Warming\Http;
 use EliasHaeussler\Typo3Warming\Result;
@@ -33,6 +34,7 @@ use EliasHaeussler\Typo3Warming\Sitemap;
 use EliasHaeussler\Typo3Warming\Utility;
 use EliasHaeussler\Typo3Warming\ValueObject;
 use GuzzleHttp\Exception\GuzzleException;
+use Psr\EventDispatcher;
 use TYPO3\CMS\Core;
 
 /**
@@ -53,6 +55,7 @@ final class CacheWarmupService
         private readonly Configuration\Configuration $configuration,
         private readonly CacheWarmup\Crawler\CrawlerFactory $crawlerFactory,
         private readonly Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
+        private readonly EventDispatcher\EventDispatcherInterface $eventDispatcher,
         private readonly Sitemap\SitemapLocator $sitemapLocator,
     ) {
         $this->setCrawler(
@@ -76,11 +79,12 @@ final class CacheWarmupService
         int $limit = null,
         string $strategy = null,
     ): Result\CacheWarmupResult {
+        $crawlingStrategy = $this->createCrawlingStrategy($strategy);
         $cacheWarmer = new CacheWarmup\CacheWarmer(
             $limit ?? $this->configuration->getLimit(),
             $this->clientFactory->get(),
             $this->crawler,
-            $this->createCrawlingStrategy($strategy),
+            $crawlingStrategy,
             true,
             $this->configuration->getExcludePatterns(),
         );
@@ -109,11 +113,21 @@ final class CacheWarmupService
             }
         }
 
-        return new Result\CacheWarmupResult(
+        $this->eventDispatcher->dispatch(
+            new Event\BeforeCacheWarmupEvent($sites, $pages, $crawlingStrategy, $this->crawler, $cacheWarmer),
+        );
+
+        $result = new Result\CacheWarmupResult(
             $cacheWarmer->run(),
             $cacheWarmer->getExcludedSitemaps(),
             $cacheWarmer->getExcludedUrls(),
         );
+
+        $this->eventDispatcher->dispatch(
+            new Event\AfterCacheWarmupEvent($result, $this->crawler, $cacheWarmer),
+        );
+
+        return $result;
     }
 
     public function getCrawler(): CacheWarmup\Crawler\CrawlerInterface

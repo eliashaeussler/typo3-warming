@@ -25,6 +25,7 @@
 		"eliashaeussler/cache-warmup": "^2.3",
 		"eliashaeussler/sse": "^1.0",
 		"guzzlehttp/guzzle": "^7.5",
+		"psr/event-dispatcher": "^1.0",
 		"psr/http-message": "^1.1 || ^2.0",
 		"psr/log": "^1.0 || ^2.0 || ^3.0",
 		"symfony/console": "^6.0",
