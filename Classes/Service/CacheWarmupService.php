@@ -88,8 +88,8 @@ final class CacheWarmupService
         foreach ($sites as $siteWarmupRequest) {
             foreach ($siteWarmupRequest->getLanguageIds() as $languageId) {
                 $siteLanguage = $siteWarmupRequest->getSite()->getLanguageById($languageId);
-                $sitemap = $this->sitemapLocator->locateBySite($siteWarmupRequest->getSite(), $siteLanguage);
-                $cacheWarmer->addSitemaps($sitemap);
+                $sitemaps = $this->sitemapLocator->locateBySite($siteWarmupRequest->getSite(), $siteLanguage);
+                $cacheWarmer->addSitemaps($sitemaps);
             }
         }
 

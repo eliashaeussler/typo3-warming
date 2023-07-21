@@ -86,6 +86,18 @@ final class CacheWarmupProviderCest
         $extensionConfiguration->write('enablePageTree', true);
     }
 
+    public function cannotSeeContextMenuItemForSiteIfConfiguredSitemapIsInvalid(
+        Tests\Acceptance\Support\AcceptanceTester $I,
+        Tests\Acceptance\Support\Helper\PageTree $pageTree,
+    ): void {
+        $I->loginAs('admin');
+
+        $pageTree->openContextMenu(['Root 2']);
+
+        $I->see('Warmup cache for this page', Tests\Acceptance\Support\Enums\Selectors::ContextMenu->value);
+        $I->dontSee('Warmup all caches', Tests\Acceptance\Support\Enums\Selectors::ContextMenu->value);
+    }
+
     public function cannotSeeContextMenuItemForSiteIfNoSiteIsConfiguredForRootPage(
         Tests\Acceptance\Support\AcceptanceTester $I,
         Tests\Acceptance\Support\Helper\PageTree $pageTree,

@@ -42,25 +42,26 @@ final class PageTypeProvider implements Provider
     public function get(
         Core\Site\Entity\Site $site,
         Core\Site\Entity\SiteLanguage $siteLanguage = null,
-    ): ?Sitemap\SiteAwareSitemap {
+    ): array {
         // Early return if EXT:seo is not installed
         if (!Core\Utility\ExtensionManagementUtility::isLoaded('seo')) {
-            return null;
+            return [];
         }
 
         $pageTypeMap = $site->getConfiguration()['routeEnhancers']['PageTypeSuffix']['map'] ?? null;
 
         // Early return if no page type map is configured
         if (!\is_array($pageTypeMap) || !\in_array(self::EXPECTED_PAGE_TYPE, $pageTypeMap, true)) {
-            return null;
+            return [];
         }
 
         $uri = $site->getRouter()->generateUri('/', [
             'type' => self::EXPECTED_PAGE_TYPE,
             '_language' => $siteLanguage,
         ]);
+        $sitemap = new Sitemap\SiteAwareSitemap($uri, $site, $siteLanguage ?? $site->getDefaultLanguage());
 
-        return new Sitemap\SiteAwareSitemap($uri, $site, $siteLanguage ?? $site->getDefaultLanguage());
+        return [$sitemap];
     }
 
     /**

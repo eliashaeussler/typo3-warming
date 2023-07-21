@@ -26,6 +26,7 @@ namespace EliasHaeussler\Typo3Warming\Backend\ContextMenu\ItemProviders;
 use EliasHaeussler\Typo3Warming\Configuration;
 use EliasHaeussler\Typo3Warming\Sitemap;
 use EliasHaeussler\Typo3Warming\Utility;
+use Exception;
 use TYPO3\CMS\Backend;
 use TYPO3\CMS\Core;
 
@@ -239,10 +240,25 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
         $site = $this->getCurrentSite();
         $languageId = $siteLanguage?->getLanguageId();
 
-        return $site !== null
-            && $site->getRootPageId() === (int)$this->identifier
-            && Utility\AccessUtility::canWarmupCacheOfSite($site, $languageId)
-            && $this->sitemapLocator->siteContainsSitemap($site, $siteLanguage);
+        if ($site === null ||
+            $site->getRootPageId() !== (int)$this->identifier ||
+            !Utility\AccessUtility::canWarmupCacheOfSite($site, $languageId)
+        ) {
+            return false;
+        }
+
+        // Check if any sitemap exists
+        try {
+            foreach ($this->sitemapLocator->locateBySite($site, $siteLanguage) as $sitemap) {
+                if ($this->sitemapLocator->sitemapExists($sitemap)) {
+                    return true;
+                }
+            }
+        } catch (Exception) {
+            // Unable to locate any sitemaps
+        }
+
+        return false;
     }
 
     private function getCurrentSite(): ?Core\Site\Entity\Site

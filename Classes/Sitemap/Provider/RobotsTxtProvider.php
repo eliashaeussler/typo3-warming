@@ -47,24 +47,29 @@ final class RobotsTxtProvider implements Provider
     public function get(
         Core\Site\Entity\Site $site,
         Core\Site\Entity\SiteLanguage $siteLanguage = null,
-    ): ?Sitemap\SiteAwareSitemap {
+    ): array {
         $robotsTxtUri = Utility\HttpUtility::getSiteUrlWithPath($site, 'robots.txt', $siteLanguage);
         $robotsTxt = $this->fetchRobotsTxt($robotsTxtUri);
 
         // Early return if no robots.txt exists
         if ($robotsTxt === null || trim($robotsTxt) === '') {
-            return null;
+            return [];
         }
 
         // Early return if no sitemap is specified in robots.txt
-        if (preg_match(self::SITEMAP_PATTERN, $robotsTxt, $matches) !== 1) {
-            return null;
+        if ((int)preg_match_all(self::SITEMAP_PATTERN, $robotsTxt, $matches) === 0) {
+            return [];
         }
 
-        return new Sitemap\SiteAwareSitemap(
-            new Core\Http\Uri($matches['url']),
-            $site,
-            $siteLanguage ?? $site->getDefaultLanguage(),
+        return array_values(
+            array_map(
+                static fn (string $url) => new Sitemap\SiteAwareSitemap(
+                    new Core\Http\Uri($url),
+                    $site,
+                    $siteLanguage ?? $site->getDefaultLanguage(),
+                ),
+                $matches['url'],
+            ),
         );
     }
 

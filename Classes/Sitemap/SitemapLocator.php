@@ -50,6 +50,7 @@ final class SitemapLocator
     }
 
     /**
+     * @return list<SiteAwareSitemap>
      * @throws CacheWarmup\Exception\InvalidUrlException
      * @throws Exception\UnsupportedConfigurationException
      * @throws Exception\UnsupportedSiteException
@@ -57,10 +58,10 @@ final class SitemapLocator
     public function locateBySite(
         Core\Site\Entity\Site $site,
         Core\Site\Entity\SiteLanguage $siteLanguage = null,
-    ): SiteAwareSitemap {
-        // Get sitemap from cache
-        if (($sitemap = $this->cache->get($site, $siteLanguage)) !== null) {
-            return $sitemap;
+    ): array {
+        // Get sitemaps from cache
+        if (($sitemaps = $this->cache->get($site, $siteLanguage)) !== []) {
+            return $sitemaps;
         }
 
         // Build and validate base URL
@@ -69,20 +70,20 @@ final class SitemapLocator
             throw Exception\UnsupportedConfigurationException::forBaseUrl((string)$baseUrl);
         }
 
-        // Resolve and validate sitemap
-        $sitemap = $this->resolveSitemap($site, $siteLanguage);
-        if ($sitemap === null) {
+        // Resolve and validate sitemaps
+        $sitemaps = $this->resolveSitemaps($site, $siteLanguage);
+        if ($sitemaps === []) {
             throw Exception\UnsupportedSiteException::forMissingSitemap($site);
         }
 
-        // Store resolved sitemap in cache
-        $this->cache->set($sitemap);
+        // Store resolved sitemaps in cache
+        $this->cache->set($sitemaps);
 
-        return $sitemap;
+        return $sitemaps;
     }
 
     /**
-     * @return array<int, SiteAwareSitemap>
+     * @return array<int, list<SiteAwareSitemap>>
      * @throws CacheWarmup\Exception\InvalidUrlException
      * @throws Exception\UnsupportedConfigurationException
      * @throws Exception\UnsupportedSiteException
@@ -100,13 +101,9 @@ final class SitemapLocator
         return $sitemaps;
     }
 
-    // @todo think about the locate <> contains behavior
-    public function siteContainsSitemap(
-        Core\Site\Entity\Site $site,
-        Core\Site\Entity\SiteLanguage $siteLanguage = null,
-    ): bool {
+    public function sitemapExists(SiteAwareSitemap $sitemap): bool
+    {
         try {
-            $sitemap = $this->locateBySite($site, $siteLanguage);
             $response = $this->requestFactory->request((string)$sitemap->getUri(), 'HEAD');
 
             return $response->getStatusCode() < 400;
@@ -115,17 +112,20 @@ final class SitemapLocator
         }
     }
 
-    private function resolveSitemap(
+    /**
+     * @return list<SiteAwareSitemap>
+     */
+    private function resolveSitemaps(
         Core\Site\Entity\Site $site,
         Core\Site\Entity\SiteLanguage $siteLanguage = null,
-    ): ?SiteAwareSitemap {
+    ): array {
         foreach ($this->providers as $provider) {
-            if (($sitemap = $provider->get($site, $siteLanguage)) !== null) {
-                return $sitemap;
+            if (($sitemaps = $provider->get($site, $siteLanguage)) !== []) {
+                return $sitemaps;
             }
         }
 
-        return null;
+        return [];
     }
 
     /**

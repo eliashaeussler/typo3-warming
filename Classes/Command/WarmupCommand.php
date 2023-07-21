@@ -334,10 +334,11 @@ final class WarmupCommand extends Console\Command\Command
                 }
 
                 foreach ($languageIds as $languageId) {
-                    $resolvedSitemaps[] = (string)$this->sitemapLocator->locateBySite(
-                        $site,
-                        $site->getLanguageById($languageId)
-                    )->getUri();
+                    $sitemaps = $this->sitemapLocator->locateBySite($site, $site->getLanguageById($languageId));
+
+                    foreach ($sitemaps as $sitemap) {
+                        $resolvedSitemaps[] = (string)$sitemap->getUri();
+                    }
                 }
             }
         }

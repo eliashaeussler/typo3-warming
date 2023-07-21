@@ -25,7 +25,6 @@ namespace EliasHaeussler\Typo3Warming\Tests\Unit\Sitemap\Provider;
 
 use EliasHaeussler\Typo3Warming as Src;
 use Generator;
-use GuzzleHttp\Psr7\Uri;
 use PHPUnit\Framework;
 use TYPO3\CMS\Core;
 use TYPO3\TestingFramework;
@@ -48,11 +47,11 @@ final class SiteProviderTest extends TestingFramework\Core\Unit\UnitTestCase
     }
 
     #[Framework\Attributes\Test]
-    public function getReturnsNullIfSitemapPathIsNotConfiguredInSite(): void
+    public function getReturnsEmptyArrayIfSitemapPathIsNotConfiguredInSite(): void
     {
         $site = new Core\Site\Entity\Site('foo', 1, []);
 
-        self::assertNull($this->subject->get($site));
+        self::assertSame([], $this->subject->get($site));
     }
 
     #[Framework\Attributes\Test]
@@ -63,11 +62,15 @@ final class SiteProviderTest extends TestingFramework\Core\Unit\UnitTestCase
             'base' => 'https://www.example.com/',
             'xml_sitemap_path' => $path,
         ]);
+        $sitemaps = [
+            new Src\Sitemap\SiteAwareSitemap(
+                new Core\Http\Uri($expected),
+                $site,
+                $site->getDefaultLanguage(),
+            ),
+        ];
 
-        self::assertEquals(
-            new Src\Sitemap\SiteAwareSitemap(new Core\Http\Uri($expected), $site, $site->getDefaultLanguage()),
-            $this->subject->get($site),
-        );
+        self::assertEquals($sitemaps, $this->subject->get($site));
     }
 
     #[Framework\Attributes\Test]
@@ -80,16 +83,20 @@ final class SiteProviderTest extends TestingFramework\Core\Unit\UnitTestCase
         $siteLanguage = new Core\Site\Entity\SiteLanguage(
             1,
             'de_DE.UTF-8',
-            new Uri('https://www.example.com/de'),
+            new Core\Http\Uri('https://www.example.com/de'),
             [
                 'xml_sitemap_path' => $path,
             ],
         );
+        $sitemaps = [
+            new Src\Sitemap\SiteAwareSitemap(
+                new Core\Http\Uri($expected),
+                $site,
+                $siteLanguage,
+            ),
+        ];
 
-        self::assertEquals(
-            new Src\Sitemap\SiteAwareSitemap(new Uri($expected), $site, $siteLanguage),
-            $this->subject->get($site, $siteLanguage),
-        );
+        self::assertEquals($sitemaps, $this->subject->get($site, $siteLanguage));
     }
 
     /**

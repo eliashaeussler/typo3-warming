@@ -40,12 +40,14 @@ final class DefaultProvider implements Provider
     public function get(
         Core\Site\Entity\Site $site,
         Core\Site\Entity\SiteLanguage $siteLanguage = null,
-    ): ?Sitemap\SiteAwareSitemap {
-        return new Sitemap\SiteAwareSitemap(
+    ): array {
+        $sitemap = new Sitemap\SiteAwareSitemap(
             Utility\HttpUtility::getSiteUrlWithPath($site, self::DEFAULT_PATH, $siteLanguage),
             $site,
             $siteLanguage ?? $site->getDefaultLanguage(),
         );
+
+        return [$sitemap];
     }
 
     /**

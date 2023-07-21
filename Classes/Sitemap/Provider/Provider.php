@@ -34,10 +34,13 @@ use TYPO3\CMS\Core;
  */
 interface Provider
 {
+    /**
+     * @return list<Sitemap\SiteAwareSitemap>
+     */
     public function get(
         Core\Site\Entity\Site $site,
         Core\Site\Entity\SiteLanguage $siteLanguage = null,
-    ): ?Sitemap\SiteAwareSitemap;
+    ): array;
 
     public static function getPriority(): int;
 }

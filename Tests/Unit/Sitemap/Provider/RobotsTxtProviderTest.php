@@ -53,15 +53,15 @@ final class RobotsTxtProviderTest extends TestingFramework\Core\Unit\UnitTestCas
     }
 
     #[Framework\Attributes\Test]
-    public function getReturnsNullIfNoRobotsTxtExists(): void
+    public function getReturnsEmptyArrayIfNoRobotsTxtExists(): void
     {
         $this->requestFactory->exception = new Exception();
 
-        self::assertNull($this->subject->get($this->site));
+        self::assertSame([], $this->subject->get($this->site));
     }
 
     #[Framework\Attributes\Test]
-    public function getReturnsNullIfNoRobotsTxtDoesNotContainSitemapConfiguration(): void
+    public function getReturnsEmptyArrayIfNoRobotsTxtDoesNotContainSitemapConfiguration(): void
     {
         $response = new Core\Http\Response();
         $body = $response->getBody();
@@ -70,7 +70,7 @@ final class RobotsTxtProviderTest extends TestingFramework\Core\Unit\UnitTestCas
 
         $this->requestFactory->response = $response;
 
-        self::assertNull($this->subject->get($this->site));
+        self::assertSame([], $this->subject->get($this->site));
     }
 
     #[Framework\Attributes\Test]
@@ -78,16 +78,28 @@ final class RobotsTxtProviderTest extends TestingFramework\Core\Unit\UnitTestCas
     {
         $response = new Core\Http\Response();
         $body = $response->getBody();
-        $body->write('Sitemap: https://www.example.com/baz.xml');
+        $body->write(
+            <<<TXT
+Sitemap: https://www.example.com/baz.xml
+Sitemap: https://www.example.com/bar.xml
+TXT
+        );
         $body->rewind();
 
         $this->requestFactory->response = $response;
 
-        $expected = new Src\Sitemap\SiteAwareSitemap(
-            new Core\Http\Uri('https://www.example.com/baz.xml'),
-            $this->site,
-            $this->site->getDefaultLanguage(),
-        );
+        $expected = [
+            new Src\Sitemap\SiteAwareSitemap(
+                new Core\Http\Uri('https://www.example.com/baz.xml'),
+                $this->site,
+                $this->site->getDefaultLanguage(),
+            ),
+            new Src\Sitemap\SiteAwareSitemap(
+                new Core\Http\Uri('https://www.example.com/bar.xml'),
+                $this->site,
+                $this->site->getDefaultLanguage(),
+            ),
+        ];
 
         self::assertEquals($expected, $this->subject->get($this->site));
     }

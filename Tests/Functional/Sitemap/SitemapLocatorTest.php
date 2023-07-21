@@ -101,15 +101,17 @@ final class SitemapLocatorTest extends TestingFramework\Core\Functional\Function
     public function locateBySiteReturnsCachedSitemap(?Core\Site\Entity\SiteLanguage $siteLanguage, string $expectedUrl): void
     {
         $site = self::getSite([]);
-        $sitemap = new Src\Sitemap\SiteAwareSitemap(
-            new Core\Http\Uri($expectedUrl),
-            $site,
-            $siteLanguage ?? $site->getDefaultLanguage(),
-        );
+        $sitemaps = [
+            new Src\Sitemap\SiteAwareSitemap(
+                new Core\Http\Uri($expectedUrl),
+                $site,
+                $siteLanguage ?? $site->getDefaultLanguage(),
+            ),
+        ];
 
-        $this->cache->set($sitemap);
+        $this->cache->set($sitemaps);
 
-        self::assertEquals($sitemap, $this->subject->locateBySite($site, $siteLanguage));
+        self::assertEquals($sitemaps, $this->subject->locateBySite($site, $siteLanguage));
     }
 
     #[Framework\Attributes\Test]
@@ -148,13 +150,15 @@ final class SitemapLocatorTest extends TestingFramework\Core\Functional\Function
     public function locateBySiteReturnsLocatedSitemap(?Core\Site\Entity\SiteLanguage $siteLanguage, string $expectedUrl): void
     {
         $site = self::getSite();
-        $sitemap = new Src\Sitemap\SiteAwareSitemap(
-            new Core\Http\Uri($expectedUrl),
-            $site,
-            $siteLanguage ?? $site->getDefaultLanguage(),
-        );
+        $sitemap = [
+            new Src\Sitemap\SiteAwareSitemap(
+                new Core\Http\Uri($expectedUrl),
+                $site,
+                $siteLanguage ?? $site->getDefaultLanguage(),
+            ),
+        ];
 
-        self::assertNull($this->cache->get($site, $siteLanguage));
+        self::assertSame([], $this->cache->get($site, $siteLanguage));
         self::assertEquals($sitemap, $this->subject->locateBySite($site, $siteLanguage));
         self::assertEquals($sitemap, $this->cache->get($site, $siteLanguage));
     }
@@ -211,39 +215,62 @@ final class SitemapLocatorTest extends TestingFramework\Core\Functional\Function
                 1 => self::getSiteLanguage()->toArray(),
             ],
         ]);
-        $sitemap = new Src\Sitemap\SiteAwareSitemap(
-            new Core\Http\Uri('https://www.example.com/'),
-            $site,
-            $site->getLanguageById(1),
-        );
+        $sitemaps = [
+            new Src\Sitemap\SiteAwareSitemap(
+                new Core\Http\Uri('https://www.example.com/'),
+                $site,
+                $site->getLanguageById(1),
+            ),
+        ];
 
-        $this->cache->set($sitemap);
+        $this->cache->set($sitemaps);
 
-        self::assertEquals([1 => $sitemap], $this->subject->locateAllBySite($site));
+        self::assertEquals([1 => $sitemaps], $this->subject->locateAllBySite($site));
     }
 
     #[Framework\Attributes\Test]
-    public function siteContainsSitemapReturnsFalseOnInaccessibleSitemap(): void
+    public function sitemapExistsReturnsFalseOnInaccessibleSitemap(): void
     {
         $this->requestFactory->exception = new Exception();
 
-        self::assertFalse($this->subject->siteContainsSitemap(self::getSite()));
+        $site = self::getSite();
+        $sitemap = new Src\Sitemap\SiteAwareSitemap(
+            new Core\Http\Uri('https://www.example.com/'),
+            $site,
+            $site->getDefaultLanguage(),
+        );
+
+        self::assertFalse($this->subject->sitemapExists($sitemap));
     }
 
     #[Framework\Attributes\Test]
-    public function siteContainsSitemapReturnsFalseOnFailedRequest(): void
+    public function sitemapExistsReturnsFalseOnFailedRequest(): void
     {
         $this->requestFactory->response = new Core\Http\Response(null, 404);
 
-        self::assertFalse($this->subject->siteContainsSitemap(self::getSite()));
+        $site = self::getSite();
+        $sitemap = new Src\Sitemap\SiteAwareSitemap(
+            new Core\Http\Uri('https://www.example.com/'),
+            $site,
+            $site->getDefaultLanguage(),
+        );
+
+        self::assertFalse($this->subject->sitemapExists($sitemap));
     }
 
     #[Framework\Attributes\Test]
-    public function siteContainsSitemapReturnsTrueOnSuccessfulRequest(): void
+    public function sitemapExistsReturnsTrueOnSuccessfulRequest(): void
     {
         $this->requestFactory->response = new Core\Http\Response();
 
-        self::assertTrue($this->subject->siteContainsSitemap(self::getSite()));
+        $site = self::getSite();
+        $sitemap = new Src\Sitemap\SiteAwareSitemap(
+            new Core\Http\Uri('https://www.example.com/'),
+            $site,
+            $site->getDefaultLanguage(),
+        );
+
+        self::assertTrue($this->subject->sitemapExists($sitemap));
     }
 
     /**

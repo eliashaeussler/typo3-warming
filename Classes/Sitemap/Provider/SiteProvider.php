@@ -38,7 +38,7 @@ final class SiteProvider implements Provider
     public function get(
         Core\Site\Entity\Site $site,
         Core\Site\Entity\SiteLanguage $siteLanguage = null,
-    ): ?Sitemap\SiteAwareSitemap {
+    ): array {
         if ($siteLanguage !== null && $siteLanguage !== $site->getDefaultLanguage()) {
             $sitemapPath = $siteLanguage->toArray()['xml_sitemap_path'] ?? null;
         } else {
@@ -47,14 +47,16 @@ final class SiteProvider implements Provider
 
         // Early return if no sitemap path is configured
         if (!\is_string($sitemapPath) || trim($sitemapPath) === '') {
-            return null;
+            return [];
         }
 
-        return new Sitemap\SiteAwareSitemap(
+        $sitemap = new Sitemap\SiteAwareSitemap(
             Utility\HttpUtility::getSiteUrlWithPath($site, $sitemapPath, $siteLanguage),
             $site,
             $siteLanguage ?? $site->getDefaultLanguage(),
         );
+
+        return [$sitemap];
     }
 
     /**

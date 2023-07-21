@@ -87,12 +87,12 @@
         }" />
     </label>
 
-    <f:for each="{siteGroup.items}" as="item">
+    <f:for each="{siteGroup.items}" as="item" iteration="iterator">
         <f:if condition="{item.missing}">
             <f:then>
                 <div class="tx-warming-sites-group-item tx-warming-sites-group-item-disabled">
                     <f:render partial="Modal/Sites/SiteGroupItem" section="checkbox" arguments="{
-                        identifier: 'tx-warming-checkbox-{siteGroup.site.identifier}-{item.language.languageId}',
+                        identifier: 'tx-warming-checkbox-{siteGroup.site.identifier}-{iterator.index}',
                         siteIdentifier: siteGroup.site.identifier,
                         languageIdentifier: item.language.languageId,
                         group: 1,
@@ -113,12 +113,12 @@
                 </div>
             </f:then>
             <f:else>
-                <label for="tx-warming-checkbox-{siteGroup.site.identifier}-{item.language.languageId}"
+                <label for="tx-warming-checkbox-{siteGroup.site.identifier}-{iterator.index}"
                        class="tx-warming-sites-group-item"
                        title="{item.language.title}"
                 >
                     <f:render partial="Modal/Sites/SiteGroupItem" section="checkbox" arguments="{
-                        identifier: 'tx-warming-checkbox-{siteGroup.site.identifier}-{item.language.languageId}',
+                        identifier: 'tx-warming-checkbox-{siteGroup.site.identifier}-{iterator.index}',
                         siteIdentifier: siteGroup.site.identifier,
                         languageIdentifier: item.language.languageId,
                         group: 1

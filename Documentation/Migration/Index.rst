@@ -75,6 +75,9 @@ Sitemap providers
     :php:interface:`EliasHaeussler\\Typo3Warming\\Sitemap\\Provider\\Provider`
     directly. The previously available trait method is now available within
     :php:meth:`EliasHaeussler\\Typo3Warming\\Utility\\HttpUtility::getSiteUrlWithPath`.
+-   :php:meth:`EliasHaeussler\\Typo3Warming\\Sitemap\\Provider\\Provider::get`
+    now returns an array of :php:class:`EliasHaeussler\\Typo3Warming\\Sitemap\\SiteAwareSitemap`
+    instances.
 -   A new sitemap provider
     :php:class:`EliasHaeussler\\Typo3Warming\\Sitemap\\Provider\\PageTypeProvider`
     was added. It is configured with highest priority. Read more at
