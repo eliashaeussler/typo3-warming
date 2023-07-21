@@ -41,6 +41,7 @@
 		"codeception/module-cli": "^2.0",
 		"codeception/module-db": "^3.1",
 		"codeception/module-webdriver": "^4.0",
+		"eliashaeussler/php-cs-fixer-config": "^1.2",
 		"eliashaeussler/phpstan-config": "^2.1",
 		"eliashaeussler/rector-config": "^1.4",
 		"eliashaeussler/typo3-codeception-helper": "^1.0",
