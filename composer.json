@@ -45,6 +45,7 @@
 		"eliashaeussler/typo3-codeception-helper": "^1.0",
 		"ergebnis/composer-normalize": "^2.30",
 		"helhum/typo3-console": "^8.0",
+		"helmich/typo3-typoscript-lint": "^3.1",
 		"phpstan/extension-installer": "^1.3",
 		"phpstan/phpstan-symfony": "^1.3",
 		"phpunit/phpcov": "^9.0",
@@ -115,7 +116,8 @@
 		"fix": [
 			"@fix:composer",
 			"@fix:editorconfig",
-			"@fix:php"
+			"@fix:php",
+			"@fix:typoscript"
 		],
 		"fix:composer": [
 			"@composer normalize",
@@ -123,14 +125,17 @@
 		],
 		"fix:editorconfig": "@lint:editorconfig --fix",
 		"fix:php": "php-cs-fixer fix",
+		"fix:typoscript": "@lint:typoscript",
 		"lint": [
 			"@lint:composer",
 			"@lint:editorconfig",
-			"@lint:php"
+			"@lint:php",
+			"@lint:typoscript"
 		],
 		"lint:composer": "@fix:composer --dry-run",
 		"lint:editorconfig": "ec --finder-config .editorconfig-lint.php",
 		"lint:php": "@fix:php --dry-run",
+		"lint:typoscript": "typoscript-lint -c typoscript-lint.yml --fail-on-warnings",
 		"migration": [
 			"@migration:rector"
 		],

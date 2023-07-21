@@ -47,6 +47,8 @@ jobs:
         run: composer lint:editorconfig
       - name: Lint PHP
         run: composer lint:php
+      - name: Lint TypoScript
+        run: composer lint:typoscript
 
       # SCA
       - name: SCA PHP
