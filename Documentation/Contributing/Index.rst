@@ -93,6 +93,7 @@ TYPO3
     ddev composer lint:composer
     ddev composer lint:editorconfig
     ddev composer lint:php
+    ddev composer lint:typoscript
 
     # Fix all CGL issues
     ddev composer fix
@@ -101,6 +102,7 @@ TYPO3
     ddev composer fix:composer
     ddev composer fix:editorconfig
     ddev composer fix:php
+    ddev composer fix:typoscript
 
     # All static code analyzers
     ddev composer sca
@@ -148,13 +150,18 @@ Run tests
     ddev composer test
 
     # Specific tests
+    ddev composer test:acceptance
     ddev composer test:functional
     ddev composer test:unit
+
+    # Enable Xdebug to collect code coverage
+    ddev xdebug on
 
     # All tests with code coverage
     ddev composer test:coverage
 
     # Specific tests with code coverage
+    ddev composer test:coverage:acceptance
     ddev composer test:coverage:functional
     ddev composer test:coverage:unit
 
@@ -167,6 +174,13 @@ open the last merged HTML report like follows:
 ..  code-block:: bash
 
     open .Build/coverage/html/_merged/index.html
+
+Reports of acceptance tests are written to :file:`.Build/log/acceptance-reports`.
+You can open the last HTML report like follows:
+
+..  code-block:: bash
+
+    open .Build/log/acceptance-reports/records.html
 
 ..  _build-documentation:
 
