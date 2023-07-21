@@ -71,7 +71,7 @@ final class FetchSitesController
         }
 
         return $this->responseFactory->htmlTemplate('Modal/SitesModal', [
-            'siteGroups' => $siteGroups,
+            'siteGroups' => array_filter($siteGroups),
             'userAgent' => $this->configuration->getUserAgent(),
             'configuration' => [
                 'limit' => $this->configuration->getLimit(),
@@ -88,7 +88,7 @@ final class FetchSitesController
      * @throws Exception\UnsupportedConfigurationException
      * @throws Exception\UnsupportedSiteException
      */
-    private function createSiteGroup(Core\Site\Entity\Site $site, array $page): ValueObject\Modal\SiteGroup
+    private function createSiteGroup(Core\Site\Entity\Site $site, array $page): ?ValueObject\Modal\SiteGroup
     {
         $items = [];
 
@@ -107,6 +107,11 @@ final class FetchSitesController
                 $siteLanguage === $site->getDefaultLanguage(),
                 $url,
             );
+        }
+
+        // Early return if no languages are available
+        if ($items === []) {
+            return null;
         }
 
         return new ValueObject\Modal\SiteGroup(

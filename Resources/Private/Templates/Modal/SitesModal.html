@@ -12,7 +12,7 @@
     </f:then>
     <f:else>
         <div class="tx-warming-alert-modal">
-            <f:render partial="Modal/Alert/NoSites" />
+            <f:render partial="Modal/Alert/NoSites" arguments="{isAdmin: isAdmin}" />
         </div>
     </f:else>
 </f:if>
