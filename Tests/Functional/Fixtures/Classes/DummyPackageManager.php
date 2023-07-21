@@ -34,9 +34,11 @@ use TYPO3\CMS\Core;
  */
 final class DummyPackageManager extends Core\Package\PackageManager
 {
-    /* @phpstan-ignore-next-line */
+    /**
+     * @param list<string> $loadedExtensions
+     */
     public function __construct(
-        public $loadedExtensions = [],
+        public array $loadedExtensions = [],
     ) {
     }
 

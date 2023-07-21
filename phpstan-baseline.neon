@@ -16,6 +16,11 @@ parameters:
 			path: Classes/Backend/ContextMenu/ItemProviders/CacheWarmupProvider.php
 
 		-
+			message: "#^Call to function is_object\\(\\) with EliasHaeussler\\\\Typo3Warming\\\\Sitemap\\\\Provider\\\\Provider will always evaluate to true\\.$#"
+			count: 1
+			path: Classes/Sitemap/SitemapLocator.php
+
+		-
 			message: "#^PHPDoc type EliasHaeussler\\\\Typo3Warming\\\\Tests\\\\Acceptance\\\\Support\\\\AcceptanceTester of property EliasHaeussler\\\\Typo3Warming\\\\Tests\\\\Acceptance\\\\Support\\\\Helper\\\\ModalDialog\\:\\:\\$tester is not the same as PHPDoc type TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Acceptance\\\\Support\\\\ApplicationTester of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Acceptance\\\\Helper\\\\AbstractModalDialog\\:\\:\\$tester\\.$#"
 			count: 1
 			path: Tests/Acceptance/Support/Helper/ModalDialog.php
@@ -24,6 +29,26 @@ parameters:
 			message: "#^PHPDoc type EliasHaeussler\\\\Typo3Warming\\\\Tests\\\\Acceptance\\\\Support\\\\AcceptanceTester of property EliasHaeussler\\\\Typo3Warming\\\\Tests\\\\Acceptance\\\\Support\\\\Helper\\\\PageTree\\:\\:\\$tester is not the same as PHPDoc type AcceptanceTester of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Acceptance\\\\Helper\\\\AbstractPageTree\\:\\:\\$tester\\.$#"
 			count: 1
 			path: Tests/Acceptance/Support/Helper/PageTree.php
+
+		-
+			message: "#^EliasHaeussler\\\\Typo3Warming\\\\Tests\\\\Functional\\\\Fixtures\\\\Classes\\\\DummyPackageManager\\:\\:__construct\\(\\) does not call parent constructor from TYPO3\\\\CMS\\\\Core\\\\Package\\\\PackageManager\\.$#"
+			count: 1
+			path: Tests/Functional/Fixtures/Classes/DummyPackageManager.php
+
+		-
+			message: "#^Parameter \\#3 \\$providers of class EliasHaeussler\\\\Typo3Warming\\\\Sitemap\\\\SitemapLocator constructor expects iterable\\<EliasHaeussler\\\\Typo3Warming\\\\Sitemap\\\\Provider\\\\Provider\\>, array\\<int, stdClass\\> given\\.$#"
+			count: 1
+			path: Tests/Functional/Sitemap/SitemapLocatorTest.php
+
+		-
+			message: "#^Parameter \\#3 \\$providers of class EliasHaeussler\\\\Typo3Warming\\\\Sitemap\\\\SitemapLocator constructor expects iterable\\<EliasHaeussler\\\\Typo3Warming\\\\Sitemap\\\\Provider\\\\Provider\\>, array\\<int, string\\> given\\.$#"
+			count: 1
+			path: Tests/Functional/Sitemap/SitemapLocatorTest.php
+
+		-
+			message: "#^EliasHaeussler\\\\Typo3Warming\\\\Tests\\\\Unit\\\\Fixtures\\\\DummyRequestFactory\\:\\:__construct\\(\\) does not call parent constructor from TYPO3\\\\CMS\\\\Core\\\\Http\\\\RequestFactory\\.$#"
+			count: 1
+			path: Tests/Unit/Fixtures/DummyRequestFactory.php
 
 		-
 			message: "#^Parameter \\#3 \\$options \\(array\\<string, mixed\\>\\) of method EliasHaeussler\\\\Typo3Warming\\\\Tests\\\\Unit\\\\Fixtures\\\\DummyRequestFactory\\:\\:request\\(\\) should be contravariant with parameter \\$options \\(array\\) of method TYPO3\\\\CMS\\\\Core\\\\Http\\\\RequestFactory\\:\\:request\\(\\)$#"

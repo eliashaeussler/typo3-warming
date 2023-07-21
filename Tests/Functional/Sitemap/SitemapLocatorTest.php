@@ -79,7 +79,6 @@ final class SitemapLocatorTest extends TestingFramework\Core\Functional\Function
             Src\Exception\InvalidProviderException::forInvalidType('foo'),
         );
 
-        /* @phpstan-ignore-next-line */
         new Src\Sitemap\SitemapLocator($this->requestFactory, $this->cache, $providers);
     }
 
@@ -94,7 +93,6 @@ final class SitemapLocatorTest extends TestingFramework\Core\Functional\Function
             Src\Exception\InvalidProviderException::create(new stdClass()),
         );
 
-        /* @phpstan-ignore-next-line */
         new Src\Sitemap\SitemapLocator($this->requestFactory, $this->cache, $providers);
     }
 

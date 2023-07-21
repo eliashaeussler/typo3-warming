@@ -36,7 +36,6 @@ use TYPO3\CMS\Core;
  */
 final class DummyRequestFactory extends Core\Http\RequestFactory
 {
-    /* @phpstan-ignore-next-line */
     public function __construct(
         public Message\ResponseInterface $response = new Core\Http\Response(),
         public ?Throwable $exception = null,

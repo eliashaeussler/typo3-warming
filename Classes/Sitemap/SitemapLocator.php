@@ -134,7 +134,6 @@ final class SitemapLocator
     private function validateProviders(): void
     {
         foreach ($this->providers as $provider) {
-            /* @phpstan-ignore-next-line */
             if (!\is_object($provider)) {
                 throw Exception\InvalidProviderException::forInvalidType($provider);
             }
