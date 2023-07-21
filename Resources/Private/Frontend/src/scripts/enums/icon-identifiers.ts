@@ -29,6 +29,7 @@ export enum IconIdentifiers {
   approved = 'overlay-approved',
   check = 'actions-check',
   exclamationCircle = 'actions-exclamation-circle-alt',
+  info = 'actions-info',
   listAlternative = 'actions-list-alternative',
   readonly = 'overlay-readonly',
   refresh = 'actions-refresh',

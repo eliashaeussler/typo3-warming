@@ -82,42 +82,46 @@ export class ReportModal {
       Icons.getIcon(IconIdentifiers.approved, Icons.sizes.medium),
       Icons.getIcon(IconIdentifiers.warning, Icons.sizes.medium),
       Icons.getIcon(IconIdentifiers.viewPage, Icons.sizes.small),
+      Icons.getIcon(IconIdentifiers.info, Icons.sizes.default),
     ])
-      .then(([readonlyIcon, approvedIcon, warningIcon, viewPageIcon]): void => {
+      .then(([readonlyIcon, approvedIcon, warningIcon, viewPageIcon, infoIcon]): void => {
         // Ensure all other modals are closed
         Modal.dismiss();
 
         // Build content
-        const $content: JQuery = modal.buildModalContent(readonlyIcon, approvedIcon, warningIcon, viewPageIcon);
-
-        // Get number of totally crawled pages
-        const totalText = progress.progress.current > 0
-          ? `${TYPO3.lang[LanguageKeys.modalReportTotal]} ${progress.progress.current}`
-          : TYPO3.lang[LanguageKeys.modalReportNoUrlsCrawled];
+        const $content: JQuery = modal.buildModalContent(readonlyIcon, approvedIcon, warningIcon, viewPageIcon, infoIcon);
 
         // Open modal with crawling report
+        const buttons: {text: string, icon?: string, btnClass: string, trigger?: () => void}[] = [
+          {
+            text: TYPO3.lang[LanguageKeys.modalProgressButtonRetry],
+            icon: IconIdentifiers.refresh,
+            btnClass: 'btn-default',
+            trigger: retryFunction,
+          },
+          {
+            text: TYPO3.lang[LanguageKeys.modalProgressButtonClose],
+            btnClass: 'btn-default',
+            trigger: (): void => Modal.dismiss(),
+          },
+        ];
+
+        // Get number of totally crawled pages
+        if (progress.progress.current > 0) {
+          buttons.unshift(
+            {
+              text: `${TYPO3.lang[LanguageKeys.modalReportTotal]} ${progress.progress.current}`,
+              icon: IconIdentifiers.exclamationCircle,
+              btnClass: 'disabled border-0',
+            },
+          );
+        }
+
         Modal.advanced({
           title: TYPO3.lang[LanguageKeys.modalReportTitle],
           content: $content,
           size: Modal.sizes.large,
-          buttons: [
-            {
-              text: totalText,
-              icon: IconIdentifiers.exclamationCircle,
-              btnClass: 'disabled border-0',
-            },
-            {
-              text: TYPO3.lang[LanguageKeys.modalProgressButtonRetry],
-              icon: IconIdentifiers.refresh,
-              btnClass: 'btn-default',
-              trigger: retryFunction,
-            },
-            {
-              text: TYPO3.lang[LanguageKeys.modalProgressButtonClose],
-              btnClass: 'btn-default',
-              trigger: (): void => Modal.dismiss(),
-            },
-          ],
+          buttons: buttons,
         });
       });
 
@@ -247,6 +251,7 @@ export class ReportModal {
    * @param approvedIcon {string} Rendered "approved" icon
    * @param warningIcon {string} Rendered "warning" icon
    * @param viewPageIcon {string} Rendered "view page" icon
+   * @param infoIcon {string} Rendered "info" icon
    * @returns {JQuery} The modal content as {@link JQuery} object
    * @private
    */
@@ -255,6 +260,7 @@ export class ReportModal {
     approvedIcon: string,
     warningIcon: string,
     viewPageIcon: string,
+    infoIcon: string,
   ): JQuery {
     // Reset count of panels in report
     this.panelCount = 0;
@@ -264,7 +270,31 @@ export class ReportModal {
 
     // Initialize content container
     const $cardContainer: JQuery = $('<div>').addClass('card-container');
-    const $content: JQuery = $('<div>').append($cardContainer);
+    const $content: JQuery = $('<div>');
+
+    // Add text if no URLs were crawled
+    if (this.progress.getTotalNumberOfCrawledUrls() === 0) {
+      $content.append(
+        $('<div>')
+          .addClass('callout callout-info')
+          .append(
+            $('<div>')
+              .addClass('media')
+              .append(
+                $('<div>')
+                  .addClass('media-left')
+                  .append(
+                    $('<span>').addClass('icon-emphasized').html(infoIcon),
+                  ),
+                $('<div>').addClass('media-body').text(TYPO3.lang[LanguageKeys.modalReportNoUrlsCrawled]),
+              ),
+          ),
+      );
+
+      return $content;
+    }
+
+    $content.append($cardContainer);
 
     // Add summary cards
     if (this.progress.getNumberOfFailedUrls() > 0) {

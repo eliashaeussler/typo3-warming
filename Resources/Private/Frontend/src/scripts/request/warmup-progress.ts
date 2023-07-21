@@ -146,6 +146,15 @@ export class WarmupProgress {
   }
 
   /**
+   * Get total number of all crawled URLs, either successful or failed.
+   *
+   * @returns {number} Total number of crawled URLs
+   */
+  public getTotalNumberOfCrawledUrls(): number {
+    return this.progress.total;
+  }
+
+  /**
    * Get number of current progress in percent.
    *
    * @returns {number} A number object that displays the current progress in percent
@@ -155,7 +164,7 @@ export class WarmupProgress {
       return Number((this.progress.current / this.progress.total) * 100);
     }
 
-    return Number(0);
+    return Number(100);
   }
 
   /**
