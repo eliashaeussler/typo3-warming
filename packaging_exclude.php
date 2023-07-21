@@ -56,5 +56,6 @@ return [
         'phpunit.functional.xml',
         'phpunit.unit.xml',
         'rector.php',
+        'typoscript-lint.yml',
     ],
 ];

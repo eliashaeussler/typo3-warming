@@ -18,4 +18,5 @@ Learn what configuration options are available on the following pages:
 
     ExtensionConfiguration
     SiteConfiguration
+    TypoScriptConfiguration
     Permissions
