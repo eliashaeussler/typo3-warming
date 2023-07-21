@@ -116,7 +116,7 @@ export default class WarmupProgress {
       return Number((this.progress.current / this.progress.total) * 100);
     }
 
-    return Number(0);
+    return Number(100);
   }
 
   /**
