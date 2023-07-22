@@ -157,7 +157,12 @@ export class CacheWarmer {
 
       queryParams.set(`sites[${index}][site]`, site);
 
-      languages.forEach((language: number) => queryParams.set(`sites[${index}][languageIds][]`, (language ?? 0).toString()));
+      languages.forEach(
+        (language: number, languageIndex: number) => queryParams.set(
+          `sites[${index}][languageIds][${languageIndex}]`,
+          (language ?? 0).toString(),
+        ),
+      );
     }
 
     for (const [page, languages] of Object.entries(pages)) {
@@ -165,7 +170,12 @@ export class CacheWarmer {
 
       queryParams.set(`pages[${index}][page]`, page.toString());
 
-      languages.forEach((language: number) => queryParams.set(`pages[${index}][languageIds][]`, (language ?? 0).toString()));
+      languages.forEach(
+        (language: number, languageIndex: number) => queryParams.set(
+          `pages[${index}][languageIds][${languageIndex}]`,
+          (language ?? 0).toString(),
+        ),
+      );
     }
 
     for (const [key, value] of Object.entries(configuration)) {
