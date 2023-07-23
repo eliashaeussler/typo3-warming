@@ -74,7 +74,7 @@ jobs:
           composer install -d Resources/Private/Libs/Build
           composer global exec phar-composer build Resources/Private/Libs/Build Resources/Private/Libs/vendors.phar
       - name: Include PHAR file
-        run: echo "\\EliasHaeussler\\Typo3Warming\\Configuration\\Extension::loadVendorLibraries();" >> ext_localconf.php
+        run: echo "\\EliasHaeussler\\Typo3Warming\\Extension::loadVendorLibraries();" >> ext_localconf.php
 
       # Release
       - name: Publish to TER
