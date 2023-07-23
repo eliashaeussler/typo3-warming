@@ -38,7 +38,7 @@ class ToolbarMenu {
   constructor() {
     DocumentService.ready().then((): void => {
       new RegularEvent('click', (): void => {
-        new SitesModal();
+        SitesModal.createModal();
       }).delegateTo(document, CacheWarmupMenuSelectors.container);
     });
   }

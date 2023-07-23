@@ -48,13 +48,13 @@ export class EventSourceRequestHandler implements RequestHandler {
     queryParams: URLSearchParams,
     retryFunction: () => Promise<WarmupProgress>,
   ): Promise<WarmupProgress> {
-    this.progressModal = ProgressModal.createModal();
-    this.source = new EventSource(this.getUrl(queryParams).toString(), {withCredentials: true});
     this.progress = new WarmupProgress();
+    this.progressModal = ProgressModal.createModal(this.progress);
+    this.source = new EventSource(this.getUrl(queryParams).toString(), {withCredentials: true});
 
     return new Promise<WarmupProgress>((resolve, reject): void => {
       // Abort cache warmup if progress modal is closed
-      this.progressModal.getModal().on('hide.bs.modal', (): void => {
+      this.progressModal.getModal().addEventListener('typo3-modal-hide', (): void => {
         this.abortWarmup();
         resolve(this.progress);
       });
@@ -116,7 +116,7 @@ export class EventSourceRequestHandler implements RequestHandler {
     this.progress.update(data);
 
     // Pass updated progress to progress modal
-    this.progressModal.updateProgress(this.progress);
+    this.progressModal.progress = this.progress;
   }
 
   /**
@@ -134,7 +134,7 @@ export class EventSourceRequestHandler implements RequestHandler {
     this.closeSource();
 
     // Pass updated progress to progress modal
-    this.progressModal.updateProgress(this.progress);
+    this.progressModal.progress = this.progress;
 
     // Finish progress within modal
     this.progressModal.finishProgress(this.progress, retryFunction);

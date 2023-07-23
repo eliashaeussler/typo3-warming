@@ -19,11 +19,13 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import $ from 'jquery';
+import {LitElement} from 'lit';
+import {customElement, query, queryAll} from 'lit/decorators.js';
 import * as clipboard from 'clipboard-polyfill';
 import Icons from '@typo3/backend/icons.js';
 import Modal from '@typo3/backend/modal.js';
 import Notification from '@typo3/backend/notification.js';
+import RegularEvent from '@typo3/core/event/regular-event.js';
 
 import {CacheWarmer, SiteWarmupRequest, WarmingConfiguration} from '@eliashaeussler/typo3-warming/cache-warmer';
 import {IconIdentifiers} from '@eliashaeussler/typo3-warming/enums/icon-identifiers';
@@ -35,7 +37,7 @@ enum SitesModalSelectors {
   siteCheckbox = '.tx-warming-sites-group-selector > input',
   siteCheckboxAll = '.tx-warming-sites-group-selector > input[data-select-all]',
   useragentCopy = 'button.tx-warming-user-agent-copy-action',
-  useragentCopyIcon = '.t3js-icon',
+  useragentCopyIcon = SitesModalSelectors.useragentCopy + ' .t3js-icon',
   useragentCopyText = '.tx-warming-user-agent-copy-text',
 }
 
@@ -54,98 +56,98 @@ type FormValues = {
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-export class SitesModal {
-  private modal!: HTMLElement;
+@customElement('warming-sites-modal')
+export class SitesModal extends LitElement {
+  @query(SitesModalSelectors.form)
+  private _form: HTMLFormElement;
 
-  private readonly cacheWarmer: CacheWarmer;
+  @query(SitesModalSelectors.siteCheckboxAll)
+  private _selectAllCheckbox: HTMLInputElement;
+
+  @queryAll(SitesModalSelectors.siteCheckbox)
+  private _checkboxes: NodeListOf<HTMLInputElement>
+
+  @queryAll(SitesModalSelectors.siteCheckbox + ':enabled')
+  private _enabledCheckboxes: NodeListOf<HTMLInputElement>;
+
+  @queryAll(SitesModalSelectors.siteCheckbox + ':enabled:not([data-select-all])')
+  private _enabledCheckboxesWithoutGroupElements: NodeListOf<HTMLInputElement>;
+
+  @query(SitesModalSelectors.useragentCopy)
+  private _useragentCopyButton: HTMLButtonElement;
+
+  @query(SitesModalSelectors.useragentCopyIcon)
+  private _useragentCopyIcon: HTMLElement;
+
+  @query(SitesModalSelectors.useragentCopyText)
+  private _useragentCopyText: HTMLElement;
+
+  private cacheWarmer: CacheWarmer;
+  private modal: typeof Modal;
 
   constructor() {
+    super();
+
     this.cacheWarmer = new CacheWarmer();
-    this.createModal();
+    this.modal = Modal.currentModal;
+  }
+
+  protected createRenderRoot(): Element {
+    // Avoid shadow DOM for Bootstrap CSS to be applied
+    return this;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.initializeSites();
   }
 
   /**
-   * Create modal with available sites.
+   * Initialize sites within modal.
    *
-   * Creates a new modal with content fetched as AJAX request. The modal contains
-   * all available sites used to start a new cache warmup. In addition, it shows
-   * the current user-agent and some adjustable cache warmup settings.
-   *
-   * Next to the modal content, a footer with a "start" button is added. The footer
-   * is hidden as long as no site is actively selected.
-   */
-  private createModal(): void {
-    const url: URL = new URL(TYPO3.settings.ajaxUrls.tx_warming_fetch_sites, window.location.origin);
-
-    // Ensure all other modals are closed
-    Modal.dismiss();
-
-    // Create new modal
-    this.modal = Modal.advanced({
-      type: Modal.types.ajax,
-      content: url.toString(),
-      title: TYPO3.lang[LanguageKeys.modalSitesTitle],
-      size: Modal.sizes.medium,
-      buttons: [
-        {
-          text: TYPO3.lang[LanguageKeys.modalSitesButtonStart],
-          icon: IconIdentifiers.rocket,
-          btnClass: 'btn-primary disabled',
-          name: SitesModalButtonNames.startButton,
-          trigger: (): void => {
-            $(this.modal).find(SitesModalSelectors.form).submit();
-          },
-        },
-      ],
-      ajaxCallback: (element: HTMLElement): void => this.initializeSites(element),
-    });
-  }
-
-  /**
-   * Initialize sites within given modal body.
-   *
-   * @param modalBody {HTMLElement} Element referencing the modal body
    * @private
    */
-  private initializeSites(modalBody: HTMLElement): void {
+  private initializeSites(): void {
+    const modalFooter = this.modal.querySelector('.modal-footer');
+
     // Hide footer until site is selected
-    $(this.modal).find('.modal-footer').addClass('tx-warming-modal-footer').addClass('visually-hidden');
+    modalFooter.classList.add('tx-warming-modal-footer', 'visually-hidden');
 
     // Run cache warmup
-    $(modalBody).off('submit', SitesModalSelectors.form);
-    $(modalBody).on('submit', SitesModalSelectors.form, (event: JQuery.TriggeredEvent): false => {
+    new RegularEvent('submit', (event: Event): false => {
       event.preventDefault();
 
-      this.performCacheWarmup(event.target);
+      this.performCacheWarmup();
 
       return false;
-    });
+    }).bindTo(this._form);
 
     // Handle checked sites
-    $(modalBody).on('input', SitesModalSelectors.siteCheckbox, (event: JQuery.TriggeredEvent): void => {
-      $(this.modal).find('.modal-footer').removeClass('visually-hidden');
-      this.toggleInputs(event.target);
-    });
+    this._checkboxes.forEach((checkbox: HTMLInputElement): void => {
+      new RegularEvent('input', (event: Event): void => {
+        modalFooter.classList.remove('visually-hidden');
+        this.toggleInputs(event.target as HTMLInputElement);
+      }).bindTo(checkbox);
+    })
 
     // Copy user agent to clipboard in case the copy button is clicked
-    $(modalBody).on('click', SitesModalSelectors.useragentCopy, (event: JQuery.TriggeredEvent): void => {
+    new RegularEvent('click', (event: Event): void => {
       event.preventDefault();
       event.stopImmediatePropagation();
 
-      const userAgent: string|undefined = $(event.currentTarget).attr('data-text');
+      const userAgent: string|undefined = (event.currentTarget as HTMLButtonElement).dataset.text;
       if (userAgent) {
-        SitesModal.copyUserAgentToClipboard(userAgent);
+        this.copyUserAgentToClipboard(userAgent);
       }
-    });
+    }).bindTo(this._useragentCopyButton);
   }
 
   /**
-   * Start a new cache warmup request from the given form.
+   * Start a new cache warmup request from the modal form.
    *
-   * @param form {HTMLFormElement} The form with selected sites and settings
    * @private
    */
-  private performCacheWarmup(form: HTMLFormElement): void {
+  private performCacheWarmup(): void {
     // Early return if no sites are selected
     if (!this.areSitesSelected()) {
       Notification.warning(
@@ -157,50 +159,51 @@ export class SitesModal {
       return;
     }
 
-    const {configuration, sites} = this.parseFormValues(form);
+    const {configuration, sites} = this.parseFormValues();
 
     this.cacheWarmer.warmupCache(sites, [], configuration);
   }
 
   /**
-   * Parse values of given form.
+   * Parse values of form.
    *
-   * @param form {HTMLFormElement} The form whose values are to be parsed
    * @returns {FormValues} Parsed form values
    * @private
    */
-  private parseFormValues(form: HTMLFormElement): FormValues {
-    const formValues = $(form).serializeArray();
+  private parseFormValues(): FormValues {
+    const formData: FormData = new FormData(this._form);
     const configuration: WarmingConfiguration = {};
     const sites: SiteWarmupRequest = {};
 
-    formValues.forEach(({name, value}) => {
+    for (const [name, value] of formData) {
       switch (name) {
         case 'site':
           try {
-            const selection = SiteSelection.fromJson(value);
+            const selection = SiteSelection.fromJson(value.toString());
             const site = selection.getSiteIdentifier();
 
-            if (!selection.isGroupRoot()) {
-              if (!(site in sites)) {
-                sites[site] = [];
-              }
-              sites[site].push(selection.getLanguageId());
+            // Skip root checkboxes
+            if (selection.isGroupRoot()) {
+              continue;
             }
+
+            // Push site language
+            sites[site] ??= [];
+            sites[site].push(selection.getLanguageId());
           } catch (InvalidSiteSelectionException) {
             // Continue with next input field.
           }
           break;
 
         case 'limit':
-          configuration.limit = parseInt(value);
+          configuration.limit = parseInt(value.toString());
           break;
 
         case 'strategy':
-          configuration.strategy = value;
+          configuration.strategy = value.toString();
           break;
       }
-    });
+    }
 
     return {configuration, sites};
   }
@@ -229,9 +232,9 @@ export class SitesModal {
 
     // Toggle submit button
     if (this.areSitesSelected()) {
-      this.getStartButton().removeClass('disabled');
+      this.getStartButton().classList.remove('disabled');
     } else {
-      this.getStartButton().addClass('disabled');
+      this.getStartButton().classList.add('disabled');
     }
   }
 
@@ -243,8 +246,8 @@ export class SitesModal {
   private areSitesSelected(): boolean {
     let sitesAreSelected = false;
 
-    this.getCheckboxes(true).each(function (): false|void {
-      if ((this as HTMLInputElement).checked) {
+    this._enabledCheckboxesWithoutGroupElements.forEach((checkbox: HTMLInputElement): false|void => {
+      if (checkbox.checked) {
         sitesAreSelected = true;
         return false;
       }
@@ -265,13 +268,13 @@ export class SitesModal {
     let checked = element.checked;
 
     if (siteSelection.getLanguageId() === null) {
-      this.getCheckboxesByGroup(siteSelection.getGroupName()).each(function (): void {
-        this.checked = checked;
+      this.getCheckboxesByGroup(siteSelection.getGroupName()).forEach((checkbox: HTMLInputElement): void => {
+        checkbox.checked = checked;
       });
     } else {
       if (checked) {
-        this.getCheckboxesByGroup(siteSelection.getGroupName()).each(function (): false|void {
-          if (this.id !== element.id && !this.checked) {
+        this.getCheckboxesByGroup(siteSelection.getGroupName()).forEach((checkbox: HTMLInputElement): false|void => {
+          if (checkbox.id !== element.id && !checkbox.checked) {
             checked = false;
             return false;
           }
@@ -289,9 +292,9 @@ export class SitesModal {
    * @private
    */
   private toggleAll(checked: boolean): void {
-    this.getCheckboxes().each(function (): void {
-      this.checked = checked;
-    });
+    this._enabledCheckboxes.forEach((checkbox: HTMLInputElement): void => {
+      checkbox.checked = checked;
+    })
   }
 
   /**
@@ -304,53 +307,26 @@ export class SitesModal {
     let checked = element.checked;
 
     if (checked) {
-      this.getCheckboxes(true).each(function (): false|void {
-        if (this.id !== element.id && !this.checked) {
+      this._enabledCheckboxesWithoutGroupElements.forEach((checkbox: HTMLInputElement): false|void => {
+        if (checkbox.id !== element.id && !checkbox.checked) {
           checked = false;
           return false;
         }
-      });
+      })
     }
 
-    this.getSelectAllCheckbox().checked = checked;
-  }
-
-  /**
-   * Get all available checkboxes.
-   *
-   * @param excludeSelectAll {boolean} `true` if "select all" input field should be excluded, `false` otherwise
-   * @returns {JQuery<HTMLInputElement>} All queried checkboxes
-   * @private
-   */
-  private getCheckboxes(excludeSelectAll = false): JQuery<HTMLInputElement> {
-    let selector = SitesModalSelectors.siteCheckbox + ':enabled';
-
-    if (excludeSelectAll) {
-      selector += ':not([data-select-all])';
-    }
-
-    return $(this.modal).find(selector) as JQuery<HTMLInputElement>;
-  }
-
-  /**
-   * Get "select all" checkbox.
-   *
-   * @returns {HTMLInputElement | undefined} Reference to "select all" checkbox if available, `undefined` otherwise
-   * @private
-   */
-  private getSelectAllCheckbox(): HTMLInputElement | undefined {
-    return ($(this.modal).find(SitesModalSelectors.siteCheckboxAll) as JQuery<HTMLInputElement>).get(0);
+    this._selectAllCheckbox.checked = checked;
   }
 
   /**
    * Get all checkboxes of given group.
    *
    * @param groupName {string} Name of the group to query.
-   * @returns {JQuery<>HTMLInputElement>} List of checkboxes of the given group.
+   * @returns {NodeListOf<HTMLInputElement>} List of checkboxes of the given group.
    * @private
    */
-  private getCheckboxesByGroup(groupName: string): JQuery<HTMLInputElement> {
-    return $(this.modal).find(`input[data-group="${groupName}"]:enabled`) as JQuery<HTMLInputElement>;
+  private getCheckboxesByGroup(groupName: string): NodeListOf<HTMLInputElement> {
+    return this.renderRoot.querySelectorAll(`input[data-group="${groupName}"]:enabled`);
   }
 
   /**
@@ -361,17 +337,17 @@ export class SitesModal {
    * @private
    */
   private getCheckboxGroupRoot(groupName: string): HTMLInputElement | undefined {
-    return ($(this.modal).find(`input[data-group-root="${groupName}"]:enabled`) as JQuery<HTMLInputElement>).get(0);
+    return this.renderRoot.querySelector(`input[data-group-root="${groupName}"]:enabled`);
   }
 
   /**
    * Get "start" button within modal footer.
    *
-   * @returns {JQuery} Reference to "start" button
+   * @returns {HTMLButtonElement} Reference to "start" button
    * @private
    */
-  private getStartButton(): JQuery {
-    return $(this.modal).find(`button[name=${SitesModalButtonNames.startButton}]`);
+  private getStartButton(): HTMLButtonElement {
+    return this.modal.querySelector(`button[name=${SitesModalButtonNames.startButton}]`);
   }
 
   /**
@@ -380,13 +356,12 @@ export class SitesModal {
    * @param userAgent {string} User-Agent header to be copied to clipboard
    * @private
    */
-  private static copyUserAgentToClipboard(userAgent: string): void {
-    const $copyIcon: JQuery = $(SitesModalSelectors.useragentCopyIcon, SitesModalSelectors.useragentCopy);
-    const $existingIcon: JQuery = $copyIcon.clone();
+  private copyUserAgentToClipboard(userAgent: string): void {
+    const existingIcon: HTMLElement = this._useragentCopyIcon.cloneNode(true) as HTMLElement;
 
     // Show spinner when copying user agent
     Icons.getIcon(IconIdentifiers.spinner, Icons.sizes.small).then((spinner: string): void => {
-      $copyIcon.replaceWith(spinner);
+      this._useragentCopyIcon.innerHTML = spinner;
     });
 
     // Copy user agent to clipboard
@@ -396,20 +371,56 @@ export class SitesModal {
     ])
       .then(
         async ([, icon]): Promise<void> => {
-          const existingText = $(SitesModalSelectors.useragentCopyText).text();
-          $(SitesModalSelectors.useragentCopyText).text(TYPO3.lang[LanguageKeys.modalSitesUserAgentActionSuccessful]);
-          $(SitesModalSelectors.useragentCopyIcon, SitesModalSelectors.useragentCopy).replaceWith(icon);
+          const existingText = this._useragentCopyText.innerText;
+          this._useragentCopyText.innerText = TYPO3.lang[LanguageKeys.modalSitesUserAgentActionSuccessful];
+          this._useragentCopyIcon.innerHTML = icon;
 
           // Restore copy button after 3 seconds
           window.setTimeout((): void => {
-            $(SitesModalSelectors.useragentCopyIcon, SitesModalSelectors.useragentCopy).replaceWith($existingIcon);
-            $(SitesModalSelectors.useragentCopyText).text(existingText);
-            $(SitesModalSelectors.useragentCopy).trigger('blur');
+            this._useragentCopyIcon.innerHTML = existingIcon.innerHTML;
+            this._useragentCopyText.innerText = existingText;
+            this._useragentCopyButton.blur();
           }, 3000);
         },
         (): void => {
-          $(SitesModalSelectors.useragentCopyIcon, SitesModalSelectors.useragentCopy).replaceWith($existingIcon);
+          this._useragentCopyIcon.innerHTML = existingIcon.innerHTML;
         }
       );
+  }
+
+  /**
+   * Create modal with available sites.
+   *
+   * Creates a new modal with content fetched as AJAX request. The modal contains
+   * all available sites used to start a new cache warmup. In addition, it shows
+   * the current user-agent and some adjustable cache warmup settings.
+   *
+   * Next to the modal content, a footer with a "start" button is added. The footer
+   * is hidden as long as no site is actively selected.
+   */
+  public static createModal(): void {
+    const url: URL = new URL(TYPO3.settings.ajaxUrls.tx_warming_fetch_sites, window.location.origin);
+
+    // Ensure all other modals are closed
+    Modal.dismiss();
+
+    // Create new modal
+    Modal.advanced({
+      type: Modal.types.ajax,
+      content: url.toString(),
+      title: TYPO3.lang[LanguageKeys.modalSitesTitle],
+      size: Modal.sizes.medium,
+      buttons: [
+        {
+          text: TYPO3.lang[LanguageKeys.modalSitesButtonStart],
+          icon: IconIdentifiers.rocket,
+          btnClass: 'btn-primary disabled',
+          name: SitesModalButtonNames.startButton,
+          trigger: (): void => {
+            Modal.currentModal.querySelector(SitesModalSelectors.form).requestSubmit();
+          },
+        },
+      ],
+    });
   }
 }

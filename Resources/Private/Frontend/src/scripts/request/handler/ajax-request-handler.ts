@@ -49,12 +49,12 @@ export class AjaxRequestHandler implements RequestHandler {
     queryParams: URLSearchParams,
     retryFunction: () => Promise<WarmupProgress>,
   ): Promise<WarmupProgress>  {
-    this.progressModal = ProgressModal.createModal();
-    this.request = new AjaxRequest(this.getUrl(queryParams).toString());
     this.progress = new WarmupProgress();
+    this.progressModal = ProgressModal.createModal(this.progress);
+    this.request = new AjaxRequest(this.getUrl(queryParams).toString());
 
     // Abort cache warmup if progress modal is closed
-    this.progressModal.getModal().on('hide.bs.modal', (): void => {
+    this.progressModal.getModal().addEventListener('typo3-modal-hide', (): void => {
       this.abortWarmup();
     });
 
@@ -104,7 +104,7 @@ export class AjaxRequestHandler implements RequestHandler {
    */
   private finishWarmup(data: WarmupProgressDataObject, retryFunction: () => Promise<WarmupProgress>): void {
     this.progress.update(data);
-    this.progressModal.updateProgress(this.progress);
+    this.progressModal.progress = this.progress;
 
     // Cancel request if not already done
     this.cancelRequest();
