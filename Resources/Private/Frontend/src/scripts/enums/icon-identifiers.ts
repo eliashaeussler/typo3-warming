@@ -34,7 +34,7 @@ export enum IconIdentifiers {
   readonly = 'overlay-readonly',
   refresh = 'actions-refresh',
   rocket = 'actions-rocket',
-  spinner = 'spinner-circle-light',
+  spinner = 'spinner-circle',
   viewPage = 'actions-view-page',
   warning = 'overlay-warning',
 }

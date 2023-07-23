@@ -21,6 +21,8 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+import {v4 as uuidv4} from 'uuid';
+
 /**
  * Collection of string utility functions.
  *
@@ -40,5 +42,15 @@ export class StringHelper {
    */
   public static formatString(format: string, ...values: any[]): string {
     return values.reduce((p: string, c: any, index: number): string => p.replace(new RegExp(`\\{${index}}`), c), format);
+  }
+
+  /**
+   * Generate unique ID.
+   *
+   * @returns {string} Unique ID
+   * @private
+   */
+  public static generateUniqueId(): string {
+    return uuidv4();
   }
 }

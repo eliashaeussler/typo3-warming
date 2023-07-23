@@ -5,10 +5,12 @@
 
 <f:if condition="{siteGroups}">
     <f:then>
-        <form class="tx-warming-sites-modal">
-            <f:render partial="Modal/Sites" arguments="{_all}" />
-            <f:render partial="Modal/Sidebar" arguments="{_all}" />
-        </form>
+        <warming-sites-modal>
+            <form class="tx-warming-sites-modal">
+                <f:render partial="Modal/Sites" arguments="{_all}" />
+                <f:render partial="Modal/Sidebar" arguments="{_all}" />
+            </form>
+        </warming-sites-modal>
     </f:then>
     <f:else>
         <div class="tx-warming-alert-modal">

@@ -55,7 +55,7 @@ export default [
       }),
     ],
     external: [
-      'jquery',
+      'lit',
       /^@typo3\//,
     ],
   },

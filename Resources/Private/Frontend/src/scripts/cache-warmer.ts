@@ -19,7 +19,6 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import {v4 as uuidv4} from 'uuid';
 import ImmediateAction from '@typo3/backend/action-button/immediate-action.js';
 import Notification from '@typo3/backend/notification.js';
 
@@ -28,6 +27,7 @@ import {EventSourceRequestHandler} from '@eliashaeussler/typo3-warming/request/h
 import {LanguageKeys} from '@eliashaeussler/typo3-warming/enums/language-keys';
 import {ReportModal} from '@eliashaeussler/typo3-warming/backend/modal/report-modal';
 import {RequestHandler} from '@eliashaeussler/typo3-warming/request/handler/request-handler';
+import {StringHelper} from '@eliashaeussler/typo3-warming/helper/string-helper';
 import {WarmupProgress} from '@eliashaeussler/typo3-warming/request/warmup-progress';
 import {WarmupState} from '@eliashaeussler/typo3-warming/enums/warmup-state';
 
@@ -146,7 +146,7 @@ export class CacheWarmer {
     configuration: WarmingConfiguration = {},
   ): URLSearchParams {
     const queryParams: URLSearchParams = new URLSearchParams({
-      requestId: CacheWarmer.generateRequestId(),
+      requestId: StringHelper.generateUniqueId(),
     });
 
     let siteCount = 0;
@@ -186,16 +186,6 @@ export class CacheWarmer {
   }
 
   /**
-   * Generate unique request ID.
-   *
-   * @returns {string} Unique request ID
-   * @private
-   */
-  private static generateRequestId(): string {
-    return uuidv4();
-  }
-
-  /**
    * Show notification for given cache warmup progress.
    *
    * @param progress {WarmupProgress} Progress of the cache warmup a notification is built for
@@ -211,7 +201,12 @@ export class CacheWarmer {
     let {title, message} = progress.response;
 
     // Create action to open full report as modal
-    const reportAction: NotificationAction = ReportModal.createModalAction(progress, retryFunction);
+    const reportAction: NotificationAction = {
+      label: TYPO3.lang[LanguageKeys.notificationShowReport],
+      action: new ImmediateAction((): void => {
+        ReportModal.createModal(progress, retryFunction);
+      }),
+    };
 
     // Define modal actions
     const actions: NotificationAction[] = [reportAction];
