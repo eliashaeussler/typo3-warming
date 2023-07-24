@@ -31,6 +31,11 @@ parameters:
 			path: Tests/Acceptance/Support/Helper/PageTree.php
 
 		-
+			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertFalse\\(\\) with string will always evaluate to false\\.$#"
+			count: 1
+			path: Tests/Functional/Cache/SitemapsCacheTest.php
+
+		-
 			message: "#^EliasHaeussler\\\\Typo3Warming\\\\Tests\\\\Functional\\\\Fixtures\\\\Classes\\\\DummyPackageManager\\:\\:__construct\\(\\) does not call parent constructor from TYPO3\\\\CMS\\\\Core\\\\Package\\\\PackageManager\\.$#"
 			count: 1
 			path: Tests/Functional/Fixtures/Classes/DummyPackageManager.php
