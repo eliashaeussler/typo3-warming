@@ -50,9 +50,16 @@ jobs:
           composer-options: --with=typo3/cms-core:"^${{ matrix.typo3-version }}"
 
       # Run tests
-      - name: Run tests
+      - name: Run acceptance tests
+        uses: nick-fields/retry@v2
+        with:
+          max_attempts: 2
+          retry_on: error
+          timeout_minutes: 10
+          command: ddev composer test:acceptance
+          new_command_on_retry: ddev composer test:acceptance -- -g failed
+      - name: Run functional and unit tests
         run: |
-          ddev composer test:acceptance || ddev composer test:acceptance -g failed
           ddev composer test:functional
           ddev composer test:unit
 
@@ -95,7 +102,12 @@ jobs:
 
       # Run tests
       - name: Run tests
-        run: ddev composer test:coverage
+        uses: nick-fields/retry@v2
+        with:
+          max_attempts: 2
+          retry_on: error
+          timeout_minutes: 10
+          command: ddev composer test:coverage
 
       # Report coverage
       - name: Fix coverage path
