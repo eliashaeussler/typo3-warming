@@ -29,7 +29,6 @@ return [
         '.github',
         'bin',
         'build',
-        'config',
         'public',
         'resources\\/private\\/frontend',
         'resources\\/private\\/libs\\/build',
