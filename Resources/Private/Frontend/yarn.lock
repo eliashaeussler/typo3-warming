@@ -907,9 +907,9 @@ domutils@^2.8.0:
     domhandler "^4.2.0"
 
 electron-to-chromium@^1.4.431:
-  version "1.4.472"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.472.tgz#5556e50609a0d66d45e7d96c69b0e7a45c402f88"
-  integrity sha512-JL+vQaO4/3mnE68YLaO6tS61YFTlQp8/9JJj1kMP0CL9GHjLYt8t3T0aA3sW3PvdiXjnVeaZ6Kf0mGtt9+2j+Q==
+  version "1.4.476"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.476.tgz#693df619ce1785ada6d5aec71fd3ce7ace71adc3"
+  integrity sha512-gzWl1m8pNy+5Kj17XcziNcbOhripjTqR2wAQmtdlFUngPYuFy7zUpJScVQAvCvQSFHNk3mS5fetNKW6BSpytFg==
 
 emoji-regex@^8.0.0:
   version "8.0.0"
@@ -2717,9 +2717,9 @@ side-channel@^1.0.4:
     object-inspect "^1.9.0"
 
 signal-exit@^4.0.1:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-4.0.2.tgz#ff55bb1d9ff2114c13b400688fa544ac63c36967"
-  integrity sha512-MY2/qGx4enyjprQnFaZsHib3Yadh3IXyV2C321GY0pjGfVBu4un0uDJkwgdxqO+Rdx8JMT8IfJIRwbYVz3Ob3Q==
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-4.0.3.tgz#6a11e3663c031d6196860374d710afda97875944"
+  integrity sha512-U97H1k7QQ8OQJ18ryc5lSI16ouK1a43nSNRkXz16OMcc5dTVz5TlQxgf2NbX+cF0luukRuy3/womPZqfpIucbw==
 
 slash@^3.0.0:
   version "3.0.0"
