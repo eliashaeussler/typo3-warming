@@ -35,6 +35,11 @@ use TYPO3\CMS\Core;
 final class PageTypeProvider implements Provider
 {
     /**
+     * @see https://github.com/TYPO3/typo3/blob/v12.4.0/typo3/sysext/core/Configuration/DefaultConfiguration.php#L118
+     */
+    private const EXPECTED_ENHANCER_TYPE = 'PageType';
+
+    /**
      * @see https://github.com/TYPO3/typo3/blob/v12.4.0/typo3/sysext/seo/Configuration/TypoScript/XmlSitemap/setup.typoscript#L3
      */
     private const EXPECTED_PAGE_TYPE = 1533906435;
@@ -48,10 +53,11 @@ final class PageTypeProvider implements Provider
             return [];
         }
 
-        $pageTypeMap = $site->getConfiguration()['routeEnhancers']['PageTypeSuffix']['map'] ?? null;
+        // Look up page type map
+        $pageTypeMap = $this->fetchPageTypeMapFromSiteConfiguration($site);
 
         // Early return if no page type map is configured
-        if (!\is_array($pageTypeMap) || !\in_array(self::EXPECTED_PAGE_TYPE, $pageTypeMap, true)) {
+        if (!\in_array(self::EXPECTED_PAGE_TYPE, $pageTypeMap, true)) {
             return [];
         }
 
@@ -70,5 +76,30 @@ final class PageTypeProvider implements Provider
     public static function getPriority(): int
     {
         return 300;
+    }
+
+    /**
+     * @return array<string, int>
+     */
+    private function fetchPageTypeMapFromSiteConfiguration(Core\Site\Entity\Site $site): array
+    {
+        $routeEnhancers = $site->getConfiguration()['routeEnhancers'] ?? [];
+        $pageTypeMap = null;
+
+        foreach ($routeEnhancers as $routeEnhancer) {
+            $type = $routeEnhancer['type'] ?? null;
+
+            if ($type === self::EXPECTED_ENHANCER_TYPE) {
+                $pageTypeMap = $routeEnhancer['map'] ?? null;
+
+                break;
+            }
+        }
+
+        if (!\is_array($pageTypeMap)) {
+            return [];
+        }
+
+        return $pageTypeMap;
     }
 }
