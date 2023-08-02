@@ -60,11 +60,32 @@ final class PageTypeProviderTest extends TestingFramework\Core\Functional\Functi
     }
 
     #[Framework\Attributes\Test]
-    public function getReturnsEmptyArrayIfPageTypeIsNotConfigured(): void
+    public function getReturnsEmptyArrayIfNoRouteEnhancersAreConfigured(): void
     {
         $this->packageManager->loadedExtensions = ['seo'];
 
         $site = new Core\Site\Entity\Site('foo', 1, []);
+
+        self::assertSame([], $this->subject->get($site));
+    }
+
+    #[Framework\Attributes\Test]
+    public function getReturnsEmptyArrayIfPageTypeIsNotConfigured(): void
+    {
+        $this->packageManager->loadedExtensions = ['seo'];
+
+        $site = new Core\Site\Entity\Site('foo', 1, [
+            'base' => 'https://www.example.com/',
+            'routeEnhancers' => [
+                'Foo' => [
+                    'type' => 'Simple',
+                    'routePath' => '/foo/{foo_id}',
+                    '_arguments' => [
+                        'foo_id' => 'foo/id',
+                    ],
+                ],
+            ],
+        ]);
 
         self::assertSame([], $this->subject->get($site));
     }
