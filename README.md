@@ -8,7 +8,7 @@
 [![Maintainability](https://img.shields.io/codeclimate/maintainability/eliashaeussler/typo3-warming?logo=codeclimate)](https://codeclimate.com/github/eliashaeussler/typo3-warming/maintainability)
 [![CGL](https://img.shields.io/github/actions/workflow/status/eliashaeussler/typo3-warming/cgl.yaml?label=cgl&logo=github)](https://github.com/eliashaeussler/typo3-warming/actions/workflows/cgl.yaml)
 [![Tests](https://img.shields.io/github/actions/workflow/status/eliashaeussler/typo3-warming/tests.yaml?label=tests&logo=github)](https://github.com/eliashaeussler/typo3-warming/actions/workflows/tests.yaml)
-[![Supported TYPO3 versions](https://shields.io/endpoint?url=https://typo3-badges.dev/badge/warming/typo3/shields)](https://extensions.typo3.org/extension/warming)
+[![Supported TYPO3 versions](https://typo3-badges.dev/badge/warming/typo3/shields.svg)](https://extensions.typo3.org/extension/warming)
 [![Slack](https://img.shields.io/badge/slack-%23ext--warming-4a154b?logo=slack)](https://typo3.slack.com/archives/C0400CSGWAY)
 
 </div>
