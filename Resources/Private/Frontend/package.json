@@ -35,6 +35,7 @@
 		"postcss": "^8.4.24",
 		"rollup": "^3.26.2",
 		"rollup-plugin-delete": "^2.0.0",
+		"rollup-plugin-multi-input": "^1.4.1",
 		"rollup-plugin-no-emit": "^1.0.1",
 		"rollup-plugin-postcss": "^4.0.2",
 		"sass": "^1.63.3",
