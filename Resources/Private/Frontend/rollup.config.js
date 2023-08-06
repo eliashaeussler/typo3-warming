@@ -20,6 +20,7 @@
  */
 
 import del from 'rollup-plugin-delete';
+import multiInput from 'rollup-plugin-multi-input';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import noEmit from 'rollup-plugin-no-emit';
 import postcss from 'rollup-plugin-postcss';
@@ -35,14 +36,19 @@ export default [
       'src/scripts/backend/toolbar-menu.ts',
     ],
     output: {
-      dir: '../../Public/JavaScript/backend',
+      // Avoid hashes in chunks
+      chunkFileNames: '[name].js',
+      dir: '../../Public/JavaScript',
       format: 'esm',
       sourcemap: isDev ? 'inline' : false,
     },
     plugins: [
       del({
-        targets: '../../Public/JavaScript/backend/*',
+        targets: '../../Public/JavaScript/*',
         force: true,
+      }),
+      multiInput.default({
+        relative: 'src/scripts',
       }),
       nodeResolve(),
       terser({
