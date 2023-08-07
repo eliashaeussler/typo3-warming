@@ -3,16 +3,5 @@
 	"extends": [
 		"local>eliashaeussler/renovate-config",
 		"local>eliashaeussler/renovate-config:typo3-extension"
-	],
-	"packageRules": [
-		{
-			"description": "Create PR for all Frontend dependency updates",
-			"extends": [
-				":automergePr"
-			],
-			"matchFileNames": [
-				"Resources/Private/Frontend/**"
-			]
-		}
 	]
 }
