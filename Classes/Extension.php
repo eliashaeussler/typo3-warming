@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming;
 
+use TYPO3\CMS\Backend;
 use TYPO3\CMS\Core;
 
 /**
@@ -31,6 +32,7 @@ use TYPO3\CMS\Core;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  * @codeCoverageIgnore
+ * @internal
  */
 final class Extension
 {
@@ -48,6 +50,32 @@ final class Extension
             'backend' => Core\Cache\Backend\SimpleFileBackend::class,
             'frontend' => Core\Cache\Frontend\PhpFrontend::class,
         ];
+    }
+
+    /**
+     * Register additional form data providers.
+     *
+     * FOR USE IN ext_localconf.php ONLY.
+     */
+    public static function registerFormDataProviders(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRecord'][Form\FormDataProvider\SimulateLogPageRow::class] = [
+            'before' => [
+                Backend\Form\FormDataProvider\DatabaseParentPageRow::class,
+            ],
+        ];
+    }
+
+    /**
+     * Register custom PageTsConfig.
+     *
+     * FOR USE IN ext_localconf.php ONLY.
+     */
+    public static function registerPageTsConfig(): void
+    {
+        Core\Utility\ExtensionManagementUtility::addPageTSConfig('
+            @import "EXT:warming/Configuration/TSconfig/Page.tsconfig";
+        ');
     }
 
     /**

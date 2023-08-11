@@ -1,3 +1,7 @@
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
@@ -10,15 +14,15 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-@import "modal/common";
-@import "modal/alert";
-@import "modal/progress";
-@import "modal/report";
-@import "modal/sites";
+return [
+    \EliasHaeussler\Typo3Warming\Domain\Model\Log::class => [
+        'tableName' => \EliasHaeussler\Typo3Warming\Domain\Model\Log::TABLE_NAME,
+    ],
+];

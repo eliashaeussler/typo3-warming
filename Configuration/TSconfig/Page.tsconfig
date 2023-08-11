@@ -1,0 +1,3 @@
+mod.web_list {
+  deniedNewTables := addToList(tx_warming_domain_model_log)
+}

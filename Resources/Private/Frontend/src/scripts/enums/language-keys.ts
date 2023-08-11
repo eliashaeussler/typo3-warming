@@ -56,6 +56,7 @@ export enum LanguageKeys {
   modalReportPanelExcludedSitemaps = 'warming.modal.report.panel.excluded.sitemaps',
   modalReportPanelExcludedUrls = 'warming.modal.report.panel.excluded.urls',
   modalReportActionView = 'warming.modal.report.action.view',
+  modalReportRequestId = 'warming.modal.report.message.requestId',
   modalReportTotal = 'warming.modal.report.message.total',
   modalReportNoUrlsCrawled = 'warming.modal.report.message.noUrlsCrawled',
 

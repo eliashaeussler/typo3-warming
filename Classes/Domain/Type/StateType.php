@@ -21,41 +21,38 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3Warming\Enums;
+namespace EliasHaeussler\Typo3Warming\Domain\Type;
 
-use EliasHaeussler\CacheWarmup;
-use Psr\Log;
+use EliasHaeussler\Typo3Warming\Enums;
+use Stringable;
+use TYPO3\CMS\Core;
 
 /**
- * WarmupState
+ * StateType
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-enum WarmupState: string
+final class StateType implements Core\Type\TypeInterface, Stringable
 {
-    case Failed = 'failed';
-    case Success = 'success';
-    case Unknown = 'unknown';
-    case Warning = 'warning';
+    private readonly Enums\WarmupState $state;
 
-    /**
-     * @phpstan-param Log\LogLevel::* $level
-     */
-    public static function fromLogLevel(string $level): self
+    public function __construct(Enums\WarmupState|string $state)
     {
-        if (CacheWarmup\Log\LogLevel::satisfies(Log\LogLevel::ERROR, $level)) {
-            return self::Failed;
+        if (is_string($state)) {
+            $state = Enums\WarmupState::from($state);
         }
 
-        if (CacheWarmup\Log\LogLevel::satisfies(Log\LogLevel::WARNING, $level)) {
-            return self::Warning;
-        }
+        $this->state = $state;
+    }
 
-        if (CacheWarmup\Log\LogLevel::satisfies(Log\LogLevel::INFO, $level)) {
-            return self::Success;
-        }
+    public function get(): Enums\WarmupState
+    {
+        return $this->state;
+    }
 
-        return self::Unknown;
+    public function __toString(): string
+    {
+        return $this->state->value;
     }
 }

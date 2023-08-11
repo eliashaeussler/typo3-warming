@@ -21,41 +21,39 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3Warming\Enums;
+namespace EliasHaeussler\Typo3Warming\UserFunc;
 
-use EliasHaeussler\CacheWarmup;
-use Psr\Log;
+use DateTimeImmutable;
+use EliasHaeussler\Typo3Warming\Domain;
+use TYPO3\CMS\Backend;
 
 /**
- * WarmupState
+ * LogTableFormatter
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
+ * @internal
  */
-enum WarmupState: string
+final class LogTableFormatter
 {
-    case Failed = 'failed';
-    case Success = 'success';
-    case Unknown = 'unknown';
-    case Warning = 'warning';
+    private const TEMPLATE = '[%s] @ %s > %s';
 
     /**
-     * @phpstan-param Log\LogLevel::* $level
+     * @param array{row: array{uid: int}} $parameters
      */
-    public static function fromLogLevel(string $level): self
+    public function formatTitle(array &$parameters): void
     {
-        if (CacheWarmup\Log\LogLevel::satisfies(Log\LogLevel::ERROR, $level)) {
-            return self::Failed;
-        }
+        /** @var array{request_id: string, date: int, url: string}|null $record */
+        $record = Backend\Utility\BackendUtility::getRecord(Domain\Model\Log::TABLE_NAME, $parameters['row']['uid']);
 
-        if (CacheWarmup\Log\LogLevel::satisfies(Log\LogLevel::WARNING, $level)) {
-            return self::Warning;
+        if ($record !== null) {
+            $date = DateTimeImmutable::createFromFormat('U', (string)$record['date']);
+            $parameters['title'] = sprintf(
+                self::TEMPLATE,
+                $record['request_id'],
+                $date !== false ? $date->format('d.m.Y H:i:s') : '(unknown)',
+                $record['url'],
+            );
         }
-
-        if (CacheWarmup\Log\LogLevel::satisfies(Log\LogLevel::INFO, $level)) {
-            return self::Success;
-        }
-
-        return self::Unknown;
     }
 }

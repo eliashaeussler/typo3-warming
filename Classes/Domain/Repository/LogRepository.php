@@ -21,41 +21,19 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3Warming\Enums;
+namespace EliasHaeussler\Typo3Warming\Domain\Repository;
 
-use EliasHaeussler\CacheWarmup;
-use Psr\Log;
+use EliasHaeussler\Typo3Warming\Domain;
+use TYPO3\CMS\Extbase;
 
 /**
- * WarmupState
+ * LogRepository
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
+ *
+ * @extends Extbase\Persistence\Repository<Domain\Model\Log>
  */
-enum WarmupState: string
+class LogRepository extends Extbase\Persistence\Repository
 {
-    case Failed = 'failed';
-    case Success = 'success';
-    case Unknown = 'unknown';
-    case Warning = 'warning';
-
-    /**
-     * @phpstan-param Log\LogLevel::* $level
-     */
-    public static function fromLogLevel(string $level): self
-    {
-        if (CacheWarmup\Log\LogLevel::satisfies(Log\LogLevel::ERROR, $level)) {
-            return self::Failed;
-        }
-
-        if (CacheWarmup\Log\LogLevel::satisfies(Log\LogLevel::WARNING, $level)) {
-            return self::Warning;
-        }
-
-        if (CacheWarmup\Log\LogLevel::satisfies(Log\LogLevel::INFO, $level)) {
-            return self::Success;
-        }
-
-        return self::Unknown;
-    }
 }

@@ -20,3 +20,5 @@
  */
 
 \EliasHaeussler\Typo3Warming\Extension::registerCaches();
+\EliasHaeussler\Typo3Warming\Extension::registerFormDataProviders();
+\EliasHaeussler\Typo3Warming\Extension::registerPageTsConfig();

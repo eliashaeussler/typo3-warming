@@ -16,6 +16,11 @@ parameters:
 			path: Classes/Backend/ContextMenu/ItemProviders/CacheWarmupProvider.php
 
 		-
+			message: "#^Parameter \\#1 \\$result \\(array\\<string, mixed\\>\\) of method EliasHaeussler\\\\Typo3Warming\\\\Form\\\\FormDataProvider\\\\SimulateLogPageRow\\:\\:addData\\(\\) should be contravariant with parameter \\$result \\(array\\) of method TYPO3\\\\CMS\\\\Backend\\\\Form\\\\FormDataProviderInterface\\:\\:addData\\(\\)$#"
+			count: 1
+			path: Classes/Form/FormDataProvider/SimulateLogPageRow.php
+
+		-
 			message: "#^Call to function is_object\\(\\) with EliasHaeussler\\\\Typo3Warming\\\\Sitemap\\\\Provider\\\\Provider will always evaluate to true\\.$#"
 			count: 1
 			path: Classes/Sitemap/SitemapLocator.php

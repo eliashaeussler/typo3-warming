@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Crawler;
 
 use EliasHaeussler\CacheWarmup;
+use EliasHaeussler\SSE;
 use Psr\Log;
 use TYPO3\CMS\Core;
 
@@ -31,21 +32,37 @@ use TYPO3\CMS\Core;
  * LoggingCrawlerTrait
  *
  * @author Elias Häußler <elias@haeussler.dev>
- * @license GPL-3.0-or-later
+ * @license GPL-2.0-or-later
  */
 trait LoggingCrawlerTrait
 {
-    private Log\LoggerInterface $logger;
+    private ?Log\LoggerInterface $logger = null;
 
     private function createLogHandler(): CacheWarmup\Http\Message\Handler\LogHandler
     {
+        $logger = $this->logger;
+
+        if ($logger === null) {
+            $logger = $this->createLogger();
+        }
+
         // We use lowest log level because logger minimum log level is handled by the logger itself
-        return new CacheWarmup\Http\Message\Handler\LogHandler($this->logger, Log\LogLevel::DEBUG);
+        return new CacheWarmup\Http\Message\Handler\LogHandler($logger, Log\LogLevel::DEBUG);
     }
 
     private function createLogger(): Log\LoggerInterface
     {
-        return Core\Utility\GeneralUtility::makeInstance(Core\Log\LogManager::class)->getLogger(static::class);
+        if ($this instanceof StreamableCrawler && $this->stream instanceof SSE\Stream\SelfEmittingEventStream) {
+            $requestId = $this->stream->getId();
+            // We avoid calling GeneralUtility::makeInstance() here
+            // since LogManager is a singleton and we would not be
+            // able to create a new instance of it.
+            $logManager = new Core\Log\LogManager($requestId);
+        } else {
+            $logManager = Core\Utility\GeneralUtility::makeInstance(Core\Log\LogManager::class);
+        }
+
+        return $logManager->getLogger(static::class);
     }
 
     public function setLogger(Log\LoggerInterface $logger): void
