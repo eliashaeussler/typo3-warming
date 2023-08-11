@@ -80,6 +80,21 @@ allowing users to configure warmup requests themselves.
     `Feature #59 - Introduce configurable crawlers <https://github.com/eliashaeussler/cache-warmup/pull/59>`__
     of `eliashaeussler/cache-warmup` library
 
+..  _logging-crawlers:
+
+Logging crawlers
+================
+
+Crawling results can be logged using a dedicated PSR-3 logger. For this, crawlers
+must implement :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\LoggingCrawlerInterface`
+and inject an appropriate PSR-3 logger. In TYPO3 context, this is mostly done using
+TYPO3's log manager. Read more about logging in the :ref:`official documentation <t3coreapi:logging>`.
+
+..  seealso::
+
+    `Feature #271 - Introduce support for PSR-3 loggers <https://github.com/eliashaeussler/cache-warmup/pull/271>`__
+    of `eliashaeussler/cache-warmup` library
+
 ..  _steps-to-implement-a-new-crawler:
 
 Steps to implement a new crawler
@@ -89,11 +104,12 @@ Steps to implement a new crawler
 
 1.  Create a new crawler
 
-    The new crawler must implement one of the following interfaces:
+    The new crawler must implement at least one of the following interfaces:
 
     -   :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\CrawlerInterface`
-    -   :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\VerboseCrawlerInterface`
     -   :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\ConfigurableCrawlerInterface`
+    -   :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\LoggingCrawlerInterface`
+    -   :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\VerboseCrawlerInterface`
 
 2.  Configure the new crawler
 
@@ -112,6 +128,7 @@ Steps to implement a new crawler
 
     -   `CrawlerInterface <https://github.com/eliashaeussler/cache-warmup/blob/main/src/Crawler/CrawlerInterface.php>`__
     -   `ConfigurableCrawlerInterface <https://github.com/eliashaeussler/cache-warmup/blob/main/src/Crawler/ConfigurableCrawlerInterface.php>`__
+    -   `LoggingCrawlerInterface <https://github.com/eliashaeussler/cache-warmup/blob/main/src/Crawler/LoggingCrawlerInterface.php>`__
     -   `VerboseCrawlerInterface <https://github.com/eliashaeussler/cache-warmup/blob/main/src/Crawler/VerboseCrawlerInterface.php>`__
     -   `ConcurrentUserAgentCrawler <https://github.com/eliashaeussler/typo3-warming/blob/main/Classes/Crawler/ConcurrentUserAgentCrawler.php>`__
     -   `OutputtingUserAgentCrawler <https://github.com/eliashaeussler/typo3-warming/blob/main/Classes/Crawler/OutputtingUserAgentCrawler.php>`__
