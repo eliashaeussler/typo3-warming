@@ -32,20 +32,16 @@ namespace EliasHaeussler\Typo3Warming\ValueObject\Request;
 final class WarmupRequest
 {
     /**
-     * @var non-empty-string
-     */
-    private readonly string $id;
-
-    /**
+     * @param non-empty-string $requestId
      * @param list<SiteWarmupRequest> $sites
      * @param list<PageWarmupRequest> $pages
      */
     public function __construct(
+        private readonly string $requestId,
         private readonly array $sites = [],
         private readonly array $pages = [],
         private readonly RequestConfiguration $configuration = new RequestConfiguration(),
     ) {
-        $this->id = uniqid('_', true);
     }
 
     /**
@@ -53,7 +49,7 @@ final class WarmupRequest
      */
     public function getId(): string
     {
-        return $this->id;
+        return $this->requestId;
     }
 
     /**

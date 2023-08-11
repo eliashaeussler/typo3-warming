@@ -109,6 +109,7 @@ final class CacheWarmupLegacyControllerTest extends TestingFramework\Core\Functi
 
         $request = new Core\Http\ServerRequest();
         $request = $request->withQueryParams([
+            'requestId' => 'foo',
             'sites' => [
                 [
                     'site' => $this->site->getIdentifier(),
