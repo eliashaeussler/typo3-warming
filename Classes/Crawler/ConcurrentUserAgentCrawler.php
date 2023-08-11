@@ -44,11 +44,12 @@ use TYPO3\CMS\Core;
  *     client_config: array<string, mixed>,
  * }>
  */
-final class ConcurrentUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfigurableCrawler implements StreamableCrawler
+final class ConcurrentUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfigurableCrawler implements CacheWarmup\Crawler\LoggingCrawlerInterface, StreamableCrawler
 {
     use CacheWarmup\Crawler\ConcurrentCrawlerTrait {
         getRequestHeaders as getDefaultRequestHeaders;
     }
+    use LoggingCrawlerTrait;
 
     protected static array $defaultOptions = [
         'concurrency' => 5,
@@ -67,6 +68,7 @@ final class ConcurrentUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfi
     {
         $this->clientFactory = Core\Utility\GeneralUtility::makeInstance(Http\Client\ClientFactory::class);
         $this->configuration = Core\Utility\GeneralUtility::makeInstance(Configuration\Configuration::class);
+        $this->logger = $this->createLogger();
 
         parent::__construct($options);
     }
@@ -75,7 +77,8 @@ final class ConcurrentUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfi
     {
         $numberOfUrls = \count($urls);
         $resultHandler = new CacheWarmup\Http\Message\Handler\ResultCollectorHandler();
-        $handlers = [$resultHandler];
+        $logHandler = $this->createLogHandler();
+        $handlers = [$resultHandler, $logHandler];
 
         if ($this->stream !== null) {
             $streamHandler = new Http\Message\Handler\StreamResponseHandler($this->stream, $numberOfUrls);

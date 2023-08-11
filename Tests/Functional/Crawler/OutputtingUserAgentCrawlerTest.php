@@ -26,7 +26,9 @@ namespace EliasHaeussler\Typo3Warming\Tests\Functional\Crawler;
 use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3Warming as Src;
 use EliasHaeussler\Typo3Warming\Tests;
+use Exception;
 use PHPUnit\Framework;
+use Psr\Log;
 use Symfony\Component\Console;
 use TYPO3\CMS\Core;
 use TYPO3\TestingFramework;
@@ -148,5 +150,28 @@ final class OutputtingUserAgentCrawlerTest extends TestingFramework\Core\Functio
             [$this->get(Src\Configuration\Configuration::class)->getUserAgent()],
             $this->guzzleClientFactory->handler->getLastRequest()?->getHeader('User-Agent'),
         );
+    }
+
+    #[Framework\Attributes\Test]
+    public function crawlLogsCrawlingResults(): void
+    {
+        $logger = new Tests\Functional\Fixtures\Classes\DummyLogger();
+
+        $this->guzzleClientFactory->handler->append(
+            new Core\Http\Response(),
+            new Exception()
+        );
+
+        $urls = [
+            new Core\Http\Uri('https://typo3-testing.local/'),
+            new Core\Http\Uri('https://typo3-testing.local/de/'),
+        ];
+
+        $this->subject->setLogger($logger);
+
+        $this->subject->crawl($urls);
+
+        self::assertCount(1, $logger->log[Log\LogLevel::ERROR]);
+        self::assertCount(1, $logger->log[Log\LogLevel::INFO]);
     }
 }

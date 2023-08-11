@@ -44,11 +44,12 @@ use TYPO3\CMS\Core;
  *     client_config: array<string, mixed>,
  * }>
  */
-final class OutputtingUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfigurableCrawler implements CacheWarmup\Crawler\VerboseCrawlerInterface
+final class OutputtingUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfigurableCrawler implements CacheWarmup\Crawler\LoggingCrawlerInterface, CacheWarmup\Crawler\VerboseCrawlerInterface
 {
     use CacheWarmup\Crawler\ConcurrentCrawlerTrait {
         getRequestHeaders as getDefaultRequestHeaders;
     }
+    use LoggingCrawlerTrait;
 
     protected static array $defaultOptions = [
         'concurrency' => 5,
@@ -67,6 +68,7 @@ final class OutputtingUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfi
     {
         $this->clientFactory = Core\Utility\GeneralUtility::makeInstance(Http\Client\ClientFactory::class);
         $this->configuration = Core\Utility\GeneralUtility::makeInstance(Configuration\Configuration::class);
+        $this->logger = $this->createLogger();
         $this->output = new Console\Output\ConsoleOutput();
 
         parent::__construct($options);
@@ -76,6 +78,7 @@ final class OutputtingUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfi
     {
         $numberOfUrls = \count($urls);
         $resultHandler = new CacheWarmup\Http\Message\Handler\ResultCollectorHandler();
+        $logHandler = $this->createLogHandler();
 
         // Create progress response handler (depends on the available output)
         if ($this->output instanceof Console\Output\ConsoleOutputInterface && $this->output->isVerbose()) {
@@ -85,7 +88,7 @@ final class OutputtingUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfi
         }
 
         // Create request pool
-        $pool = $this->createPool($urls, $this->client, [$resultHandler, $progressBarHandler]);
+        $pool = $this->createPool($urls, $this->client, [$resultHandler, $progressBarHandler, $logHandler]);
 
         // Start crawling
         $progressBarHandler->startProgressBar();

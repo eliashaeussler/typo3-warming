@@ -20,3 +20,4 @@ Learn what configuration options are available on the following pages:
     SiteConfiguration
     TypoScriptConfiguration
     Permissions
+    Logging
