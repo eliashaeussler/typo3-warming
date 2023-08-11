@@ -73,6 +73,7 @@ final class WarmupFinishedEventTest extends TestingFramework\Core\Functional\Fun
         );
         $this->subject = new Src\Http\Message\Event\WarmupFinishedEvent(
             new Src\ValueObject\Request\WarmupRequest(
+                'foo',
                 [
                     new Src\ValueObject\Request\SiteWarmupRequest($site, [0, 1]),
                 ],
@@ -158,7 +159,7 @@ final class WarmupFinishedEventTest extends TestingFramework\Core\Functional\Fun
         $message = Src\Configuration\Localization::translate('notification.message.empty');
 
         $subject = new Src\Http\Message\Event\WarmupFinishedEvent(
-            new Src\ValueObject\Request\WarmupRequest(),
+            new Src\ValueObject\Request\WarmupRequest('foo'),
             $this->cacheWarmupResult,
         );
 
@@ -172,6 +173,7 @@ final class WarmupFinishedEventTest extends TestingFramework\Core\Functional\Fun
     {
         $subject = new Src\Http\Message\Event\WarmupFinishedEvent(
             new Src\ValueObject\Request\WarmupRequest(
+                'foo',
                 pages: [
                     new Src\ValueObject\Request\PageWarmupRequest(99),
                 ],

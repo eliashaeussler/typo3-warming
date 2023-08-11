@@ -52,13 +52,18 @@ final class WarmupRequestTest extends TestingFramework\Core\Unit\UnitTestCase
         );
         $this->page = new Src\ValueObject\Request\PageWarmupRequest(7);
         $this->configuration = new Src\ValueObject\Request\RequestConfiguration(50, 'foo');
-        $this->subject = new Src\ValueObject\Request\WarmupRequest([$this->site], [$this->page], $this->configuration);
+        $this->subject = new Src\ValueObject\Request\WarmupRequest(
+            'foo',
+            [$this->site],
+            [$this->page],
+            $this->configuration,
+        );
     }
 
     #[Framework\Attributes\Test]
     public function getIdReturnsId(): void
     {
-        self::assertNotEmpty($this->subject->getId());
+        self::assertSame('foo', $this->subject->getId());
     }
 
     #[Framework\Attributes\Test]
