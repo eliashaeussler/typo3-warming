@@ -81,16 +81,16 @@
         },
         {
             "name": "eliashaeussler/cache-warmup",
-            "version": "2.4.0",
+            "version": "2.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/cache-warmup.git",
-                "reference": "14be3ac7754ee59b69d4a2254d32f07a06c1c9cd"
+                "reference": "ff6505200fde7c73f7a0b2b87a68fbb905a94c6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/cache-warmup/zipball/14be3ac7754ee59b69d4a2254d32f07a06c1c9cd",
-                "reference": "14be3ac7754ee59b69d4a2254d32f07a06c1c9cd",
+                "url": "https://api.github.com/repos/eliashaeussler/cache-warmup/zipball/ff6505200fde7c73f7a0b2b87a68fbb905a94c6d",
+                "reference": "ff6505200fde7c73f7a0b2b87a68fbb905a94c6d",
                 "shasum": ""
             },
             "require": {
@@ -144,22 +144,22 @@
             "description": "Composer package to warm up website caches, based on a given XML sitemap",
             "support": {
                 "issues": "https://github.com/eliashaeussler/cache-warmup/issues",
-                "source": "https://github.com/eliashaeussler/cache-warmup/tree/2.4.0"
+                "source": "https://github.com/eliashaeussler/cache-warmup/tree/2.4.2"
             },
-            "time": "2023-08-11T06:33:45+00:00"
+            "time": "2023-08-11T12:02:10+00:00"
         },
         {
             "name": "eliashaeussler/sse",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/sse.git",
-                "reference": "58089bfb7f29289dc69111bbdab89e643c2bfafb"
+                "reference": "5c66a7eed18a5be92f2bf550c2d5407431f412e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/sse/zipball/58089bfb7f29289dc69111bbdab89e643c2bfafb",
-                "reference": "58089bfb7f29289dc69111bbdab89e643c2bfafb",
+                "url": "https://api.github.com/repos/eliashaeussler/sse/zipball/5c66a7eed18a5be92f2bf550c2d5407431f412e7",
+                "reference": "5c66a7eed18a5be92f2bf550c2d5407431f412e7",
                 "shasum": ""
             },
             "require": {
@@ -201,9 +201,9 @@
             "description": "PHP implementation of server-sent events using event streams",
             "support": {
                 "issues": "https://github.com/eliashaeussler/sse/issues",
-                "source": "https://github.com/eliashaeussler/sse/tree/1.0.0"
+                "source": "https://github.com/eliashaeussler/sse/tree/1.0.1"
             },
-            "time": "2023-06-15T10:49:47+00:00"
+            "time": "2023-08-11T09:55:53+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
