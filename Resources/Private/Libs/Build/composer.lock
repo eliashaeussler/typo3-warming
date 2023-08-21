@@ -81,16 +81,16 @@
         },
         {
             "name": "eliashaeussler/cache-warmup",
-            "version": "2.4.2",
+            "version": "2.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/cache-warmup.git",
-                "reference": "ff6505200fde7c73f7a0b2b87a68fbb905a94c6d"
+                "reference": "bc406ef95dd9499cb70790d3d614b7af1783f401"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/cache-warmup/zipball/ff6505200fde7c73f7a0b2b87a68fbb905a94c6d",
-                "reference": "ff6505200fde7c73f7a0b2b87a68fbb905a94c6d",
+                "url": "https://api.github.com/repos/eliashaeussler/cache-warmup/zipball/bc406ef95dd9499cb70790d3d614b7af1783f401",
+                "reference": "bc406ef95dd9499cb70790d3d614b7af1783f401",
                 "shasum": ""
             },
             "require": {
@@ -144,9 +144,9 @@
             "description": "Composer package to warm up website caches, based on a given XML sitemap",
             "support": {
                 "issues": "https://github.com/eliashaeussler/cache-warmup/issues",
-                "source": "https://github.com/eliashaeussler/cache-warmup/tree/2.4.2"
+                "source": "https://github.com/eliashaeussler/cache-warmup/tree/2.4.3"
             },
-            "time": "2023-08-11T12:02:10+00:00"
+            "time": "2023-08-20T19:34:29+00:00"
         },
         {
             "name": "eliashaeussler/sse",
