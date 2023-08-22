@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2410044cc5b9a7878b8196e1705ac7a9",
+    "content-hash": "8742237c920e503720a4e4f373c6ebb9",
     "packages": [
         {
             "name": "eliashaeussler/cache-warmup",
-            "version": "0.8.2",
+            "version": "0.8.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/cache-warmup.git",
-                "reference": "7d176455d84f4408f0796947eb162f1768b7a6b2"
+                "reference": "9a01813efbb9c62a2d6a54da75399557a22d0afd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/cache-warmup/zipball/7d176455d84f4408f0796947eb162f1768b7a6b2",
-                "reference": "7d176455d84f4408f0796947eb162f1768b7a6b2",
+                "url": "https://api.github.com/repos/eliashaeussler/cache-warmup/zipball/9a01813efbb9c62a2d6a54da75399557a22d0afd",
+                "reference": "9a01813efbb9c62a2d6a54da75399557a22d0afd",
                 "shasum": ""
             },
             "require": {
@@ -28,10 +28,10 @@
                 "guzzlehttp/guzzle": "^7.0",
                 "guzzlehttp/promises": "^1.4.0",
                 "guzzlehttp/psr7": ">= 1.8 < 3.0",
-                "php": ">= 7.1 < 8.2",
+                "php": ">= 7.1 < 8.3",
                 "psr/http-client": "^1.0",
                 "psr/http-message": "^1.0",
-                "symfony/console": ">= 4.2.2 < 6.0"
+                "symfony/console": "^4.2.2 || ^5.0 || ^6.0"
             },
             "require-dev": {
                 "armin/editorconfig-cli": "^1.5",
@@ -69,9 +69,9 @@
             "homepage": "https://haeussler.dev",
             "support": {
                 "issues": "https://github.com/eliashaeussler/cache-warmup/issues",
-                "source": "https://github.com/eliashaeussler/cache-warmup/tree/0.8.2"
+                "source": "https://github.com/eliashaeussler/cache-warmup/tree/0.8.6"
             },
-            "time": "2022-10-02T13:50:00+00:00"
+            "time": "2023-01-08T11:36:05+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
