@@ -113,7 +113,7 @@ export default class EventSourceRequestHandler implements RequestHandlerInterfac
     const data = JSON.parse(event.data);
     this.progress.update(data);
 
-    // Pass update upgraded progress to progress modal
+    // Pass updated progress to progress modal
     CacheWarmupProgressModal.updateProgress(this.progress);
   }
 
@@ -129,6 +129,9 @@ export default class EventSourceRequestHandler implements RequestHandlerInterfac
 
     // Ensure event source is closed to stop future retries
     this.closeSource();
+
+    // Pass updated progress to progress modal
+    CacheWarmupProgressModal.updateProgress(this.progress);
 
     // Build report modal on click on "open report" button
     CacheWarmupProgressModal.getReportButton()
