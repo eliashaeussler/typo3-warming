@@ -2,7 +2,7 @@ name: CGL
 on:
   push:
     branches:
-      - main
+      - 0.5.x
   pull_request:
     branches:
       - '**'
