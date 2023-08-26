@@ -85,10 +85,9 @@ export class WarmupProgress {
   public excluded: CrawlingExclusionsState = {sitemaps: [], urls: []};
   public response: CrawlingResponse = {title: '', message: ''};
 
-  constructor(data?: WarmupProgressDataObject) {
-    if (data) {
-      this.update(data);
-    }
+  constructor(
+      public requestId: string,
+  ) {
   }
 
   /**

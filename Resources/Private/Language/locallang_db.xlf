@@ -3,12 +3,53 @@
 	<file source-language="en" datatype="plaintext" original="EXT:warming/Resources/Private/Language/locallang_db.xlf" date="2022-04-21T20:54:27Z" product-name="warming">
 		<header/>
 		<body>
+			<trans-unit id="tabs.sitemap" resname="tabs.sitemap">
+				<source>Sitemap</source>
+			</trans-unit>
+
 			<trans-unit id="sites.xml_sitemap_path.label" resname="sites.xml_sitemap_path.label">
 				<source>Path to XML sitemap</source>
 			</trans-unit>
 			<trans-unit id="sites.xml_sitemap_path.description" resname="sites.xml_sitemap_path.description">
 				<source>Specify the path to the XML sitemap, relative to the entry point of the site.
 Note that caches can be warmed up only if the entry point of the site contains the full domain name.</source>
+			</trans-unit>
+
+			<trans-unit id="tx_warming_domain_model_log" resname="tx_warming_domain_model_log">
+				<source>Cache warmup log</source>
+			</trans-unit>
+			<trans-unit id="tx_warming_domain_model_log.request_id" resname="tx_warming_domain_model_log.request_id">
+				<source>Request id</source>
+			</trans-unit>
+			<trans-unit id="tx_warming_domain_model_log.date" resname="tx_warming_domain_model_log.date">
+				<source>Date</source>
+			</trans-unit>
+			<trans-unit id="tx_warming_domain_model_log.url" resname="tx_warming_domain_model_log.url">
+				<source>URL</source>
+			</trans-unit>
+			<trans-unit id="tx_warming_domain_model_log.message" resname="tx_warming_domain_model_log.message">
+				<source>Log</source>
+			</trans-unit>
+			<trans-unit id="tx_warming_domain_model_log.message.description" resname="tx_warming_domain_model_log.message.description">
+				<source>For failed crawls, the page response is shown, if available.</source>
+			</trans-unit>
+			<trans-unit id="tx_warming_domain_model_log.state" resname="tx_warming_domain_model_log.state">
+				<source>State</source>
+			</trans-unit>
+			<trans-unit id="tx_warming_domain_model_log.state.success" resname="tx_warming_domain_model_log.state.success">
+				<source>Successful</source>
+			</trans-unit>
+			<trans-unit id="tx_warming_domain_model_log.state.failed" resname="tx_warming_domain_model_log.state.failed">
+				<source>Failed</source>
+			</trans-unit>
+			<trans-unit id="tx_warming_domain_model_log.sitemap" resname="tx_warming_domain_model_log.sitemap">
+				<source>Sitemap</source>
+			</trans-unit>
+			<trans-unit id="tx_warming_domain_model_log.site" resname="tx_warming_domain_model_log.site">
+				<source>Site</source>
+			</trans-unit>
+			<trans-unit id="tx_warming_domain_model_log.site_language" resname="tx_warming_domain_model_log.site_language">
+				<source>Site language</source>
 			</trans-unit>
 		</body>
 	</file>

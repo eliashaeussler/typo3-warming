@@ -27,6 +27,7 @@ suites:
             password: 'root'
             populate: true
             waitlock: 5
+        - Cli
         - Asserts
         - EliasHaeussler\Typo3CodeceptionHelper\Codeception\Module\Backend:
             userCredentials:

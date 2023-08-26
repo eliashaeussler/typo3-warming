@@ -68,7 +68,6 @@ final class OutputtingUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfi
     {
         $this->clientFactory = Core\Utility\GeneralUtility::makeInstance(Http\Client\ClientFactory::class);
         $this->configuration = Core\Utility\GeneralUtility::makeInstance(Configuration\Configuration::class);
-        $this->logger = $this->createLogger();
         $this->output = new Console\Output\ConsoleOutput();
 
         parent::__construct($options);

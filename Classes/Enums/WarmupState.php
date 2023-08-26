@@ -23,6 +23,9 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Enums;
 
+use EliasHaeussler\CacheWarmup;
+use Psr\Log;
+
 /**
  * WarmupState
  *
@@ -35,4 +38,24 @@ enum WarmupState: string
     case Success = 'success';
     case Unknown = 'unknown';
     case Warning = 'warning';
+
+    /**
+     * @phpstan-param Log\LogLevel::* $level
+     */
+    public static function fromLogLevel(string $level): self
+    {
+        if (CacheWarmup\Log\LogLevel::satisfies(Log\LogLevel::ERROR, $level)) {
+            return self::Failed;
+        }
+
+        if (CacheWarmup\Log\LogLevel::satisfies(Log\LogLevel::WARNING, $level)) {
+            return self::Warning;
+        }
+
+        if (CacheWarmup\Log\LogLevel::satisfies(Log\LogLevel::INFO, $level)) {
+            return self::Success;
+        }
+
+        return self::Unknown;
+    }
 }

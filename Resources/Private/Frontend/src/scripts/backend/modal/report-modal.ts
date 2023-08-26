@@ -95,37 +95,43 @@ export class ReportModal extends LitElement {
         ` : ''}
       </div>
 
-      ${this.progress.getNumberOfFailedUrls() > 0 ? html`
-        <warming-report-panel
-          title="${TYPO3.lang[LanguageKeys.modalReportPanelFailed]}"
-          state="danger"
-          urls="${JSON.stringify(this.progress.urls.failed)}"
-        />
-      ` : ''}
+      <div class="panel-container">
+        ${this.progress.getNumberOfFailedUrls() > 0 ? html`
+          <warming-report-panel
+            title="${TYPO3.lang[LanguageKeys.modalReportPanelFailed]}"
+            state="danger"
+            urls="${JSON.stringify(this.progress.urls.failed)}"
+          />
+        ` : ''}
 
-      ${this.progress.getNumberOfSuccessfulUrls() > 0 ? html`
-        <warming-report-panel
-          title="${TYPO3.lang[LanguageKeys.modalReportPanelSuccessful]}"
-          state="success"
-          urls="${JSON.stringify(this.progress.urls.successful)}"
-        />
-      ` : ''}
+        ${this.progress.getNumberOfSuccessfulUrls() > 0 ? html`
+          <warming-report-panel
+            title="${TYPO3.lang[LanguageKeys.modalReportPanelSuccessful]}"
+            state="success"
+            urls="${JSON.stringify(this.progress.urls.successful)}"
+          />
+        ` : ''}
 
-      ${this.progress.getNumberOfExcludedSitemaps() > 0 ? html`
-        <warming-report-panel
-          title="${TYPO3.lang[LanguageKeys.modalReportPanelExcludedSitemaps]}"
-          state="warning"
-          urls="${JSON.stringify(this.progress.excluded.sitemaps)}"
-        />
-      ` : ''}
+        ${this.progress.getNumberOfExcludedSitemaps() > 0 ? html`
+          <warming-report-panel
+            title="${TYPO3.lang[LanguageKeys.modalReportPanelExcludedSitemaps]}"
+            state="warning"
+            urls="${JSON.stringify(this.progress.excluded.sitemaps)}"
+          />
+        ` : ''}
 
-      ${this.progress.getNumberOfExcludedUrls() > 0 ? html`
-        <warming-report-panel
-          title="${TYPO3.lang[LanguageKeys.modalReportPanelExcludedUrls]}"
-          state="warning"
-          urls="${JSON.stringify(this.progress.excluded.urls)}"
-        />
-      ` : ''}
+        ${this.progress.getNumberOfExcludedUrls() > 0 ? html`
+          <warming-report-panel
+            title="${TYPO3.lang[LanguageKeys.modalReportPanelExcludedUrls]}"
+            state="warning"
+            urls="${JSON.stringify(this.progress.excluded.urls)}"
+          />
+        ` : ''}
+      </div>
+
+      <small class="tx-warming-request-id">
+        ${TYPO3.lang[LanguageKeys.modalReportRequestId]} <code>${this.progress.requestId}</code
+      ></small>
     `;
   }
 

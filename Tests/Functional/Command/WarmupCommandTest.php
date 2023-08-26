@@ -26,7 +26,6 @@ namespace EliasHaeussler\Typo3Warming\Tests\Functional\Command;
 use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3Warming as Src;
 use EliasHaeussler\Typo3Warming\Tests;
-use GuzzleHttp\Psr7;
 use PHPUnit\Framework;
 use Symfony\Component\Console;
 use TYPO3\CMS\Core;
@@ -56,6 +55,7 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
         ],
     ];
 
+    protected Core\Site\Entity\Site $site;
     protected Src\Configuration\Configuration $configuration;
     protected Core\Configuration\ExtensionConfiguration $extensionConfiguration;
     protected Console\Tester\CommandTester $commandTester;
@@ -72,7 +72,7 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
         Core\Core\Bootstrap::initializeLanguageObject();
 
         // Create site configuration
-        $this->createSite();
+        $this->site = $this->createSite();
 
         $this->configuration = $this->get(Src\Configuration\Configuration::class);
         $this->extensionConfiguration = $this->get(Core\Configuration\ExtensionConfiguration::class);
@@ -124,8 +124,16 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
     {
         $this->mockSitemapResponse('en', 'de', 'fr');
 
-        $originEN = new CacheWarmup\Sitemap\Sitemap(new Psr7\Uri('https://typo3-testing.local/sitemap.xml'));
-        $originDE = new CacheWarmup\Sitemap\Sitemap(new Psr7\Uri('https://typo3-testing.local/de/sitemap.xml'));
+        $originEN = new Src\Sitemap\SiteAwareSitemap(
+            new Core\Http\Uri('https://typo3-testing.local/sitemap.xml'),
+            $this->site,
+            $this->site->getDefaultLanguage(),
+        );
+        $originDE = new Src\Sitemap\SiteAwareSitemap(
+            new Core\Http\Uri('https://typo3-testing.local/de/sitemap.xml'),
+            $this->site,
+            $this->site->getLanguageById(1),
+        );
         $expected = [
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/', 1.0, origin: $originEN),
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-1', 0.5, origin: $originEN),
@@ -148,8 +156,16 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
     {
         $this->mockSitemapResponse('en', 'de', 'fr');
 
-        $originEN = new CacheWarmup\Sitemap\Sitemap(new Psr7\Uri('https://typo3-testing.local/sitemap.xml'));
-        $originDE = new CacheWarmup\Sitemap\Sitemap(new Psr7\Uri('https://typo3-testing.local/de/sitemap.xml'));
+        $originEN = new Src\Sitemap\SiteAwareSitemap(
+            new Core\Http\Uri('https://typo3-testing.local/sitemap.xml'),
+            $this->site,
+            $this->site->getDefaultLanguage(),
+        );
+        $originDE = new Src\Sitemap\SiteAwareSitemap(
+            new Core\Http\Uri('https://typo3-testing.local/de/sitemap.xml'),
+            $this->site,
+            $this->site->getLanguageById(1),
+        );
         $expected = [
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/', 1.0, origin: $originEN),
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-1', 0.5, origin: $originEN),
@@ -249,8 +265,16 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
     {
         $this->mockSitemapResponse('en', 'de', 'fr');
 
-        $originEN = new CacheWarmup\Sitemap\Sitemap(new Psr7\Uri('https://typo3-testing.local/sitemap.xml'));
-        $originDE = new CacheWarmup\Sitemap\Sitemap(new Psr7\Uri('https://typo3-testing.local/de/sitemap.xml'));
+        $originEN = new Src\Sitemap\SiteAwareSitemap(
+            new Core\Http\Uri('https://typo3-testing.local/sitemap.xml'),
+            $this->site,
+            $this->site->getDefaultLanguage(),
+        );
+        $originDE = new Src\Sitemap\SiteAwareSitemap(
+            new Core\Http\Uri('https://typo3-testing.local/de/sitemap.xml'),
+            $this->site,
+            $this->site->getLanguageById(1),
+        );
         $expected = [
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/', 1.0, origin: $originEN),
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/', 1.0, origin: $originDE),

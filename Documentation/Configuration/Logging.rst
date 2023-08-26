@@ -15,7 +15,8 @@ results are logged using a configured log writer. By default, TYPO3
 configures a file writer with minimum log level `warning`.
 
 However, you can always override logging configuration within your
-:file:`system/settings.php` or :file:`system/additional.php` file:
+:file:`config/system/settings.php` or :file:`config/system/additional.php`
+file:
 
 ..  code-block:: php
     :caption: config/system/settings.php
@@ -64,3 +65,58 @@ However, you can always override logging configuration within your
 
     Read more about logging in the
     :ref:`official TYPO3 documentation <t3coreapi:logging>`.
+
+..  _custom-log-table:
+
+Custom log table
+================
+
+The extension ships with a custom log table `tx_warming_domain_model_log`.
+In addition, a custom log writer
+:php:class:`EliasHaeussler\\Typo3Warming\\Log\\Writer\\DatabaseWriter`
+is provided that writes all logged crawling results to said table.
+
+..  note::
+
+    All log entries are written to the root page (uid=0).
+
+Note that this log writer is not enabled by default. You must explicitly
+enable it in your :file:`config/system/settings.php` or
+:file:`config/system/additional.php` file:
+
+..  code-block:: php
+    :caption: config/system/settings.php
+
+    return [
+        'LOG' => [
+            'EliasHaeussler' => [
+                'Typo3Warming' => [
+                    'Crawler' => [
+                        // Default crawler
+                        'ConcurrentUserAgentCrawler' => [
+                            'writerConfiguration' => [
+                                \Psr\Log\LogLevel::WARNING => [
+                                    \EliasHaeussler\Typo3Warming\Log\Writer\DatabaseWriter::class => [],
+                                ],
+                            ],
+                        ],
+
+                        // Verbose crawler
+                        'OutputtingUserAgentCrawler' => [
+                            'writerConfiguration' => [
+                                \Psr\Log\LogLevel::WARNING => [
+                                    \EliasHaeussler\Typo3Warming\Log\Writer\DatabaseWriter::class => [],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ];
+
+..  seealso::
+
+    View the sources on GitHub:
+
+    -   `DatabaseWriter <https://github.com/eliashaeussler/typo3-warming/blob/main/Classes/Log/Writer/DatabaseWriter.php>`__

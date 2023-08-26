@@ -95,6 +95,9 @@
 			<trans-unit id="modal.report.action.view" resname="modal.report.action.view">
 				<source>View</source>
 			</trans-unit>
+			<trans-unit id="modal.report.message.requestId" resname="modal.report.message.requestId">
+				<source>Request ID:</source>
+			</trans-unit>
 			<trans-unit id="modal.report.message.total" resname="modal.report.message.total">
 				<source>Total number of crawled URLs:</source>
 			</trans-unit>

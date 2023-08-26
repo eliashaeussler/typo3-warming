@@ -64,6 +64,20 @@ if (getenv('IS_DDEV_PROJECT') == 'true') {
                         ],
                     ],
                 ],
+                // Enable cache warmup logging
+                'EliasHaeussler' => [
+                    'Typo3Warming' => [
+                        'Crawler' => [
+                            'OutputtingUserAgentCrawler' => [
+                                'writerConfiguration' => [
+                                    \Psr\Log\LogLevel::WARNING => [
+                                        \EliasHaeussler\Typo3Warming\Log\Writer\DatabaseWriter::class => [],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
             ],
             // This mail configuration sends all emails to mailhog
             'MAIL' => [

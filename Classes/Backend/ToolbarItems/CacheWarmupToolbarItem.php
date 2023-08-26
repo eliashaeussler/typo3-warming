@@ -75,6 +75,7 @@ final class CacheWarmupToolbarItem implements Backend\Toolbar\ToolbarItemInterfa
             'warming.modal.report.panel.excluded.sitemaps' => Configuration\Localization::translate('modal.report.panel.excluded.sitemaps'),
             'warming.modal.report.panel.excluded.urls' => Configuration\Localization::translate('modal.report.panel.excluded.urls'),
             'warming.modal.report.action.view' => Configuration\Localization::translate('modal.report.action.view'),
+            'warming.modal.report.message.requestId' => Configuration\Localization::translate('modal.report.message.requestId'),
             'warming.modal.report.message.total' => Configuration\Localization::translate('modal.report.message.total'),
             'warming.modal.report.message.noUrlsCrawled' => Configuration\Localization::translate('modal.report.message.noUrlsCrawled'),
 

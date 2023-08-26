@@ -309,7 +309,7 @@ final class WarmupCommand extends Console\Command\Command
     /**
      * @param array<string> $sites
      * @param list<int> $languages
-     * @return list<string>
+     * @return list<Sitemap\SiteAwareSitemap>
      * @throws CacheWarmup\Exception\InvalidUrlException
      * @throws Core\Exception\SiteNotFoundException
      * @throws Exception\UnsupportedConfigurationException
@@ -337,7 +337,7 @@ final class WarmupCommand extends Console\Command\Command
                     $sitemaps = $this->sitemapLocator->locateBySite($site, $site->getLanguageById($languageId));
 
                     foreach ($sitemaps as $sitemap) {
-                        $resolvedSitemaps[] = (string)$sitemap->getUri();
+                        $resolvedSitemaps[] = $sitemap;
                     }
                 }
             }
