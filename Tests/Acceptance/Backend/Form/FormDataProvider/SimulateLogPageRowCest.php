@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Tests\Acceptance\Backend\Form\FormDataProvider;
 
+use EliasHaeussler\Typo3Warming as Src;
 use EliasHaeussler\Typo3Warming\Tests;
 
 /**
@@ -33,24 +34,19 @@ use EliasHaeussler\Typo3Warming\Tests;
  */
 final class SimulateLogPageRowCest
 {
-    public function _before(Tests\Acceptance\Support\AcceptanceTester $I): void
-    {
-        $I->runShellCommand('typo3 warming:cachewarmup -s 1 --limit 10');
-        $I->loginAs('admin');
-        $I->openModule('[data-moduleroute-identifier="web_list"]');
-    }
-
-    public function seeCacheWarmupLogs(Tests\Acceptance\Support\AcceptanceTester $I): void
-    {
-        $I->seeElement('#t3-table-tx_warming_domain_model_log');
-    }
-
     public function canOpenCrawledUrlUsingPageViewButton(Tests\Acceptance\Support\AcceptanceTester $I): void
     {
+        $I->runShellCommand('typo3 warming:cachewarmup -s 1 --limit 10');
+
+        $I->loginAs('admin');
+        $I->openModule('[data-moduleroute-identifier="web_list"]');
+
+        $I->seeElement('#t3-table-tx_warming_domain_model_log');
         $I->click('tr[data-table="tx_warming_domain_model_log"]:first-child td.col-title a');
 
-        $fieldIdentifier = $I->grabAttributeFrom('//label[starts-with(text(), "URL")]', 'for');
-        $loggedUrl = $I->grabValueFrom(['id' => $fieldIdentifier]);
+        $recordUid = $I->grabFromCurrentUrl('~edit%5Btx_warming_domain_model_log%5D%5B(\\d+)%5D=edit~');
+
+        $loggedUrl = $I->grabFromDatabase(Src\Domain\Model\Log::TABLE_NAME, 'url', ['uid' => $recordUid]);
         $resolvedUrl = $I->grabAttributeFrom('.t3js-editform-view', 'href');
 
         $I->assertSame($loggedUrl, $resolvedUrl);
