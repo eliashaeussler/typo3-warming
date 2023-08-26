@@ -37,6 +37,9 @@ final class StateType implements Core\Type\TypeInterface, Stringable
 {
     private readonly Enums\WarmupState $state;
 
+    /**
+     * @param Enums\WarmupState|value-of<Enums\WarmupState> $state
+     */
     public function __construct(Enums\WarmupState|string $state)
     {
         if (is_string($state)) {
