@@ -71,6 +71,10 @@ trait SiteTrait
 
         $siteConfiguration->write(static::$testSiteIdentifier, $rawConfig);
 
-        return new Core\Site\Entity\Site(static::$testSiteIdentifier, 1, $rawConfig);
+        $site = $siteConfiguration->getAllExistingSites()[static::$testSiteIdentifier] ?? null;
+
+        self::assertInstanceOf(Core\Site\Entity\Site::class, $site);
+
+        return $site;
     }
 }
