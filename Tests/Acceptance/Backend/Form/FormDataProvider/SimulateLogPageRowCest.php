@@ -41,8 +41,12 @@ final class SimulateLogPageRowCest
         $I->loginAs('admin');
         $I->openModule('[data-moduleroute-identifier="web_list"]');
 
-        $I->seeElement('#t3-table-tx_warming_domain_model_log');
-        $I->click('tr[data-table="tx_warming_domain_model_log"]:first-child td.col-title a');
+        $numberOfLogs = $I->grabNumRecords(Src\Domain\Model\Log::TABLE_NAME);
+        $randomLogNumber = random_int(1, $numberOfLogs);
+
+        $I->click(
+            sprintf('tr[data-table="tx_warming_domain_model_log"]:nth-child(%d) td.col-title a', $randomLogNumber),
+        );
 
         $recordUid = $I->grabFromCurrentUrl('~edit%5Btx_warming_domain_model_log%5D%5B(\\d+)%5D=edit~');
 

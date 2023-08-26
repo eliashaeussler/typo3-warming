@@ -23,17 +23,12 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Tests\Functional\Log\Writer;
 
-use function array_keys;
-
 use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3Warming as Src;
 use EliasHaeussler\Typo3Warming\Tests;
 use GuzzleHttp\Exception;
 use PHPUnit\Framework;
 use Psr\Log;
-
-use function sprintf;
-
 use TYPO3\CMS\Core;
 use TYPO3\TestingFramework;
 
