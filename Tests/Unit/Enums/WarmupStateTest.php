@@ -51,7 +51,7 @@ final class WarmupStateTest extends TestingFramework\Core\Unit\UnitTestCase
     }
 
     /**
-     * @return Generator<string, array{Log\LogLevel::*, Src\Enums\WarmupState}
+     * @return Generator<string, array{Log\LogLevel::*, Src\Enums\WarmupState}>
      */
     public static function fromLogLevelReturnsWarmupStateFromGivenPsrLogLevelDataProvider(): Generator
     {
