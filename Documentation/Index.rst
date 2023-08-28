@@ -41,10 +41,90 @@ command. It supports multiple languages and custom crawler implementations.
 
 ----
 
-**Table of Contents**
+..  container:: row m-0 p-0
+
+    ..  container:: col-12 col-md-6 pl-0 pr-0 pr-md-3 pt-3 m-0
+
+        ..  container:: card px-0 h-100
+
+            ..  rst-class:: card-header h3
+
+                ..  rubric:: :ref:`introduction`
+
+            ..  container:: card-body
+
+                A quick overview about the main features provided
+                by this extension.
+
+    ..  container:: col-12 col-md-6 pl-0 pr-0 pr-md-3 pt-3 m-0
+
+        ..  container:: card px-0 h-100
+
+            ..  rst-class:: card-header h3
+
+                ..  rubric:: :ref:`installation`
+
+            ..  container:: card-body
+
+                Instructions on how to install this extension and
+                which TYPO3 and PHP versions are currently supported.
+
+    ..  container:: col-12 col-md-6 pl-0 pr-0 pr-md-3 pt-3 m-0
+
+        ..  container:: card px-0 h-100
+
+            ..  rst-class:: card-header h3
+
+                ..  rubric:: :ref:`configuration`
+
+            ..  container:: card-body
+
+                Learn how to configure the extension in various ways.
+                This includes extension configuration, site configuration
+                and TypoScript configuration.
+
+    ..  container:: col-12 col-md-6 pl-0 pr-0 pr-md-3 pt-3 m-0
+
+        ..  container:: card px-0 h-100
+
+            ..  rst-class:: card-header h3
+
+                ..  rubric:: :ref:`usage`
+
+            ..  container:: card-body
+
+                This section describes all possible usages of this
+                extension. Learn how to use it in the Backend, as
+                console command or using the PHP API.
+
+    ..  container:: col-12 col-md-6 pl-0 pr-0 pr-md-3 pt-3 m-0
+
+        ..  container:: card px-0 h-100
+
+            ..  rst-class:: card-header h3
+
+                ..  rubric:: :ref:`developer-corner`
+
+            ..  container:: card-body
+
+                A quick overview about all relevant classes provided
+                by this extension.
+
+    ..  container:: col-12 col-md-6 pl-0 pr-0 pr-md-3 pt-3 m-0
+
+        ..  container:: card px-0 h-100
+
+            ..  rst-class:: card-header h3
+
+                ..  rubric:: :ref:`migration`
+
+            ..  container:: card-body
+
+                Required migration steps when upgrading the extension
+                to a new major version.
 
 ..  toctree::
-    :maxdepth: 3
+    :hidden:
 
     Introduction/Index
     Installation/Index
