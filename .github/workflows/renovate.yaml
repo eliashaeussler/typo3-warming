@@ -32,7 +32,7 @@ jobs:
 
       # Normalize composer.json
       - name: Normalize composer.json
-        run: composer normalize --no-check-lock
+        run: composer normalize
 
       # Re-create Frontend dist files
       - name: Re-create dist files
