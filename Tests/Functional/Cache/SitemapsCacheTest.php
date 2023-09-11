@@ -59,10 +59,9 @@ final class SitemapsCacheTest extends TestingFramework\Core\Functional\Functiona
     #[Framework\Attributes\Test]
     public function getReturnsEmptyArrayIfCacheIsMissing(): void
     {
-        $this->removeCache();
-
         $site = new Core\Site\Entity\Site('baz', 1, []);
 
+        self::assertFalse($this->cache->has('baz'));
         self::assertSame([], $this->subject->get($site));
     }
 
@@ -71,17 +70,17 @@ final class SitemapsCacheTest extends TestingFramework\Core\Functional\Functiona
     {
         $site = new Core\Site\Entity\Site('baz', 1, []);
 
-        $this->cache->set('sitemaps', 'return "foo";');
+        $this->cache->set('baz', 'return "foo";');
 
         self::assertSame([], $this->subject->get($site));
     }
 
     #[Framework\Attributes\Test]
-    public function getReturnsEmptyArrayIfGivenSiteIsNotCached(): void
+    public function getReturnsEmptyArrayIfCacheOfGivenSiteIsEmpty(): void
     {
         $site = new Core\Site\Entity\Site('baz', 1, []);
 
-        $this->cache->set('sitemaps', 'return [];');
+        $this->cache->set('baz', 'return [];');
 
         self::assertSame([], $this->subject->get($site));
     }
@@ -92,16 +91,14 @@ final class SitemapsCacheTest extends TestingFramework\Core\Functional\Functiona
         $site = new Core\Site\Entity\Site('foo', 1, []);
 
         $this->cache->set(
-            'sitemaps',
+            'foo',
             sprintf(
                 'return %s;',
                 var_export(
                     [
-                        'foo' => [
-                            'default' => [
-                                'https://www.example.com/baz',
-                                'https://www.example.com/bar',
-                            ],
+                        0 => [
+                            'https://www.example.com/baz',
+                            'https://www.example.com/bar',
                         ],
                     ],
                     true,
@@ -127,54 +124,20 @@ final class SitemapsCacheTest extends TestingFramework\Core\Functional\Functiona
     }
 
     #[Framework\Attributes\Test]
-    public function getReturnsCachedSitemapsUsingBackwardsCompatibilityLayer(): void
-    {
-        $site = new Core\Site\Entity\Site('foo', 1, []);
-
-        $this->cache->set(
-            'sitemaps',
-            sprintf(
-                'return %s;',
-                var_export(
-                    [
-                        'foo' => [
-                            // BC: string will be converted to array
-                            'default' => 'https://www.example.com/baz',
-                        ],
-                    ],
-                    true,
-                ),
-            ),
-        );
-
-        $expected = [
-            new Src\Sitemap\SiteAwareSitemap(
-                new Core\Http\Uri('https://www.example.com/baz'),
-                $site,
-                $site->getDefaultLanguage(),
-            ),
-        ];
-
-        self::assertEquals($expected, $this->subject->get($site));
-    }
-
-    #[Framework\Attributes\Test]
     public function getReturnsCachedSitemapForGivenLanguage(): void
     {
         $site = new Core\Site\Entity\Site('foo', 1, []);
         $siteLanguage = new Core\Site\Entity\SiteLanguage(1, 'de_DE.UTF-8', new Core\Http\Uri('https://example.com'), []);
 
         $this->cache->set(
-            'sitemaps',
+            'foo',
             sprintf(
                 'return %s;',
                 var_export(
                     [
-                        'foo' => [
-                            '1' => [
-                                'https://www.example.com/baz',
-                                'https://www.example.com/bar',
-                            ],
+                        1 => [
+                            'https://www.example.com/baz',
+                            'https://www.example.com/bar',
                         ],
                     ],
                     true,
@@ -201,9 +164,7 @@ final class SitemapsCacheTest extends TestingFramework\Core\Functional\Functiona
     #[Framework\Attributes\Test]
     public function setInitializesCacheIfCacheIsMissing(): void
     {
-        $this->removeCache();
-
-        self::assertFalse($this->cache->get('sitemaps'));
+        self::assertFalse($this->cache->has('foo'));
 
         $site = new Core\Site\Entity\Site('foo', 1, []);
         $sitemaps = [
@@ -222,12 +183,14 @@ final class SitemapsCacheTest extends TestingFramework\Core\Functional\Functiona
         $this->subject->set($sitemaps);
 
         self::assertEquals($sitemaps, $this->subject->get($site, $site->getDefaultLanguage()));
-        self::assertNotFalse($this->cache->get('sitemaps'));
+        self::assertTrue($this->cache->has('foo'));
     }
 
     #[Framework\Attributes\Test]
     public function setStoresGivenSitemapInCache(): void
     {
+        self::assertFalse($this->cache->has('foo'));
+
         $site = new Core\Site\Entity\Site('foo', 1, []);
         $sitemaps = [
             new Src\Sitemap\SiteAwareSitemap(
@@ -245,19 +208,6 @@ final class SitemapsCacheTest extends TestingFramework\Core\Functional\Functiona
         $this->subject->set($sitemaps);
 
         self::assertEquals($sitemaps, $this->subject->get($site, $site->getDefaultLanguage()));
-    }
-
-    private function removeCache(): void
-    {
-        $cacheBackend = $this->cache->getBackend();
-
-        self::assertInstanceOf(Core\Cache\Backend\SimpleFileBackend::class, $cacheBackend);
-
-        $cacheDirectory = $cacheBackend->getCacheDirectory();
-        $cacheFile = $cacheDirectory . '/sitemaps.php';
-
-        if (file_exists($cacheFile)) {
-            unlink($cacheFile);
-        }
+        self::assertTrue($this->cache->has('foo'));
     }
 }

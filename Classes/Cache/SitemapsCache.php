@@ -35,8 +35,6 @@ use TYPO3\CMS\Core;
  */
 final class SitemapsCache
 {
-    private const ENTRY_IDENTIFIER = 'sitemaps';
-
     public function __construct(
         private readonly Core\Cache\Frontend\PhpFrontend $cache,
     ) {
@@ -50,23 +48,16 @@ final class SitemapsCache
         Core\Site\Entity\Site $site,
         Core\Site\Entity\SiteLanguage $siteLanguage = null,
     ): array {
-        /** @var array<string, array<string, string|list<string>>>|false $cacheData */
-        $cacheData = $this->cache->require(self::ENTRY_IDENTIFIER);
+        $cacheData = $this->readCache($site->getIdentifier());
 
-        // Early return if cache is empty
-        if ($cacheData === false) {
+        // Early return if cache is empty or invalid
+        if ($cacheData === []) {
             return [];
         }
 
         // Fetch sitemaps from cache data
-        $siteIdentifier = $site->getIdentifier();
-        $languageIdentifier = $this->buildLanguageIdentifier($site, $siteLanguage);
-        $sitemaps = $cacheData[$siteIdentifier][$languageIdentifier] ?? null;
-
-        // BC: Convert single sitemap to sitemaps array
-        if (\is_string($sitemaps)) {
-            $sitemaps = [$sitemaps];
-        }
+        $languageIdentifier = ($siteLanguage ?? $site->getDefaultLanguage())->getLanguageId();
+        $sitemaps = $cacheData[$languageIdentifier] ?? null;
 
         // Early return if sitemaps are not cached
         if (!\is_array($sitemaps)) {
@@ -90,42 +81,59 @@ final class SitemapsCache
      */
     public function set(array $sitemaps): void
     {
-        /** @var array<string, array<string, string|list<string>>>|false $cacheData */
-        $cacheData = $this->cache->require(self::ENTRY_IDENTIFIER);
+        /** @var array<string, list<Sitemap\SiteAwareSitemap>> $sitemapsBySite */
+        $sitemapsBySite = [];
+
+        // Re-index sitemaps by site
+        foreach ($sitemaps as $sitemap) {
+            $siteIdentifier = $sitemap->getSite()->getIdentifier();
+            $sitemapsBySite[$siteIdentifier] ??= [];
+            $sitemapsBySite[$siteIdentifier][] = $sitemap;
+        }
+
+        // Update cache data of all given sites
+        foreach ($sitemapsBySite as $siteIdentifier => $sitemapsOfCurrentSite) {
+            $cacheData = $this->readCache($siteIdentifier);
+            $cachedUrls = [];
+
+            // Append sitemap urls to cache data
+            foreach ($sitemapsOfCurrentSite as $sitemap) {
+                $languageIdentifier = $sitemap->getSiteLanguage()->getLanguageId();
+
+                $cachedUrls[$languageIdentifier] ??= [];
+                $cachedUrls[$languageIdentifier][] = (string)$sitemap->getUri();
+            }
+
+            $cacheData = array_replace($cacheData, $cachedUrls);
+
+            $this->writeCache($siteIdentifier, $cacheData);
+        }
+    }
+
+    /**
+     * @return array<int, list<string>>
+     */
+    private function readCache(string $siteIdentifier): array
+    {
+        /** @var array<int, list<string>>|false $cacheData */
+        $cacheData = $this->cache->require($siteIdentifier);
 
         // Enforce array for cached data
-        if ($cacheData === false) {
+        if (!\is_array($cacheData)) {
             $cacheData = [];
         }
 
-        $cachedUrls = [];
-
-        // Append sitemap urls to cache data
-        foreach ($sitemaps as $sitemap) {
-            $siteIdentifier = $sitemap->getSite()->getIdentifier();
-            $languageIdentifier = $this->buildLanguageIdentifier($sitemap->getSite(), $sitemap->getSiteLanguage());
-
-            $cachedUrls[$siteIdentifier][$languageIdentifier] ??= [];
-            $cachedUrls[$siteIdentifier][$languageIdentifier][] = (string)$sitemap->getUri();
-        }
-
-        $cacheData = array_replace_recursive($cacheData, $cachedUrls);
-
-        $this->cache->set(
-            self::ENTRY_IDENTIFIER,
-            sprintf('return %s;', var_export($cacheData, true)),
-        );
+        return $cacheData;
     }
 
-    private function buildLanguageIdentifier(
-        Core\Site\Entity\Site $site,
-        Core\Site\Entity\SiteLanguage $siteLanguage = null,
-    ): string {
-        $languageIdentifier = 'default';
-        if ($siteLanguage !== null && $siteLanguage !== $site->getDefaultLanguage()) {
-            $languageIdentifier = (string)$siteLanguage->getLanguageId();
-        }
-
-        return $languageIdentifier;
+    /**
+     * @param array<int, list<string>> $cacheData
+     */
+    private function writeCache(string $siteIdentifier, array $cacheData): void
+    {
+        $this->cache->set(
+            $siteIdentifier,
+            sprintf('return %s;', var_export($cacheData, true)),
+        );
     }
 }

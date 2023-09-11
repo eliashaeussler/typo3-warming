@@ -9,7 +9,7 @@ Caching
 Once a sitemap is located by a :ref:`sitemap provider <sitemap-providers>`,
 the path to the XML sitemap is cached. This speeds up following
 warmup requests. Caching happens with a custom `warming` cache
-which defaults to a filesystem cache located at :file:`var/cache/code/warming/sitemaps.php`.
+which defaults to a filesystem cache located at :file:`var/cache/code/warming`.
 
 ..  php:namespace:: EliasHaeussler\Typo3Warming\Cache
 
