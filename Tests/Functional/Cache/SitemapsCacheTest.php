@@ -86,6 +86,30 @@ final class SitemapsCacheTest extends TestingFramework\Core\Functional\Functiona
     }
 
     #[Framework\Attributes\Test]
+    public function getReturnsEmptyArrayIfCacheOfGivenSiteLanguageIsEmpty(): void
+    {
+        $site = new Core\Site\Entity\Site('baz', 1, []);
+
+        $this->cache->set(
+            'baz',
+            sprintf(
+                'return %s;',
+                var_export(
+                    [
+                        1 => [
+                            'https://www.example.com/baz',
+                            'https://www.example.com/bar',
+                        ],
+                    ],
+                    true,
+                ),
+            ),
+        );
+
+        self::assertSame([], $this->subject->get($site));
+    }
+
+    #[Framework\Attributes\Test]
     public function getReturnsCachedSitemapsForDefaultLanguage(): void
     {
         $site = new Core\Site\Entity\Site('foo', 1, []);
@@ -209,5 +233,71 @@ final class SitemapsCacheTest extends TestingFramework\Core\Functional\Functiona
 
         self::assertEquals($sitemaps, $this->subject->get($site, $site->getDefaultLanguage()));
         self::assertTrue($this->cache->has('foo'));
+    }
+
+    #[Framework\Attributes\Test]
+    public function removeInitializesCacheIfCacheIsMissing(): void
+    {
+        self::assertFalse($this->cache->has('foo'));
+
+        $site = new Core\Site\Entity\Site('foo', 1, []);
+
+        $this->subject->remove($site);
+
+        self::assertFalse($this->cache->has('foo'));
+    }
+
+    #[Framework\Attributes\Test]
+    public function removeRemovesSitemapsOfGivenSiteFromCache(): void
+    {
+        $site = new Core\Site\Entity\Site('foo', 1, []);
+        $sitemaps = [
+            new Src\Sitemap\SiteAwareSitemap(
+                new Core\Http\Uri('https://www.example.com/baz'),
+                $site,
+                $site->getDefaultLanguage(),
+            ),
+            new Src\Sitemap\SiteAwareSitemap(
+                new Core\Http\Uri('https://www.example.com/bar'),
+                $site,
+                $site->getDefaultLanguage(),
+            ),
+        ];
+
+        $this->subject->set($sitemaps);
+
+        self::assertTrue($this->cache->has('foo'));
+
+        $this->subject->remove($site);
+
+        self::assertFalse($this->cache->has('foo'));
+    }
+
+    #[Framework\Attributes\Test]
+    public function removeRemovesSitemapsOfGivenSiteAndSiteLanguageFromCache(): void
+    {
+        $site = new Core\Site\Entity\Site('foo', 1, []);
+        $siteLanguage = new Core\Site\Entity\SiteLanguage(1, 'de_DE.UTF-8', new Core\Http\Uri('https://example.com'), []);
+
+        $sitemaps = [
+            new Src\Sitemap\SiteAwareSitemap(
+                new Core\Http\Uri('https://www.example.com/'),
+                $site,
+                $site->getDefaultLanguage(),
+            ),
+            new Src\Sitemap\SiteAwareSitemap(
+                new Core\Http\Uri('https://www.example.com/foo'),
+                $site,
+                $siteLanguage,
+            ),
+        ];
+
+        $this->subject->set($sitemaps);
+
+        self::assertTrue($this->cache->has('foo'));
+
+        $this->subject->remove($site, $siteLanguage);
+
+        self::assertCount(1, $this->cache->require('foo'));
     }
 }
