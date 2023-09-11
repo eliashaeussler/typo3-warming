@@ -111,6 +111,30 @@ final class SitemapsCache
     }
 
     /**
+     * @internal
+     */
+    public function remove(
+        Core\Site\Entity\Site $site,
+        Core\Site\Entity\SiteLanguage $siteLanguage = null,
+    ): void {
+        $siteIdentifier = $site->getIdentifier();
+
+        // Remove whole site from cache
+        if ($siteLanguage === null) {
+            $this->cache->remove($siteIdentifier);
+
+            return;
+        }
+
+        $cacheData = $this->readCache($siteIdentifier);
+
+        // Remove specific site language from cache data
+        unset($cacheData[$siteLanguage->getLanguageId()]);
+
+        $this->writeCache($siteIdentifier, $cacheData);
+    }
+
+    /**
      * @return array<int, list<string>>
      */
     private function readCache(string $siteIdentifier): array

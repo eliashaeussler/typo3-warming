@@ -34,6 +34,12 @@ services:
   EliasHaeussler\Typo3Warming\Crawler\Strategy\CrawlingStrategyFactory:
     arguments:
       $strategies: !tagged_locator { tag: 'warming.crawling_strategy', default_index_method: 'getName' }
+
+  EliasHaeussler\Typo3Warming\EventListener\SiteConfigurationListener:
+    tags:
+      - name: event.listener
+        identifier: 'warmingSiteConfigurationListener'
+
   EliasHaeussler\Typo3Warming\Http\Client\ClientFactory:
     public: true
   EliasHaeussler\Typo3Warming\Service\CacheWarmupService:
