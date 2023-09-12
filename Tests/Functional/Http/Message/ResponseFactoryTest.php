@@ -43,7 +43,7 @@ final class ResponseFactoryTest extends TestingFramework\Core\Functional\Functio
 
     protected bool $initializeDatabase = false;
 
-    protected Src\Http\Message\ResponseFactory $subject;
+    private Src\Http\Message\ResponseFactory $subject;
 
     protected function setUp(): void
     {

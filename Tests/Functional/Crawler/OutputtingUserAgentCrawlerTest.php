@@ -50,8 +50,8 @@ final class OutputtingUserAgentCrawlerTest extends TestingFramework\Core\Functio
 
     protected bool $initializeDatabase = false;
 
-    protected Console\Output\BufferedOutput $output;
-    protected Src\Crawler\OutputtingUserAgentCrawler $subject;
+    private Console\Output\BufferedOutput $output;
+    private Src\Crawler\OutputtingUserAgentCrawler $subject;
 
     protected function setUp(): void
     {

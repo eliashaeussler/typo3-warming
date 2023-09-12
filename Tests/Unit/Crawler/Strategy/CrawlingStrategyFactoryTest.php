@@ -38,7 +38,7 @@ use TYPO3\TestingFramework;
 #[Framework\Attributes\CoversClass(Src\Crawler\Strategy\CrawlingStrategyFactory::class)]
 final class CrawlingStrategyFactoryTest extends TestingFramework\Core\Unit\UnitTestCase
 {
-    protected Src\Crawler\Strategy\CrawlingStrategyFactory $subject;
+    private Src\Crawler\Strategy\CrawlingStrategyFactory $subject;
 
     protected function setUp(): void
     {

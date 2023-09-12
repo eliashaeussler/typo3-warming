@@ -40,7 +40,7 @@ final class TemplateRendererTest extends TestingFramework\Core\Functional\Functi
         'warming',
     ];
 
-    protected Src\View\TemplateRenderer $subject;
+    private Src\View\TemplateRenderer $subject;
 
     protected function setUp(): void
     {

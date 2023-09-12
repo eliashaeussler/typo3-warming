@@ -36,7 +36,7 @@ use TYPO3\TestingFramework;
 #[Framework\Attributes\CoversClass(Src\Domain\Type\StateType::class)]
 final class StateTypeTest extends TestingFramework\Core\Unit\UnitTestCase
 {
-    protected Src\Domain\Type\StateType $subject;
+    private Src\Domain\Type\StateType $subject;
 
     protected function setUp(): void
     {

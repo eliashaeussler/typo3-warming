@@ -39,8 +39,8 @@ final class SiteWarmupRequestTest extends TestingFramework\Core\Unit\UnitTestCas
 {
     use Src\Tests\Unit\SiteTrait;
 
-    protected Core\Site\Entity\Site $site;
-    protected Src\ValueObject\Request\SiteWarmupRequest $subject;
+    private Core\Site\Entity\Site $site;
+    private Src\ValueObject\Request\SiteWarmupRequest $subject;
 
     protected function setUp(): void
     {

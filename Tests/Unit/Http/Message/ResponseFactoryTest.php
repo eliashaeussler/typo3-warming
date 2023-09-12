@@ -37,7 +37,7 @@ use TYPO3\TestingFramework;
 #[Framework\Attributes\CoversClass(Src\Http\Message\ResponseFactory::class)]
 final class ResponseFactoryTest extends TestingFramework\Core\Unit\UnitTestCase
 {
-    protected Src\Http\Message\ResponseFactory $subject;
+    private Src\Http\Message\ResponseFactory $subject;
 
     protected function setUp(): void
     {

@@ -41,9 +41,9 @@ final class CacheWarmupResultTest extends TestingFramework\Core\Unit\UnitTestCas
 {
     use Tests\Unit\SiteTrait;
 
-    protected CacheWarmup\Result\CacheWarmupResult $originalResult;
-    protected Core\Site\Entity\Site $site;
-    protected Src\Result\CacheWarmupResult $subject;
+    private CacheWarmup\Result\CacheWarmupResult $originalResult;
+    private Core\Site\Entity\Site $site;
+    private Src\Result\CacheWarmupResult $subject;
 
     protected function setUp(): void
     {

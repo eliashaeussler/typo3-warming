@@ -40,7 +40,7 @@ final class AccessUtilityTest extends TestingFramework\Core\Functional\Functiona
 {
     use Tests\Functional\SiteTrait;
 
-    protected Core\Site\Entity\Site $site;
+    private Core\Site\Entity\Site $site;
 
     protected function setUp(): void
     {

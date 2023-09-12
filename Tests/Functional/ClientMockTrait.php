@@ -35,7 +35,7 @@ use TYPO3\CMS\Core;
  */
 trait ClientMockTrait
 {
-    protected Tests\Functional\Fixtures\Classes\DummyGuzzleClientFactory $guzzleClientFactory;
+    private Tests\Functional\Fixtures\Classes\DummyGuzzleClientFactory $guzzleClientFactory;
 
     private function mockSitemapResponse(string ...$languages): void
     {

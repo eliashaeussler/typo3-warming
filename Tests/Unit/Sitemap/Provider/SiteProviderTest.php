@@ -38,7 +38,7 @@ use TYPO3\TestingFramework;
 #[Framework\Attributes\CoversClass(Src\Sitemap\Provider\SiteProvider::class)]
 final class SiteProviderTest extends TestingFramework\Core\Unit\UnitTestCase
 {
-    protected Src\Sitemap\Provider\SiteProvider $subject;
+    private Src\Sitemap\Provider\SiteProvider $subject;
 
     protected function setUp(): void
     {

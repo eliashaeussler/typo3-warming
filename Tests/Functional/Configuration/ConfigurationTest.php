@@ -52,8 +52,8 @@ final class ConfigurationTest extends TestingFramework\Core\Functional\Functiona
 
     protected bool $initializeDatabase = false;
 
-    protected Core\Configuration\ExtensionConfiguration $extensionConfiguration;
-    protected Src\Configuration\Configuration $subject;
+    private Core\Configuration\ExtensionConfiguration $extensionConfiguration;
+    private Src\Configuration\Configuration $subject;
 
     protected function setUp(): void
     {

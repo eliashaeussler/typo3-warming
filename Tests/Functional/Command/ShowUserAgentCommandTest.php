@@ -43,8 +43,8 @@ final class ShowUserAgentCommandTest extends TestingFramework\Core\Functional\Fu
 
     protected bool $initializeDatabase = false;
 
-    protected Src\Configuration\Configuration $configuration;
-    protected Console\Tester\CommandTester $commandTester;
+    private Src\Configuration\Configuration $configuration;
+    private Console\Tester\CommandTester $commandTester;
 
     protected function setUp(): void
     {

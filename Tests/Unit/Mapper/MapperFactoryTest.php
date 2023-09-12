@@ -38,8 +38,8 @@ use TYPO3\TestingFramework;
 #[Framework\Attributes\CoversClass(Src\Mapper\MapperFactory::class)]
 final class MapperFactoryTest extends TestingFramework\Core\Unit\UnitTestCase
 {
-    protected Tests\Unit\Fixtures\DummySiteFinder $siteFinder;
-    protected Src\Mapper\MapperFactory $subject;
+    private Tests\Unit\Fixtures\DummySiteFinder $siteFinder;
+    private Src\Mapper\MapperFactory $subject;
 
     protected function setUp(): void
     {

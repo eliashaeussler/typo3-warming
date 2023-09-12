@@ -39,8 +39,8 @@ use TYPO3\TestingFramework;
 #[Framework\Attributes\CoversClass(Src\Http\Message\Handler\StreamResponseHandler::class)]
 final class StreamResponseHandlerTest extends TestingFramework\Core\Unit\UnitTestCase
 {
-    protected Tests\Unit\Fixtures\DummyEventStream $eventStream;
-    protected Src\Http\Message\Handler\StreamResponseHandler $subject;
+    private Tests\Unit\Fixtures\DummyEventStream $eventStream;
+    private Src\Http\Message\Handler\StreamResponseHandler $subject;
 
     protected function setUp(): void
     {

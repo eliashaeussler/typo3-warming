@@ -40,7 +40,7 @@ final class HttpUtilityTest extends TestingFramework\Core\Functional\FunctionalT
 {
     use Tests\Functional\SiteTrait;
 
-    protected Core\Site\Entity\Site $site;
+    private Core\Site\Entity\Site $site;
 
     protected function setUp(): void
     {

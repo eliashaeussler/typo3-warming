@@ -55,10 +55,10 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
         ],
     ];
 
-    protected Core\Site\Entity\Site $site;
-    protected Tests\Functional\Fixtures\Classes\DummyEventDispatcher $eventDispatcher;
-    protected Tests\Functional\Fixtures\Classes\DummyGuzzleClientFactory $guzzleClientFactory;
-    protected Src\Service\CacheWarmupService $subject;
+    private Core\Site\Entity\Site $site;
+    private Tests\Functional\Fixtures\Classes\DummyEventDispatcher $eventDispatcher;
+    private Tests\Functional\Fixtures\Classes\DummyGuzzleClientFactory $guzzleClientFactory;
+    private Src\Service\CacheWarmupService $subject;
 
     protected function setUp(): void
     {
