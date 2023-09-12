@@ -38,8 +38,8 @@ use TYPO3\TestingFramework;
 #[Framework\Attributes\CoversClass(Src\Sitemap\Provider\PageTypeProvider::class)]
 final class PageTypeProviderTest extends TestingFramework\Core\Functional\FunctionalTestCase
 {
-    protected Src\Sitemap\Provider\PageTypeProvider $subject;
-    protected Tests\Functional\Fixtures\Classes\DummyPackageManager $packageManager;
+    private Src\Sitemap\Provider\PageTypeProvider $subject;
+    private Tests\Functional\Fixtures\Classes\DummyPackageManager $packageManager;
 
     protected function setUp(): void
     {

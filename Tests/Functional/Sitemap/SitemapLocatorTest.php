@@ -45,9 +45,9 @@ final class SitemapLocatorTest extends TestingFramework\Core\Functional\Function
         'warming',
     ];
 
-    protected Src\Cache\SitemapsCache $cache;
-    protected Tests\Unit\Fixtures\DummyRequestFactory $requestFactory;
-    protected Src\Sitemap\SitemapLocator $subject;
+    private Src\Cache\SitemapsCache $cache;
+    private Tests\Unit\Fixtures\DummyRequestFactory $requestFactory;
+    private Src\Sitemap\SitemapLocator $subject;
 
     protected function setUp(): void
     {

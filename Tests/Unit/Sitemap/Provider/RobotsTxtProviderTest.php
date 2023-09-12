@@ -39,9 +39,9 @@ use TYPO3\TestingFramework;
 #[Framework\Attributes\CoversClass(Src\Sitemap\Provider\RobotsTxtProvider::class)]
 final class RobotsTxtProviderTest extends TestingFramework\Core\Unit\UnitTestCase
 {
-    protected Tests\Unit\Fixtures\DummyRequestFactory $requestFactory;
-    protected Core\Site\Entity\Site $site;
-    protected Src\Sitemap\Provider\RobotsTxtProvider $subject;
+    private Tests\Unit\Fixtures\DummyRequestFactory $requestFactory;
+    private Core\Site\Entity\Site $site;
+    private Src\Sitemap\Provider\RobotsTxtProvider $subject;
 
     protected function setUp(): void
     {

@@ -37,10 +37,10 @@ use TYPO3\TestingFramework;
 #[Framework\Attributes\CoversClass(Src\ValueObject\Request\WarmupRequest::class)]
 final class WarmupRequestTest extends TestingFramework\Core\Unit\UnitTestCase
 {
-    protected Src\ValueObject\Request\SiteWarmupRequest $site;
-    protected Src\ValueObject\Request\PageWarmupRequest $page;
-    protected Src\ValueObject\Request\RequestConfiguration $configuration;
-    protected Src\ValueObject\Request\WarmupRequest $subject;
+    private Src\ValueObject\Request\SiteWarmupRequest $site;
+    private Src\ValueObject\Request\PageWarmupRequest $page;
+    private Src\ValueObject\Request\RequestConfiguration $configuration;
+    private Src\ValueObject\Request\WarmupRequest $subject;
 
     protected function setUp(): void
     {

@@ -55,10 +55,10 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
         ],
     ];
 
-    protected Core\Site\Entity\Site $site;
-    protected Src\Configuration\Configuration $configuration;
-    protected Core\Configuration\ExtensionConfiguration $extensionConfiguration;
-    protected Console\Tester\CommandTester $commandTester;
+    private Core\Site\Entity\Site $site;
+    private Src\Configuration\Configuration $configuration;
+    private Core\Configuration\ExtensionConfiguration $extensionConfiguration;
+    private Console\Tester\CommandTester $commandTester;
 
     protected function setUp(): void
     {

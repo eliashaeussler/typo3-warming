@@ -47,11 +47,11 @@ final class DatabaseWriterTest extends TestingFramework\Core\Functional\Function
         'warming',
     ];
 
-    protected Src\Log\Writer\DatabaseWriter $subject;
-    protected Core\Database\Connection $connection;
-    protected Core\Site\Entity\Site $site;
-    protected CacheWarmup\Sitemap\Url $uri;
-    protected Core\Log\LogRecord $logRecord;
+    private Src\Log\Writer\DatabaseWriter $subject;
+    private Core\Database\Connection $connection;
+    private Core\Site\Entity\Site $site;
+    private CacheWarmup\Sitemap\Url $uri;
+    private Core\Log\LogRecord $logRecord;
 
     protected function setUp(): void
     {

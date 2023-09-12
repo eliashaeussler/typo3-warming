@@ -27,7 +27,6 @@ use Rector\Core\ValueObject\PhpVersion;
 use Rector\Php80\Rector\Class_\AnnotationToAttributeRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 use Rector\Privatization\Rector\Class_\FinalizeClassesWithoutChildrenRector;
-use Rector\Privatization\Rector\Property\PrivatizeFinalClassPropertyRector;
 use Rector\Symfony\Rector\Class_\CommandDescriptionToPropertyRector;
 use Rector\Symfony\Rector\Class_\CommandPropertyToAttributeRector;
 
@@ -74,11 +73,6 @@ return static function (RectorConfig $rectorConfig): void {
             __DIR__ . '/Classes/Domain/Repository/*',
             // We keep the main sitemap class open for extensions
             __DIR__ . '/Classes/Sitemap/SiteAwareSitemap.php',
-        ])
-        ->skip(PrivatizeFinalClassPropertyRector::class, [
-            // Test properties must not be private, otherwise TF cannot perform GC tasks
-            __DIR__ . '/Tests/Functional/*',
-            __DIR__ . '/Tests/Unit/*',
         ])
         ->apply()
     ;

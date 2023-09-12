@@ -45,8 +45,8 @@ final class WarmupFinishedEventTest extends TestingFramework\Core\Functional\Fun
         'warming',
     ];
 
-    protected Src\Result\CacheWarmupResult $cacheWarmupResult;
-    protected Src\Http\Message\Event\WarmupFinishedEvent $subject;
+    private Src\Result\CacheWarmupResult $cacheWarmupResult;
+    private Src\Http\Message\Event\WarmupFinishedEvent $subject;
 
     protected function setUp(): void
     {

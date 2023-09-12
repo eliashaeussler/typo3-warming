@@ -40,8 +40,8 @@ use TYPO3\TestingFramework;
 #[Framework\Attributes\CoversClass(Src\Http\Client\ClientFactory::class)]
 final class ClientFactoryTest extends TestingFramework\Core\Unit\UnitTestCase
 {
-    protected Core\Http\Client\GuzzleClientFactory $guzzleClientFactory;
-    protected Src\Http\Client\ClientFactory $subject;
+    private Core\Http\Client\GuzzleClientFactory $guzzleClientFactory;
+    private Src\Http\Client\ClientFactory $subject;
 
     protected function setUp(): void
     {

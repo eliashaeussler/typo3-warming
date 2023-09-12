@@ -43,8 +43,8 @@ final class SitemapsCacheTest extends TestingFramework\Core\Functional\Functiona
 
     protected bool $initializeDatabase = false;
 
-    protected Core\Cache\Frontend\PhpFrontend $cache;
-    protected Src\Cache\SitemapsCache $subject;
+    private Core\Cache\Frontend\PhpFrontend $cache;
+    private Src\Cache\SitemapsCache $subject;
 
     protected function setUp(): void
     {

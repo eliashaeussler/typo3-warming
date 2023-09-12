@@ -36,7 +36,7 @@ use TYPO3\TestingFramework;
 #[Framework\Attributes\CoversClass(Src\Http\Message\Event\WarmupProgressEvent::class)]
 final class WarmupProgressEventTest extends TestingFramework\Core\Unit\UnitTestCase
 {
-    protected Src\Http\Message\Event\WarmupProgressEvent $subject;
+    private Src\Http\Message\Event\WarmupProgressEvent $subject;
 
     protected function setUp(): void
     {

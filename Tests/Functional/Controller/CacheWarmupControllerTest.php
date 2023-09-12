@@ -41,7 +41,7 @@ final class CacheWarmupControllerTest extends TestingFramework\Core\Functional\F
         'warming',
     ];
 
-    protected Src\Controller\CacheWarmupController $subject;
+    private Src\Controller\CacheWarmupController $subject;
 
     protected function setUp(): void
     {

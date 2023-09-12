@@ -49,7 +49,7 @@ final class ConcurrentUserAgentCrawlerTest extends TestingFramework\Core\Functio
 
     protected bool $initializeDatabase = false;
 
-    protected Src\Crawler\ConcurrentUserAgentCrawler $subject;
+    private Src\Crawler\ConcurrentUserAgentCrawler $subject;
 
     protected function setUp(): void
     {
