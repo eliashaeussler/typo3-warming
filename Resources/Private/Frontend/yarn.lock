@@ -606,9 +606,9 @@ clean-stack@^2.0.0:
   integrity sha512-4diC9HaTE+KRAMWhDhrGOECgWZxoevMc5TlkObMqNSsVU62PYzXZ/SMTjzyGAFF1YusgxGcSWTEXBhp0CPwQ1A==
 
 clipboard-polyfill@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/clipboard-polyfill/-/clipboard-polyfill-4.0.0.tgz#c8cdafade83d1affd3e52fb1233cae61f740cd19"
-  integrity sha512-U4KPNJqAYuyOtixCZZUyWTcj+wlI66j07g5ggMRE2DR1VFu/3ZWXkjLAslmme8i065gBSCUblHET7DKQ2Xg3RA==
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/clipboard-polyfill/-/clipboard-polyfill-4.0.1.tgz#8bff9da4b37565d4fac9dd85249c65bd24f3d1a8"
+  integrity sha512-oOxooaJd9dzy78jk1fw4IL+J0SiBn+W24KqUYUwsr0OWEsb5aZlKAWglr9Fg/XEFQMT3ZmJ2AnRoRMZZOMcOQQ==
 
 color-convert@^1.9.0:
   version "1.9.3"
