@@ -36,8 +36,7 @@ final class MapperFactory
 {
     public function __construct(
         private readonly Core\Site\SiteFinder $siteFinder,
-    ) {
-    }
+    ) {}
 
     public function get(): Valinor\Mapper\TreeMapper
     {

@@ -39,8 +39,7 @@ final class DummyPackageManager extends Core\Package\PackageManager
      */
     public function __construct(
         public array $loadedExtensions = [],
-    ) {
-    }
+    ) {}
 
     public function isPackageActive($packageKey): bool
     {

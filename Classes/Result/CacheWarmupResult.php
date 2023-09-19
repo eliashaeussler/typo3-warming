@@ -43,8 +43,7 @@ final class CacheWarmupResult
         private readonly CacheWarmup\Result\CacheWarmupResult $result,
         private readonly array $excludedSitemaps = [],
         private readonly array $excludedUrls = [],
-    ) {
-    }
+    ) {}
 
     public function getResult(): CacheWarmup\Result\CacheWarmupResult
     {

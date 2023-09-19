@@ -38,8 +38,7 @@ final class PageWarmupRequest
     public function __construct(
         private readonly int $page,
         private readonly array $languageIds = [],
-    ) {
-    }
+    ) {}
 
     /**
      * @return positive-int

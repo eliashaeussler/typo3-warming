@@ -37,8 +37,7 @@ final class SiteConfigurationListener
     public function __construct(
         private readonly Cache\SitemapsCache $cache,
         private readonly Core\Site\SiteFinder $siteFinder,
-    ) {
-    }
+    ) {}
 
     public function __invoke(Core\Configuration\Event\SiteConfigurationBeforeWriteEvent $event): void
     {

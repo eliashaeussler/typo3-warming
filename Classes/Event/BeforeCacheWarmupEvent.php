@@ -44,8 +44,7 @@ final class BeforeCacheWarmupEvent
         private readonly ?CacheWarmup\Crawler\Strategy\CrawlingStrategy $crawlingStrategy,
         private readonly CacheWarmup\Crawler\CrawlerInterface $crawler,
         private readonly CacheWarmup\CacheWarmer $cacheWarmer,
-    ) {
-    }
+    ) {}
 
     /**
      * @return list<ValueObject\Request\SiteWarmupRequest>

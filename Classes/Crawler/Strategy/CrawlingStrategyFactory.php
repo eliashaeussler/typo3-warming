@@ -39,8 +39,7 @@ final class CrawlingStrategyFactory
      */
     public function __construct(
         private readonly DependencyInjection\ServiceLocator $strategies,
-    ) {
-    }
+    ) {}
 
     public function get(string $strategy): ?CacheWarmup\Crawler\Strategy\CrawlingStrategy
     {

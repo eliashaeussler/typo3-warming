@@ -41,8 +41,7 @@ final class RobotsTxtProvider implements Provider
 
     public function __construct(
         private readonly Core\Http\RequestFactory $requestFactory,
-    ) {
-    }
+    ) {}
 
     public function get(
         Core\Site\Entity\Site $site,

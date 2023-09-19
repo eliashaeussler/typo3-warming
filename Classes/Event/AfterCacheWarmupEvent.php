@@ -38,8 +38,7 @@ final class AfterCacheWarmupEvent
         private readonly Result\CacheWarmupResult $result,
         private readonly CacheWarmup\Crawler\CrawlerInterface $crawler,
         private readonly CacheWarmup\CacheWarmer $cacheWarmer,
-    ) {
-    }
+    ) {}
 
     public function getResult(): Result\CacheWarmupResult
     {

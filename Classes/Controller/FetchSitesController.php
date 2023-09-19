@@ -50,8 +50,7 @@ final class FetchSitesController
         private readonly Http\Message\ResponseFactory $responseFactory,
         private readonly Core\Site\SiteFinder $siteFinder,
         private readonly Sitemap\SitemapLocator $sitemapLocator,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws CacheWarmup\Exception\InvalidUrlException

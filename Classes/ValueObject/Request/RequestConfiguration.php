@@ -34,8 +34,7 @@ final class RequestConfiguration
     public function __construct(
         private readonly ?int $limit = null,
         private readonly ?string $strategy = null,
-    ) {
-    }
+    ) {}
 
     public function getLimit(): ?int
     {

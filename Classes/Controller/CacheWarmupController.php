@@ -50,8 +50,7 @@ final class CacheWarmupController
         private readonly Valinor\Mapper\TreeMapper $mapper,
         private readonly Http\Message\ResponseFactory $responseFactory,
         private readonly Service\CacheWarmupService $warmupService,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws CacheWarmup\Exception\Exception

@@ -43,8 +43,7 @@ final class WarmupFinishedEvent implements SSE\Event\Event
     public function __construct(
         private readonly ValueObject\Request\WarmupRequest $request,
         private readonly Result\CacheWarmupResult $result,
-    ) {
-    }
+    ) {}
 
     public function getName(): string
     {
