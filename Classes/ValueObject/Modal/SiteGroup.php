@@ -41,8 +41,7 @@ final class SiteGroup
         private readonly string $title,
         private readonly string $iconIdentifier,
         private readonly array $items,
-    ) {
-    }
+    ) {}
 
     public function getSite(): Core\Site\Entity\Site
     {

@@ -37,8 +37,7 @@ final class SiteGroupItem
         private readonly Core\Site\Entity\SiteLanguage $language,
         private readonly bool $defaultLanguage,
         private readonly ?string $url = null,
-    ) {
-    }
+    ) {}
 
     public function getLanguage(): Core\Site\Entity\SiteLanguage
     {

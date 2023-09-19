@@ -39,8 +39,7 @@ final class SiteWarmupRequest
     public function __construct(
         private readonly Site $site,
         private readonly array $languageIds = [],
-    ) {
-    }
+    ) {}
 
     public function getSite(): Site
     {

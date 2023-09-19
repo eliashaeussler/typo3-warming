@@ -43,8 +43,7 @@ final class WarmupProgressEvent implements SSE\Event\Event
         private readonly array $successfulUrls,
         private readonly array $failedUrls,
         private readonly int $numberOfUrls,
-    ) {
-    }
+    ) {}
 
     public function getName(): string
     {

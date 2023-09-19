@@ -37,8 +37,7 @@ final class ResponseFactory
 {
     public function __construct(
         private readonly View\TemplateRenderer $renderer,
-    ) {
-    }
+    ) {}
 
     public function ok(): Message\ResponseInterface
     {

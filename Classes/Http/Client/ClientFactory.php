@@ -36,8 +36,7 @@ final class ClientFactory
 {
     public function __construct(
         private readonly Core\Http\Client\GuzzleClientFactory $guzzleClientFactory,
-    ) {
-    }
+    ) {}
 
     /**
      * @param array<string, mixed> $config

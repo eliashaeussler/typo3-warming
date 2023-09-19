@@ -37,8 +37,7 @@ final class SitemapsCache
 {
     public function __construct(
         private readonly Core\Cache\Frontend\PhpFrontend $cache,
-    ) {
-    }
+    ) {}
 
     /**
      * @return list<Sitemap\SiteAwareSitemap>

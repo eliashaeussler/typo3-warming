@@ -34,6 +34,4 @@ use TYPO3\CMS\Extbase;
  *
  * @extends Extbase\Persistence\Repository<Domain\Model\Log>
  */
-class LogRepository extends Extbase\Persistence\Repository
-{
-}
+class LogRepository extends Extbase\Persistence\Repository {}

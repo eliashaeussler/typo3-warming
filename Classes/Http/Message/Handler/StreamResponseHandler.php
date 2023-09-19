@@ -51,8 +51,7 @@ final class StreamResponseHandler implements CacheWarmup\Http\Message\Handler\Re
     public function __construct(
         private readonly SSE\Stream\EventStream $stream,
         private readonly int $numberOfUrls,
-    ) {
-    }
+    ) {}
 
     /**
      * @throws JsonException

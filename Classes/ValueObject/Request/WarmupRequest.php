@@ -41,8 +41,7 @@ final class WarmupRequest
         private readonly array $sites = [],
         private readonly array $pages = [],
         private readonly RequestConfiguration $configuration = new RequestConfiguration(),
-    ) {
-    }
+    ) {}
 
     /**
      * @return non-empty-string

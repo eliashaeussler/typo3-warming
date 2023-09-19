@@ -39,8 +39,7 @@ final class PublicServicePass implements DependencyInjection\Compiler\CompilerPa
 {
     public function __construct(
         private readonly string $definitionPattern,
-    ) {
-    }
+    ) {}
 
     public static function fromClass(string $className): self
     {

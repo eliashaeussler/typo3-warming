@@ -39,8 +39,7 @@ final class DummyRequestFactory extends Core\Http\RequestFactory
     public function __construct(
         public Message\ResponseInterface $response = new Core\Http\Response(),
         public ?Throwable $exception = null,
-    ) {
-    }
+    ) {}
 
     /**
      * @param array<string, mixed> $options
