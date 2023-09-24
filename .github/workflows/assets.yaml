@@ -1,8 +1,8 @@
 name: Frontend assets
 on:
   pull_request:
-    branches:
-      - 'renovate/**'
+    paths:
+      - 'Resources/Private/Frontend/**'
 
 jobs:
   rebuild:
