@@ -25,3 +25,4 @@ jobs:
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: '[TASK] Automatically rebuild frontend assets'
+          commit_author: 'Elias Häußler <elias@haeussler.dev>'
