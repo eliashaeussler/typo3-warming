@@ -2667,9 +2667,9 @@ rollup-plugin-multi-input@^1.4.1:
     fast-glob "3.2.12"
 
 rollup-plugin-no-emit@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-no-emit/-/rollup-plugin-no-emit-1.0.1.tgz#37817203035d91a65cfac50c7904a30ed7b921ea"
-  integrity sha512-k59j7g4gACaChF8+POmIMK6Wam/07qlMuqOhoCngYywS3rVvvF0kyU01fChSkIiMjYQBb66j84aSM/fmzCCpHg==
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-no-emit/-/rollup-plugin-no-emit-1.1.1.tgz#8d4818dd4e324dccea14d1daae57616738b28653"
+  integrity sha512-S3GshU1UXYk/LHcmLDb/aFk/LPYI34KcJ+AmhA9TuW3p5lJLUok+VnT3hvRPoqpfw83TrdYhOuokJj8remp9qQ==
 
 rollup-plugin-postcss@^4.0.2:
   version "4.0.2"
