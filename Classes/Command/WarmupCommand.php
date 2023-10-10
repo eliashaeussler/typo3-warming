@@ -29,6 +29,7 @@ use EliasHaeussler\Typo3Warming\Exception\UnsupportedConfigurationException;
 use EliasHaeussler\Typo3Warming\Exception\UnsupportedSiteException;
 use EliasHaeussler\Typo3Warming\Service\CacheWarmupService;
 use EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator;
+use Psr\Http\Client\ClientInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -37,6 +38,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Http\Client\GuzzleClientFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -188,6 +190,12 @@ final class WarmupCommand extends Command
         $subCommand->setApplication($this->getApplication() ?? new Application());
         $subCommandInput = $this->initializeSubCommandInput($subCommand, $input);
         $subCommandInput->setInteractive(false);
+
+        // Inject client
+        $client = GuzzleClientFactory::getClient();
+        if ($client instanceof ClientInterface) {
+            $subCommand->setClient($client);
+        }
 
         $output->writeln('Running <info>cache warmup</info> by <info>Elias Häußler</info> and contributors.');
 
