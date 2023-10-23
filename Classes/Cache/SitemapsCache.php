@@ -65,7 +65,7 @@ final class SitemapsCache
 
         return array_values(
             array_map(
-                static fn (string $sitemapUrl) => new Sitemap\SiteAwareSitemap(
+                static fn(string $sitemapUrl) => new Sitemap\SiteAwareSitemap(
                     new Core\Http\Uri($sitemapUrl),
                     $site,
                     $siteLanguage ?? $site->getDefaultLanguage(),

@@ -62,7 +62,7 @@ final class RobotsTxtProvider implements Provider
 
         return array_values(
             array_map(
-                static fn (string $url) => new Sitemap\SiteAwareSitemap(
+                static fn(string $url) => new Sitemap\SiteAwareSitemap(
                     new Core\Http\Uri($url),
                     $site,
                     $siteLanguage ?? $site->getDefaultLanguage(),

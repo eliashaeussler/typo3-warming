@@ -46,7 +46,7 @@ final class CrawlingStrategyFactoryTest extends TestingFramework\Core\Unit\UnitT
 
         $this->subject = new Src\Crawler\Strategy\CrawlingStrategyFactory(
             new DependencyInjection\ServiceLocator([
-                'dummy' => static fn (): Tests\Unit\Fixtures\DummyCrawlingStrategy => new Tests\Unit\Fixtures\DummyCrawlingStrategy(),
+                'dummy' => static fn(): Tests\Unit\Fixtures\DummyCrawlingStrategy => new Tests\Unit\Fixtures\DummyCrawlingStrategy(),
             ]),
         );
     }
