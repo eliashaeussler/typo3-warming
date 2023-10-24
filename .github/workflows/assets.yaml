@@ -12,6 +12,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
+          token: ${{ secrets.REBUILD_ASSETS_TOKEN }}
 
       # Install Frontend dependencies
       - name: Install Frontend dependencies
