@@ -878,16 +878,16 @@
         },
         {
             "name": "eliashaeussler/cache-warmup",
-            "version": "2.4.4",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/cache-warmup.git",
-                "reference": "eae8c1d5c9c366fde4f620ee17fd7a75aabb1f1b"
+                "reference": "3c6941d5643a9a87d992dfbff90ff3e49ace545f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/cache-warmup/zipball/eae8c1d5c9c366fde4f620ee17fd7a75aabb1f1b",
-                "reference": "eae8c1d5c9c366fde4f620ee17fd7a75aabb1f1b",
+                "url": "https://api.github.com/repos/eliashaeussler/cache-warmup/zipball/3c6941d5643a9a87d992dfbff90ff3e49ace545f",
+                "reference": "3c6941d5643a9a87d992dfbff90ff3e49ace545f",
                 "shasum": ""
             },
             "require": {
@@ -941,9 +941,9 @@
             "description": "Composer package to warm up website caches, based on a given XML sitemap",
             "support": {
                 "issues": "https://github.com/eliashaeussler/cache-warmup/issues",
-                "source": "https://github.com/eliashaeussler/cache-warmup/tree/2.4.4"
+                "source": "https://github.com/eliashaeussler/cache-warmup/tree/2.5.0"
             },
-            "time": "2023-09-25T01:56:22+00:00"
+            "time": "2023-10-27T18:26:19+00:00"
         },
         {
             "name": "eliashaeussler/sse",
@@ -7603,16 +7603,16 @@
         },
         {
             "name": "friendsofphp/php-cs-fixer",
-            "version": "v3.35.1",
+            "version": "v3.36.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer.git",
-                "reference": "ec1ccc264994b6764882669973ca435cf05bab08"
+                "reference": "e889301f276c6ce2c391d6aafae9a162e785b064"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/ec1ccc264994b6764882669973ca435cf05bab08",
-                "reference": "ec1ccc264994b6764882669973ca435cf05bab08",
+                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/e889301f276c6ce2c391d6aafae9a162e785b064",
+                "reference": "e889301f276c6ce2c391d6aafae9a162e785b064",
                 "shasum": ""
             },
             "require": {
@@ -7684,7 +7684,7 @@
             ],
             "support": {
                 "issues": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues",
-                "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.35.1"
+                "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.36.0"
             },
             "funding": [
                 {
@@ -7692,7 +7692,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-10-12T13:47:26+00:00"
+            "time": "2023-10-27T10:12:29+00:00"
         },
         {
             "name": "helhum/config-loader",
