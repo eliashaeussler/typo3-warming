@@ -878,16 +878,16 @@
         },
         {
             "name": "eliashaeussler/cache-warmup",
-            "version": "2.5.0",
+            "version": "2.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/cache-warmup.git",
-                "reference": "3c6941d5643a9a87d992dfbff90ff3e49ace545f"
+                "reference": "ea3952e0e1d5b6eda0cf92757e00d92450a9f1e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/cache-warmup/zipball/3c6941d5643a9a87d992dfbff90ff3e49ace545f",
-                "reference": "3c6941d5643a9a87d992dfbff90ff3e49ace545f",
+                "url": "https://api.github.com/repos/eliashaeussler/cache-warmup/zipball/ea3952e0e1d5b6eda0cf92757e00d92450a9f1e4",
+                "reference": "ea3952e0e1d5b6eda0cf92757e00d92450a9f1e4",
                 "shasum": ""
             },
             "require": {
@@ -900,7 +900,7 @@
                 "guzzlehttp/guzzle": "^7.0",
                 "guzzlehttp/psr7": "^2.0",
                 "mtownsend/xml-to-array": "^2.0",
-                "php": "~8.1.0 || ~8.2.0",
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
                 "psr/http-message": "^1.0 || ^2.0",
                 "psr/log": "^2.0 || ^3.0",
                 "symfony/console": "^5.4 || ^6.0",
@@ -941,26 +941,26 @@
             "description": "Composer package to warm up website caches, based on a given XML sitemap",
             "support": {
                 "issues": "https://github.com/eliashaeussler/cache-warmup/issues",
-                "source": "https://github.com/eliashaeussler/cache-warmup/tree/2.5.0"
+                "source": "https://github.com/eliashaeussler/cache-warmup/tree/2.6.0"
             },
-            "time": "2023-10-27T18:26:19+00:00"
+            "time": "2023-10-31T19:39:53+00:00"
         },
         {
             "name": "eliashaeussler/sse",
-            "version": "1.0.1",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/sse.git",
-                "reference": "5c66a7eed18a5be92f2bf550c2d5407431f412e7"
+                "reference": "260b7e4896172cedd149c6452207d89419f0979c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/sse/zipball/5c66a7eed18a5be92f2bf550c2d5407431f412e7",
-                "reference": "5c66a7eed18a5be92f2bf550c2d5407431f412e7",
+                "url": "https://api.github.com/repos/eliashaeussler/sse/zipball/260b7e4896172cedd149c6452207d89419f0979c",
+                "reference": "260b7e4896172cedd149c6452207d89419f0979c",
                 "shasum": ""
             },
             "require": {
-                "php": "~8.1.0 || ~8.2.0",
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
                 "php-http/discovery": "^1.18",
                 "psr/http-factory": "^1.0",
                 "psr/http-message": "^1.0 || ^2.0"
@@ -998,9 +998,9 @@
             "description": "PHP implementation of server-sent events using event streams",
             "support": {
                 "issues": "https://github.com/eliashaeussler/sse/issues",
-                "source": "https://github.com/eliashaeussler/sse/tree/1.0.1"
+                "source": "https://github.com/eliashaeussler/sse/tree/1.1.0"
             },
-            "time": "2023-08-11T09:55:53+00:00"
+            "time": "2023-10-31T20:22:55+00:00"
         },
         {
             "name": "enshrined/svg-sanitize",
@@ -7073,21 +7073,21 @@
         },
         {
             "name": "eliashaeussler/rector-config",
-            "version": "1.7.2",
+            "version": "1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/rector-config.git",
-                "reference": "7e3e16d1a3dd42b8e53686ff4b94ea647697c941"
+                "reference": "132a59e260ba39ac0a528bda4fa533134ee7bd38"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/rector-config/zipball/7e3e16d1a3dd42b8e53686ff4b94ea647697c941",
-                "reference": "7e3e16d1a3dd42b8e53686ff4b94ea647697c941",
+                "url": "https://api.github.com/repos/eliashaeussler/rector-config/zipball/132a59e260ba39ac0a528bda4fa533134ee7bd38",
+                "reference": "132a59e260ba39ac0a528bda4fa533134ee7bd38",
                 "shasum": ""
             },
             "require": {
                 "composer-runtime-api": "^2.0",
-                "php": "~8.1.0 || ~8.2.0",
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
                 "rector/rector": "^0.15.21 || ^0.16.0 || ^0.17.0 || ^0.18.0"
             },
             "require-dev": {
@@ -7127,29 +7127,29 @@
             "description": "My personal configuration for Rector",
             "support": {
                 "issues": "https://github.com/eliashaeussler/rector-config/issues",
-                "source": "https://github.com/eliashaeussler/rector-config/tree/1.7.2"
+                "source": "https://github.com/eliashaeussler/rector-config/tree/1.8.0"
             },
-            "time": "2023-09-15T12:17:40+00:00"
+            "time": "2023-10-31T07:20:06+00:00"
         },
         {
             "name": "eliashaeussler/typo3-codeception-helper",
-            "version": "1.0.1",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/typo3-codeception-helper.git",
-                "reference": "6f3f962d84589b7a2bf6350658c9df67e617a147"
+                "reference": "92d5c9bc62a31edc32356504e2a40fa1c232613f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/typo3-codeception-helper/zipball/6f3f962d84589b7a2bf6350658c9df67e617a147",
-                "reference": "6f3f962d84589b7a2bf6350658c9df67e617a147",
+                "url": "https://api.github.com/repos/eliashaeussler/typo3-codeception-helper/zipball/92d5c9bc62a31edc32356504e2a40fa1c232613f",
+                "reference": "92d5c9bc62a31edc32356504e2a40fa1c232613f",
                 "shasum": ""
             },
             "require": {
                 "codeception/c3": "^2.8",
                 "codeception/codeception": "^4.1.11 || ^5.0",
                 "composer-runtime-api": "^2.1",
-                "php": "~8.1.0 || ~8.2.0",
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
                 "symfony/filesystem": "^5.4 || ^6.0"
             },
             "require-dev": {
@@ -7185,9 +7185,9 @@
             "description": "Helper functions for Codeception tests within TYPO3 extensions",
             "support": {
                 "issues": "https://github.com/eliashaeussler/typo3-codeception-helper/issues",
-                "source": "https://github.com/eliashaeussler/typo3-codeception-helper/tree/1.0.1"
+                "source": "https://github.com/eliashaeussler/typo3-codeception-helper/tree/1.1.0"
             },
-            "time": "2023-09-06T09:18:02+00:00"
+            "time": "2023-10-31T20:25:07+00:00"
         },
         {
             "name": "ergebnis/composer-normalize",

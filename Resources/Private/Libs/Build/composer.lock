@@ -81,16 +81,16 @@
         },
         {
             "name": "eliashaeussler/cache-warmup",
-            "version": "2.5.0",
+            "version": "2.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/cache-warmup.git",
-                "reference": "3c6941d5643a9a87d992dfbff90ff3e49ace545f"
+                "reference": "ea3952e0e1d5b6eda0cf92757e00d92450a9f1e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/cache-warmup/zipball/3c6941d5643a9a87d992dfbff90ff3e49ace545f",
-                "reference": "3c6941d5643a9a87d992dfbff90ff3e49ace545f",
+                "url": "https://api.github.com/repos/eliashaeussler/cache-warmup/zipball/ea3952e0e1d5b6eda0cf92757e00d92450a9f1e4",
+                "reference": "ea3952e0e1d5b6eda0cf92757e00d92450a9f1e4",
                 "shasum": ""
             },
             "require": {
@@ -103,7 +103,7 @@
                 "guzzlehttp/guzzle": "^7.0",
                 "guzzlehttp/psr7": "^2.0",
                 "mtownsend/xml-to-array": "^2.0",
-                "php": "~8.1.0 || ~8.2.0",
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
                 "psr/http-message": "^1.0 || ^2.0",
                 "psr/log": "^2.0 || ^3.0",
                 "symfony/console": "^5.4 || ^6.0",
@@ -144,26 +144,26 @@
             "description": "Composer package to warm up website caches, based on a given XML sitemap",
             "support": {
                 "issues": "https://github.com/eliashaeussler/cache-warmup/issues",
-                "source": "https://github.com/eliashaeussler/cache-warmup/tree/2.5.0"
+                "source": "https://github.com/eliashaeussler/cache-warmup/tree/2.6.0"
             },
-            "time": "2023-10-27T18:26:19+00:00"
+            "time": "2023-10-31T19:39:53+00:00"
         },
         {
             "name": "eliashaeussler/sse",
-            "version": "1.0.1",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/sse.git",
-                "reference": "5c66a7eed18a5be92f2bf550c2d5407431f412e7"
+                "reference": "260b7e4896172cedd149c6452207d89419f0979c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/sse/zipball/5c66a7eed18a5be92f2bf550c2d5407431f412e7",
-                "reference": "5c66a7eed18a5be92f2bf550c2d5407431f412e7",
+                "url": "https://api.github.com/repos/eliashaeussler/sse/zipball/260b7e4896172cedd149c6452207d89419f0979c",
+                "reference": "260b7e4896172cedd149c6452207d89419f0979c",
                 "shasum": ""
             },
             "require": {
-                "php": "~8.1.0 || ~8.2.0",
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
                 "php-http/discovery": "^1.18",
                 "psr/http-factory": "^1.0",
                 "psr/http-message": "^1.0 || ^2.0"
@@ -201,9 +201,9 @@
             "description": "PHP implementation of server-sent events using event streams",
             "support": {
                 "issues": "https://github.com/eliashaeussler/sse/issues",
-                "source": "https://github.com/eliashaeussler/sse/tree/1.0.1"
+                "source": "https://github.com/eliashaeussler/sse/tree/1.1.0"
             },
-            "time": "2023-08-11T09:55:53+00:00"
+            "time": "2023-10-31T20:22:55+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
