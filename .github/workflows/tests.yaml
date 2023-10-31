@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ["8.1", "8.2"]
+        php-version: ["8.1", "8.2", "8.3"]
         typo3-version: ["12.4"]
         dependencies: ["highest", "lowest"]
     steps:
@@ -79,7 +79,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.2
+          php-version: 8.3
           tools: composer:v2
           coverage: none
 
@@ -90,7 +90,7 @@ jobs:
           autostart: false
       - name: Configure and start DDEV
         run: |
-          ddev config --project-type=typo3 --php-version=8.2 --xdebug-enabled=true --webimage-extra-packages=
+          ddev config --project-type=typo3 --php-version=8.3 --xdebug-enabled=true --webimage-extra-packages=
           ddev start
 
       # Install dependencies
