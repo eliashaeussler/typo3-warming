@@ -30,10 +30,10 @@
 		"psr/log": "^1.0 || ^2.0 || ^3.0",
 		"symfony/console": "^6.0",
 		"symfony/dependency-injection": "^6.0",
-		"typo3/cms-backend": "~12.4.0",
-		"typo3/cms-core": "~12.4.0",
-		"typo3/cms-extbase": "~12.4.0",
-		"typo3/cms-fluid": "~12.4.0"
+		"typo3/cms-backend": "~12.4.2",
+		"typo3/cms-core": "~12.4.2",
+		"typo3/cms-extbase": "~12.4.2",
+		"typo3/cms-fluid": "~12.4.2"
 	},
 	"require-dev": {
 		"armin/editorconfig-cli": "^1.5",
@@ -55,9 +55,9 @@
 		"saschaegerer/phpstan-typo3": "^1.8",
 		"ssch/typo3-rector": "^1.2",
 		"symfony/config": "^6.0",
-		"typo3/cms-install": "~12.4.0",
-		"typo3/cms-seo": "~12.4.0",
-		"typo3/cms-tstemplate": "~12.4.0",
+		"typo3/cms-install": "~12.4.2",
+		"typo3/cms-seo": "~12.4.2",
+		"typo3/cms-tstemplate": "~12.4.2",
 		"typo3/coding-standards": "^0.7.1",
 		"typo3/testing-framework": "^8.0"
 	},
