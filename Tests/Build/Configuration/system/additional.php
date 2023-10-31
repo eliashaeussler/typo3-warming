@@ -26,6 +26,7 @@ if (getenv('IS_DDEV_PROJECT') == 'true') {
             'BE' => [
                 // password = password
                 'installToolPassword' => '$argon2i$v=19$m=65536,t=16,p=1$VEZPRGVuQ2kuNjZQNUJVSA$d84veaTY5pZUsg6d4rxXB/2QCmRhNOaleBhx2joQIa0',
+                'loginRateLimit' => 0,
             ],
             'DB' => [
                 'Connections' => [
