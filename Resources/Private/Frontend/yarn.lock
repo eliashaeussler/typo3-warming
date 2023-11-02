@@ -1866,16 +1866,16 @@ lit-element@^4.0.0:
     lit-html "^3.0.0"
 
 lit-html@^3.0.0:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/lit-html/-/lit-html-3.0.1.tgz#bbdb94c8c13120940fd9b169047e06f665906005"
-  integrity sha512-1nmGaNNQg9rBvE1yJ6oS3ZNbLs3FXtlG4+jgGkix8O740qVEwwiFVTgDGIIH8N5TcQ8V9tBk5T+sxqBgffcjJg==
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/lit-html/-/lit-html-3.0.2.tgz#25d2718b1e095a148a54c63bcd780c7550bb82f8"
+  integrity sha512-Q1A5lHza3bnmxoWJn6yS6vQZQdExl4fghk8W1G+jnAEdoFNYo5oeBBb/Ol7zSEdKd3TR7+r0zsJQyuWEVguiyQ==
   dependencies:
     "@types/trusted-types" "^2.0.2"
 
 lit@^3.0.0:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/lit/-/lit-3.0.1.tgz#bc9136cf9303ae8c23d0adcf7847c971cc94aee9"
-  integrity sha512-CYFv7/gwrs6bfPm299O9LD/HB4dgHvsEf/yqUOI//fi469i2OrT4xaptUcmhr05DNQEgsBFecFH8EJnN5So8oQ==
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/lit/-/lit-3.0.2.tgz#e22e90c2cbcc3f37bf3c2558df66f3af4331c9cf"
+  integrity sha512-ZoVUPGgXOQocP4OvxehEOBmC4rWB4cRYDPaz7aFmH8DFytsCi/NeACbr4C6vNPGDEC07BrhUos7uVNayDKLQ2Q==
   dependencies:
     "@lit/reactive-element" "^2.0.0"
     lit-element "^4.0.0"
