@@ -139,6 +139,25 @@ final class Configuration
         }
     }
 
+    /**
+     * @return array<string, mixed>
+     */
+    public function getParserClientOptions(): array
+    {
+        try {
+            $json = $this->configuration->get(Extension::KEY, 'parserClientOptions');
+
+            // Early return if no parser client options are configured
+            if (!\is_string($json) || $json === '') {
+                return [];
+            }
+
+            return $this->crawlerFactory->parseCrawlerOptions($json);
+        } catch (Core\Exception) {
+            return [];
+        }
+    }
+
     public function getLimit(): int
     {
         try {

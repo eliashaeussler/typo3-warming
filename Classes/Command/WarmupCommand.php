@@ -200,8 +200,12 @@ final class WarmupCommand extends Console\Command\Command
      */
     protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output): int
     {
+        // Initialize client
+        $clientOptions = $this->configuration->getParserClientOptions();
+        $client = $this->clientFactory->get($clientOptions);
+
         // Initialize sub command
-        $subCommand = new CacheWarmup\Command\CacheWarmupCommand($this->clientFactory->get());
+        $subCommand = new CacheWarmup\Command\CacheWarmupCommand($client);
         $subCommand->setApplication($this->getApplication() ?? new Console\Application());
 
         // Initialize sub command input

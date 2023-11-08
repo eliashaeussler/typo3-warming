@@ -186,6 +186,42 @@ final class ConfigurationTest extends TestingFramework\Core\Functional\Functiona
     }
 
     #[Framework\Attributes\Test]
+    public function getParserClientOptionsReturnsEmptyArrayIfNoParserClientOptionsAreConfigured(): void
+    {
+        $this->extensionConfiguration->set(Src\Extension::KEY);
+
+        self::assertSame([], $this->subject->getParserClientOptions());
+    }
+
+    #[Framework\Attributes\Test]
+    public function getParserClientOptionsReturnsEmptyArrayIfConfiguredParserClientOptionsAreOfInvalidType(): void
+    {
+        $this->extensionConfiguration->set(Src\Extension::KEY, ['parserClientOptions' => ['foo' => 'baz']]);
+
+        self::assertSame([], $this->subject->getParserClientOptions());
+    }
+
+    #[Framework\Attributes\Test]
+    public function getParserClientOptionsThrowsExceptionIfConfiguredParserClientOptionsAreOfInvalidJson(): void
+    {
+        $this->extensionConfiguration->set(Src\Extension::KEY, ['parserClientOptions' => '"foo"']);
+
+        $this->expectExceptionObject(
+            CacheWarmup\Exception\InvalidCrawlerOptionException::forInvalidType('"foo"'),
+        );
+
+        $this->subject->getParserClientOptions();
+    }
+
+    #[Framework\Attributes\Test]
+    public function getParserClientOptionsReturnsConfiguredParserClientOptions(): void
+    {
+        $this->extensionConfiguration->set(Src\Extension::KEY, ['parserClientOptions' => '{"foo":"baz"}']);
+
+        self::assertSame(['foo' => 'baz'], $this->subject->getParserClientOptions());
+    }
+
+    #[Framework\Attributes\Test]
     public function getLimitReturnsDefaultLimitIfNoLimitIsConfigured(): void
     {
         $this->extensionConfiguration->set(Src\Extension::KEY);

@@ -51,6 +51,7 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
         'EXTENSIONS' => [
             'warming' => [
                 'crawler' => Tests\Functional\Fixtures\Classes\DummyCrawler::class,
+                'parserClientOptions' => '{"foo":"baz"}',
             ],
         ],
     ];
@@ -196,6 +197,18 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
 
         self::assertEquals(new Src\Result\CacheWarmupResult($cacheWarmupResult), $actual);
         self::assertEquals($expected, Tests\Functional\Fixtures\Classes\DummyCrawler::$crawledUrls);
+    }
+
+    #[Framework\Attributes\Test]
+    public function warmupRespectsParserClientOptions(): void
+    {
+        $this->mockSitemapResponse('en');
+
+        $this->subject->warmup([
+            new Src\ValueObject\Request\SiteWarmupRequest($this->site),
+        ]);
+
+        self::assertEquals('baz', $this->guzzleClientFactory->lastOptions['foo'] ?? null);
     }
 
     #[Framework\Attributes\Test]

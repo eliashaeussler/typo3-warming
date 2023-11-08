@@ -82,7 +82,7 @@ final class CacheWarmupService
         $crawlingStrategy = $this->createCrawlingStrategy($strategy);
         $cacheWarmer = new CacheWarmup\CacheWarmer(
             $limit ?? $this->configuration->getLimit(),
-            $this->clientFactory->get(),
+            $this->clientFactory->get($this->configuration->getParserClientOptions()),
             $this->crawler,
             $crawlingStrategy,
             true,

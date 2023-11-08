@@ -39,6 +39,11 @@ final class DummyGuzzleClientFactory extends Core\Http\Client\GuzzleClientFactor
 {
     public readonly Handler\MockHandler $handler;
 
+    /**
+     * @var array<string, mixed>
+     */
+    public array $lastOptions = [];
+
     public function __construct()
     {
         $this->handler = new Handler\MockHandler();
@@ -46,6 +51,9 @@ final class DummyGuzzleClientFactory extends Core\Http\Client\GuzzleClientFactor
 
     public function getClient(): ClientInterface
     {
-        return new Client(['handler' => $this->handler]);
+        $httpOptions = $this->lastOptions = $GLOBALS['TYPO3_CONF_VARS']['HTTP'];
+        $httpOptions['handler'] = $this->handler;
+
+        return new Client($httpOptions);
     }
 }
