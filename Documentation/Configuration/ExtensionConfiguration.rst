@@ -63,6 +63,21 @@ Crawler
     the :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\ConfigurableCrawlerInterface`.
     For more information read :ref:`configurable-crawlers`.
 
+..  _extconf-parserClientOptions:
+
+..  confval:: parserClientOptions
+
+    :type: string (JSON)
+
+    ..  versionadded:: 1.2.0
+
+        `Feature: #502 - Allow configuration of XML parser client options <https://github.com/eliashaeussler/typo3-warming/pull/502>`__
+
+    JSON-encoded string of options for the client used within the XML parser to parse
+    XML sitemaps. All available `Guzzle client options <https://docs.guzzlephp.org/en/stable/quickstart.html#creating-a-client>`__
+    are accepted and merged with :ref:`TYPO3's global client configuration <t3coreapi:typo3ConfVars_http>`
+    stored in `$GLOBALS['TYPO3_CONF_VARS']['HTTP']`.
+
 ..  _extension-configuration-options:
 
 Options

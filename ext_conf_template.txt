@@ -13,6 +13,9 @@ verboseCrawler = EliasHaeussler\Typo3Warming\Crawler\OutputtingUserAgentCrawler
 # cat=basic/crawler/40; type=string; label=Verbose crawler options (JSON-encoded string):Provide crawler options for the verbose crawler. Applies only if the verbose crawler implements the interface "EliasHaeussler\CacheWarmup\Crawler\ConfigurableCrawlerInterface".
 verboseCrawlerOptions =
 
+# cat=basic/crawler/50; type=string; label=XML parser client options (JSON-encoded string):Provide options for the client used within the XML parser to parse XML sitemaps.
+parserClientOptions =
+
 # cat=basic/options/10; type=int+; label=Crawl limit:Define maximum number of pages to crawl in one iteration. Set to "0" to disable the limit.
 limit = 250
 

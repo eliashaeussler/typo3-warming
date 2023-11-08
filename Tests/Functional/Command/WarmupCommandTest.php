@@ -91,7 +91,7 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
     }
 
     #[Framework\Attributes\Test]
-    public function executeThrowsExceptionIfNeitherPagesNotSitesArePassed(): void
+    public function executeThrowsExceptionIfNeitherPagesNorSitesArePassed(): void
     {
         $this->expectException(Console\Exception\RuntimeException::class);
         $this->expectExceptionMessage('Neither sitemaps nor URLs are defined.');
@@ -256,6 +256,25 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
 
         self::assertSame(Console\Command\Command::SUCCESS, $this->commandTester->getStatusCode());
         self::assertEquals(['foo' => 'baz'], Tests\Functional\Fixtures\Classes\DummyVerboseCrawler::$options);
+
+        $this->extensionConfiguration->set(Src\Extension::KEY, $originalConfiguration);
+    }
+
+    #[Framework\Attributes\Test]
+    public function executeRespectsParserClientOptions(): void
+    {
+        $originalConfiguration = $this->extensionConfiguration->get(Src\Extension::KEY);
+        $newConfiguration = $originalConfiguration;
+        $newConfiguration['parserClientOptions'] = '{"foo":"baz"}';
+
+        $this->extensionConfiguration->set(Src\Extension::KEY, $newConfiguration);
+
+        $this->commandTester->execute([
+            '--pages' => ['1'],
+        ]);
+
+        self::assertSame(Console\Command\Command::SUCCESS, $this->commandTester->getStatusCode());
+        self::assertEquals('baz', $this->guzzleClientFactory->lastOptions['foo'] ?? null);
 
         $this->extensionConfiguration->set(Src\Extension::KEY, $originalConfiguration);
     }
