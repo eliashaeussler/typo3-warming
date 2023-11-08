@@ -95,6 +95,21 @@ TYPO3's log manager. Read more about logging in the :ref:`official documentation
     `Feature #271 - Introduce support for PSR-3 loggers <https://github.com/eliashaeussler/cache-warmup/pull/271>`__
     of `eliashaeussler/cache-warmup` library
 
+..  _stoppable-crawlers:
+
+Stoppable crawlers
+------------------
+
+Crawlers implementing :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\StoppableCrawlerInterface`
+may cancel a cache warmup prematurely if any crawling failure occurs. This can be
+especially useful for validation purposes to check whether any page within an XML
+sitemap is inaccessible or failing.
+
+..  seealso::
+
+    `Feature #302 - Introduce stoppable crawler and --stop-on-failure option <https://github.com/eliashaeussler/cache-warmup/pull/302>`__
+    of `eliashaeussler/cache-warmup` library
+
 ..  _streamable-crawlers:
 
 Streamable crawlers
@@ -130,6 +145,7 @@ Steps to implement a new crawler
     -   :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\CrawlerInterface`
     -   :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\ConfigurableCrawlerInterface`
     -   :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\LoggingCrawlerInterface`
+    -   :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\StoppableCrawlerInterface`
     -   :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\VerboseCrawlerInterface`
     -   :php:interface:`EliasHaeussler\\Typo3Warming\\Crawler\\StreamableCrawler`
 
@@ -151,6 +167,7 @@ Steps to implement a new crawler
     -   `CrawlerInterface <https://github.com/eliashaeussler/cache-warmup/blob/main/src/Crawler/CrawlerInterface.php>`__
     -   `ConfigurableCrawlerInterface <https://github.com/eliashaeussler/cache-warmup/blob/main/src/Crawler/ConfigurableCrawlerInterface.php>`__
     -   `LoggingCrawlerInterface <https://github.com/eliashaeussler/cache-warmup/blob/main/src/Crawler/LoggingCrawlerInterface.php>`__
+    -   `StoppableCrawlerInterface <https://github.com/eliashaeussler/cache-warmup/blob/main/src/Crawler/StoppableCrawlerInterface.php>`__
     -   `StreamableCrawler <https://github.com/eliashaeussler/typo3-warming/blob/main/Classes/Crawler/StreamableCrawler.php>`__
     -   `VerboseCrawlerInterface <https://github.com/eliashaeussler/cache-warmup/blob/main/src/Crawler/VerboseCrawlerInterface.php>`__
     -   `ConcurrentUserAgentCrawler <https://github.com/eliashaeussler/typo3-warming/blob/main/Classes/Crawler/ConcurrentUserAgentCrawler.php>`__
