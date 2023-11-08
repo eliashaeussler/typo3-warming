@@ -878,16 +878,16 @@
         },
         {
             "name": "eliashaeussler/cache-warmup",
-            "version": "2.6.0",
+            "version": "2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/cache-warmup.git",
-                "reference": "ea3952e0e1d5b6eda0cf92757e00d92450a9f1e4"
+                "reference": "805bda251b18bbda851f8ea8aa1210652f3c2e23"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/cache-warmup/zipball/ea3952e0e1d5b6eda0cf92757e00d92450a9f1e4",
-                "reference": "ea3952e0e1d5b6eda0cf92757e00d92450a9f1e4",
+                "url": "https://api.github.com/repos/eliashaeussler/cache-warmup/zipball/805bda251b18bbda851f8ea8aa1210652f3c2e23",
+                "reference": "805bda251b18bbda851f8ea8aa1210652f3c2e23",
                 "shasum": ""
             },
             "require": {
@@ -898,6 +898,7 @@
                 "ext-mbstring": "*",
                 "ext-zlib": "*",
                 "guzzlehttp/guzzle": "^7.0",
+                "guzzlehttp/promises": "^1.0 || ^2.0",
                 "guzzlehttp/psr7": "^2.0",
                 "mtownsend/xml-to-array": "^2.0",
                 "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
@@ -941,9 +942,9 @@
             "description": "Composer package to warm up website caches, based on a given XML sitemap",
             "support": {
                 "issues": "https://github.com/eliashaeussler/cache-warmup/issues",
-                "source": "https://github.com/eliashaeussler/cache-warmup/tree/2.6.0"
+                "source": "https://github.com/eliashaeussler/cache-warmup/tree/2.7.0"
             },
-            "time": "2023-10-31T19:39:53+00:00"
+            "time": "2023-11-07T08:29:59+00:00"
         },
         {
             "name": "eliashaeussler/sse",
@@ -7603,16 +7604,16 @@
         },
         {
             "name": "friendsofphp/php-cs-fixer",
-            "version": "v3.37.1",
+            "version": "v3.38.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer.git",
-                "reference": "c3fe76976081ab871aa654e872da588077e19679"
+                "reference": "7e6070026e76aa09d77a47519625c86593fb8e31"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/c3fe76976081ab871aa654e872da588077e19679",
-                "reference": "c3fe76976081ab871aa654e872da588077e19679",
+                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/7e6070026e76aa09d77a47519625c86593fb8e31",
+                "reference": "7e6070026e76aa09d77a47519625c86593fb8e31",
                 "shasum": ""
             },
             "require": {
@@ -7684,7 +7685,7 @@
             ],
             "support": {
                 "issues": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues",
-                "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.37.1"
+                "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.38.0"
             },
             "funding": [
                 {
@@ -7692,7 +7693,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-10-29T20:51:23+00:00"
+            "time": "2023-11-07T08:44:54+00:00"
         },
         {
             "name": "helhum/config-loader",

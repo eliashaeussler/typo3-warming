@@ -81,16 +81,16 @@
         },
         {
             "name": "eliashaeussler/cache-warmup",
-            "version": "2.6.0",
+            "version": "2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/cache-warmup.git",
-                "reference": "ea3952e0e1d5b6eda0cf92757e00d92450a9f1e4"
+                "reference": "805bda251b18bbda851f8ea8aa1210652f3c2e23"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/cache-warmup/zipball/ea3952e0e1d5b6eda0cf92757e00d92450a9f1e4",
-                "reference": "ea3952e0e1d5b6eda0cf92757e00d92450a9f1e4",
+                "url": "https://api.github.com/repos/eliashaeussler/cache-warmup/zipball/805bda251b18bbda851f8ea8aa1210652f3c2e23",
+                "reference": "805bda251b18bbda851f8ea8aa1210652f3c2e23",
                 "shasum": ""
             },
             "require": {
@@ -101,6 +101,7 @@
                 "ext-mbstring": "*",
                 "ext-zlib": "*",
                 "guzzlehttp/guzzle": "^7.0",
+                "guzzlehttp/promises": "^1.0 || ^2.0",
                 "guzzlehttp/psr7": "^2.0",
                 "mtownsend/xml-to-array": "^2.0",
                 "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
@@ -144,9 +145,9 @@
             "description": "Composer package to warm up website caches, based on a given XML sitemap",
             "support": {
                 "issues": "https://github.com/eliashaeussler/cache-warmup/issues",
-                "source": "https://github.com/eliashaeussler/cache-warmup/tree/2.6.0"
+                "source": "https://github.com/eliashaeussler/cache-warmup/tree/2.7.0"
             },
-            "time": "2023-10-31T19:39:53+00:00"
+            "time": "2023-11-07T08:29:59+00:00"
         },
         {
             "name": "eliashaeussler/sse",
