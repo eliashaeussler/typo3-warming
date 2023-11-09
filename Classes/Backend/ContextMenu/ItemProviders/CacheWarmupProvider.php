@@ -23,8 +23,8 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Backend\ContextMenu\ItemProviders;
 
+use EliasHaeussler\Typo3SitemapLocator;
 use EliasHaeussler\Typo3Warming\Configuration;
-use EliasHaeussler\Typo3Warming\Sitemap;
 use EliasHaeussler\Typo3Warming\Utility;
 use Exception;
 use TYPO3\CMS\Backend;
@@ -75,7 +75,7 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
     ];
 
     public function __construct(
-        private readonly Sitemap\SitemapLocator $sitemapLocator,
+        private readonly Typo3SitemapLocator\Sitemap\SitemapLocator $sitemapLocator,
         private readonly Core\Site\SiteFinder $siteFinder,
         private readonly Configuration\Configuration $configuration,
     ) {
@@ -250,7 +250,7 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
         // Check if any sitemap exists
         try {
             foreach ($this->sitemapLocator->locateBySite($site, $siteLanguage) as $sitemap) {
-                if ($this->sitemapLocator->sitemapExists($sitemap)) {
+                if ($this->sitemapLocator->isValidSitemap($sitemap)) {
                     return true;
                 }
             }

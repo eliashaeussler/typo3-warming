@@ -42,6 +42,7 @@ final class WarmupFinishedEventTest extends TestingFramework\Core\Functional\Fun
     use Src\Tests\Functional\SiteTrait;
 
     protected array $testExtensionsToLoad = [
+        'sitemap_locator',
         'warming',
     ];
 

@@ -37,6 +37,7 @@ use TYPO3\TestingFramework;
 final class TemplateRendererTest extends TestingFramework\Core\Functional\FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
+        'sitemap_locator',
         'warming',
     ];
 

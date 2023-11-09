@@ -44,6 +44,7 @@ final class DatabaseWriterTest extends TestingFramework\Core\Functional\Function
     use Tests\Functional\SiteTrait;
 
     protected array $testExtensionsToLoad = [
+        'sitemap_locator',
         'warming',
     ];
 
@@ -66,7 +67,7 @@ final class DatabaseWriterTest extends TestingFramework\Core\Functional\Function
         $this->site = $this->createSite();
         $this->uri = new CacheWarmup\Sitemap\Url(
             (string)$this->site->getBase(),
-            origin: new Src\Sitemap\SiteAwareSitemap(
+            origin: new Src\Domain\Model\SiteAwareSitemap(
                 new Core\Http\Uri('https://typo3-testing.local/sitemap.xml'),
                 $this->site,
                 $this->site->getDefaultLanguage(),

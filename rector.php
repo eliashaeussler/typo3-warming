@@ -71,8 +71,6 @@ return static function (RectorConfig $rectorConfig): void {
             // We keep domain models and repositories open for extensions
             __DIR__ . '/Classes/Domain/Model/*',
             __DIR__ . '/Classes/Domain/Repository/*',
-            // We keep the main sitemap class open for extensions
-            __DIR__ . '/Classes/Sitemap/SiteAwareSitemap.php',
         ])
         ->apply()
     ;

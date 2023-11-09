@@ -7,22 +7,16 @@ services:
   EliasHaeussler\Typo3Warming\:
     resource: '../Classes/*'
     exclude:
-      - '../Classes/DependencyInjection/*'
       - '../Classes/Domain/{Model,Type}/*'
       - '../Classes/Enums/*'
       - '../Classes/Event/*'
       - '../Classes/Exception/*'
       - '../Classes/Http/Message/Event/*'
-      - '../Classes/Http/Message/EventStream.php'
       - '../Classes/Http/Message/Handler/*'
       - '../Classes/Log/*'
       - '../Classes/Result/*'
-      - '../Classes/Sitemap/SiteAwareSitemap.php'
       - '../Classes/ValueObject/*'
 
-  EliasHaeussler\Typo3Warming\Cache\SitemapsCache:
-    arguments:
-      $cache: '@cache.warming'
   EliasHaeussler\Typo3Warming\Configuration\Configuration:
     public: true
   EliasHaeussler\Typo3Warming\Controller\CacheWarmupController:
@@ -34,19 +28,10 @@ services:
   EliasHaeussler\Typo3Warming\Crawler\Strategy\CrawlingStrategyFactory:
     arguments:
       $strategies: !tagged_locator { tag: 'warming.crawling_strategy', default_index_method: 'getName' }
-
-  EliasHaeussler\Typo3Warming\EventListener\SiteConfigurationListener:
-    tags:
-      - name: event.listener
-        identifier: 'warmingSiteConfigurationListener'
-
   EliasHaeussler\Typo3Warming\Http\Client\ClientFactory:
     public: true
   EliasHaeussler\Typo3Warming\Service\CacheWarmupService:
     public: true
-  EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator:
-    arguments:
-      $providers: !tagged_iterator { tag: 'warming.sitemap_provider', default_priority_method: 'getPriority' }
 
   EliasHaeussler\Typo3Warming\Command\ShowUserAgentCommand:
     tags:
@@ -67,9 +52,3 @@ services:
   EliasHaeussler\CacheWarmup\Crawler\Strategy\SortByChangeFrequencyStrategy:
   EliasHaeussler\CacheWarmup\Crawler\Strategy\SortByLastModificationDateStrategy:
   EliasHaeussler\CacheWarmup\Crawler\Strategy\SortByPriorityStrategy:
-
-  cache.warming:
-    class: 'TYPO3\CMS\Core\Cache\Frontend\PhpFrontend'
-    factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
-    arguments:
-      - !php/const EliasHaeussler\Typo3Warming\Extension::KEY

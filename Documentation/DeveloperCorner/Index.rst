@@ -17,7 +17,6 @@ into the cache warmup process.
     Crawlers
     CrawlingStrategies
     SitemapProviders
-    Caching
     ConfigurationAPI
     AccessUtility
     Events

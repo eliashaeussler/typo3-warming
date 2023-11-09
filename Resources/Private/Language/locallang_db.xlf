@@ -7,14 +7,6 @@
 				<source>Sitemap</source>
 			</trans-unit>
 
-			<trans-unit id="sites.xml_sitemap_path.label" resname="sites.xml_sitemap_path.label">
-				<source>Path to XML sitemap</source>
-			</trans-unit>
-			<trans-unit id="sites.xml_sitemap_path.description" resname="sites.xml_sitemap_path.description">
-				<source>Specify the path to the XML sitemap, relative to the entry point of the site.
-Note that caches can be warmed up only if the entry point of the site contains the full domain name.</source>
-			</trans-unit>
-
 			<trans-unit id="tx_warming_domain_model_log" resname="tx_warming_domain_model_log">
 				<source>Cache warmup log</source>
 			</trans-unit>

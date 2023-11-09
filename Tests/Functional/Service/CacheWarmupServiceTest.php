@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Tests\Functional\Service;
 
 use EliasHaeussler\CacheWarmup;
+use EliasHaeussler\Typo3SitemapLocator;
 use EliasHaeussler\Typo3Warming as Src;
 use EliasHaeussler\Typo3Warming\Tests;
 use Generator;
@@ -44,6 +45,7 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
     use Tests\Functional\SiteTrait;
 
     protected array $testExtensionsToLoad = [
+        'sitemap_locator',
         'warming',
     ];
 
@@ -81,7 +83,7 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
             $this->get(CacheWarmup\Crawler\CrawlerFactory::class),
             $this->get(Src\Crawler\Strategy\CrawlingStrategyFactory::class),
             $this->eventDispatcher,
-            $this->get(Src\Sitemap\SitemapLocator::class),
+            $this->get(Typo3SitemapLocator\Sitemap\SitemapLocator::class),
         );
     }
 
@@ -103,12 +105,12 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
     {
         $this->mockSitemapResponse('en', 'de', 'fr');
 
-        $originEN = new Src\Sitemap\SiteAwareSitemap(
+        $originEN = new Src\Domain\Model\SiteAwareSitemap(
             new Core\Http\Uri('https://typo3-testing.local/sitemap.xml'),
             $this->site,
             $this->site->getDefaultLanguage(),
         );
-        $originDE = new Src\Sitemap\SiteAwareSitemap(
+        $originDE = new Src\Domain\Model\SiteAwareSitemap(
             new Core\Http\Uri('https://typo3-testing.local/de/sitemap.xml'),
             $this->site,
             $this->site->getLanguageById(1),
@@ -216,15 +218,17 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
     {
         $this->mockSitemapResponse('en', 'de', 'fr');
 
-        $originEN = new Src\Sitemap\SiteAwareSitemap(
+        $originEN = new Src\Domain\Model\SiteAwareSitemap(
             new Core\Http\Uri('https://typo3-testing.local/sitemap.xml'),
             $this->site,
             $this->site->getDefaultLanguage(),
+            true,
         );
-        $originDE = new Src\Sitemap\SiteAwareSitemap(
+        $originDE = new Src\Domain\Model\SiteAwareSitemap(
             new Core\Http\Uri('https://typo3-testing.local/de/sitemap.xml'),
             $this->site,
             $this->site->getLanguageById(1),
+            true,
         );
 
         $expected = [
@@ -287,10 +291,11 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
     {
         $this->mockSitemapResponse('en');
 
-        $origin = new Src\Sitemap\SiteAwareSitemap(
+        $origin = new Src\Domain\Model\SiteAwareSitemap(
             new Core\Http\Uri('https://typo3-testing.local/sitemap.xml'),
             $this->site,
             $this->site->getDefaultLanguage(),
+            true,
         );
 
         $expected = [

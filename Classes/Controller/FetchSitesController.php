@@ -23,12 +23,10 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Controller;
 
-use EliasHaeussler\CacheWarmup;
+use EliasHaeussler\Typo3SitemapLocator;
 use EliasHaeussler\Typo3Warming\Configuration;
 use EliasHaeussler\Typo3Warming\Crawler;
-use EliasHaeussler\Typo3Warming\Exception;
 use EliasHaeussler\Typo3Warming\Http;
-use EliasHaeussler\Typo3Warming\Sitemap;
 use EliasHaeussler\Typo3Warming\Utility;
 use EliasHaeussler\Typo3Warming\ValueObject;
 use Psr\Http\Message;
@@ -49,13 +47,12 @@ final class FetchSitesController
         private readonly Core\Imaging\IconFactory $iconFactory,
         private readonly Http\Message\ResponseFactory $responseFactory,
         private readonly Core\Site\SiteFinder $siteFinder,
-        private readonly Sitemap\SitemapLocator $sitemapLocator,
+        private readonly Typo3SitemapLocator\Sitemap\SitemapLocator $sitemapLocator,
     ) {}
 
     /**
-     * @throws CacheWarmup\Exception\InvalidUrlException
-     * @throws Exception\UnsupportedConfigurationException
-     * @throws Exception\UnsupportedSiteException
+     * @throws Typo3SitemapLocator\Exception\BaseUrlIsNotSupported
+     * @throws Typo3SitemapLocator\Exception\SitemapIsMissing
      */
     public function __invoke(): Message\ResponseInterface
     {
@@ -83,9 +80,8 @@ final class FetchSitesController
 
     /**
      * @param array<string, mixed> $page
-     * @throws CacheWarmup\Exception\InvalidUrlException
-     * @throws Exception\UnsupportedConfigurationException
-     * @throws Exception\UnsupportedSiteException
+     * @throws Typo3SitemapLocator\Exception\BaseUrlIsNotSupported
+     * @throws Typo3SitemapLocator\Exception\SitemapIsMissing
      */
     private function createSiteGroup(Core\Site\Entity\Site $site, array $page): ?ValueObject\Modal\SiteGroup
     {
@@ -98,7 +94,7 @@ final class FetchSitesController
                 $url = null;
 
                 // Check if sitemap exists
-                if ($this->sitemapLocator->sitemapExists($sitemap)) {
+                if ($this->sitemapLocator->isValidSitemap($sitemap)) {
                     $url = (string)$sitemap->getUri();
                 }
 

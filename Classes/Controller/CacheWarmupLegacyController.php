@@ -25,6 +25,7 @@ namespace EliasHaeussler\Typo3Warming\Controller;
 
 use CuyZ\Valinor;
 use EliasHaeussler\CacheWarmup;
+use EliasHaeussler\Typo3SitemapLocator;
 use EliasHaeussler\Typo3Warming\Exception;
 use EliasHaeussler\Typo3Warming\Http;
 use EliasHaeussler\Typo3Warming\Service;
@@ -53,9 +54,9 @@ final class CacheWarmupLegacyController
      * @throws CacheWarmup\Exception\Exception
      * @throws Core\Exception\SiteNotFoundException
      * @throws Exception\MissingPageIdException
-     * @throws Exception\UnsupportedConfigurationException
-     * @throws Exception\UnsupportedSiteException
      * @throws GuzzleException
+     * @throws Typo3SitemapLocator\Exception\BaseUrlIsNotSupported
+     * @throws Typo3SitemapLocator\Exception\SitemapIsMissing
      */
     public function __invoke(Message\ServerRequestInterface $request): Message\ResponseInterface
     {
