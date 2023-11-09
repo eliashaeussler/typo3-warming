@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ["8.1", "8.2"]
+        php-version: ["8.1", "8.2", "8.3"]
         typo3-version: ["12.4"]
         dependencies: ["highest", "lowest"]
     steps:
@@ -79,6 +79,8 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
+          # @todo Switch to PHP 8.3 once https://github.com/oerdnj/deb.sury.org/issues/2034
+          #       is resolved and DDEV comes with a PHP 8.3 compatible version
           php-version: 8.2
           tools: composer:v2
           coverage: none
@@ -89,6 +91,8 @@ jobs:
         with:
           autostart: false
       - name: Configure and start DDEV
+        # @todo Switch to PHP 8.3 once https://github.com/oerdnj/deb.sury.org/issues/2034
+        #       is resolved and DDEV comes with a PHP 8.3 compatible version
         run: |
           ddev config --project-type=typo3 --php-version=8.2 --xdebug-enabled=true --webimage-extra-packages=
           ddev start
