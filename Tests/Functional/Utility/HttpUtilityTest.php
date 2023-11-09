@@ -40,48 +40,13 @@ final class HttpUtilityTest extends TestingFramework\Core\Functional\FunctionalT
 {
     use Tests\Functional\SiteTrait;
 
-    private Core\Site\Entity\Site $site;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/pages.csv');
 
-        $this->site = $this->createSite();
-    }
-
-    #[Framework\Attributes\Test]
-    public function getSiteUrlWithPathReturnsSiteBaseUrlWithMergedPath(): void
-    {
-        $site = $this->createSite('https://typo3-testing.local/foo/');
-
-        self::assertEquals(
-            new Core\Http\Uri('https://typo3-testing.local/foo/baz/'),
-            Src\Utility\HttpUtility::getSiteUrlWithPath($site, '/baz/'),
-        );
-    }
-
-    #[Framework\Attributes\Test]
-    public function getSiteUrlWithPathRespectsQueryString(): void
-    {
-        self::assertEquals(
-            new Core\Http\Uri('https://typo3-testing.local/foo/?foo=baz'),
-            Src\Utility\HttpUtility::getSiteUrlWithPath($this->site, '/foo/?foo=baz'),
-        );
-    }
-
-    #[Framework\Attributes\Test]
-    public function getSiteUrlWithPathRespectsSiteLanguage(): void
-    {
-        self::assertEquals(
-            new Core\Http\Uri('https://typo3-testing.local/de/foo/'),
-            Src\Utility\HttpUtility::getSiteUrlWithPath(
-                $this->site,
-                '/foo/',
-                $this->site->getLanguageById(1),
-            ),
-        );
+        $this->createSite();
     }
 
     #[Framework\Attributes\Test]

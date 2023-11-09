@@ -25,6 +25,7 @@ namespace EliasHaeussler\Typo3Warming\Tests\Functional\Controller;
 
 use CuyZ\Valinor;
 use EliasHaeussler\CacheWarmup;
+use EliasHaeussler\Typo3SitemapLocator;
 use EliasHaeussler\Typo3Warming as Src;
 use EliasHaeussler\Typo3Warming\Tests;
 use PHPUnit\Framework;
@@ -45,6 +46,7 @@ final class CacheWarmupLegacyControllerTest extends TestingFramework\Core\Functi
     use Tests\Functional\SiteTrait;
 
     protected array $testExtensionsToLoad = [
+        'sitemap_locator',
         'warming',
     ];
 
@@ -83,7 +85,7 @@ final class CacheWarmupLegacyControllerTest extends TestingFramework\Core\Functi
                 $this->get(CacheWarmup\Crawler\CrawlerFactory::class),
                 $this->get(Src\Crawler\Strategy\CrawlingStrategyFactory::class),
                 new Core\EventDispatcher\NoopEventDispatcher(),
-                $this->get(Src\Sitemap\SitemapLocator::class),
+                $this->get(Typo3SitemapLocator\Sitemap\SitemapLocator::class),
             ),
         );
     }

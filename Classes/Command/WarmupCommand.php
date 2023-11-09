@@ -24,11 +24,11 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Command;
 
 use EliasHaeussler\CacheWarmup;
+use EliasHaeussler\Typo3SitemapLocator;
 use EliasHaeussler\Typo3Warming\Configuration;
 use EliasHaeussler\Typo3Warming\Crawler;
-use EliasHaeussler\Typo3Warming\Exception;
+use EliasHaeussler\Typo3Warming\Domain;
 use EliasHaeussler\Typo3Warming\Http;
-use EliasHaeussler\Typo3Warming\Sitemap;
 use EliasHaeussler\Typo3Warming\Utility;
 use JsonException;
 use Symfony\Component\Console;
@@ -48,7 +48,7 @@ final class WarmupCommand extends Console\Command\Command
         private readonly Http\Client\ClientFactory $clientFactory,
         private readonly Configuration\Configuration $configuration,
         private readonly Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
-        private readonly Sitemap\SitemapLocator $sitemapLocator,
+        private readonly Typo3SitemapLocator\Sitemap\SitemapLocator $sitemapLocator,
         private readonly Core\Site\SiteFinder $siteFinder,
     ) {
         parent::__construct();
@@ -194,8 +194,6 @@ final class WarmupCommand extends Console\Command\Command
      * @throws CacheWarmup\Exception\InvalidUrlException
      * @throws Console\Exception\ExceptionInterface
      * @throws Core\Exception\SiteNotFoundException
-     * @throws Exception\UnsupportedConfigurationException
-     * @throws Exception\UnsupportedSiteException
      * @throws JsonException
      */
     protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output): int
@@ -228,11 +226,10 @@ final class WarmupCommand extends Console\Command\Command
 
     /**
      * @return array<string, mixed>
-     * @throws CacheWarmup\Exception\InvalidUrlException
      * @throws Core\Exception\SiteNotFoundException
-     * @throws Exception\UnsupportedConfigurationException
-     * @throws Exception\UnsupportedSiteException
      * @throws JsonException
+     * @throws Typo3SitemapLocator\Exception\BaseUrlIsNotSupported
+     * @throws Typo3SitemapLocator\Exception\SitemapIsMissing
      */
     private function prepareCommandParameters(Console\Input\InputInterface $input): array
     {
@@ -313,11 +310,11 @@ final class WarmupCommand extends Console\Command\Command
     /**
      * @param array<string> $sites
      * @param list<int> $languages
-     * @return list<Sitemap\SiteAwareSitemap>
+     * @return list<Domain\Model\SiteAwareSitemap>
      * @throws CacheWarmup\Exception\InvalidUrlException
      * @throws Core\Exception\SiteNotFoundException
-     * @throws Exception\UnsupportedConfigurationException
-     * @throws Exception\UnsupportedSiteException
+     * @throws Typo3SitemapLocator\Exception\BaseUrlIsNotSupported
+     * @throws Typo3SitemapLocator\Exception\SitemapIsMissing
      */
     private function resolveSites(array $sites, array $languages): array
     {
@@ -341,7 +338,7 @@ final class WarmupCommand extends Console\Command\Command
                     $sitemaps = $this->sitemapLocator->locateBySite($site, $site->getLanguageById($languageId));
 
                     foreach ($sitemaps as $sitemap) {
-                        $resolvedSitemaps[] = $sitemap;
+                        $resolvedSitemaps[] = Domain\Model\SiteAwareSitemap::fromLocatedSitemap($sitemap);
                     }
                 }
             }

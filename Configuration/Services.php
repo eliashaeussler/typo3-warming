@@ -22,7 +22,6 @@ declare(strict_types=1);
  */
 
 use EliasHaeussler\CacheWarmup;
-use EliasHaeussler\Typo3Warming\Sitemap;
 use Symfony\Component\DependencyInjection;
 
 return static function (
@@ -31,8 +30,6 @@ return static function (
 ): void {
     $container->registerForAutoconfiguration(CacheWarmup\Crawler\Strategy\CrawlingStrategy::class)
         ->addTag('warming.crawling_strategy');
-    $container->registerForAutoconfiguration(Sitemap\Provider\Provider::class)
-        ->addTag('warming.sitemap_provider');
 
     // External services
     $services = $containerConfigurator->services();

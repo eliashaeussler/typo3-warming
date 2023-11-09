@@ -9,6 +9,32 @@ Migration
 This page lists all notable changes and required migrations when
 upgrading to a new major version of this extension.
 
+..  _version-2.0.0:
+
+Version 2.0.0
+=============
+
+Integration of EXT:sitemap_locator
+----------------------------------
+
+-   Sitemaps cache was extracted to EXT:sitemap_locator. Use
+    :php:class:`EliasHaeussler\\Typo3SitemapLocator\\Cache\\SitemapsCache`
+    instead of :php:class:`EliasHaeussler\\Typo3Warming\\Cache\\SitemapsCache`.
+-   Sitemap providers were extracted to EXT:sitemap_locator. Use
+    :php:interface:`EliasHaeussler\\Typo3SitemapLocator\\Sitemap\\Provider\\Provider`
+    instead of :php:interface:`EliasHaeussler\\Typo3Warming\\Sitemap\\Provider\\Provider`
+    for custom provider implementations.
+-   Sitemap locator was extracted to EXT:sitemap_locator. Use
+    :php:class:`EliasHaeussler\\Typo3SitemapLocator\\Sitemap\\SitemapLocator`
+    instead of :php:class:`EliasHaeussler\\Typo3Warming\\Sitemap\\SitemapLocator`.
+
+Relocated sitemap model
+-----------------------
+
+-   The default :php:class:`EliasHaeussler\\Typo3Warming\\Sitemap\\SiteAwareSitemap`
+    model was moved to :php:class:`EliasHaeussler\\Typo3Warming\\Domain\\Model\\SiteAwareSitemap`.
+    Update references to this class in your code.
+
 ..  _version-1.0.0:
 
 Version 1.0.0

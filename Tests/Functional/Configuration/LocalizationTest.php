@@ -38,6 +38,7 @@ use TYPO3\TestingFramework;
 final class LocalizationTest extends TestingFramework\Core\Functional\FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
+        'sitemap_locator',
         'warming',
     ];
 
@@ -78,7 +79,7 @@ final class LocalizationTest extends TestingFramework\Core\Functional\Functional
     public function translateReturnsTranslationForGivenLocalizationKeyAndType(): void
     {
         self::assertNotEmpty(
-            Src\Configuration\Localization::translate('sites.xml_sitemap_path.label', type: 'db'),
+            Src\Configuration\Localization::translate('tabs.sitemap', type: 'db'),
         );
     }
 }

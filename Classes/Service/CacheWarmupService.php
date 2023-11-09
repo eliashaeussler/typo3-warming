@@ -24,13 +24,13 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Service;
 
 use EliasHaeussler\CacheWarmup;
+use EliasHaeussler\Typo3SitemapLocator;
 use EliasHaeussler\Typo3Warming\Configuration;
 use EliasHaeussler\Typo3Warming\Crawler;
+use EliasHaeussler\Typo3Warming\Domain;
 use EliasHaeussler\Typo3Warming\Event;
-use EliasHaeussler\Typo3Warming\Exception;
 use EliasHaeussler\Typo3Warming\Http;
 use EliasHaeussler\Typo3Warming\Result;
-use EliasHaeussler\Typo3Warming\Sitemap;
 use EliasHaeussler\Typo3Warming\Utility;
 use EliasHaeussler\Typo3Warming\ValueObject;
 use GuzzleHttp\Exception\GuzzleException;
@@ -56,7 +56,7 @@ final class CacheWarmupService
         private readonly CacheWarmup\Crawler\CrawlerFactory $crawlerFactory,
         private readonly Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
         private readonly EventDispatcher\EventDispatcherInterface $eventDispatcher,
-        private readonly Sitemap\SitemapLocator $sitemapLocator,
+        private readonly Typo3SitemapLocator\Sitemap\SitemapLocator $sitemapLocator,
     ) {
         $this->setCrawler(
             $this->configuration->getCrawler(),
@@ -69,9 +69,9 @@ final class CacheWarmupService
      * @param list<ValueObject\Request\PageWarmupRequest> $pages
      * @throws CacheWarmup\Exception\Exception
      * @throws Core\Exception\SiteNotFoundException
-     * @throws Exception\UnsupportedConfigurationException
-     * @throws Exception\UnsupportedSiteException
      * @throws GuzzleException
+     * @throws Typo3SitemapLocator\Exception\BaseUrlIsNotSupported
+     * @throws Typo3SitemapLocator\Exception\SitemapIsMissing
      */
     public function warmup(
         array $sites = [],
@@ -93,7 +93,12 @@ final class CacheWarmupService
             foreach ($siteWarmupRequest->getLanguageIds() as $languageId) {
                 $siteLanguage = $siteWarmupRequest->getSite()->getLanguageById($languageId);
                 $sitemaps = $this->sitemapLocator->locateBySite($siteWarmupRequest->getSite(), $siteLanguage);
-                $cacheWarmer->addSitemaps($sitemaps);
+                $cacheWarmer->addSitemaps(
+                    array_map(
+                        static fn(Typo3SitemapLocator\Domain\Model\Sitemap $sitemap) => Domain\Model\SiteAwareSitemap::fromLocatedSitemap($sitemap),
+                        $sitemaps,
+                    ),
+                );
             }
         }
 

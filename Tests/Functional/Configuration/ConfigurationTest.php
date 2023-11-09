@@ -41,6 +41,7 @@ use TYPO3\TestingFramework;
 final class ConfigurationTest extends TestingFramework\Core\Functional\FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
+        'sitemap_locator',
         'warming',
     ];
 

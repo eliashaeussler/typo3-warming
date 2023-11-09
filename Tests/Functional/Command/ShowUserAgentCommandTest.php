@@ -38,6 +38,7 @@ use TYPO3\TestingFramework;
 final class ShowUserAgentCommandTest extends TestingFramework\Core\Functional\FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
+        'sitemap_locator',
         'warming',
     ];
 

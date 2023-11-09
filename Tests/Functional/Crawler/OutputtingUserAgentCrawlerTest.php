@@ -45,6 +45,7 @@ final class OutputtingUserAgentCrawlerTest extends TestingFramework\Core\Functio
     use Tests\Functional\ClientMockTrait;
 
     protected array $testExtensionsToLoad = [
+        'sitemap_locator',
         'warming',
     ];
 

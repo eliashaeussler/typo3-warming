@@ -108,7 +108,7 @@ final class CacheWarmupResultTest extends TestingFramework\Core\Unit\UnitTestCas
     #[Framework\Attributes\Test]
     public function getCrawlingResultsBySiteReturnsMatchingCrawlingResults(): void
     {
-        $origin = new Src\Sitemap\SiteAwareSitemap(
+        $origin = new Src\Domain\Model\SiteAwareSitemap(
             new Core\Http\Uri('https://typo3-testing.local/sitemap.xml'),
             $this->site,
             $this->site->getDefaultLanguage(),

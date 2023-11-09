@@ -21,9 +21,10 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3Warming\Sitemap;
+namespace EliasHaeussler\Typo3Warming\Domain\Model;
 
 use EliasHaeussler\CacheWarmup;
+use EliasHaeussler\Typo3SitemapLocator;
 use Psr\Http\Message;
 use TYPO3\CMS\Core;
 
@@ -39,8 +40,22 @@ class SiteAwareSitemap extends CacheWarmup\Sitemap\Sitemap
         Message\UriInterface $uri,
         protected readonly Core\Site\Entity\Site $site,
         protected readonly Core\Site\Entity\SiteLanguage $siteLanguage,
+        protected readonly bool $cached = false,
     ) {
         parent::__construct($uri);
+    }
+
+    /**
+     * @throws CacheWarmup\Exception\InvalidUrlException
+     */
+    public static function fromLocatedSitemap(Typo3SitemapLocator\Domain\Model\Sitemap $sitemap): self
+    {
+        return new self(
+            $sitemap->getUri(),
+            $sitemap->getSite(),
+            $sitemap->getSiteLanguage(),
+            $sitemap->isCached(),
+        );
     }
 
     public function getSite(): Core\Site\Entity\Site
@@ -51,5 +66,10 @@ class SiteAwareSitemap extends CacheWarmup\Sitemap\Sitemap
     public function getSiteLanguage(): Core\Site\Entity\SiteLanguage
     {
         return $this->siteLanguage;
+    }
+
+    public function isCached(): bool
+    {
+        return $this->cached;
     }
 }

@@ -24,7 +24,7 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Result;
 
 use EliasHaeussler\CacheWarmup;
-use EliasHaeussler\Typo3Warming\Sitemap;
+use EliasHaeussler\Typo3Warming\Domain;
 use TYPO3\CMS\Core;
 
 /**
@@ -113,7 +113,7 @@ final class CacheWarmupResult
 
         $rootOrigin = $url->getRootOrigin();
 
-        return $rootOrigin instanceof Sitemap\SiteAwareSitemap
+        return $rootOrigin instanceof Domain\Model\SiteAwareSitemap
             && $rootOrigin->getSite() === $site
             && $rootOrigin->getSiteLanguage() === $siteLanguage
         ;

@@ -26,7 +26,6 @@ namespace EliasHaeussler\Typo3Warming\Log\Writer;
 use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3Warming\Domain;
 use EliasHaeussler\Typo3Warming\Enums;
-use EliasHaeussler\Typo3Warming\Sitemap;
 use GuzzleHttp\Exception;
 use Psr\Log;
 use TYPO3\CMS\Core;
@@ -106,7 +105,7 @@ final class DatabaseWriter extends Core\Log\Writer\AbstractWriter
 
         $sitemapUri = (string)$sitemap->getUri();
 
-        if (!($sitemap instanceof Sitemap\SiteAwareSitemap)) {
+        if (!($sitemap instanceof Domain\Model\SiteAwareSitemap)) {
             return [$sitemapUri, null, null];
         }
 
