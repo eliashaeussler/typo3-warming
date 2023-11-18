@@ -51,7 +51,7 @@ final class CrawlingStrategyFactory
     }
 
     /**
-     * @return array<non-empty-string, CacheWarmup\Crawler\Strategy\CrawlingStrategy>
+     * @return array<string, CacheWarmup\Crawler\Strategy\CrawlingStrategy>
      */
     public function getAll(): array
     {
