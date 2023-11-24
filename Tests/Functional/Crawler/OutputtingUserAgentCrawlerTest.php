@@ -24,11 +24,11 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Tests\Functional\Crawler;
 
 use EliasHaeussler\CacheWarmup;
+use EliasHaeussler\TransientLogger;
 use EliasHaeussler\Typo3Warming as Src;
 use EliasHaeussler\Typo3Warming\Tests;
 use Exception;
 use PHPUnit\Framework;
-use Psr\Log;
 use Symfony\Component\Console;
 use TYPO3\CMS\Core;
 use TYPO3\TestingFramework;
@@ -156,7 +156,7 @@ final class OutputtingUserAgentCrawlerTest extends TestingFramework\Core\Functio
     #[Framework\Attributes\Test]
     public function crawlLogsCrawlingResults(): void
     {
-        $logger = new Tests\Functional\Fixtures\Classes\DummyLogger();
+        $logger = new TransientLogger\TransientLogger();
 
         $this->guzzleClientFactory->handler->append(
             new Core\Http\Response(),
@@ -172,7 +172,7 @@ final class OutputtingUserAgentCrawlerTest extends TestingFramework\Core\Functio
 
         $this->subject->crawl($urls);
 
-        self::assertCount(1, $logger->log[Log\LogLevel::ERROR]);
-        self::assertCount(1, $logger->log[Log\LogLevel::INFO]);
+        self::assertCount(1, $logger->getByLogLevel(TransientLogger\Log\LogLevel::Error));
+        self::assertCount(1, $logger->getByLogLevel(TransientLogger\Log\LogLevel::Info));
     }
 }
