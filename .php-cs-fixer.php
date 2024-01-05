@@ -28,6 +28,7 @@ $header = PhpCsFixerConfig\Rules\Header::create(
     'warming',
     PhpCsFixerConfig\Package\Type::TYPO3Extension,
     PhpCsFixerConfig\Package\Author::create('Elias Häußler', 'elias@haeussler.dev'),
+    PhpCsFixerConfig\Package\CopyrightRange::from(2021),
     PhpCsFixerConfig\Package\License::GPL2OrLater,
 );
 
