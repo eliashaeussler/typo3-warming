@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
- * Copyright (C) 2023 Elias Häußler <elias@haeussler.dev>
+ * Copyright (C) 2021-2024 Elias Häußler <elias@haeussler.dev>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ $header = PhpCsFixerConfig\Rules\Header::create(
     'warming',
     PhpCsFixerConfig\Package\Type::TYPO3Extension,
     PhpCsFixerConfig\Package\Author::create('Elias Häußler', 'elias@haeussler.dev'),
+    PhpCsFixerConfig\Package\CopyrightRange::from(2021),
     PhpCsFixerConfig\Package\License::GPL2OrLater,
 );
 
