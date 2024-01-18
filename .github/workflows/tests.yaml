@@ -81,7 +81,7 @@ jobs:
         with:
           # @todo Switch to PHP 8.3 once https://github.com/oerdnj/deb.sury.org/issues/2034
           #       is resolved and DDEV comes with a PHP 8.3 compatible version
-          php-version: 8.2
+          php-version: 8.3
           tools: composer:v2
           coverage: none
 
