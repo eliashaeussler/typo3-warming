@@ -92,7 +92,7 @@ export class SitesModal extends LitElement {
     this.modal = Modal.currentModal;
   }
 
-  protected createRenderRoot(): Element {
+  protected createRenderRoot(): HTMLElement {
     // Avoid shadow DOM for Bootstrap CSS to be applied
     return this;
   }
