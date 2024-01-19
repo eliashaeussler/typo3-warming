@@ -21,6 +21,12 @@ jobs:
           php-version: 8.3
           tools: composer:v2, composer-require-checker, composer-unused, cs2pr
           coverage: none
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'yarn'
+          cache-dependency-path: 'Resources/Private/Frontend/yarn.lock'
 
       # Validation
       - name: Validate composer.json
