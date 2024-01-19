@@ -6,8 +6,8 @@
 	"private": true,
 	"license": "GPL-2.0-or-later",
 	"scripts": {
-		"build": "cross-env NODE_ENV=production rollup -c",
-		"start": "cross-env NODE_ENV=development rollup -c --watch",
+		"build": "cross-env NODE_ENV=production rollup -c --failAfterWarnings",
+		"start": "cross-env NODE_ENV=development rollup -c --failAfterWarnings --watch",
 		"lint": "npm-run-all lint:scss lint:ts",
 		"lint:scss": "stylelint 'src/styles/**/*.scss'",
 		"lint:ts": "eslint 'src/scripts/**/*.{ts,tsx}'",
