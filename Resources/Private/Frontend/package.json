@@ -40,7 +40,7 @@
 		"rollup-plugin-postcss": "^4.0.2",
 		"sass": "^1.63.3",
 		"stylelint": "^15.10.0",
-		"stylelint-config-sass-guidelines": "^10.0.0",
+		"stylelint-config-sass-guidelines": "^11.0.0",
 		"tslib": "^2.6.0",
 		"typescript": "^5.0.4"
 	},
