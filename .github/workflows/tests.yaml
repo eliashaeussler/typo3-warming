@@ -90,7 +90,7 @@ jobs:
           autostart: false
       - name: Configure and start DDEV
         run: |
-          ddev config --project-type=typo3 --php-version=8.3 --xdebug-enabled=true --webimage-extra-packages=
+          ddev config --project-type=typo3 --php-version=8.3 --xdebug-enabled=true --webimage-extra-packages=php8.3-xdebug
           ddev start
 
       # Install dependencies
