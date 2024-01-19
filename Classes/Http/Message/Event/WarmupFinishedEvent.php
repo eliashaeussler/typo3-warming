@@ -166,7 +166,7 @@ final class WarmupFinishedEvent implements SSE\Event\Event
         $messages = array_filter($messages);
 
         // Handle no cache warmup
-        if ($messages === [] && $emptyMessage !== null) {
+        if ($messages === []) {
             $messages[] = $emptyMessage;
         }
 

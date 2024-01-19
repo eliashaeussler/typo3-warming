@@ -36,7 +36,7 @@ final class Localization
     /**
      * @param array<bool|float|int|string|null> $arguments
      */
-    public static function translate(string $key, array $arguments = [], string $type = null): ?string
+    public static function translate(string $key, array $arguments = [], string $type = null): string
     {
         $localizationKey = sprintf(
             'LLL:EXT:warming/Resources/Private/Language/locallang%s.xls:%s',
