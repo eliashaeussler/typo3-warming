@@ -14,6 +14,14 @@ jobs:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.REBUILD_ASSETS_TOKEN }}
 
+      # Prepare environment
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'yarn'
+          cache-dependency-path: 'Resources/Private/Frontend/yarn.lock'
+
       # Install Frontend dependencies
       - name: Install Frontend dependencies
         run: yarn --cwd Resources/Private/Frontend --frozen-lockfile
