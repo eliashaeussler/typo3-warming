@@ -43,7 +43,7 @@ export class ReportPanel extends LitElement {
     this.id = `tx-warming-report-panel-${StringHelper.generateUniqueId()}`;
   }
 
-  createRenderRoot(): Element {
+  createRenderRoot(): HTMLElement {
     // Avoid shadow DOM for Bootstrap CSS to be applied
     return this;
   }

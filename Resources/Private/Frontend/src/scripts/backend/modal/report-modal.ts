@@ -43,7 +43,7 @@ export class ReportModal extends LitElement {
     super();
   }
 
-  protected createRenderRoot(): Element {
+  protected createRenderRoot(): HTMLElement {
     // Avoid shadow DOM for Bootstrap CSS to be applied
     return this;
   }

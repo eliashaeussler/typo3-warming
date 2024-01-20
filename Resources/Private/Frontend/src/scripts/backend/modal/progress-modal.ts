@@ -62,7 +62,7 @@ export class ProgressModal extends LitElement {
     this.modal = Modal.currentModal;
   }
 
-  protected createRenderRoot(): Element {
+  protected createRenderRoot(): HTMLElement {
     return this;
   }
 

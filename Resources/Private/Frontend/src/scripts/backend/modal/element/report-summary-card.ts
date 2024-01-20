@@ -37,7 +37,7 @@ export class ReportSummaryCard extends LitElement {
   @property({ type: Number }) currentNumber: number;
   @property({ type: Number }) totalNumber: number = null;
 
-  createRenderRoot(): Element {
+  createRenderRoot(): HTMLElement {
     // Avoid shadow DOM for Bootstrap CSS to be applied
     return this;
   }
