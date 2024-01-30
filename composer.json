@@ -42,6 +42,7 @@
 		"codeception/module-cli": "^2.0",
 		"codeception/module-db": "^3.1",
 		"codeception/module-webdriver": "^4.0",
+		"doctrine/dbal": "@RC",
 		"eliashaeussler/php-cs-fixer-config": "^1.2 || ^2.0",
 		"eliashaeussler/phpstan-config": "^2.1",
 		"eliashaeussler/rector-config": "^2.0",
