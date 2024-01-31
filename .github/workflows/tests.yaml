@@ -48,7 +48,7 @@ jobs:
 
       # Run tests
       - name: Run acceptance tests
-        uses: nick-fields/retry@v2
+        uses: nick-fields/retry@v3
         with:
           max_attempts: 2
           retry_on: error
@@ -99,7 +99,7 @@ jobs:
 
       # Run tests
       - name: Run tests
-        uses: nick-fields/retry@v2
+        uses: nick-fields/retry@v3
         with:
           max_attempts: 2
           retry_on: error
