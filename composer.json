@@ -162,7 +162,6 @@
 			"codecept run --steps"
 		],
 		"test:coverage": [
-			"@putenv XDEBUG_MODE=coverage",
 			"@test:coverage:acceptance",
 			"@test:coverage:functional",
 			"@test:coverage:unit",
