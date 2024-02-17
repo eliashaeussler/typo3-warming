@@ -6698,16 +6698,16 @@
         },
         {
             "name": "codeception/module-webdriver",
-            "version": "4.0.0",
+            "version": "4.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/module-webdriver.git",
-                "reference": "c092fa4f686381d0621407c0136d608c2b419b85"
+                "reference": "68bd12857f2b3321d3114c3c87c9ad9345b3bd5e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/module-webdriver/zipball/c092fa4f686381d0621407c0136d608c2b419b85",
-                "reference": "c092fa4f686381d0621407c0136d608c2b419b85",
+                "url": "https://api.github.com/repos/Codeception/module-webdriver/zipball/68bd12857f2b3321d3114c3c87c9ad9345b3bd5e",
+                "reference": "68bd12857f2b3321d3114c3c87c9ad9345b3bd5e",
                 "shasum": ""
             },
             "require": {
@@ -6717,8 +6717,8 @@
                 "ext-json": "*",
                 "ext-mbstring": "*",
                 "php": "^8.1",
-                "php-webdriver/webdriver": "^1.8.0",
-                "phpunit/phpunit": "^10.0"
+                "php-webdriver/webdriver": "^1.14.0",
+                "phpunit/phpunit": "^10.0 || ^11.0"
             },
             "suggest": {
                 "codeception/phpbuiltinserver": "Start and stop PHP built-in web server for your tests"
@@ -6753,9 +6753,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Codeception/module-webdriver/issues",
-                "source": "https://github.com/Codeception/module-webdriver/tree/4.0.0"
+                "source": "https://github.com/Codeception/module-webdriver/tree/4.0.1"
             },
-            "time": "2023-02-03T21:52:27+00:00"
+            "time": "2024-02-16T12:47:00+00:00"
         },
         {
             "name": "codeception/stub",
