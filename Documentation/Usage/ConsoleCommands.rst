@@ -20,6 +20,13 @@ using their XML sitemaps.
 
     You must pass at least the `--pages` or `--sites` command option.
 
+..  tip::
+
+    If you use `warming:cachewarmup` in your deployment process and the sitemap is protected with HTTP authentication
+    (basic auth) or the website does not have a valid SSL certificate, you can configure this in the extension
+    configuration with :ref:`verboseCrawlerOptions <extconf-verboseCrawlerOptions>` and
+    :ref:`parserClientOptions <extconf-parserClientOptions>`.
+
 ..  tabs::
 
     ..  group-tab:: Composer-based installation
