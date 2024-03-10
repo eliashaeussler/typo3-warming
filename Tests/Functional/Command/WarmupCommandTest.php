@@ -259,7 +259,7 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
         ]);
 
         self::assertSame(Console\Command\Command::SUCCESS, $this->commandTester->getStatusCode());
-        self::assertEquals(['foo' => 'baz'], Tests\Functional\Fixtures\Classes\DummyVerboseCrawler::$options);
+        self::assertSame(['foo' => 'baz'], Tests\Functional\Fixtures\Classes\DummyVerboseCrawler::$options);
 
         $this->extensionConfiguration->set(Src\Extension::KEY, $originalConfiguration);
     }
@@ -278,7 +278,7 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
         ]);
 
         self::assertSame(Console\Command\Command::SUCCESS, $this->commandTester->getStatusCode());
-        self::assertEquals('baz', $this->guzzleClientFactory->lastOptions['foo'] ?? null);
+        self::assertSame('baz', $this->guzzleClientFactory->lastOptions['foo'] ?? null);
 
         $this->extensionConfiguration->set(Src\Extension::KEY, $originalConfiguration);
     }
