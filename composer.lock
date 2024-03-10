@@ -7129,16 +7129,16 @@
         },
         {
             "name": "eliashaeussler/rector-config",
-            "version": "3.0.0",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/rector-config.git",
-                "reference": "b30a9aada8303eded433b07b82b988ec9bd63f76"
+                "reference": "55bd32b120c9d6b2156d9870c9bb1c6c892a9a0f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/rector-config/zipball/b30a9aada8303eded433b07b82b988ec9bd63f76",
-                "reference": "b30a9aada8303eded433b07b82b988ec9bd63f76",
+                "url": "https://api.github.com/repos/eliashaeussler/rector-config/zipball/55bd32b120c9d6b2156d9870c9bb1c6c892a9a0f",
+                "reference": "55bd32b120c9d6b2156d9870c9bb1c6c892a9a0f",
                 "shasum": ""
             },
             "require": {
@@ -7183,9 +7183,9 @@
             "description": "My personal configuration for Rector",
             "support": {
                 "issues": "https://github.com/eliashaeussler/rector-config/issues",
-                "source": "https://github.com/eliashaeussler/rector-config/tree/3.0.0"
+                "source": "https://github.com/eliashaeussler/rector-config/tree/3.0.1"
             },
-            "time": "2024-02-12T15:19:55+00:00"
+            "time": "2024-02-14T17:21:32+00:00"
         },
         {
             "name": "eliashaeussler/transient-logger",
@@ -9603,21 +9603,21 @@
         },
         {
             "name": "rector/rector",
-            "version": "1.0.0",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "362258a1f6369fc88d02d469a5478d220f78b0e6"
+                "reference": "7596fa6da06c6a20c012efe6bb3d9188a9113b11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/362258a1f6369fc88d02d469a5478d220f78b0e6",
-                "reference": "362258a1f6369fc88d02d469a5478d220f78b0e6",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/7596fa6da06c6a20c012efe6bb3d9188a9113b11",
+                "reference": "7596fa6da06c6a20c012efe6bb3d9188a9113b11",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2|^8.0",
-                "phpstan/phpstan": "^1.10.56"
+                "phpstan/phpstan": "^1.10.57"
             },
             "conflict": {
                 "rector/rector-doctrine": "*",
@@ -9647,7 +9647,7 @@
             ],
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/1.0.0"
+                "source": "https://github.com/rectorphp/rector/tree/1.0.2"
             },
             "funding": [
                 {
@@ -9655,7 +9655,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-02-06T13:38:07+00:00"
+            "time": "2024-03-03T12:32:31+00:00"
         },
         {
             "name": "saschaegerer/phpstan-typo3",
@@ -10644,16 +10644,16 @@
         },
         {
             "name": "ssch/typo3-rector",
-            "version": "v2.0.2",
+            "version": "v2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabbelasichon/typo3-rector.git",
-                "reference": "f181a2108e759ac2f1a8b9589f205602974b0a95"
+                "reference": "498ec4ba020b8d52dbe8c6314a3aa174afc1c20a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabbelasichon/typo3-rector/zipball/f181a2108e759ac2f1a8b9589f205602974b0a95",
-                "reference": "f181a2108e759ac2f1a8b9589f205602974b0a95",
+                "url": "https://api.github.com/repos/sabbelasichon/typo3-rector/zipball/498ec4ba020b8d52dbe8c6314a3aa174afc1c20a",
+                "reference": "498ec4ba020b8d52dbe8c6314a3aa174afc1c20a",
                 "shasum": ""
             },
             "require": {
@@ -10668,7 +10668,7 @@
                 "symfony/polyfill-php80": "^1.28.0",
                 "symfony/polyfill-php81": "^1.28.0",
                 "symfony/string": "^5.4 || ^6.4 || ^7.0",
-                "symfony/yaml": "^5.4 || ^6.4 || ^7.0"
+                "webmozart/assert": "^1.11.0"
             },
             "require-dev": {
                 "ergebnis/composer-normalize": "^2.28",
@@ -10680,8 +10680,7 @@
                 "symfony/config": "^5.0 || ^6.0 || ^7.0",
                 "symfony/dependency-injection": "^5.4.34 || ^6.4.2 || ^7.0.2",
                 "symfony/http-kernel": "^5.4.34 || ^6.4.2 || ^7.0.2",
-                "symplify/easy-coding-standard": "^12.1.8",
-                "webmozart/assert": "^1.11.0"
+                "symplify/easy-coding-standard": "^12.1.8"
             },
             "suggest": {
                 "ssch/typo3-debug-dump-pass": "^0.0.1"
@@ -10746,7 +10745,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-02-14T14:27:43+00:00"
+            "time": "2024-03-08T14:08:24+00:00"
         },
         {
             "name": "symfony/css-selector",
