@@ -210,7 +210,7 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
             new Src\ValueObject\Request\SiteWarmupRequest($this->site),
         ]);
 
-        self::assertEquals('baz', $this->guzzleClientFactory->lastOptions['foo'] ?? null);
+        self::assertSame('baz', $this->guzzleClientFactory->lastOptions['foo'] ?? null);
     }
 
     #[Framework\Attributes\Test]

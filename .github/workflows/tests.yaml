@@ -5,6 +5,8 @@ on:
       - main
       - 'renovate/**'
   pull_request:
+    branches:
+      - main
 
 jobs:
   tests:
@@ -51,7 +53,7 @@ jobs:
 
       # Run tests
       - name: Run acceptance tests
-        uses: nick-fields/retry@v2
+        uses: nick-fields/retry@v3
         with:
           max_attempts: 2
           retry_on: error
@@ -82,7 +84,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
+          php-version: 8.2
           tools: composer:v2
           coverage: none
 
@@ -93,7 +95,7 @@ jobs:
           autostart: false
       - name: Configure and start DDEV
         run: |
-          ddev config --project-type=typo3 --php-version=8.3 --xdebug-enabled=true --webimage-extra-packages=
+          ddev config --project-type=typo3 --xdebug-enabled=true
           ddev start
 
       # Install dependencies
@@ -102,7 +104,7 @@ jobs:
 
       # Run tests
       - name: Run tests
-        uses: nick-fields/retry@v2
+        uses: nick-fields/retry@v3
         with:
           max_attempts: 2
           retry_on: error
@@ -155,7 +157,7 @@ jobs:
 
       # codecov
       - name: codecov report
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: |
