@@ -23,8 +23,7 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Tests\Acceptance\Support\Helper;
 
-use Codeception\Module;
-use EliasHaeussler\Typo3CodeceptionHelper;
+use TYPO3\CMS\Core;
 
 /**
  * ExtensionConfiguration
@@ -34,29 +33,16 @@ use EliasHaeussler\Typo3CodeceptionHelper;
  */
 final class ExtensionConfiguration
 {
-    /**
-     * @var non-empty-string
-     */
-    private readonly string $scriptPath;
+    private readonly Core\Configuration\ConfigurationManager $configurationManager;
 
-    public function __construct(
-        private readonly Module\Asserts $asserts,
-        private readonly Module\Cli $cli,
-    ) {
-        $this->scriptPath = $this->determineScriptPath();
+    public function __construct()
+    {
+        $this->configurationManager = Core\Utility\GeneralUtility::makeInstance(Core\Configuration\ConfigurationManager::class);
     }
 
     public function read(string $path): mixed
     {
-        $command = $this->buildCommand(['configuration:showactive', 'EXTENSIONS/warming/' . $path, '--json']);
-
-        $this->cli->runShellCommand($command);
-
-        $output = $this->cli->grabShellOutput();
-
-        $this->asserts->assertJson($output);
-
-        return json_decode($output, true);
+        return $this->configurationManager->getConfigurationValueByPath('EXTENSIONS/warming/' . $path);
     }
 
     /**
@@ -64,30 +50,6 @@ final class ExtensionConfiguration
      */
     public function write(string $path, mixed $value): void
     {
-        $command = $this->buildCommand(['configuration:set', 'EXTENSIONS/warming/' . $path, $value]);
-
-        $this->cli->runShellCommand($command);
-    }
-
-    /**
-     * @param non-empty-list<scalar> $command
-     * @return non-empty-string
-     */
-    private function buildCommand(array $command): string
-    {
-        $fullCommand = [$this->scriptPath, ...$command];
-        $fullCommand = array_map('strval', $fullCommand);
-
-        return implode(' ', array_map('escapeshellarg', $fullCommand));
-    }
-
-    /**
-     * @return non-empty-string
-     */
-    private function determineScriptPath(): string
-    {
-        $buildDir = \dirname(Typo3CodeceptionHelper\Helper\PathHelper::getVendorDirectory());
-
-        return $buildDir . '/bin/typo3';
+        $this->configurationManager->setLocalConfigurationValueByPath('EXTENSIONS/warming/' . $path, $value);
     }
 }
