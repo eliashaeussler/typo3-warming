@@ -113,7 +113,7 @@ final class WarmupCommand extends Console\Command\Command
             '  │  It can be defined via the extension configuration <info>strategy</info> or by using the <info>--strategy</info> option.',
             '  │  The following strategies are currently available:',
             ...array_map(
-                static fn(string $strategy) => '  │  * <info>' . $strategy . '</info>',
+                static fn (string $strategy) => '  │  * <info>' . $strategy . '</info>',
                 array_keys($this->crawlingStrategyFactory->getAll()),
             ),
             '  ├─ Default: <info>' . ($this->configuration->getStrategy() ?? 'none') . '</info>',
@@ -191,7 +191,6 @@ final class WarmupCommand extends Console\Command\Command
     }
 
     /**
-     * @throws CacheWarmup\Exception\InvalidUrlException
      * @throws Console\Exception\ExceptionInterface
      * @throws Core\Exception\SiteNotFoundException
      * @throws JsonException
