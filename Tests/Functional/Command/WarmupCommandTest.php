@@ -70,8 +70,8 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
         $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/pages.csv');
 
         // Set up backend user
-        $this->setUpBackendUser(3);
-        Core\Core\Bootstrap::initializeLanguageObject();
+        $backendUser = $this->setUpBackendUser(3);
+        $GLOBALS['LANG'] = $this->get(Core\Localization\LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
         // Create site configuration
         $this->site = $this->createSite();

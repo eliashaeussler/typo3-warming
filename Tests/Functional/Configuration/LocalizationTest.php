@@ -47,9 +47,9 @@ final class LocalizationTest extends TestingFramework\Core\Functional\Functional
         parent::setUp();
 
         $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/be_users.csv');
-        $this->setUpBackendUser(1);
 
-        Core\Core\Bootstrap::initializeLanguageObject();
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(Core\Localization\LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
     }
 
     #[Framework\Attributes\Test]

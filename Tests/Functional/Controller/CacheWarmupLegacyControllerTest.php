@@ -70,8 +70,8 @@ final class CacheWarmupLegacyControllerTest extends TestingFramework\Core\Functi
         $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/pages.csv');
 
         // Set up backend user
-        $this->setUpBackendUser(3);
-        Core\Core\Bootstrap::initializeLanguageObject();
+        $backendUser = $this->setUpBackendUser(3);
+        $GLOBALS['LANG'] = $this->get(Core\Localization\LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
         $this->site = $this->createSite();
         $this->guzzleClientFactory = new Tests\Functional\Fixtures\Classes\DummyGuzzleClientFactory();
