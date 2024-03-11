@@ -37,7 +37,7 @@ suites:
               editor.3: password
 
 actor_suffix: Tester
-bootstrap: /var/www/html/.Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTestsBootstrap.php
+bootstrap: ../../.Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTestsBootstrap.php
 extensions:
   enabled:
     - Codeception\Extension\RunFailed
