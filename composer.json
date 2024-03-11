@@ -57,7 +57,6 @@
 		"saschaegerer/phpstan-typo3": "^1.8",
 		"ssch/typo3-rector": "^2.0",
 		"symfony/config": "^6.0 || ^7.0",
-		"typo3/cms-extensionmanager": "~12.4.2 || ~13.0.0",
 		"typo3/cms-install": "~12.4.2 || ~13.0.0",
 		"typo3/cms-seo": "~12.4.2 || ~13.0.0",
 		"typo3/cms-tstemplate": "~12.4.2 || ~13.0.0",
@@ -109,15 +108,8 @@
 		"docs:cleanup": "rm -rf .Build/docs",
 		"docs:open": "open .Build/docs/Result/project/0.0.0/Index.html",
 		"environment:prepare": [
-			"@environment:prepare:extension",
-			"@environment:prepare:typo3"
-		],
-		"environment:prepare:extension": [
 			"[ -L config ] || ln -snvf Tests/Build/Configuration config",
 			"codecept build"
-		],
-		"environment:prepare:typo3": [
-			"typo3 extension:setup"
 		],
 		"fix": [
 			"@fix:composer",
