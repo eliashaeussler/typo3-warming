@@ -37,10 +37,22 @@ trait SiteTrait
 
     private function createSite(string $baseUrl = 'https://typo3-testing.local/'): Core\Site\Entity\Site
     {
-        $siteConfiguration = new Core\Configuration\SiteConfiguration(
-            $this->instancePath . '/typo3conf/sites',
-            new Core\EventDispatcher\NoopEventDispatcher(),
-        );
+        $configPath = $this->instancePath . '/typo3conf/sites';
+
+        if ((new Core\Information\Typo3Version())->getMajorVersion() >= 13) {
+            $siteConfiguration = new Core\Configuration\SiteConfiguration(
+                $configPath,
+                new Core\EventDispatcher\NoopEventDispatcher(),
+                new Core\Cache\Frontend\NullFrontend('core'),
+            );
+        } else {
+            // @todo Remove once support for TYPO3 v12 is dropped
+            $siteConfiguration = new Core\Configuration\SiteConfiguration(
+                $configPath,
+                new Core\EventDispatcher\NoopEventDispatcher(),
+            );
+        }
+
         $siteConfiguration->createNewBasicSite(static::$testSiteIdentifier, 1, $baseUrl);
 
         $rawConfig = $siteConfiguration->load(static::$testSiteIdentifier);

@@ -171,12 +171,12 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
             if ($itemName === self::ITEM_MODE_SITE) {
                 $languages = array_filter(
                     $languages,
-                    fn(Core\Site\Entity\SiteLanguage $siteLanguage): bool => $this->canWarmupCachesOfSite($siteLanguage)
+                    fn (Core\Site\Entity\SiteLanguage $siteLanguage): bool => $this->canWarmupCachesOfSite($siteLanguage)
                 );
             } else {
                 $languages = array_filter(
                     $languages,
-                    fn(Core\Site\Entity\SiteLanguage $siteLanguage): bool => Utility\AccessUtility::canWarmupCacheOfPage(
+                    fn (Core\Site\Entity\SiteLanguage $siteLanguage): bool => Utility\AccessUtility::canWarmupCacheOfPage(
                         (int)$this->identifier,
                         $siteLanguage->getLanguageId(),
                     )

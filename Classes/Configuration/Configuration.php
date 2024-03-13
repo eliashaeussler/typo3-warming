@@ -50,7 +50,6 @@ final class Configuration
         private readonly Core\Configuration\ExtensionConfiguration $configuration,
         private readonly CacheWarmup\Crawler\CrawlerFactory $crawlerFactory,
         private readonly Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
-        private readonly Extbase\Security\Cryptography\HashService $hashService,
     ) {
         $this->userAgent = $this->generateUserAgent();
     }
@@ -260,6 +259,18 @@ final class Configuration
 
     private function generateUserAgent(): string
     {
-        return $this->hashService->appendHmac('TYPO3/tx_warming_crawler');
+        $string = 'TYPO3/tx_warming_crawler';
+
+        if (class_exists(Core\Crypto\HashService::class)) {
+            return Core\Utility\GeneralUtility::makeInstance(Core\Crypto\HashService::class)->appendHmac(
+                $string,
+                self::class,
+            );
+        }
+
+        // @todo Remove once support for TYPO3 v12 is dropped
+        return Core\Utility\GeneralUtility::makeInstance(Extbase\Security\Cryptography\HashService::class)->appendHmac(
+            $string,
+        );
     }
 }

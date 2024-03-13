@@ -30,7 +30,7 @@ use Rector\Symfony\Symfony53\Rector\Class_\CommandDescriptionToPropertyRector;
 use Rector\Symfony\Symfony61\Rector\Class_\CommandPropertyToAttributeRector;
 use Rector\ValueObject\PhpVersion;
 
-return static function (RectorConfig $rectorConfig): void {
+return static function(RectorConfig $rectorConfig): void {
     Config::create($rectorConfig, PhpVersion::PHP_81)
         ->in(
             __DIR__ . '/Classes',

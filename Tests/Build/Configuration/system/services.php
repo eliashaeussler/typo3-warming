@@ -27,7 +27,7 @@ use EliasHaeussler\Typo3Warming\Tests;
 use Symfony\Component\DependencyInjection;
 use TYPO3\CMS\Core;
 
-return static function (DependencyInjection\ContainerBuilder $containerBuilder): void {
+return static function(DependencyInjection\ContainerBuilder $containerBuilder): void {
     $cachePath = Core\Core\Environment::getVarPath() . '/cache/data/di/DependencyInjectionContainer.xml';
 
     $containerBuilder->addCompilerPass(

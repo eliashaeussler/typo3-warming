@@ -31,11 +31,14 @@ namespace EliasHaeussler\Typo3Warming\Tests\Acceptance\Support\Enums;
  */
 enum Selectors: string
 {
+    case BackendPageModule = '[data-moduleroute-identifier="web_layout"]';
+    case BackendListModule = '[data-moduleroute-identifier="web_list"]';
     case CheckboxMainGroup = '#tx-warming-checkbox-main-group';
     case CheckboxMainLanguage0 = '#tx-warming-checkbox-main-0';
     case CheckboxMainLanguage1 = '#tx-warming-checkbox-main-1';
     case CheckboxRoot2 = '#tx-warming-checkbox-root-2';
     case ContextMenu = '.context-menu';
+    case ContextMenuGroup = '.context-menu .context-menu-group';
     case ContextMenuSubmenu = '.context-menu[data-parent]';
     case ModalTitle = '.modal .modal-title';
     case ProgressCounterTotal = '.tx-warming-progress-modal .tx-warming-progress-modal-counter > div:nth-child(1) > strong:nth-child(2)';

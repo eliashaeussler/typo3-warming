@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
@@ -19,24 +21,29 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-$GLOBALS['TYPO3_CONF_VARS'] = array_replace_recursive(
-    $GLOBALS['TYPO3_CONF_VARS'],
-    [
-        // Required for acceptance tests
-        'LOG' => [
-            'EliasHaeussler' => [
-                'Typo3Warming' => [
-                    'Crawler' => [
-                        'OutputtingUserAgentCrawler' => [
-                            'writerConfiguration' => [
-                                \Psr\Log\LogLevel::WARNING => [
-                                    \EliasHaeussler\Typo3Warming\Log\Writer\DatabaseWriter::class => [],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ],
-    ],
-);
+namespace EliasHaeussler\Typo3Warming\Tests\Acceptance\Support\Extension;
+
+use Codeception\Events;
+use Codeception\Extension;
+
+/**
+ * EnvironmentExtension
+ *
+ * @author Elias Häußler <elias@haeussler.dev>
+ * @license GPL-2.0-or-later
+ */
+final class EnvironmentExtension extends Extension
+{
+    /**
+     * @var array<Events::*, string>
+     */
+    public static array $events = [
+        Events::SUITE_BEFORE => 'beforeSuite',
+    ];
+
+    public function beforeSuite(): void
+    {
+        // Bootstrap TYPO3 environment
+        require_once dirname(__DIR__, 4) . '/.Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTestsBootstrap.php';
+    }
+}

@@ -46,6 +46,7 @@ extensions:
         entrypoints:
           - web-dir: .Build/web
           - web-dir: .Build/web/typo3
+    - EliasHaeussler\Typo3Warming\Tests\Acceptance\Support\Extension\EnvironmentExtension
 
 coverage:
   enabled: true
