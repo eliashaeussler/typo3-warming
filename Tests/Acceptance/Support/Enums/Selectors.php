@@ -31,6 +31,8 @@ namespace EliasHaeussler\Typo3Warming\Tests\Acceptance\Support\Enums;
  */
 enum Selectors: string
 {
+    case BackendPageModule = '[data-moduleroute-identifier="web_layout"]';
+    case BackendListModule = '[data-moduleroute-identifier="web_list"]';
     case CheckboxMainGroup = '#tx-warming-checkbox-main-group';
     case CheckboxMainLanguage0 = '#tx-warming-checkbox-main-0';
     case CheckboxMainLanguage1 = '#tx-warming-checkbox-main-1';

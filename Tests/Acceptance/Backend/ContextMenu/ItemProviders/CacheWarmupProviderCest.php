@@ -39,6 +39,9 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('admin');
 
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule->value);
+        $I->switchToIFrame();
+
         $pageTree->openContextMenu(['Main']);
 
         $I->see('Warmup cache for this page', Tests\Acceptance\Support\Enums\Selectors::ContextMenu->value);
@@ -51,6 +54,9 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('editor.1');
 
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule->value);
+        $I->switchToIFrame();
+
         $pageTree->openContextMenu(['Main']);
 
         $I->dontSee('Warmup cache for this page', Tests\Acceptance\Support\Enums\Selectors::ContextMenu->value);
@@ -62,6 +68,9 @@ final class CacheWarmupProviderCest
         Tests\Acceptance\Support\Helper\PageTree $pageTree,
     ): void {
         $I->loginAs('editor.2');
+
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule->value);
+        $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Main']);
 
@@ -78,6 +87,9 @@ final class CacheWarmupProviderCest
 
         $I->loginAs('admin');
 
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule->value);
+        $I->switchToIFrame();
+
         $pageTree->openContextMenu(['Main']);
 
         $I->dontSee('Warmup cache for this page', Tests\Acceptance\Support\Enums\Selectors::ContextMenu->value);
@@ -92,6 +104,9 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('admin');
 
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule->value);
+        $I->switchToIFrame();
+
         $pageTree->openContextMenu(['Root 2']);
 
         $I->see('Warmup cache for this page', Tests\Acceptance\Support\Enums\Selectors::ContextMenu->value);
@@ -103,6 +118,9 @@ final class CacheWarmupProviderCest
         Tests\Acceptance\Support\Helper\PageTree $pageTree,
     ): void {
         $I->loginAs('admin');
+
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule->value);
+        $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Root 3']);
 
@@ -116,6 +134,9 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('editor.3');
 
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule->value);
+        $I->switchToIFrame();
+
         $pageTree->openContextMenu(['Main']);
 
         $I->dontSee('Warmup cache for this page', Tests\Acceptance\Support\Enums\Selectors::ContextMenu->value);
@@ -127,6 +148,9 @@ final class CacheWarmupProviderCest
         Tests\Acceptance\Support\Helper\PageTree $pageTree,
     ): void {
         $I->loginAs('admin');
+
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule->value);
+        $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Main']);
         $pageTree->selectInContextMenu(['Warmup cache for this page']);
@@ -141,6 +165,9 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('editor.2');
 
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule->value);
+        $I->switchToIFrame();
+
         $pageTree->openContextMenu(['Main']);
         $pageTree->selectInContextMenu(['Warmup cache for this page']);
 
@@ -154,6 +181,9 @@ final class CacheWarmupProviderCest
         Tests\Acceptance\Support\Helper\PageTree $pageTree,
     ): void {
         $I->loginAs('admin');
+
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule->value);
+        $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Main']);
         $pageTree->selectInContextMenu(['Warmup all caches', 'English']);
@@ -172,6 +202,9 @@ final class CacheWarmupProviderCest
         Tests\Acceptance\Support\Helper\PageTree $pageTree,
     ): void {
         $I->loginAs('admin');
+
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule->value);
+        $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Main', 'Subsite 1']);
         $pageTree->selectInContextMenu(['Warmup cache for this page', 'English']);
