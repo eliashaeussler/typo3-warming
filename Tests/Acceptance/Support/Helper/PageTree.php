@@ -65,7 +65,7 @@ final class PageTree extends TestingFramework\Core\Acceptance\Helper\AbstractPag
         $I->executeInSelenium(function(WebDriver\Remote\RemoteWebDriver $webDriver) use ($contextMenu): void {
             $webDriver->getMouse()->contextClick($contextMenu->getCoordinates());
         });
-        $I->waitForElementVisible('.context-menu');
+        $I->waitForElementVisible(Tests\Acceptance\Support\Enums\Selectors::ContextMenuGroup->value);
     }
 
     /**

@@ -38,6 +38,7 @@ enum Selectors: string
     case CheckboxMainLanguage1 = '#tx-warming-checkbox-main-1';
     case CheckboxRoot2 = '#tx-warming-checkbox-root-2';
     case ContextMenu = '.context-menu';
+    case ContextMenuGroup = '.context-menu .context-menu-group';
     case ContextMenuSubmenu = '.context-menu[data-parent]';
     case ModalTitle = '.modal .modal-title';
     case ProgressCounterTotal = '.tx-warming-progress-modal .tx-warming-progress-modal-counter > div:nth-child(1) > strong:nth-child(2)';
