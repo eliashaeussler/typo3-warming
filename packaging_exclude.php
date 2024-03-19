@@ -41,7 +41,6 @@ return [
         'DS_Store',
         'CODE_OF_CONDUCT.md',
         'codeception.yml',
-        'codecov.yml',
         'CODEOWNERS',
         'composer.lock',
         'CONTRIBUTING.md',
