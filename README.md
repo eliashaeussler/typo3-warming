@@ -4,7 +4,7 @@
 
 # TYPO3 extension `warming`
 
-[![Coverage](https://img.shields.io/codecov/c/github/eliashaeussler/typo3-warming?logo=codecov&token=7M3UXACCKA)](https://codecov.io/gh/eliashaeussler/typo3-warming)
+[![Coverage](https://img.shields.io/coverallsCoverage/github/eliashaeussler/typo3-warming?logo=coveralls)](https://coveralls.io/github/eliashaeussler/typo3-warming)
 [![Maintainability](https://img.shields.io/codeclimate/maintainability/eliashaeussler/typo3-warming?logo=codeclimate)](https://codeclimate.com/github/eliashaeussler/typo3-warming/maintainability)
 [![CGL](https://img.shields.io/github/actions/workflow/status/eliashaeussler/typo3-warming/cgl.yaml?label=cgl&logo=github)](https://github.com/eliashaeussler/typo3-warming/actions/workflows/cgl.yaml)
 [![Tests](https://img.shields.io/github/actions/workflow/status/eliashaeussler/typo3-warming/tests.yaml?label=tests&logo=github)](https://github.com/eliashaeussler/typo3-warming/actions/workflows/tests.yaml)

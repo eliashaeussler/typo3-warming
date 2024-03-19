@@ -141,8 +141,8 @@ Run tests
 
 ..  rst-class:: d-inline-block mb-3
 
-..  image:: https://codecov.io/gh/eliashaeussler/typo3-warming/branch/main/graph/badge.svg?token=7M3UXACCKA
-    :target: https://codecov.io/gh/eliashaeussler/typo3-warming
+..  image:: https://img.shields.io/coverallsCoverage/github/eliashaeussler/typo3-warming?logo=coveralls
+    :target: https://coveralls.io/github/eliashaeussler/typo3-warming
 
 ..  code-block:: bash
 
