@@ -8,26 +8,27 @@
   integrity sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==
 
 "@babel/code-frame@^7.0.0":
-  version "7.23.5"
-  resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.23.5.tgz#9009b69a8c602293476ad598ff53e4562e15c244"
-  integrity sha512-CgH3s1a96LipHCmSUmYFPwY7MNx8C3avkq7i4Wl3cfa662ldtUe4VM1TPXX70pfmrlWTb6jLqTYrZyT2ZTJBgA==
+  version "7.24.2"
+  resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.24.2.tgz#718b4b19841809a58b29b68cde80bc5e1aa6d9ae"
+  integrity sha512-y5+tLQyV8pg3fsiln67BVLD1P13Eg4lh5RW9mF0zUuvLrv9uIQ4MCL+CRT+FTsBlBjcIan6PGsLcBN0m3ClUyQ==
   dependencies:
-    "@babel/highlight" "^7.23.4"
-    chalk "^2.4.2"
+    "@babel/highlight" "^7.24.2"
+    picocolors "^1.0.0"
 
 "@babel/helper-validator-identifier@^7.22.20":
   version "7.22.20"
   resolved "https://registry.yarnpkg.com/@babel/helper-validator-identifier/-/helper-validator-identifier-7.22.20.tgz#c4ae002c61d2879e724581d96665583dbc1dc0e0"
   integrity sha512-Y4OZ+ytlatR8AI+8KZfKuL5urKp7qey08ha31L8b3BwewJAoJamTzyvxPR/5D+KkdJCGPq/+8TukHBlY10FX9A==
 
-"@babel/highlight@^7.23.4":
-  version "7.23.4"
-  resolved "https://registry.yarnpkg.com/@babel/highlight/-/highlight-7.23.4.tgz#edaadf4d8232e1a961432db785091207ead0621b"
-  integrity sha512-acGdbYSfp2WheJoJm/EBBBLh/ID8KDc64ISZ9DYtBmC8/Q204PZJLHyzeB5qMzJ5trcOkybd78M4x2KWsUq++A==
+"@babel/highlight@^7.24.2":
+  version "7.24.2"
+  resolved "https://registry.yarnpkg.com/@babel/highlight/-/highlight-7.24.2.tgz#3f539503efc83d3c59080a10e6634306e0370d26"
+  integrity sha512-Yac1ao4flkTxTteCDZLEvdxg2fZfz1v8M4QpaGypq/WPDqg3ijHYbDfs+LG5hvzSoqaSZ9/Z9lKSP3CjZjv+pA==
   dependencies:
     "@babel/helper-validator-identifier" "^7.22.20"
     chalk "^2.4.2"
     js-tokens "^4.0.0"
+    picocolors "^1.0.0"
 
 "@csstools/css-parser-algorithms@^2.5.0":
   version "2.6.1"
@@ -305,9 +306,9 @@
   integrity sha512-K0VQKziLUWkVKiRVrx4a40iPaxTUefQmjtkQofBkYRcoaaL/8rhwDWww9qWbrgicNOgnpIsMxyNIUM4+n6dUIA==
 
 "@types/node@*":
-  version "20.11.29"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.11.29.tgz#431253cede34f392d6aaf7acad427b9c23aa60f6"
-  integrity sha512-P99thMkD/1YkCvAtOd6/zGedKNA0p2fj4ZpjCzcNiSCBWgm3cNRTBfa/qjFnsKkkojxu4vVLtWpesnZ9+ap+gA==
+  version "20.11.30"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.11.30.tgz#9c33467fc23167a347e73834f788f4b9f399d66f"
+  integrity sha512-dHM6ZxwlmuZaRmUPfv1p+KrdD1Dci04FbdEm/9wEMouFqxYoFl5aMkt0VMAUtYRQDyYvD41WJLukhq/ha3YuTw==
   dependencies:
     undici-types "~5.26.4"
 
@@ -983,9 +984,9 @@ domutils@^2.8.0:
     domhandler "^4.2.0"
 
 electron-to-chromium@^1.4.668:
-  version "1.4.710"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.710.tgz#d0ec4ea8a97df4c5eaeb8c69d45bf81f248b3855"
-  integrity sha512-w+9yAVHoHhysCa+gln7AzbO9CdjFcL/wN/5dd+XW/Msl2d/4+WisEaCF1nty0xbAKaxdaJfgLB2296U7zZB7BA==
+  version "1.4.711"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.711.tgz#f9fd04007878cc27ac327d5c6ce300f8b516f635"
+  integrity sha512-hRg81qzvUEibX2lDxnFlVCHACa+LtrCPIsWAxo161LDYIB3jauf57RGsMZV9mvGwE98yGH06icj3zBEoOkxd/w==
 
 emoji-regex@^8.0.0:
   version "8.0.0"
@@ -2889,12 +2890,7 @@ smob@^1.0.0:
   resolved "https://registry.yarnpkg.com/smob/-/smob-1.4.1.tgz#66270e7df6a7527664816c5b577a23f17ba6f5b5"
   integrity sha512-9LK+E7Hv5R9u4g4C3p+jjLstaLe11MDsL21UpYaCNmapvMkYhqCV4A/f/3gyH8QjMyh6l68q9xC85vihY9ahMQ==
 
-"source-map-js@>=0.6.2 <2.0.0", source-map-js@^1.0.1:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.1.0.tgz#9e7d5cb46f0689fb6691b30f226937558d0fa94b"
-  integrity sha512-9vC2SfsJzlej6MAaMPLu8HiBSHGdRAJ9hVFYN1ibZoNkeanmDmLUcIrj6G9DGL7XMJ54AKg/G75akXl1/izTOw==
-
-source-map-js@^1.2.0:
+"source-map-js@>=0.6.2 <2.0.0", source-map-js@^1.0.1, source-map-js@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.2.0.tgz#16b809c162517b5b8c3e7dcd315a2a5c2612b2af"
   integrity sha512-itJW8lvSA0TXEphiRoawsCksnlf8SyvmFzIhltqAHluXd88pkCd+cXJVHTDwdCr0IzwptSm035IHQktUu1QUMg==
