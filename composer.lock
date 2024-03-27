@@ -6952,16 +6952,16 @@
         },
         {
             "name": "composer/xdebug-handler",
-            "version": "3.0.3",
+            "version": "3.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/xdebug-handler.git",
-                "reference": "ced299686f41dce890debac69273b47ffe98a40c"
+                "reference": "4f988f8fdf580d53bdb2d1278fe93d1ed5462255"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/ced299686f41dce890debac69273b47ffe98a40c",
-                "reference": "ced299686f41dce890debac69273b47ffe98a40c",
+                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/4f988f8fdf580d53bdb2d1278fe93d1ed5462255",
+                "reference": "4f988f8fdf580d53bdb2d1278fe93d1ed5462255",
                 "shasum": ""
             },
             "require": {
@@ -6972,7 +6972,7 @@
             "require-dev": {
                 "phpstan/phpstan": "^1.0",
                 "phpstan/phpstan-strict-rules": "^1.1",
-                "symfony/phpunit-bridge": "^6.0"
+                "phpunit/phpunit": "^8.5 || ^9.6 || ^10.5"
             },
             "type": "library",
             "autoload": {
@@ -6996,9 +6996,9 @@
                 "performance"
             ],
             "support": {
-                "irc": "irc://irc.freenode.org/composer",
+                "irc": "ircs://irc.libera.chat:6697/composer",
                 "issues": "https://github.com/composer/xdebug-handler/issues",
-                "source": "https://github.com/composer/xdebug-handler/tree/3.0.3"
+                "source": "https://github.com/composer/xdebug-handler/tree/3.0.4"
             },
             "funding": [
                 {
@@ -7014,7 +7014,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-02-25T21:32:43+00:00"
+            "time": "2024-03-26T18:29:49+00:00"
         },
         {
             "name": "eliashaeussler/php-cs-fixer-config",
@@ -10432,16 +10432,16 @@
         },
         {
             "name": "ssch/typo3-rector",
-            "version": "v2.2.0",
+            "version": "v2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabbelasichon/typo3-rector.git",
-                "reference": "c39979e7f099eafead1cc677f0e9e29920e27d6e"
+                "reference": "98b0ebb6104962a29414bdf51967ee58d824d534"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabbelasichon/typo3-rector/zipball/c39979e7f099eafead1cc677f0e9e29920e27d6e",
-                "reference": "c39979e7f099eafead1cc677f0e9e29920e27d6e",
+                "url": "https://api.github.com/repos/sabbelasichon/typo3-rector/zipball/98b0ebb6104962a29414bdf51967ee58d824d534",
+                "reference": "98b0ebb6104962a29414bdf51967ee58d824d534",
                 "shasum": ""
             },
             "require": {
@@ -10534,7 +10534,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-03-19T22:08:03+00:00"
+            "time": "2024-03-26T22:50:50+00:00"
         },
         {
             "name": "symfony/css-selector",
