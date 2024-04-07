@@ -163,7 +163,7 @@ final class WarmupFinishedEvent implements SSE\Event\Event
         }
 
         // Remove invalid messages
-        $messages = array_filter($messages);
+        $messages = array_filter($messages, static fn (string $message) => \trim($message) !== '');
 
         // Handle no cache warmup
         if ($messages === []) {
