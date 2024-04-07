@@ -61,13 +61,19 @@ final class FetchSitesController
         foreach (array_filter($this->siteFinder->getAllSites(), Utility\AccessUtility::canWarmupCacheOfSite(...)) as $site) {
             $row = Backend\Utility\BackendUtility::getRecord('pages', $site->getRootPageId(), '*', ' AND hidden = 0');
 
-            if (\is_array($row)) {
-                $siteGroups[] = $this->createSiteGroup($site, $row);
+            if (!\is_array($row)) {
+                continue;
+            }
+
+            $siteGroup = $this->createSiteGroup($site, $row);
+
+            if ($siteGroup !== null) {
+                $siteGroups[] = $siteGroup;
             }
         }
 
         return $this->responseFactory->htmlTemplate('Modal/SitesModal', [
-            'siteGroups' => array_filter($siteGroups),
+            'siteGroups' => $siteGroups,
             'userAgent' => $this->configuration->getUserAgent(),
             'configuration' => [
                 'limit' => $this->configuration->getLimit(),
