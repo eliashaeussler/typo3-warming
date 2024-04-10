@@ -17,16 +17,22 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-/**
- * States of a warmup request describing its current outcome.
- *
- * @author Elias Häußler <elias@haeussler.dev>
- * @license GPL-2.0-or-later
- */
-export enum WarmupState {
-  Failed = 'failed',
-  Warning = 'warning',
-  Success = 'success',
-  Aborted = 'aborted',
-  Unknown = 'unknown',
-}
+import {fileURLToPath} from 'url';
+import path from 'path';
+import {readFileSync} from 'fs';
+
+const licenseFile = `${path.dirname(fileURLToPath(import.meta.url))}/license-header.txt`;
+const currentYear = new Date().getFullYear().toString();
+const lines = readFileSync(licenseFile).toString()
+  .replace('<%= YEAR %>', currentYear)
+  .trim()
+  .split('\n')
+;
+
+const licenseHeader = [
+  '/*',
+  ...lines.map((line) => ` * ${line}`.trimEnd()),
+  ' */'
+];
+
+export default licenseHeader;

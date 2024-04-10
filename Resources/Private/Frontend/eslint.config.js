@@ -1,9 +1,7 @@
-'use strict'
-
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
- * Copyright (C) 2024 Elias Häußler <elias@haeussler.dev>
+ * Copyright (C) 2021-2024 Elias Häußler <elias@haeussler.dev>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,7 +10,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
@@ -20,7 +18,8 @@
  */
 
 import eslint from '@eslint/js';
-import globals from 'globals';
+import licenseHeader from 'eslint-plugin-license-header';
+import licenseText from './res/license-header.js';
 import tseslint from 'typescript-eslint';
 
 export default [
@@ -40,6 +39,12 @@ export default [
         ecmaVersion: 2021,
         sourceType: 'module',
       },
+    },
+    plugins: {
+      'license-header': licenseHeader,
+    },
+    rules: {
+      'license-header/header': ['error', licenseText],
     },
   },
 ];
