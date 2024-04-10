@@ -5465,21 +5465,21 @@
         },
         {
             "name": "typo3/cms-backend",
-            "version": "v12.4.13",
+            "version": "v12.4.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3-CMS/backend.git",
-                "reference": "45588d80cf0d8cc1fe6b41c782a404bad89ecae8"
+                "reference": "b1c6a346d10ce70ea02f7c77c228eb5977882a38"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3-CMS/backend/zipball/45588d80cf0d8cc1fe6b41c782a404bad89ecae8",
-                "reference": "45588d80cf0d8cc1fe6b41c782a404bad89ecae8",
+                "url": "https://api.github.com/repos/TYPO3-CMS/backend/zipball/b1c6a346d10ce70ea02f7c77c228eb5977882a38",
+                "reference": "b1c6a346d10ce70ea02f7c77c228eb5977882a38",
                 "shasum": ""
             },
             "require": {
                 "psr/event-dispatcher": "^1.0",
-                "typo3/cms-core": "12.4.13"
+                "typo3/cms-core": "12.4.14"
             },
             "conflict": {
                 "typo3/cms": "*"
@@ -5540,7 +5540,7 @@
                 "issues": "https://forge.typo3.org",
                 "source": "https://github.com/typo3/typo3"
             },
-            "time": "2024-03-19T09:11:00+00:00"
+            "time": "2024-04-09T13:09:18+00:00"
         },
         {
             "name": "typo3/cms-cli",
@@ -5649,16 +5649,16 @@
         },
         {
             "name": "typo3/cms-core",
-            "version": "v12.4.13",
+            "version": "v12.4.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3-CMS/core.git",
-                "reference": "d74aaac8b8e9b5ffd904fd75cc01958f99f26b2d"
+                "reference": "c4a7322f08e9769aaba2fd68917682d8feadd6ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3-CMS/core/zipball/d74aaac8b8e9b5ffd904fd75cc01958f99f26b2d",
-                "reference": "d74aaac8b8e9b5ffd904fd75cc01958f99f26b2d",
+                "url": "https://api.github.com/repos/TYPO3-CMS/core/zipball/c4a7322f08e9769aaba2fd68917682d8feadd6ba",
+                "reference": "c4a7322f08e9769aaba2fd68917682d8feadd6ba",
                 "shasum": ""
             },
             "require": {
@@ -5785,20 +5785,20 @@
                 "issues": "https://forge.typo3.org",
                 "source": "https://github.com/typo3/typo3"
             },
-            "time": "2024-03-19T09:11:00+00:00"
+            "time": "2024-04-09T13:09:18+00:00"
         },
         {
             "name": "typo3/cms-extbase",
-            "version": "v12.4.13",
+            "version": "v12.4.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3-CMS/extbase.git",
-                "reference": "68c22504f66d6bff9b902e447cad489a7d1c3c35"
+                "reference": "8bb84c04734c1657ed2ef2efd58d01baf3631cef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3-CMS/extbase/zipball/68c22504f66d6bff9b902e447cad489a7d1c3c35",
-                "reference": "68c22504f66d6bff9b902e447cad489a7d1c3c35",
+                "url": "https://api.github.com/repos/TYPO3-CMS/extbase/zipball/8bb84c04734c1657ed2ef2efd58d01baf3631cef",
+                "reference": "8bb84c04734c1657ed2ef2efd58d01baf3631cef",
                 "shasum": ""
             },
             "require": {
@@ -5808,7 +5808,7 @@
                 "symfony/dependency-injection": "^6.4 || ^7.0",
                 "symfony/property-access": "^6.4 || ^7.0",
                 "symfony/property-info": "^6.4 || ^7.0",
-                "typo3/cms-core": "12.4.13"
+                "typo3/cms-core": "12.4.14"
             },
             "conflict": {
                 "typo3/cms": "*"
@@ -5855,26 +5855,26 @@
                 "issues": "https://forge.typo3.org",
                 "source": "https://github.com/typo3/typo3"
             },
-            "time": "2024-03-19T09:11:00+00:00"
+            "time": "2024-04-09T13:09:18+00:00"
         },
         {
             "name": "typo3/cms-fluid",
-            "version": "v12.4.13",
+            "version": "v12.4.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3-CMS/fluid.git",
-                "reference": "6570da527cab2ba1f8bdbfc864195d0afb1a3b4b"
+                "reference": "1338211ae9817d63452bd0b804c406040fa5eaaa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3-CMS/fluid/zipball/6570da527cab2ba1f8bdbfc864195d0afb1a3b4b",
-                "reference": "6570da527cab2ba1f8bdbfc864195d0afb1a3b4b",
+                "url": "https://api.github.com/repos/TYPO3-CMS/fluid/zipball/1338211ae9817d63452bd0b804c406040fa5eaaa",
+                "reference": "1338211ae9817d63452bd0b804c406040fa5eaaa",
                 "shasum": ""
             },
             "require": {
                 "symfony/dependency-injection": "^6.4 || ^7.0",
-                "typo3/cms-core": "12.4.13",
-                "typo3/cms-extbase": "12.4.13",
+                "typo3/cms-core": "12.4.14",
+                "typo3/cms-extbase": "12.4.14",
                 "typo3fluid/fluid": "^2.9.2"
             },
             "conflict": {
@@ -5919,7 +5919,7 @@
                 "issues": "https://forge.typo3.org",
                 "source": "https://github.com/typo3/typo3"
             },
-            "time": "2024-03-19T09:11:00+00:00"
+            "time": "2024-04-09T13:09:18+00:00"
         },
         {
             "name": "typo3/html-sanitizer",
@@ -8057,6 +8057,197 @@
                 "source": "https://github.com/justinrainbow/json-schema/tree/v5.2.13"
             },
             "time": "2023-09-26T02:20:38+00:00"
+        },
+        {
+            "name": "league/flysystem",
+            "version": "2.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/flysystem.git",
+                "reference": "8aaffb653c5777781b0f7f69a5d937baf7ab6cdb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/8aaffb653c5777781b0f7f69a5d937baf7ab6cdb",
+                "reference": "8aaffb653c5777781b0f7f69a5d937baf7ab6cdb",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "league/mime-type-detection": "^1.0.0",
+                "php": "^7.2 || ^8.0"
+            },
+            "conflict": {
+                "guzzlehttp/ringphp": "<1.1.1"
+            },
+            "require-dev": {
+                "async-aws/s3": "^1.5",
+                "async-aws/simple-s3": "^1.0",
+                "aws/aws-sdk-php": "^3.132.4",
+                "composer/semver": "^3.0",
+                "ext-fileinfo": "*",
+                "ext-ftp": "*",
+                "friendsofphp/php-cs-fixer": "^3.2",
+                "google/cloud-storage": "^1.23",
+                "phpseclib/phpseclib": "^2.0",
+                "phpstan/phpstan": "^0.12.26",
+                "phpunit/phpunit": "^8.5 || ^9.4",
+                "sabre/dav": "^4.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "League\\Flysystem\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Frank de Jonge",
+                    "email": "info@frankdejonge.nl"
+                }
+            ],
+            "description": "File storage abstraction for PHP",
+            "keywords": [
+                "WebDAV",
+                "aws",
+                "cloud",
+                "file",
+                "files",
+                "filesystem",
+                "filesystems",
+                "ftp",
+                "s3",
+                "sftp",
+                "storage"
+            ],
+            "support": {
+                "issues": "https://github.com/thephpleague/flysystem/issues",
+                "source": "https://github.com/thephpleague/flysystem/tree/2.5.0"
+            },
+            "funding": [
+                {
+                    "url": "https://ecologi.com/frankdejonge",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/frankdejonge",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/league/flysystem",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-09-17T21:02:32+00:00"
+        },
+        {
+            "name": "league/flysystem-memory",
+            "version": "2.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/flysystem-memory.git",
+                "reference": "f644026c705b8a501543f38cb8b745a603aa4952"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-memory/zipball/f644026c705b8a501543f38cb8b745a603aa4952",
+                "reference": "f644026c705b8a501543f38cb8b745a603aa4952",
+                "shasum": ""
+            },
+            "require": {
+                "ext-fileinfo": "*",
+                "league/flysystem": "^2.0.0",
+                "php": "^7.2 || ^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "League\\Flysystem\\InMemory\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Frank de Jonge",
+                    "email": "info@frankdejonge.nl"
+                }
+            ],
+            "description": "In-memory filesystem adapter for Flysystem.",
+            "keywords": [
+                "Flysystem",
+                "file",
+                "files",
+                "filesystem",
+                "memory"
+            ],
+            "support": {
+                "issues": "https://github.com/thephpleague/flysystem-memory/issues",
+                "source": "https://github.com/thephpleague/flysystem-memory/tree/2.0.6"
+            },
+            "time": "2021-02-12T19:24:17+00:00"
+        },
+        {
+            "name": "league/mime-type-detection",
+            "version": "1.15.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/mime-type-detection.git",
+                "reference": "ce0f4d1e8a6f4eb0ddff33f57c69c50fd09f4301"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/mime-type-detection/zipball/ce0f4d1e8a6f4eb0ddff33f57c69c50fd09f4301",
+                "reference": "ce0f4d1e8a6f4eb0ddff33f57c69c50fd09f4301",
+                "shasum": ""
+            },
+            "require": {
+                "ext-fileinfo": "*",
+                "php": "^7.4 || ^8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.2",
+                "phpstan/phpstan": "^0.12.68",
+                "phpunit/phpunit": "^8.5.8 || ^9.3 || ^10.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "League\\MimeTypeDetection\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Frank de Jonge",
+                    "email": "info@frankdejonge.nl"
+                }
+            ],
+            "description": "Mime-type detection for Flysystem",
+            "support": {
+                "issues": "https://github.com/thephpleague/mime-type-detection/issues",
+                "source": "https://github.com/thephpleague/mime-type-detection/tree/1.15.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/frankdejonge",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/league/flysystem",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2024-01-28T23:22:08+00:00"
         },
         {
             "name": "localheinz/diff",
@@ -10440,19 +10631,21 @@
         },
         {
             "name": "ssch/typo3-rector",
-            "version": "v2.3.2",
+            "version": "v2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabbelasichon/typo3-rector.git",
-                "reference": "7f23374976675bc29ffe2b7df8a333c9ae4b0d43"
+                "reference": "4ef49c9d39a130344056a0049b7a087917d77922"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabbelasichon/typo3-rector/zipball/7f23374976675bc29ffe2b7df8a333c9ae4b0d43",
-                "reference": "7f23374976675bc29ffe2b7df8a333c9ae4b0d43",
+                "url": "https://api.github.com/repos/sabbelasichon/typo3-rector/zipball/4ef49c9d39a130344056a0049b7a087917d77922",
+                "reference": "4ef49c9d39a130344056a0049b7a087917d77922",
                 "shasum": ""
             },
             "require": {
+                "league/flysystem": "^2.0",
+                "league/flysystem-memory": "^2.0",
                 "nette/utils": "^3.2.10 || ^4.0.4",
                 "nikic/php-parser": "^4.18.0",
                 "php": "^7.4 || ^8.0",
@@ -10541,7 +10734,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-04-03T08:57:37+00:00"
+            "time": "2024-04-09T15:19:06+00:00"
         },
         {
             "name": "symfony/css-selector",
@@ -10944,21 +11137,21 @@
         },
         {
             "name": "typo3/cms-frontend",
-            "version": "v12.4.13",
+            "version": "v12.4.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3-CMS/frontend.git",
-                "reference": "67ae3af8df5a383e1d5d4fdcbc7f7723c1e99c44"
+                "reference": "04b71fcade40f6b6f864c2ddc21d2fdc8b2d075c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3-CMS/frontend/zipball/67ae3af8df5a383e1d5d4fdcbc7f7723c1e99c44",
-                "reference": "67ae3af8df5a383e1d5d4fdcbc7f7723c1e99c44",
+                "url": "https://api.github.com/repos/TYPO3-CMS/frontend/zipball/04b71fcade40f6b6f864c2ddc21d2fdc8b2d075c",
+                "reference": "04b71fcade40f6b6f864c2ddc21d2fdc8b2d075c",
                 "shasum": ""
             },
             "require": {
                 "ext-libxml": "*",
-                "typo3/cms-core": "12.4.13"
+                "typo3/cms-core": "12.4.14"
             },
             "conflict": {
                 "typo3/cms": "*"
@@ -11010,20 +11203,20 @@
                 "issues": "https://forge.typo3.org",
                 "source": "https://github.com/typo3/typo3"
             },
-            "time": "2024-03-19T09:11:00+00:00"
+            "time": "2024-04-09T13:09:18+00:00"
         },
         {
             "name": "typo3/cms-install",
-            "version": "v12.4.13",
+            "version": "v12.4.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3-CMS/install.git",
-                "reference": "fccf72e92a6b0e75149a7aa28b485197120b99ca"
+                "reference": "a899ee65dd2255ad1eb4b838baa738090694109b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3-CMS/install/zipball/fccf72e92a6b0e75149a7aa28b485197120b99ca",
-                "reference": "fccf72e92a6b0e75149a7aa28b485197120b99ca",
+                "url": "https://api.github.com/repos/TYPO3-CMS/install/zipball/a899ee65dd2255ad1eb4b838baa738090694109b",
+                "reference": "a899ee65dd2255ad1eb4b838baa738090694109b",
                 "shasum": ""
             },
             "require": {
@@ -11032,9 +11225,9 @@
                 "nikic/php-parser": "^4.15.4",
                 "symfony/finder": "^6.4 || ^7.0",
                 "symfony/http-foundation": "^6.4 || ^7.0",
-                "typo3/cms-core": "12.4.13",
-                "typo3/cms-extbase": "12.4.13",
-                "typo3/cms-fluid": "12.4.13"
+                "typo3/cms-core": "12.4.14",
+                "typo3/cms-extbase": "12.4.14",
+                "typo3/cms-fluid": "12.4.14"
             },
             "conflict": {
                 "typo3/cms": "*"
@@ -11078,26 +11271,26 @@
                 "issues": "https://forge.typo3.org",
                 "source": "https://github.com/typo3/typo3"
             },
-            "time": "2024-03-19T09:11:00+00:00"
+            "time": "2024-04-09T13:09:18+00:00"
         },
         {
             "name": "typo3/cms-seo",
-            "version": "v12.4.13",
+            "version": "v12.4.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3-CMS/seo.git",
-                "reference": "5021cc59d62f4ea9667b9217a2082d87d6f7391b"
+                "reference": "6c54c3a109c03de6b86ef2bea8cf3bf029e55f88"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3-CMS/seo/zipball/5021cc59d62f4ea9667b9217a2082d87d6f7391b",
-                "reference": "5021cc59d62f4ea9667b9217a2082d87d6f7391b",
+                "url": "https://api.github.com/repos/TYPO3-CMS/seo/zipball/6c54c3a109c03de6b86ef2bea8cf3bf029e55f88",
+                "reference": "6c54c3a109c03de6b86ef2bea8cf3bf029e55f88",
                 "shasum": ""
             },
             "require": {
-                "typo3/cms-core": "12.4.13",
-                "typo3/cms-extbase": "12.4.13",
-                "typo3/cms-frontend": "12.4.13"
+                "typo3/cms-core": "12.4.14",
+                "typo3/cms-extbase": "12.4.14",
+                "typo3/cms-frontend": "12.4.14"
             },
             "conflict": {
                 "typo3/cms": "*"
@@ -11141,24 +11334,24 @@
                 "issues": "https://forge.typo3.org",
                 "source": "https://github.com/typo3/typo3"
             },
-            "time": "2024-03-19T09:11:00+00:00"
+            "time": "2024-04-09T13:09:18+00:00"
         },
         {
             "name": "typo3/cms-tstemplate",
-            "version": "v12.4.13",
+            "version": "v12.4.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3-CMS/tstemplate.git",
-                "reference": "1e567a2d3f72b821ecbc2c71794398264ffff7c6"
+                "reference": "1d2a066624895e3a9eefde835264004bb261821f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3-CMS/tstemplate/zipball/1e567a2d3f72b821ecbc2c71794398264ffff7c6",
-                "reference": "1e567a2d3f72b821ecbc2c71794398264ffff7c6",
+                "url": "https://api.github.com/repos/TYPO3-CMS/tstemplate/zipball/1d2a066624895e3a9eefde835264004bb261821f",
+                "reference": "1d2a066624895e3a9eefde835264004bb261821f",
                 "shasum": ""
             },
             "require": {
-                "typo3/cms-core": "12.4.13"
+                "typo3/cms-core": "12.4.14"
             },
             "conflict": {
                 "typo3/cms": "*"
@@ -11199,7 +11392,7 @@
                 "issues": "https://forge.typo3.org",
                 "source": "https://github.com/typo3/typo3"
             },
-            "time": "2024-03-19T09:11:00+00:00"
+            "time": "2024-04-09T13:09:18+00:00"
         },
         {
             "name": "typo3/coding-standards",
