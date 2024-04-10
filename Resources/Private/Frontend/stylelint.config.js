@@ -17,16 +17,18 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-/**
- * States of a warmup request describing its current outcome.
- *
- * @author Elias Häußler <elias@haeussler.dev>
- * @license GPL-2.0-or-later
- */
-export enum WarmupState {
-  Failed = 'failed',
-  Warning = 'warning',
-  Success = 'success',
-  Aborted = 'aborted',
-  Unknown = 'unknown',
-}
+export default {
+  extends: 'stylelint-config-sass-guidelines',
+  plugins: [
+    'stylelint-header',
+  ],
+  rules: {
+    'max-nesting-depth': 2,
+    'header/header': [
+      './res/license-header.txt',
+      {
+        nonMatchingTolerance: 1,
+      },
+    ],
+  },
+};
