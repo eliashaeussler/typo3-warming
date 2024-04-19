@@ -10634,19 +10634,20 @@
         },
         {
             "name": "ssch/typo3-rector",
-            "version": "v2.4.1",
+            "version": "v2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabbelasichon/typo3-rector.git",
-                "reference": "bc09faab1b1b3122b3f880c3483d906d52dda0d3"
+                "reference": "386e86753f2c88833b0cb6b8b0f3e7a5b65422ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabbelasichon/typo3-rector/zipball/bc09faab1b1b3122b3f880c3483d906d52dda0d3",
-                "reference": "bc09faab1b1b3122b3f880c3483d906d52dda0d3",
+                "url": "https://api.github.com/repos/sabbelasichon/typo3-rector/zipball/386e86753f2c88833b0cb6b8b0f3e7a5b65422ae",
+                "reference": "386e86753f2c88833b0cb6b8b0f3e7a5b65422ae",
                 "shasum": ""
             },
             "require": {
+                "ext-json": "*",
                 "league/flysystem": "^2.0",
                 "league/flysystem-memory": "^2.0",
                 "nette/utils": "^3.2.10 || ^4.0.4",
@@ -10675,6 +10676,7 @@
                 "symplify/easy-coding-standard": "^12.1.14"
             },
             "suggest": {
+                "ext-pdo": "*",
                 "ssch/typo3-debug-dump-pass": "^0.0.1"
             },
             "bin": [
@@ -10707,19 +10709,26 @@
             "authors": [
                 {
                     "name": "Sebastian Schreiber",
-                    "email": "breakpoint@schreibersebastian.de"
+                    "email": "breakpoint@schreibersebastian.de",
+                    "role": "Founder and lead developer"
                 },
                 {
                     "name": "Henrik Elsner"
                 },
                 {
-                    "name": "Simon Schaufelberger"
+                    "name": "Simon Schaufelberger",
+                    "role": "Developer"
                 }
             ],
             "description": "Instant fixes for your TYPO3 PHP code by using Rector.",
             "homepage": "https://www.typo3-rector.com/",
             "keywords": [
-                "dev"
+                "automation",
+                "dev",
+                "migration",
+                "rector",
+                "refactoring",
+                "upgrade"
             ],
             "support": {
                 "chat": "https://typo3.slack.com/archives/C019R5LAA6A",
@@ -10737,7 +10746,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-04-11T12:38:04+00:00"
+            "time": "2024-04-18T12:44:27+00:00"
         },
         {
             "name": "symfony/css-selector",
