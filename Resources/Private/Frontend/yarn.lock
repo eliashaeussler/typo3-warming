@@ -3253,9 +3253,9 @@ stylelint-config-sass-guidelines@^11.0.0:
     stylelint-scss "^6.2.1"
 
 stylelint-copyright@^3.2.1:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/stylelint-copyright/-/stylelint-copyright-3.3.0.tgz#474e9ae277d41e62c35258fe071c20cce1e6f13b"
-  integrity sha512-ahMr5WK/aW6/Z8Uefav0yUUi4fI9jbmMKLrm89JsaalEVGsi5Dq+fXgV7ENUXEZnxGuIHutrRvLSAYASLDZRDg==
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/stylelint-copyright/-/stylelint-copyright-3.3.2.tgz#1212d76cf02002a55715a7b58ea72c22ace65ade"
+  integrity sha512-6113v2DT8sdwNuKLz768ia+lCruuEmAvbXKdUBXnCDDQLQ4sYw1bY38f4wuRpJY0pc36DoEJNnfyl6QQPyWVwA==
   dependencies:
     stylelint "^14.16.1"
     tslib "^2.6.0"
