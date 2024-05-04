@@ -23,12 +23,13 @@ declare(strict_types=1);
 
 use EliasHaeussler\PHPStanConfig;
 
+$rootPath = dirname(__DIR__, 2);
 $symfonySet = PHPStanConfig\Set\SymfonySet::create()
-    ->withConsoleApplicationLoader('Tests/Build/console-application.php')
-    ->withContainerXmlPath('var/cache/data/di/DependencyInjectionContainer.xml')
+    ->withConsoleApplicationLoader($rootPath . '/Tests/Build/console-application.php')
+    ->withContainerXmlPath($rootPath . '/var/cache/data/di/DependencyInjectionContainer.xml')
 ;
 
-return PHPStanConfig\Config\Config::create(__DIR__)
+return PHPStanConfig\Config\Config::create($rootPath)
     ->in(
         'Classes',
         'Configuration',
@@ -37,6 +38,10 @@ return PHPStanConfig\Config\Config::create(__DIR__)
     ->not(
         'Tests/Acceptance/Support/_generated/*',
         'Tests/Build',
+        'Tests/CGL',
+    )
+    ->bootstrapFiles(
+        $rootPath . '/.Build/vendor/autoload.php'
     )
     ->withBaseline()
     ->withBleedingEdge([

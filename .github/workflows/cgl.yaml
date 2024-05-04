@@ -42,7 +42,7 @@ jobs:
 
       # Check Composer dependencies
       - name: Check dependencies
-        run: composer-require-checker check --config-file dependency-checker.json
+        run: composer-require-checker check --config-file Tests/CGL/dependency-checker.json
       - name: Re-install Composer dependencies
         uses: ramsey/composer-install@v2
       - name: Check for unused dependencies
@@ -50,17 +50,17 @@ jobs:
 
       # Linting
       - name: Lint composer.json
-        run: composer lint:composer
+        run: composer cgl lint:composer
       - name: Lint Editorconfig
-        run: composer lint:editorconfig
+        run: composer cgl lint:editorconfig
       - name: Lint PHP
-        run: composer lint:php -- --format=checkstyle | cs2pr
+        run: composer cgl lint:php -- --format=checkstyle | cs2pr
       - name: Lint TypoScript
-        run: composer lint:typoscript
+        run: composer cgl lint:typoscript
 
       # SCA
       - name: SCA PHP
-        run: composer sca:php -- --error-format github
+        run: composer cgl sca:php -- --error-format github
 
       # Install Frontend dependencies
       - name: Install Frontend dependencies
@@ -81,4 +81,4 @@ jobs:
 
       # Migration
       - name: Rector migration
-        run: composer migration:rector -- --dry-run
+        run: composer cgl migration:rector -- --dry-run

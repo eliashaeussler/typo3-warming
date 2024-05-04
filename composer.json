@@ -37,29 +37,17 @@
 		"typo3/cms-fluid": "~12.4.2 || ~13.0.0"
 	},
 	"require-dev": {
-		"armin/editorconfig-cli": "^1.5 || ^2.0",
 		"codeception/module-asserts": "^3.0",
 		"codeception/module-cli": "^2.0",
 		"codeception/module-db": "^3.1",
 		"codeception/module-webdriver": "^4.0",
-		"eliashaeussler/php-cs-fixer-config": "^2.0",
-		"eliashaeussler/phpstan-config": "^2.1",
-		"eliashaeussler/rector-config": "^3.0",
 		"eliashaeussler/transient-logger": "^1.0",
 		"eliashaeussler/typo3-codeception-helper": "^1.0",
-		"ergebnis/composer-normalize": "^2.30",
-		"helmich/typo3-typoscript-lint": "^3.1",
-		"phpstan/extension-installer": "^1.3",
-		"phpstan/phpstan-phpunit": "^1.3",
-		"phpstan/phpstan-symfony": "^1.3",
 		"phpunit/phpcov": "^9.0 || ^10.0",
-		"saschaegerer/phpstan-typo3": "^1.8",
-		"ssch/typo3-rector": "^2.0",
 		"symfony/config": "^6.0 || ^7.0",
 		"typo3/cms-install": "~12.4.2 || ~13.0.0",
 		"typo3/cms-seo": "~12.4.2 || ~13.0.0",
 		"typo3/cms-tstemplate": "~12.4.2 || ~13.0.0",
-		"typo3/coding-standards": "^0.8.0@dev",
 		"typo3/testing-framework": "^8.0.9"
 	},
 	"autoload": {
@@ -78,9 +66,7 @@
 	"config": {
 		"allow-plugins": {
 			"codeception/c3": true,
-			"ergebnis/composer-normalize": true,
 			"php-http/discovery": false,
-			"phpstan/extension-installer": true,
 			"typo3/class-alias-loader": true,
 			"typo3/cms-composer-installers": true
 		},
@@ -95,9 +81,16 @@
 		}
 	},
 	"scripts": {
+		"post-install-cmd": [
+			"@composer -d Tests/CGL install"
+		],
+		"post-update-cmd": [
+			"@composer -d Tests/CGL update"
+		],
 		"post-autoload-dump": [
 			"@environment:prepare"
 		],
+		"cgl": "@composer -d Tests/CGL --",
 		"docs": [
 			"@docs:cleanup",
 			"@docs:build",
@@ -109,40 +102,6 @@
 		"environment:prepare": [
 			"[ -L config ] || ln -snvf Tests/Build/Configuration config",
 			"codecept build"
-		],
-		"fix": [
-			"@fix:composer",
-			"@fix:editorconfig",
-			"@fix:php",
-			"@fix:typoscript"
-		],
-		"fix:composer": [
-			"@composer normalize",
-			"@composer normalize Resources/Private/Libs/Build/composer.json"
-		],
-		"fix:editorconfig": "@lint:editorconfig --fix",
-		"fix:php": "php-cs-fixer fix",
-		"fix:typoscript": "@lint:typoscript",
-		"lint": [
-			"@lint:composer",
-			"@lint:editorconfig",
-			"@lint:php",
-			"@lint:typoscript"
-		],
-		"lint:composer": "@fix:composer --dry-run",
-		"lint:editorconfig": "ec --finder-config .editorconfig-lint.php",
-		"lint:php": "@fix:php --dry-run",
-		"lint:typoscript": "typoscript-lint -c typoscript-lint.yml --fail-on-warnings",
-		"migration": [
-			"@migration:rector"
-		],
-		"migration:rector": "rector process -c rector.php",
-		"sca": [
-			"@sca:php"
-		],
-		"sca:php": [
-			"@php Tests/Build/phpstan-bootstrap.php",
-			"phpstan analyse -c phpstan.php"
 		],
 		"test": [
 			"@test:acceptance",
