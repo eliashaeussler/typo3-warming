@@ -87,28 +87,28 @@ TYPO3
 ..  code-block:: bash
 
     # All linters
-    ddev composer lint
+    ddev cgl lint
 
     # Specific linters
-    ddev composer lint:composer
-    ddev composer lint:editorconfig
-    ddev composer lint:php
-    ddev composer lint:typoscript
+    ddev cgl lint:composer
+    ddev cgl lint:editorconfig
+    ddev cgl lint:php
+    ddev cgl lint:typoscript
 
     # Fix all CGL issues
-    ddev composer fix
+    ddev cgl fix
 
     # Fix specific CGL issues
-    ddev composer fix:composer
-    ddev composer fix:editorconfig
-    ddev composer fix:php
-    ddev composer fix:typoscript
+    ddev cgl fix:composer
+    ddev cgl fix:editorconfig
+    ddev cgl fix:php
+    ddev cgl fix:typoscript
 
     # All static code analyzers
-    ddev composer sca
+    ddev cgl sca
 
     # Specific static code analyzers
-    ddev composer sca:php
+    ddev cgl sca:php
 
 ..  _cgl-frontend:
 
@@ -147,26 +147,26 @@ Run tests
 ..  code-block:: bash
 
     # All tests
-    ddev composer test
+    ddev test
 
     # Specific tests
-    ddev composer test:acceptance
-    ddev composer test:functional
-    ddev composer test:unit
+    ddev test acceptance
+    ddev test functional
+    ddev test unit
 
     # Enable Xdebug to collect code coverage
     ddev xdebug on
 
     # All tests with code coverage
-    ddev composer test:coverage
+    ddev test coverage
 
     # Specific tests with code coverage
-    ddev composer test:coverage:acceptance
-    ddev composer test:coverage:functional
-    ddev composer test:coverage:unit
+    ddev test coverage:acceptance
+    ddev test coverage:functional
+    ddev test coverage:unit
 
     # Merge code coverage of all test suites
-    ddev composer test:coverage:merge
+    ddev test coverage:merge
 
 Code coverage reports are written to :file:`.Build/coverage`. You can
 open the last merged HTML report like follows:

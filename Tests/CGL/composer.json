@@ -1,0 +1,62 @@
+{
+	"require-dev": {
+		"armin/editorconfig-cli": "^1.5 || ^2.0",
+		"eliashaeussler/php-cs-fixer-config": "^2.0",
+		"eliashaeussler/phpstan-config": "^2.1",
+		"eliashaeussler/rector-config": "^3.0",
+		"ergebnis/composer-normalize": "^2.30",
+		"helmich/typo3-typoscript-lint": "^3.1",
+		"phpstan/extension-installer": "^1.3",
+		"phpstan/phpstan-phpunit": "^1.3",
+		"phpstan/phpstan-symfony": "^1.3",
+		"saschaegerer/phpstan-typo3": "^1.8",
+		"ssch/typo3-rector": "^2.0",
+		"typo3/coding-standards": "^0.8.0@dev"
+	},
+	"config": {
+		"allow-plugins": {
+			"ergebnis/composer-normalize": true,
+			"phpstan/extension-installer": true,
+			"typo3/class-alias-loader": false,
+			"typo3/cms-composer-installers": false
+		},
+		"sort-packages": true
+	},
+	"scripts": {
+		"fix": [
+			"@fix:composer",
+			"@fix:editorconfig",
+			"@fix:php",
+			"@fix:typoscript"
+		],
+		"fix:composer": [
+			"@composer normalize",
+			"@composer normalize ../../composer.json",
+			"@composer normalize ../../Resources/Private/Libs/Build/composer.json"
+		],
+		"fix:editorconfig": "@lint:editorconfig --fix",
+		"fix:php": "php-cs-fixer fix",
+		"fix:typoscript": "@lint:typoscript",
+		"lint": [
+			"@lint:composer",
+			"@lint:editorconfig",
+			"@lint:php",
+			"@lint:typoscript"
+		],
+		"lint:composer": "@fix:composer --dry-run",
+		"lint:editorconfig": "ec --finder-config .editorconfig-lint.php",
+		"lint:php": "@fix:php --dry-run",
+		"lint:typoscript": "typoscript-lint -c typoscript-lint.yml --fail-on-warnings",
+		"migration": [
+			"@migration:rector"
+		],
+		"migration:rector": "rector process -c rector.php",
+		"sca": [
+			"@sca:php"
+		],
+		"sca:php": [
+			"@php ../../Tests/Build/phpstan-bootstrap.php",
+			"phpstan analyse -c phpstan.php"
+		]
+	}
+}

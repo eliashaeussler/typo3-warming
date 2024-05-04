@@ -34,7 +34,7 @@ $header = PhpCsFixerConfig\Rules\Header::create(
 
 $config = CodingStandards\CsFixerConfig::create();
 $finder = $config->getFinder()
-    ->in(__DIR__)
+    ->in(dirname(__DIR__, 2))
     ->ignoreVCSIgnored(true)
     ->ignoreDotFiles(false)
 ;
