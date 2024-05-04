@@ -40,20 +40,29 @@ trait SiteTrait
         $configPath = $this->instancePath . '/typo3conf/sites';
 
         if ((new Core\Information\Typo3Version())->getMajorVersion() >= 13) {
+            $coreCache = new Core\Cache\Frontend\NullFrontend('core');
+            $eventDispatcher = new Core\EventDispatcher\NoopEventDispatcher();
+
             $siteConfiguration = new Core\Configuration\SiteConfiguration(
                 $configPath,
-                new Core\EventDispatcher\NoopEventDispatcher(),
-                new Core\Cache\Frontend\NullFrontend('core'),
+                $this->get(Core\Site\SiteSettingsFactory::class),
+                $eventDispatcher,
+                $coreCache,
+            );
+            $siteWriter = new Core\Configuration\SiteWriter(
+                $configPath,
+                $eventDispatcher,
+                $coreCache,
             );
         } else {
             // @todo Remove once support for TYPO3 v12 is dropped
-            $siteConfiguration = new Core\Configuration\SiteConfiguration(
+            $siteConfiguration = $siteWriter = new Core\Configuration\SiteConfiguration(
                 $configPath,
                 new Core\EventDispatcher\NoopEventDispatcher(),
             );
         }
 
-        $siteConfiguration->createNewBasicSite(static::$testSiteIdentifier, 1, $baseUrl);
+        $siteWriter->createNewBasicSite(static::$testSiteIdentifier, 1, $baseUrl);
 
         $rawConfig = $siteConfiguration->load(static::$testSiteIdentifier);
         $rawConfig['languages'][1] = [
@@ -81,7 +90,7 @@ trait SiteTrait
             'languageId' => 2,
         ];
 
-        $siteConfiguration->write(static::$testSiteIdentifier, $rawConfig);
+        $siteWriter->write(static::$testSiteIdentifier, $rawConfig);
 
         $site = $siteConfiguration->getAllExistingSites()[static::$testSiteIdentifier] ?? null;
 
