@@ -23,29 +23,274 @@ parameters:
 		-
 			message: "#^PHPDoc type EliasHaeussler\\\\Typo3Warming\\\\Tests\\\\Acceptance\\\\Support\\\\AcceptanceTester of property EliasHaeussler\\\\Typo3Warming\\\\Tests\\\\Acceptance\\\\Support\\\\Helper\\\\ModalDialog\\:\\:\\$tester is not the same as PHPDoc type TYPO3\\\\CMS\\\\Core\\\\Tests\\\\Acceptance\\\\Support\\\\ApplicationTester of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Acceptance\\\\Helper\\\\AbstractModalDialog\\:\\:\\$tester\\.$#"
 			count: 1
-			path: ../../Tests/Acceptance/Support/Helper/ModalDialog.php
+			path: ../Acceptance/Support/Helper/ModalDialog.php
 
 		-
 			message: "#^PHPDoc type EliasHaeussler\\\\Typo3Warming\\\\Tests\\\\Acceptance\\\\Support\\\\AcceptanceTester of property EliasHaeussler\\\\Typo3Warming\\\\Tests\\\\Acceptance\\\\Support\\\\Helper\\\\PageTree\\:\\:\\$tester is not the same as PHPDoc type AcceptanceTester of overridden property TYPO3\\\\TestingFramework\\\\Core\\\\Acceptance\\\\Helper\\\\AbstractPageTree\\:\\:\\$tester\\.$#"
 			count: 1
-			path: ../../Tests/Acceptance/Support/Helper/PageTree.php
+			path: ../Acceptance/Support/Helper/PageTree.php
+
+		-
+			message: "#^Call to method createNewBasicSite\\(\\) on an unknown class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteWriter\\.$#"
+			count: 1
+			path: ../Functional/Command/WarmupCommandTest.php
+
+		-
+			message: "#^Call to method write\\(\\) on an unknown class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteWriter\\.$#"
+			count: 1
+			path: ../Functional/Command/WarmupCommandTest.php
+
+		-
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor invoked with 4 parameters, 2\\-3 required\\.$#"
+			count: 1
+			path: ../Functional/Command/WarmupCommandTest.php
+
+		-
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteSettingsFactory not found\\.$#"
+			count: 1
+			path: ../Functional/Command/WarmupCommandTest.php
+
+		-
+			message: "#^Instantiated class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteWriter not found\\.$#"
+			count: 1
+			path: ../Functional/Command/WarmupCommandTest.php
+
+		-
+			message: "#^Parameter \\#3 \\$coreCache of class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor expects TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\PhpFrontend\\|null, TYPO3\\\\CMS\\\\Core\\\\EventDispatcher\\\\NoopEventDispatcher given\\.$#"
+			count: 1
+			path: ../Functional/Command/WarmupCommandTest.php
+
+		-
+			message: "#^Service \"TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteSettingsFactory\" is not registered in the container\\.$#"
+			count: 1
+			path: ../Functional/Command/WarmupCommandTest.php
+
+		-
+			message: "#^Call to method createNewBasicSite\\(\\) on an unknown class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteWriter\\.$#"
+			count: 1
+			path: ../Functional/Controller/CacheWarmupLegacyControllerTest.php
+
+		-
+			message: "#^Call to method write\\(\\) on an unknown class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteWriter\\.$#"
+			count: 1
+			path: ../Functional/Controller/CacheWarmupLegacyControllerTest.php
+
+		-
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor invoked with 4 parameters, 2\\-3 required\\.$#"
+			count: 1
+			path: ../Functional/Controller/CacheWarmupLegacyControllerTest.php
+
+		-
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteSettingsFactory not found\\.$#"
+			count: 1
+			path: ../Functional/Controller/CacheWarmupLegacyControllerTest.php
+
+		-
+			message: "#^Instantiated class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteWriter not found\\.$#"
+			count: 1
+			path: ../Functional/Controller/CacheWarmupLegacyControllerTest.php
+
+		-
+			message: "#^Parameter \\#3 \\$coreCache of class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor expects TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\PhpFrontend\\|null, TYPO3\\\\CMS\\\\Core\\\\EventDispatcher\\\\NoopEventDispatcher given\\.$#"
+			count: 1
+			path: ../Functional/Controller/CacheWarmupLegacyControllerTest.php
+
+		-
+			message: "#^Service \"TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteSettingsFactory\" is not registered in the container\\.$#"
+			count: 1
+			path: ../Functional/Controller/CacheWarmupLegacyControllerTest.php
 
 		-
 			message: "#^EliasHaeussler\\\\Typo3Warming\\\\Tests\\\\Functional\\\\Fixtures\\\\Classes\\\\DummyPackageManager\\:\\:__construct\\(\\) does not call parent constructor from TYPO3\\\\CMS\\\\Core\\\\Package\\\\PackageManager\\.$#"
 			count: 1
-			path: ../../Tests/Functional/Fixtures/Classes/DummyPackageManager.php
+			path: ../Functional/Fixtures/Classes/DummyPackageManager.php
+
+		-
+			message: "#^Call to method createNewBasicSite\\(\\) on an unknown class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteWriter\\.$#"
+			count: 1
+			path: ../Functional/Http/Message/Event/WarmupFinishedEventTest.php
+
+		-
+			message: "#^Call to method write\\(\\) on an unknown class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteWriter\\.$#"
+			count: 1
+			path: ../Functional/Http/Message/Event/WarmupFinishedEventTest.php
+
+		-
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor invoked with 4 parameters, 2\\-3 required\\.$#"
+			count: 1
+			path: ../Functional/Http/Message/Event/WarmupFinishedEventTest.php
+
+		-
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteSettingsFactory not found\\.$#"
+			count: 1
+			path: ../Functional/Http/Message/Event/WarmupFinishedEventTest.php
+
+		-
+			message: "#^Instantiated class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteWriter not found\\.$#"
+			count: 1
+			path: ../Functional/Http/Message/Event/WarmupFinishedEventTest.php
+
+		-
+			message: "#^Parameter \\#3 \\$coreCache of class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor expects TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\PhpFrontend\\|null, TYPO3\\\\CMS\\\\Core\\\\EventDispatcher\\\\NoopEventDispatcher given\\.$#"
+			count: 1
+			path: ../Functional/Http/Message/Event/WarmupFinishedEventTest.php
+
+		-
+			message: "#^Service \"TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteSettingsFactory\" is not registered in the container\\.$#"
+			count: 1
+			path: ../Functional/Http/Message/Event/WarmupFinishedEventTest.php
+
+		-
+			message: "#^Call to method createNewBasicSite\\(\\) on an unknown class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteWriter\\.$#"
+			count: 1
+			path: ../Functional/Log/Writer/DatabaseWriterTest.php
+
+		-
+			message: "#^Call to method write\\(\\) on an unknown class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteWriter\\.$#"
+			count: 1
+			path: ../Functional/Log/Writer/DatabaseWriterTest.php
+
+		-
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor invoked with 4 parameters, 2\\-3 required\\.$#"
+			count: 1
+			path: ../Functional/Log/Writer/DatabaseWriterTest.php
+
+		-
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteSettingsFactory not found\\.$#"
+			count: 1
+			path: ../Functional/Log/Writer/DatabaseWriterTest.php
+
+		-
+			message: "#^Instantiated class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteWriter not found\\.$#"
+			count: 1
+			path: ../Functional/Log/Writer/DatabaseWriterTest.php
+
+		-
+			message: "#^Parameter \\#3 \\$coreCache of class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor expects TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\PhpFrontend\\|null, TYPO3\\\\CMS\\\\Core\\\\EventDispatcher\\\\NoopEventDispatcher given\\.$#"
+			count: 1
+			path: ../Functional/Log/Writer/DatabaseWriterTest.php
+
+		-
+			message: "#^Service \"TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteSettingsFactory\" is not registered in the container\\.$#"
+			count: 1
+			path: ../Functional/Log/Writer/DatabaseWriterTest.php
+
+		-
+			message: "#^Call to method createNewBasicSite\\(\\) on an unknown class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteWriter\\.$#"
+			count: 1
+			path: ../Functional/Service/CacheWarmupServiceTest.php
+
+		-
+			message: "#^Call to method write\\(\\) on an unknown class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteWriter\\.$#"
+			count: 1
+			path: ../Functional/Service/CacheWarmupServiceTest.php
+
+		-
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor invoked with 4 parameters, 2\\-3 required\\.$#"
+			count: 1
+			path: ../Functional/Service/CacheWarmupServiceTest.php
+
+		-
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteSettingsFactory not found\\.$#"
+			count: 1
+			path: ../Functional/Service/CacheWarmupServiceTest.php
+
+		-
+			message: "#^Instantiated class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteWriter not found\\.$#"
+			count: 1
+			path: ../Functional/Service/CacheWarmupServiceTest.php
+
+		-
+			message: "#^Parameter \\#3 \\$coreCache of class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor expects TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\PhpFrontend\\|null, TYPO3\\\\CMS\\\\Core\\\\EventDispatcher\\\\NoopEventDispatcher given\\.$#"
+			count: 1
+			path: ../Functional/Service/CacheWarmupServiceTest.php
+
+		-
+			message: "#^Service \"TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteSettingsFactory\" is not registered in the container\\.$#"
+			count: 1
+			path: ../Functional/Service/CacheWarmupServiceTest.php
+
+		-
+			message: "#^Call to method createNewBasicSite\\(\\) on an unknown class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteWriter\\.$#"
+			count: 1
+			path: ../Functional/Utility/AccessUtilityTest.php
+
+		-
+			message: "#^Call to method write\\(\\) on an unknown class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteWriter\\.$#"
+			count: 1
+			path: ../Functional/Utility/AccessUtilityTest.php
+
+		-
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor invoked with 4 parameters, 2\\-3 required\\.$#"
+			count: 1
+			path: ../Functional/Utility/AccessUtilityTest.php
+
+		-
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteSettingsFactory not found\\.$#"
+			count: 1
+			path: ../Functional/Utility/AccessUtilityTest.php
+
+		-
+			message: "#^Instantiated class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteWriter not found\\.$#"
+			count: 1
+			path: ../Functional/Utility/AccessUtilityTest.php
+
+		-
+			message: "#^Parameter \\#3 \\$coreCache of class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor expects TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\PhpFrontend\\|null, TYPO3\\\\CMS\\\\Core\\\\EventDispatcher\\\\NoopEventDispatcher given\\.$#"
+			count: 1
+			path: ../Functional/Utility/AccessUtilityTest.php
+
+		-
+			message: "#^Service \"TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteSettingsFactory\" is not registered in the container\\.$#"
+			count: 1
+			path: ../Functional/Utility/AccessUtilityTest.php
+
+		-
+			message: "#^Call to method createNewBasicSite\\(\\) on an unknown class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteWriter\\.$#"
+			count: 1
+			path: ../Functional/Utility/HttpUtilityTest.php
+
+		-
+			message: "#^Call to method write\\(\\) on an unknown class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteWriter\\.$#"
+			count: 1
+			path: ../Functional/Utility/HttpUtilityTest.php
+
+		-
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor invoked with 4 parameters, 2\\-3 required\\.$#"
+			count: 1
+			path: ../Functional/Utility/HttpUtilityTest.php
+
+		-
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteSettingsFactory not found\\.$#"
+			count: 1
+			path: ../Functional/Utility/HttpUtilityTest.php
+
+		-
+			message: "#^Instantiated class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteWriter not found\\.$#"
+			count: 1
+			path: ../Functional/Utility/HttpUtilityTest.php
+
+		-
+			message: "#^Parameter \\#3 \\$coreCache of class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor expects TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\PhpFrontend\\|null, TYPO3\\\\CMS\\\\Core\\\\EventDispatcher\\\\NoopEventDispatcher given\\.$#"
+			count: 1
+			path: ../Functional/Utility/HttpUtilityTest.php
+
+		-
+			message: "#^Service \"TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteSettingsFactory\" is not registered in the container\\.$#"
+			count: 1
+			path: ../Functional/Utility/HttpUtilityTest.php
 
 		-
 			message: "#^EliasHaeussler\\\\Typo3Warming\\\\Tests\\\\Unit\\\\Fixtures\\\\DummyRequestFactory\\:\\:__construct\\(\\) does not call parent constructor from TYPO3\\\\CMS\\\\Core\\\\Http\\\\RequestFactory\\.$#"
 			count: 1
-			path: ../../Tests/Unit/Fixtures/DummyRequestFactory.php
+			path: ../Unit/Fixtures/DummyRequestFactory.php
 
 		-
 			message: "#^Parameter \\#3 \\$options \\(array\\<string, mixed\\>\\) of method EliasHaeussler\\\\Typo3Warming\\\\Tests\\\\Unit\\\\Fixtures\\\\DummyRequestFactory\\:\\:request\\(\\) should be contravariant with parameter \\$options \\(array\\) of method TYPO3\\\\CMS\\\\Core\\\\Http\\\\RequestFactory\\:\\:request\\(\\)$#"
 			count: 1
-			path: ../../Tests/Unit/Fixtures/DummyRequestFactory.php
+			path: ../Unit/Fixtures/DummyRequestFactory.php
 
 		-
 			message: "#^EliasHaeussler\\\\Typo3Warming\\\\Tests\\\\Unit\\\\Fixtures\\\\DummySiteFinder\\:\\:__construct\\(\\) does not call parent constructor from TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteFinder\\.$#"
 			count: 1
-			path: ../../Tests/Unit/Fixtures/DummySiteFinder.php
+			path: ../Unit/Fixtures/DummySiteFinder.php

@@ -25,6 +25,7 @@ namespace EliasHaeussler\Typo3Warming\Tests\Acceptance\Support\Helper;
 
 use EliasHaeussler\Typo3Warming\Tests;
 use Facebook\WebDriver;
+use TYPO3\CMS\Core;
 use TYPO3\TestingFramework;
 
 /**
@@ -40,9 +41,12 @@ final class PageTree extends TestingFramework\Core\Acceptance\Helper\AbstractPag
      */
     protected $tester;
 
+    private readonly Core\Information\Typo3Version $typo3Version;
+
     public function __construct(Tests\Acceptance\Support\AcceptanceTester $tester)
     {
         $this->tester = $tester;
+        $this->typo3Version = new Core\Information\Typo3Version();
     }
 
     /**
@@ -60,7 +64,12 @@ final class PageTree extends TestingFramework\Core\Acceptance\Helper\AbstractPag
             $context = $this->ensureTreeNodeIsOpen($pageName, $context);
         }
 
-        $contextMenu = $context->findElement(WebDriver\WebDriverBy::cssSelector(self::$treeItemAnchorSelector));
+        if ($this->typo3Version->getMajorVersion() >= 13) {
+            $contextMenu = $context;
+        } else {
+            // @todo Remove once support for TYPO3 v12 is dropped
+            $contextMenu = $context->findElement(WebDriver\WebDriverBy::cssSelector(self::$treeItemAnchorSelector));
+        }
 
         $I->executeInSelenium(function(WebDriver\Remote\RemoteWebDriver $webDriver) use ($contextMenu): void {
             $webDriver->getMouse()->contextClick($contextMenu->getCoordinates());
@@ -93,5 +102,40 @@ final class PageTree extends TestingFramework\Core\Acceptance\Helper\AbstractPag
                 },
             );
         }
+    }
+
+    protected function ensureTreeNodeIsOpen(
+        string $nodeText,
+        WebDriver\Remote\RemoteWebElement $context,
+    ): WebDriver\Remote\RemoteWebElement {
+        // @todo Remove once support for TYPO3 v12 is dropped
+        if ($this->typo3Version->getMajorVersion() < 13) {
+            return parent::ensureTreeNodeIsOpen($nodeText, $context);
+        }
+
+        // @todo Remove once TF properly handles new page tree rendering
+        $I = $this->tester;
+        $I->see($nodeText, 'div.nodes-list > .node');
+
+        /** @var WebDriver\Remote\RemoteWebElement $context */
+        $context = $I->executeInSelenium(
+            static fn () => $context->findElement(
+                WebDriver\WebDriverBy::xpath('//*[text()=\'' . $nodeText . '\']/../../..'),
+            ),
+        );
+
+        if ($context->getAttribute('aria-expanded') === '1') {
+            return $context;
+        }
+
+        try {
+            $context->findElement(WebDriver\WebDriverBy::cssSelector('.node-toggle'))->click();
+        } catch (WebDriver\Exception\NoSuchElementException|WebDriver\Exception\ElementNotVisibleException) {
+            // element not found so it may be already opened...
+        } catch (WebDriver\Exception\ElementNotInteractableException) {
+            // another possible exception if the chevron isn't there ... depends on facebook driver version
+        }
+
+        return $context;
     }
 }

@@ -70,11 +70,13 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
         $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/be_users.csv');
         $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/pages.csv');
 
+        // Create site configuration
+        $this->site = $this->createSite();
+
         // Set up backend user
         $backendUser = $this->setUpBackendUser(3);
         $GLOBALS['LANG'] = $this->get(Core\Localization\LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
-        $this->site = $this->createSite();
         $this->eventDispatcher = new Tests\Functional\Fixtures\Classes\DummyEventDispatcher();
         $this->guzzleClientFactory = new Tests\Functional\Fixtures\Classes\DummyGuzzleClientFactory();
         $this->subject = new Src\Service\CacheWarmupService(
