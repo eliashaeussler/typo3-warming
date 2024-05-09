@@ -63,8 +63,7 @@ file:
 
 ..  seealso::
 
-    Read more about logging in the
-    :ref:`official TYPO3 documentation <t3coreapi:logging>`.
+    Read more about logging in the :ref:`official TYPO3 documentation <t3coreapi:logging>`.
 
 ..  _custom-log-table:
 
@@ -73,7 +72,7 @@ Custom log table
 
 The extension ships with a custom log table `tx_warming_domain_model_log`.
 In addition, a custom log writer
-:php:class:`EliasHaeussler\\Typo3Warming\\Log\\Writer\\DatabaseWriter`
+:php:`\EliasHaeussler\Typo3Warming\Log\Writer\DatabaseWriter`
 is provided that writes all logged crawling results to said table.
 
 ..  note::

@@ -56,8 +56,8 @@ Implement a custom strategy
 1.  Create a new crawling strategy
 
     The new strategy must implement the
-    :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\Strategy\\CrawlingStrategy`
-    interface. Make sure to properly implement the :php:meth:`EliasHaeussler\\CacheWarmup\\Crawler\\Strategy\\CrawlingStrategy::getName`
+    :php:`\EliasHaeussler\CacheWarmup\Crawler\Strategy\CrawlingStrategy`
+    interface. Make sure to properly implement the :php:`\EliasHaeussler\CacheWarmup\Crawler\Strategy\CrawlingStrategy::getName`
     method to identify the crawling strategy.
 
 2.  Configure the new crawling strategy

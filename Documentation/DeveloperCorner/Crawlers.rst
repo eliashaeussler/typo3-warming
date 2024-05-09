@@ -13,7 +13,7 @@ implement a custom crawler on this page.
 
 ..  php:namespace:: EliasHaeussler\CacheWarmup\Crawler
 
-..  php:interface:: CrawlerInterface
+..  php:interface:: Crawler
 
     Interface for crawlers used to crawl and warm up URLs.
 
@@ -31,9 +31,9 @@ Default crawlers
 
 The extension ships with two default crawlers:
 
--   :php:class:`EliasHaeussler\\Typo3Warming\\Crawler\\ConcurrentUserAgentCrawler`:
+-   :php:`\EliasHaeussler\Typo3Warming\Crawler\ConcurrentUserAgentCrawler`:
     Used for cache warmup triggered within the **TYPO3 backend**
--   :php:class:`EliasHaeussler\\Typo3Warming\\Crawler\\OutputtingUserAgentCrawler`:
+-   :php:`\EliasHaeussler\Typo3Warming\Crawler\OutputtingUserAgentCrawler`:
     Used for cache warmup executed from the **command-line**
 
 Both crawlers use a custom `User-Agent` header for all warmup
@@ -58,21 +58,19 @@ Available interfaces
 
 The actual cache warmup is done via the library
 `eliashaeussler/cache-warmup <https://github.com/eliashaeussler/cache-warmup>`__.
-It provides the
-:php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\CrawlerInterface`,
+It provides :php:`\EliasHaeussler\CacheWarmup\Crawler\Crawler`,
 which must be implemented when developing your own crawler. There is
-also a
-:php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\VerboseCrawlerInterface`
+also a :php:`\EliasHaeussler\CacheWarmup\Crawler\VerboseCrawler`
 that redirects user-oriented output to an instance of
-:php:interface:`Symfony\\Component\\Console\\Output\\OutputInterface`.
+:php:`\Symfony\Component\Console\Output\OutputInterface`.
 
 ..  _configurable-crawlers:
 
 Configurable crawlers
 ---------------------
 
-Custom crawlers can also implement the
-:php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\ConfigurableCrawlerInterface`,
+Custom crawlers can also implement
+:php:`\EliasHaeussler\CacheWarmup\Crawler\ConfigurableCrawler`,
 allowing users to configure warmup requests themselves.
 
 ..  seealso::
@@ -86,7 +84,7 @@ Logging crawlers
 ----------------
 
 Crawling results can be logged using a dedicated PSR-3 logger. For this, crawlers
-must implement :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\LoggingCrawlerInterface`
+must implement :php:`\EliasHaeussler\CacheWarmup\Crawler\LoggingCrawler`
 and inject an appropriate PSR-3 logger. In TYPO3 context, this is mostly done using
 TYPO3's log manager. Read more about logging in the :ref:`official documentation <t3coreapi:logging>`.
 
@@ -100,7 +98,7 @@ TYPO3's log manager. Read more about logging in the :ref:`official documentation
 Stoppable crawlers
 ------------------
 
-Crawlers implementing :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\StoppableCrawlerInterface`
+Crawlers implementing :php:`\EliasHaeussler\CacheWarmup\Crawler\StoppableCrawler`
 may cancel a cache warmup prematurely if any crawling failure occurs. This can be
 especially useful for validation purposes to check whether any page within an XML
 sitemap is inaccessible or failing.
@@ -117,18 +115,18 @@ Streamable crawlers
 
 When running cache warmup from the TYPO3 backend, the current crawling progress is
 streamed to the cache warmup progress modal. However, this is only supported for
-crawlers implementing :php:interface:`EliasHaeussler\\Typo3Warming\\Crawler\\StreamableCrawler`.
+crawlers implementing :php:`\EliasHaeussler\Typo3Warming\Crawler\StreamableCrawler`.
 
-Those crawlers will then get a :php:class:`EliasHaeussler\\SSE\\Stream\\EventStream`
+Those crawlers will then get a :php:`\EliasHaeussler\SSE\Stream\EventStream`
 injected. It can be used to send events to the current event stream. The following
 events are currently available:
 
--   :php:class:`EliasHaeussler\\Typo3Warming\\Http\\Message\\Event\\WarmupFinishedEvent`
--   :php:class:`EliasHaeussler\\Typo3Warming\\Http\\Message\\Event\\WarmupProgressEvent`
+-   :php:`\EliasHaeussler\Typo3Warming\Http\Message\Event\WarmupFinishedEvent`
+-   :php:`\EliasHaeussler\Typo3Warming\Http\Message\Event\WarmupProgressEvent`
 
 By default, when implementing a streamable crawler, there's no need to trigger these
 events by your own. Instead, it's better to use the provided
-:php:class:`EliasHaeussler\\Typo3Warming\\Http\\Message\\Handler\\StreamResponseHandler`
+:php:`\EliasHaeussler\Typo3Warming\Http\Message\Handler\StreamResponseHandler`
 which takes care of sending appropriate events.
 
 ..  _steps-to-implement-a-new-crawler:
@@ -142,12 +140,12 @@ Steps to implement a new crawler
 
     The new crawler must implement at least one of the following interfaces:
 
-    -   :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\CrawlerInterface`
-    -   :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\ConfigurableCrawlerInterface`
-    -   :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\LoggingCrawlerInterface`
-    -   :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\StoppableCrawlerInterface`
-    -   :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\VerboseCrawlerInterface`
-    -   :php:interface:`EliasHaeussler\\Typo3Warming\\Crawler\\StreamableCrawler`
+    -   :php:`\EliasHaeussler\CacheWarmup\Crawler\Crawler`
+    -   :php:`\EliasHaeussler\CacheWarmup\Crawler\ConfigurableCrawler`
+    -   :php:`\EliasHaeussler\CacheWarmup\Crawler\LoggingCrawler`
+    -   :php:`\EliasHaeussler\CacheWarmup\Crawler\StoppableCrawler`
+    -   :php:`\EliasHaeussler\CacheWarmup\Crawler\VerboseCrawler`
+    -   :php:`\EliasHaeussler\Typo3Warming\Crawler\StreamableCrawler`
 
 2.  Configure the new crawler
 
@@ -164,12 +162,12 @@ Steps to implement a new crawler
 ..  seealso::
     View the sources on GitHub:
 
-    -   `CrawlerInterface <https://github.com/eliashaeussler/cache-warmup/blob/main/src/Crawler/CrawlerInterface.php>`__
-    -   `ConfigurableCrawlerInterface <https://github.com/eliashaeussler/cache-warmup/blob/main/src/Crawler/ConfigurableCrawlerInterface.php>`__
-    -   `LoggingCrawlerInterface <https://github.com/eliashaeussler/cache-warmup/blob/main/src/Crawler/LoggingCrawlerInterface.php>`__
-    -   `StoppableCrawlerInterface <https://github.com/eliashaeussler/cache-warmup/blob/main/src/Crawler/StoppableCrawlerInterface.php>`__
+    -   `Crawler <https://github.com/eliashaeussler/cache-warmup/blob/main/src/Crawler/Crawler.php>`__
+    -   `ConfigurableCrawler <https://github.com/eliashaeussler/cache-warmup/blob/main/src/Crawler/ConfigurableCrawler.php>`__
+    -   `LoggingCrawler <https://github.com/eliashaeussler/cache-warmup/blob/main/src/Crawler/LoggingCrawler.php>`__
+    -   `StoppableCrawler <https://github.com/eliashaeussler/cache-warmup/blob/main/src/Crawler/StoppableCrawler.php>`__
     -   `StreamableCrawler <https://github.com/eliashaeussler/typo3-warming/blob/main/Classes/Crawler/StreamableCrawler.php>`__
-    -   `VerboseCrawlerInterface <https://github.com/eliashaeussler/cache-warmup/blob/main/src/Crawler/VerboseCrawlerInterface.php>`__
+    -   `VerboseCrawler <https://github.com/eliashaeussler/cache-warmup/blob/main/src/Crawler/VerboseCrawler.php>`__
     -   `ConcurrentUserAgentCrawler <https://github.com/eliashaeussler/typo3-warming/blob/main/Classes/Crawler/ConcurrentUserAgentCrawler.php>`__
     -   `OutputtingUserAgentCrawler <https://github.com/eliashaeussler/typo3-warming/blob/main/Classes/Crawler/OutputtingUserAgentCrawler.php>`__
     -   `StreamResponseHandler <https://github.com/eliashaeussler/typo3-warming/blob/main/Classes/Http/Message/Handler/StreamResponseHandler.php>`__
