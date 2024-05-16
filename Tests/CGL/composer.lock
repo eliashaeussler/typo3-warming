@@ -4329,16 +4329,16 @@
         },
         {
             "name": "ssch/typo3-rector",
-            "version": "v2.5.0",
+            "version": "v2.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabbelasichon/typo3-rector.git",
-                "reference": "386e86753f2c88833b0cb6b8b0f3e7a5b65422ae"
+                "reference": "d4e7804d2eea497e471089eb823d66a85dfcaf39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabbelasichon/typo3-rector/zipball/386e86753f2c88833b0cb6b8b0f3e7a5b65422ae",
-                "reference": "386e86753f2c88833b0cb6b8b0f3e7a5b65422ae",
+                "url": "https://api.github.com/repos/sabbelasichon/typo3-rector/zipball/d4e7804d2eea497e471089eb823d66a85dfcaf39",
+                "reference": "d4e7804d2eea497e471089eb823d66a85dfcaf39",
                 "shasum": ""
             },
             "require": {
@@ -4357,6 +4357,9 @@
                 "symfony/polyfill-php81": "^1.28.0",
                 "symfony/string": "^5.4 || ^6.4 || ^7.0",
                 "webmozart/assert": "^1.11.0"
+            },
+            "conflict": {
+                "phpstan/phpstan": ">=1.11.0"
             },
             "require-dev": {
                 "ergebnis/composer-normalize": "^2.42.0",
@@ -4441,7 +4444,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-04-18T12:44:27+00:00"
+            "time": "2024-05-16T13:45:27+00:00"
         },
         {
             "name": "symfony/cache",
