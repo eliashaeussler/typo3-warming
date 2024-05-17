@@ -55,7 +55,7 @@
 			"@sca:php"
 		],
 		"sca:php": [
-			"@php ../../Tests/Build/phpstan-bootstrap.php",
+			"@php phpstan-bootstrap.php",
 			"phpstan analyse -c phpstan.php"
 		]
 	}

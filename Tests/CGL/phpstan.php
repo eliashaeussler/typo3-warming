@@ -25,7 +25,7 @@ use EliasHaeussler\PHPStanConfig;
 
 $rootPath = dirname(__DIR__, 2);
 $symfonySet = PHPStanConfig\Set\SymfonySet::create()
-    ->withConsoleApplicationLoader($rootPath . '/Tests/Build/console-application.php')
+    ->withConsoleApplicationLoader(__DIR__ . '/console-application.php')
     ->withContainerXmlPath($rootPath . '/var/cache/data/di/DependencyInjectionContainer.xml')
 ;
 
