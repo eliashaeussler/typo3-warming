@@ -51,10 +51,12 @@ final class MapperFactory
     }
 
     /**
+     * @pure
      * @throws Core\Exception\SiteNotFoundException
      */
     private function mapSites(string $siteIdentifier): Core\Site\Entity\Site
     {
+        /** @phpstan-ignore possiblyImpure.methodCall */
         return $this->siteFinder->getSiteByIdentifier($siteIdentifier);
     }
 }
