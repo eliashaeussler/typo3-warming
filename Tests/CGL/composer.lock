@@ -1203,16 +1203,16 @@
         },
         {
             "name": "eliashaeussler/php-cs-fixer-config",
-            "version": "2.1.1",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/php-cs-fixer-config.git",
-                "reference": "2246fcb309dd2c70a1f145992bc01cdf8c5f934c"
+                "reference": "41d6cb771e3a5bf1d2f5abe80fff34c6f16fc3ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/php-cs-fixer-config/zipball/2246fcb309dd2c70a1f145992bc01cdf8c5f934c",
-                "reference": "2246fcb309dd2c70a1f145992bc01cdf8c5f934c",
+                "url": "https://api.github.com/repos/eliashaeussler/php-cs-fixer-config/zipball/41d6cb771e3a5bf1d2f5abe80fff34c6f16fc3ac",
+                "reference": "41d6cb771e3a5bf1d2f5abe80fff34c6f16fc3ac",
                 "shasum": ""
             },
             "require": {
@@ -1249,9 +1249,9 @@
             "description": "My personal configuration for PHP-CS-Fixer",
             "support": {
                 "issues": "https://github.com/eliashaeussler/php-cs-fixer-config/issues",
-                "source": "https://github.com/eliashaeussler/php-cs-fixer-config/tree/2.1.1"
+                "source": "https://github.com/eliashaeussler/php-cs-fixer-config/tree/2.2.0"
             },
-            "time": "2024-04-02T12:53:01+00:00"
+            "time": "2024-05-17T19:59:53+00:00"
         },
         {
             "name": "eliashaeussler/phpstan-config",
