@@ -8591,36 +8591,36 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/coding-standards.git",
-                "reference": "27798dd4b8a15d2178260dbd6aad83fb0d6a017e"
+                "reference": "0d5c3c58aa773ca28eab93db6f605f8209098bd9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/coding-standards/zipball/27798dd4b8a15d2178260dbd6aad83fb0d6a017e",
-                "reference": "27798dd4b8a15d2178260dbd6aad83fb0d6a017e",
+                "url": "https://api.github.com/repos/TYPO3/coding-standards/zipball/0d5c3c58aa773ca28eab93db6f605f8209098bd9",
+                "reference": "0d5c3c58aa773ca28eab93db6f605f8209098bd9",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "friendsofphp/php-cs-fixer": "^3.49",
                 "php": "^8.1",
-                "symfony/console": "^5.4 || ^6.4 || ^7.0",
-                "symfony/filesystem": "^5.4 || ^6.4 || ^7.0"
+                "symfony/console": "^6.4 || ^7.0",
+                "symfony/filesystem": "^6.4 || ^7.0"
             },
             "require-dev": {
                 "composer/package-versions-deprecated": "^1.11.99.5",
                 "ergebnis/composer-normalize": "^2.28",
                 "keradus/cli-executor": "^1.5",
-                "maglnet/composer-require-checker": "*",
-                "nikic/php-parser": "^4.15.5",
+                "maglnet/composer-require-checker": "^4.7.1",
                 "overtrue/phplint": "^9.0",
                 "phpstan/extension-installer": "^1.3.1",
-                "phpstan/phpstan-deprecation-rules": "^1.1.3",
-                "phpstan/phpstan-phpunit": "^1.3.12",
-                "phpstan/phpstan-strict-rules": "^1.5.1",
-                "phpstan/phpstan-symfony": "^1.3.2",
+                "phpstan/phpstan": "^1.11.3",
+                "phpstan/phpstan-deprecation-rules": "^1.2.0",
+                "phpstan/phpstan-phpunit": "^1.4.0",
+                "phpstan/phpstan-strict-rules": "^1.6.0",
+                "phpstan/phpstan-symfony": "^1.4.3",
                 "phpunit/phpunit": "^10.1.3",
-                "symfony/finder": ">=5.4",
-                "symfony/process": ">=5.4"
+                "symfony/finder": "^6.4 || ^7.0",
+                "symfony/process": "^6.4 || ^7.0"
             },
             "default-branch": true,
             "bin": [
@@ -8667,7 +8667,7 @@
                 "issues": "https://github.com/TYPO3/coding-standards/issues",
                 "source": "https://github.com/TYPO3/coding-standards"
             },
-            "time": "2024-02-15T20:27:01+00:00"
+            "time": "2024-06-06T06:38:31+00:00"
         },
         {
             "name": "typo3/html-sanitizer",
