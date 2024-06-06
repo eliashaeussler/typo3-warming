@@ -30,7 +30,7 @@ use Rector\Symfony\Symfony53\Rector\Class_\CommandDescriptionToPropertyRector;
 use Rector\Symfony\Symfony61\Rector\Class_\CommandPropertyToAttributeRector;
 use Rector\ValueObject\PhpVersion;
 
-return static function(RectorConfig $rectorConfig): void {
+return static function (RectorConfig $rectorConfig): void {
     $rootPath = dirname(__DIR__, 2);
 
     require $rootPath . '/.Build/vendor/autoload.php';

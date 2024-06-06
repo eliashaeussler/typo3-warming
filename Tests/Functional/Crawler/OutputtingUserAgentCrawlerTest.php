@@ -27,7 +27,6 @@ use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\TransientLogger;
 use EliasHaeussler\Typo3Warming as Src;
 use EliasHaeussler\Typo3Warming\Tests;
-use Exception;
 use PHPUnit\Framework;
 use Symfony\Component\Console;
 use TYPO3\CMS\Core;
@@ -160,7 +159,7 @@ final class OutputtingUserAgentCrawlerTest extends TestingFramework\Core\Functio
 
         $this->guzzleClientFactory->handler->append(
             new Core\Http\Response(),
-            new Exception()
+            new \Exception()
         );
 
         $urls = [

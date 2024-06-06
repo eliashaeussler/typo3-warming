@@ -368,7 +368,7 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
      *     CacheWarmup\Crawler\CrawlerInterface,
      * }>
      */
-    public static function setCrawlerSetsGivenCrawlerDataProvider(): Generator
+    public static function setCrawlerSetsGivenCrawlerDataProvider(): \Generator
     {
         $crawler = new Tests\Functional\Fixtures\Classes\DummyVerboseCrawler();
 

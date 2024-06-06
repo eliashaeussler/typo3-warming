@@ -24,7 +24,6 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Domain\Type;
 
 use EliasHaeussler\Typo3Warming\Enums;
-use Stringable;
 use TYPO3\CMS\Core;
 
 /**
@@ -33,7 +32,7 @@ use TYPO3\CMS\Core;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class StateType implements Core\Type\TypeInterface, Stringable
+final class StateType implements Core\Type\TypeInterface, \Stringable
 {
     private readonly Enums\WarmupState $state;
 

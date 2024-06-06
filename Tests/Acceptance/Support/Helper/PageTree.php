@@ -71,7 +71,7 @@ final class PageTree extends TestingFramework\Core\Acceptance\Helper\AbstractPag
             $contextMenu = $context->findElement(WebDriver\WebDriverBy::cssSelector(self::$treeItemAnchorSelector));
         }
 
-        $I->executeInSelenium(function(WebDriver\Remote\RemoteWebDriver $webDriver) use ($contextMenu): void {
+        $I->executeInSelenium(function (WebDriver\Remote\RemoteWebDriver $webDriver) use ($contextMenu): void {
             $webDriver->getMouse()->contextClick($contextMenu->getCoordinates());
         });
         $I->waitForElementVisible(Tests\Acceptance\Support\Enums\Selectors::ContextMenuGroup->value);
@@ -89,7 +89,7 @@ final class PageTree extends TestingFramework\Core\Acceptance\Helper\AbstractPag
 
             $I->waitForElementVisible($contextMenuId, 5);
             $I->executeInSelenium(
-                function(WebDriver\Remote\RemoteWebDriver $webDriver) use ($contextMenuId, $selector): void {
+                function (WebDriver\Remote\RemoteWebDriver $webDriver) use ($contextMenuId, $selector): void {
                     $contextMenu = $webDriver->findElement(WebDriver\WebDriverBy::cssSelector($contextMenuId));
                     $items = $contextMenu->findElements(WebDriver\WebDriverBy::tagName('li'));
 
@@ -119,7 +119,7 @@ final class PageTree extends TestingFramework\Core\Acceptance\Helper\AbstractPag
 
         /** @var WebDriver\Remote\RemoteWebElement $context */
         $context = $I->executeInSelenium(
-            static fn () => $context->findElement(
+            static fn() => $context->findElement(
                 WebDriver\WebDriverBy::xpath('//*[text()=\'' . $nodeText . '\']/../../..'),
             ),
         );

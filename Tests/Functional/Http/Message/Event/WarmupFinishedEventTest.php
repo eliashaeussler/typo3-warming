@@ -25,7 +25,6 @@ namespace EliasHaeussler\Typo3Warming\Tests\Functional\Http\Message\Event;
 
 use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3Warming as Src;
-use Generator;
 use PHPUnit\Framework;
 use TYPO3\CMS\Core;
 use TYPO3\TestingFramework;
@@ -194,9 +193,9 @@ final class WarmupFinishedEventTest extends TestingFramework\Core\Functional\Fun
     }
 
     /**
-     * @return Generator<string, array{list<CacheWarmup\Result\CrawlingResult>, Src\Enums\WarmupState}>
+     * @return \Generator<string, array{list<CacheWarmup\Result\CrawlingResult>, Src\Enums\WarmupState}>
      */
-    public static function getDataIncludesWarmupStateDataProvider(): Generator
+    public static function getDataIncludesWarmupStateDataProvider(): \Generator
     {
         $successful = self::getSuccessfulCrawlingResult();
         $failed = self::getFailedCrawlingResult();

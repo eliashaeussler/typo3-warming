@@ -30,7 +30,6 @@ use EliasHaeussler\Typo3Warming\Crawler;
 use EliasHaeussler\Typo3Warming\Domain;
 use EliasHaeussler\Typo3Warming\Http;
 use EliasHaeussler\Typo3Warming\Utility;
-use JsonException;
 use Symfony\Component\Console;
 use TYPO3\CMS\Core;
 
@@ -113,7 +112,7 @@ final class WarmupCommand extends Console\Command\Command
             '  │  It can be defined via the extension configuration <info>strategy</info> or by using the <info>--strategy</info> option.',
             '  │  The following strategies are currently available:',
             ...array_map(
-                static fn (string $strategy) => '  │  * <info>' . $strategy . '</info>',
+                static fn(string $strategy) => '  │  * <info>' . $strategy . '</info>',
                 array_keys($this->crawlingStrategyFactory->getAll()),
             ),
             '  ├─ Default: <info>' . ($this->configuration->getStrategy() ?? 'none') . '</info>',
@@ -193,7 +192,7 @@ final class WarmupCommand extends Console\Command\Command
     /**
      * @throws Console\Exception\ExceptionInterface
      * @throws Core\Exception\SiteNotFoundException
-     * @throws JsonException
+     * @throws \JsonException
      */
     protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output): int
     {
@@ -226,7 +225,7 @@ final class WarmupCommand extends Console\Command\Command
     /**
      * @return array<string, mixed>
      * @throws Core\Exception\SiteNotFoundException
-     * @throws JsonException
+     * @throws \JsonException
      * @throws Typo3SitemapLocator\Exception\BaseUrlIsNotSupported
      * @throws Typo3SitemapLocator\Exception\SitemapIsMissing
      */

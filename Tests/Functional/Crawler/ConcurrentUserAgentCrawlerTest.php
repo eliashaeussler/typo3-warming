@@ -27,7 +27,6 @@ use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\TransientLogger;
 use EliasHaeussler\Typo3Warming as Src;
 use EliasHaeussler\Typo3Warming\Tests;
-use Exception;
 use PHPUnit\Framework;
 use TYPO3\CMS\Core;
 use TYPO3\TestingFramework;
@@ -152,7 +151,7 @@ final class ConcurrentUserAgentCrawlerTest extends TestingFramework\Core\Functio
 
         $this->guzzleClientFactory->handler->append(
             new Core\Http\Response(),
-            new Exception()
+            new \Exception()
         );
 
         $urls = [

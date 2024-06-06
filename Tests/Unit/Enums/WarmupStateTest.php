@@ -24,7 +24,6 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Tests\Unit\Enums;
 
 use EliasHaeussler\Typo3Warming as Src;
-use Generator;
 use PHPUnit\Framework;
 use Psr\Log;
 use TYPO3\TestingFramework;
@@ -51,9 +50,9 @@ final class WarmupStateTest extends TestingFramework\Core\Unit\UnitTestCase
     }
 
     /**
-     * @return Generator<string, array{Log\LogLevel::*, Src\Enums\WarmupState}>
+     * @return \Generator<string, array{Log\LogLevel::*, Src\Enums\WarmupState}>
      */
-    public static function fromLogLevelReturnsWarmupStateFromGivenPsrLogLevelDataProvider(): Generator
+    public static function fromLogLevelReturnsWarmupStateFromGivenPsrLogLevelDataProvider(): \Generator
     {
         yield 'emergency' => [Log\LogLevel::EMERGENCY, Src\Enums\WarmupState::Failed];
         yield 'alert' => [Log\LogLevel::ALERT, Src\Enums\WarmupState::Failed];

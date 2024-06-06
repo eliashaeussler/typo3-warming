@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\UserFunc;
 
-use DateTimeImmutable;
 use EliasHaeussler\Typo3Warming\Domain;
 use TYPO3\CMS\Backend;
 
@@ -47,7 +46,7 @@ final class LogTableFormatter
         $record = Backend\Utility\BackendUtility::getRecord(Domain\Model\Log::TABLE_NAME, $parameters['row']['uid']);
 
         if ($record !== null) {
-            $date = DateTimeImmutable::createFromFormat('U', (string)$record['date']);
+            $date = \DateTimeImmutable::createFromFormat('U', (string)$record['date']);
             $parameters['title'] = sprintf(
                 self::TEMPLATE,
                 $record['request_id'],

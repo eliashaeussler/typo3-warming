@@ -25,7 +25,6 @@ namespace EliasHaeussler\Typo3Warming\Tests\Unit\Http\Message\Handler;
 
 use EliasHaeussler\Typo3Warming as Src;
 use EliasHaeussler\Typo3Warming\Tests;
-use Exception;
 use PHPUnit\Framework;
 use TYPO3\CMS\Core;
 use TYPO3\TestingFramework;
@@ -79,7 +78,7 @@ final class StreamResponseHandlerTest extends TestingFramework\Core\Unit\UnitTes
         );
 
         $this->subject->onFailure(
-            new Exception(),
+            new \Exception(),
             new Core\Http\Uri('https://typo3-testing.local/'),
         );
 
