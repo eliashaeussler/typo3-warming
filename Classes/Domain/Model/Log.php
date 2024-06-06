@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Domain\Model;
 
-use DateTimeInterface;
 use EliasHaeussler\Typo3Warming\Domain;
 use TYPO3\CMS\Extbase;
 
@@ -39,7 +38,7 @@ class Log extends Extbase\DomainObject\AbstractEntity
     final public const TABLE_NAME = 'tx_warming_domain_model_log';
 
     protected string $requestId = '';
-    protected ?DateTimeInterface $date = null;
+    protected ?\DateTimeInterface $date = null;
     protected string $url = '';
     protected string $message = '';
     protected ?Domain\Type\StateType $state = null;
@@ -58,12 +57,12 @@ class Log extends Extbase\DomainObject\AbstractEntity
         return $this;
     }
 
-    public function getDate(): ?DateTimeInterface
+    public function getDate(): ?\DateTimeInterface
     {
         return $this->date;
     }
 
-    public function setDate(?DateTimeInterface $date): self
+    public function setDate(?\DateTimeInterface $date): self
     {
         $this->date = $date;
 

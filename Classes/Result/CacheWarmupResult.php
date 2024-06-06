@@ -64,7 +64,7 @@ final class CacheWarmupResult
             'successful' => array_values(
                 array_filter(
                     $this->result->getSuccessful(),
-                    fn (CacheWarmup\Result\CrawlingResult $crawlingResult) => $this->filterBySite(
+                    fn(CacheWarmup\Result\CrawlingResult $crawlingResult) => $this->filterBySite(
                         $crawlingResult,
                         $site,
                         $siteLanguage,
@@ -74,7 +74,7 @@ final class CacheWarmupResult
             'failed' => array_values(
                 array_filter(
                     $this->result->getFailed(),
-                    fn (CacheWarmup\Result\CrawlingResult $crawlingResult) => $this->filterBySite(
+                    fn(CacheWarmup\Result\CrawlingResult $crawlingResult) => $this->filterBySite(
                         $crawlingResult,
                         $site,
                         $siteLanguage,

@@ -26,7 +26,6 @@ namespace EliasHaeussler\Typo3Warming\Backend\ContextMenu\ItemProviders;
 use EliasHaeussler\Typo3SitemapLocator;
 use EliasHaeussler\Typo3Warming\Configuration;
 use EliasHaeussler\Typo3Warming\Utility;
-use Exception;
 use TYPO3\CMS\Backend;
 use TYPO3\CMS\Core;
 
@@ -171,12 +170,12 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
             if ($itemName === self::ITEM_MODE_SITE) {
                 $languages = array_filter(
                     $languages,
-                    fn (Core\Site\Entity\SiteLanguage $siteLanguage): bool => $this->canWarmupCachesOfSite($siteLanguage)
+                    fn(Core\Site\Entity\SiteLanguage $siteLanguage): bool => $this->canWarmupCachesOfSite($siteLanguage)
                 );
             } else {
                 $languages = array_filter(
                     $languages,
-                    fn (Core\Site\Entity\SiteLanguage $siteLanguage): bool => Utility\AccessUtility::canWarmupCacheOfPage(
+                    fn(Core\Site\Entity\SiteLanguage $siteLanguage): bool => Utility\AccessUtility::canWarmupCacheOfPage(
                         (int)$this->identifier,
                         $siteLanguage->getLanguageId(),
                     )
@@ -254,7 +253,7 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
                     return true;
                 }
             }
-        } catch (Exception) {
+        } catch (\Exception) {
             // Unable to locate any sitemaps
         }
 

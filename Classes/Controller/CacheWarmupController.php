@@ -32,7 +32,6 @@ use EliasHaeussler\Typo3Warming\Http;
 use EliasHaeussler\Typo3Warming\Service;
 use EliasHaeussler\Typo3Warming\ValueObject;
 use GuzzleHttp\Exception\GuzzleException;
-use JsonException;
 use Psr\Http\Message;
 use Psr\Log;
 use TYPO3\CMS\Core;
@@ -56,7 +55,7 @@ final class CacheWarmupController
      * @throws CacheWarmup\Exception\Exception
      * @throws Core\Exception\SiteNotFoundException
      * @throws GuzzleException
-     * @throws JsonException
+     * @throws \JsonException
      * @throws SSE\Exception\StreamIsActive
      * @throws SSE\Exception\StreamIsClosed
      * @throws SSE\Exception\StreamIsInactive

@@ -26,9 +26,7 @@ namespace EliasHaeussler\Typo3Warming\Http\Message\Handler;
 use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\SSE;
 use EliasHaeussler\Typo3Warming\Http;
-use JsonException;
 use Psr\Http\Message;
-use Throwable;
 
 /**
  * StreamResponseHandler
@@ -54,7 +52,7 @@ final class StreamResponseHandler implements CacheWarmup\Http\Message\Handler\Re
     ) {}
 
     /**
-     * @throws JsonException
+     * @throws \JsonException
      * @throws SSE\Exception\StreamIsClosed
      * @throws SSE\Exception\StreamIsInactive
      */
@@ -66,11 +64,11 @@ final class StreamResponseHandler implements CacheWarmup\Http\Message\Handler\Re
     }
 
     /**
-     * @throws JsonException
+     * @throws \JsonException
      * @throws SSE\Exception\StreamIsClosed
      * @throws SSE\Exception\StreamIsInactive
      */
-    public function onFailure(Throwable $exception, Message\UriInterface $uri): void
+    public function onFailure(\Throwable $exception, Message\UriInterface $uri): void
     {
         $this->failedUrls[] = (string)$uri;
 
@@ -78,7 +76,7 @@ final class StreamResponseHandler implements CacheWarmup\Http\Message\Handler\Re
     }
 
     /**
-     * @throws JsonException
+     * @throws \JsonException
      * @throws SSE\Exception\StreamIsClosed
      * @throws SSE\Exception\StreamIsInactive
      */

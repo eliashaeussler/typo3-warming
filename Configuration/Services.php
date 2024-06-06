@@ -24,7 +24,7 @@ declare(strict_types=1);
 use EliasHaeussler\CacheWarmup;
 use Symfony\Component\DependencyInjection;
 
-return static function(
+return static function (
     DependencyInjection\Loader\Configurator\ContainerConfigurator $containerConfigurator,
     DependencyInjection\ContainerBuilder $container,
 ): void {

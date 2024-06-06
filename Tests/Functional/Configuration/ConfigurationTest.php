@@ -25,7 +25,6 @@ namespace EliasHaeussler\Typo3Warming\Tests\Functional\Configuration;
 
 use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3Warming as Src;
-use Generator;
 use PHPUnit\Framework;
 use TYPO3\CMS\Core;
 use TYPO3\TestingFramework;
@@ -406,9 +405,9 @@ final class ConfigurationTest extends TestingFramework\Core\Functional\Functiona
     }
 
     /**
-     * @return Generator<string, array{string|bool}>
+     * @return \Generator<string, array{string|bool}>
      */
-    public static function getCrawlerReturnsDefaultCrawlerIfConfiguredCrawlerIsInvalidDataProvider(): Generator
+    public static function getCrawlerReturnsDefaultCrawlerIfConfiguredCrawlerIsInvalidDataProvider(): \Generator
     {
         yield 'empty string' => [''];
         yield 'invalid type' => [false];
@@ -416,9 +415,9 @@ final class ConfigurationTest extends TestingFramework\Core\Functional\Functiona
     }
 
     /**
-     * @return Generator<string, array{string|bool}>
+     * @return \Generator<string, array{string|bool}>
      */
-    public static function getVerboseCrawlerReturnsDefaultVerboseCrawlerIfConfiguredVerboseCrawlerIsInvalidDataProvider(): Generator
+    public static function getVerboseCrawlerReturnsDefaultVerboseCrawlerIfConfiguredVerboseCrawlerIsInvalidDataProvider(): \Generator
     {
         yield 'empty string' => [''];
         yield 'invalid type' => [false];
@@ -426,18 +425,18 @@ final class ConfigurationTest extends TestingFramework\Core\Functional\Functiona
     }
 
     /**
-     * @return Generator<string, array{bool}>
+     * @return \Generator<string, array{bool}>
      */
-    public static function isEnabledInPageTreeReturnsConfiguredValueDataProvider(): Generator
+    public static function isEnabledInPageTreeReturnsConfiguredValueDataProvider(): \Generator
     {
         yield 'enabled' => [true];
         yield 'disabled' => [false];
     }
 
     /**
-     * @return Generator<string, array{bool}>
+     * @return \Generator<string, array{bool}>
      */
-    public static function isEnabledInToolbarReturnsConfiguredValueDataProvider(): Generator
+    public static function isEnabledInToolbarReturnsConfiguredValueDataProvider(): \Generator
     {
         yield 'enabled' => [true];
         yield 'disabled' => [false];

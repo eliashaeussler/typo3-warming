@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Tests\Functional;
 
-use RuntimeException;
 use Symfony\Component\Console;
 
 /**
@@ -91,7 +90,7 @@ final class BufferedConsoleOutput extends Console\Output\StreamOutput implements
         $stream = fopen('php://temp', 'w+');
 
         if ($stream === false) {
-            throw new RuntimeException('Unable to create resource stream.', 1688464796);
+            throw new \RuntimeException('Unable to create resource stream.', 1688464796);
         }
 
         return $stream;
