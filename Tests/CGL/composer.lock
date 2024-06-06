@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a6afddc18d2908b3fb921bd3035e5ad4",
+    "content-hash": "32bd8195377baf4caeac72feebe5f6f3",
     "packages": [],
     "packages-dev": [
         {
@@ -8587,7 +8587,7 @@
         },
         {
             "name": "typo3/coding-standards",
-            "version": "dev-main",
+            "version": "v0.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/coding-standards.git",
@@ -8622,7 +8622,6 @@
                 "symfony/finder": "^6.4 || ^7.0",
                 "symfony/process": "^6.4 || ^7.0"
             },
-            "default-branch": true,
             "bin": [
                 "t3-cs",
                 "typo3-coding-standards"
@@ -8831,9 +8830,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "typo3/coding-standards": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
