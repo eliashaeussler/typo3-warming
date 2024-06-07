@@ -8591,12 +8591,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/coding-standards.git",
-                "reference": "0d5c3c58aa773ca28eab93db6f605f8209098bd9"
+                "reference": "d99bdb92e5647bedc3d05e4aef1ab4d1808a17b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/coding-standards/zipball/0d5c3c58aa773ca28eab93db6f605f8209098bd9",
-                "reference": "0d5c3c58aa773ca28eab93db6f605f8209098bd9",
+                "url": "https://api.github.com/repos/TYPO3/coding-standards/zipball/d99bdb92e5647bedc3d05e4aef1ab4d1808a17b1",
+                "reference": "d99bdb92e5647bedc3d05e4aef1ab4d1808a17b1",
                 "shasum": ""
             },
             "require": {
@@ -8666,7 +8666,7 @@
                 "issues": "https://github.com/TYPO3/coding-standards/issues",
                 "source": "https://github.com/TYPO3/coding-standards"
             },
-            "time": "2024-06-06T06:38:31+00:00"
+            "time": "2024-06-03T14:17:54+00:00"
         },
         {
             "name": "typo3/html-sanitizer",
