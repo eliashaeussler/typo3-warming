@@ -25,8 +25,6 @@ use EliasHaeussler\RectorConfig\Config\Config;
 use Rector\Config\RectorConfig;
 use Rector\Php80\Rector\Class_\AnnotationToAttributeRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
-use Rector\Symfony\Symfony53\Rector\Class_\CommandDescriptionToPropertyRector;
-use Rector\Symfony\Symfony61\Rector\Class_\CommandPropertyToAttributeRector;
 use Rector\ValueObject\PhpVersion;
 
 return static function (RectorConfig $rectorConfig): void {
@@ -69,8 +67,6 @@ return static function (RectorConfig $rectorConfig): void {
             $rootPath . '/Tests/Acceptance/Support/Helper/ModalDialog.php',
             $rootPath . '/Tests/Acceptance/Support/Helper/PageTree.php',
         ])
-        ->skip(CommandDescriptionToPropertyRector::class)
-        ->skip(CommandPropertyToAttributeRector::class)
         ->apply()
     ;
 
