@@ -25,7 +25,6 @@ use EliasHaeussler\RectorConfig\Config\Config;
 use Rector\Config\RectorConfig;
 use Rector\Php80\Rector\Class_\AnnotationToAttributeRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
-use Rector\Privatization\Rector\Class_\FinalizeClassesWithoutChildrenRector;
 use Rector\Symfony\Symfony53\Rector\Class_\CommandDescriptionToPropertyRector;
 use Rector\Symfony\Symfony61\Rector\Class_\CommandPropertyToAttributeRector;
 use Rector\ValueObject\PhpVersion;
@@ -72,11 +71,6 @@ return static function (RectorConfig $rectorConfig): void {
         ])
         ->skip(CommandDescriptionToPropertyRector::class)
         ->skip(CommandPropertyToAttributeRector::class)
-        ->skip(FinalizeClassesWithoutChildrenRector::class, [
-            // We keep domain models and repositories open for extensions
-            $rootPath . '/Classes/Domain/Model/*',
-            $rootPath . '/Classes/Domain/Repository/*',
-        ])
         ->apply()
     ;
 
