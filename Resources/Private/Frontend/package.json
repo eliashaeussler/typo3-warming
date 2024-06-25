@@ -25,7 +25,7 @@
 		"@rollup/plugin-node-resolve": "^15.0.2",
 		"@rollup/plugin-terser": "^0.4.1",
 		"@rollup/plugin-typescript": "^11.1.0",
-		"@types/uuid": "^9.0.1",
+		"@types/uuid": "^10.0.0",
 		"cross-env": "^7.0.3",
 		"eslint": "^9.0.0",
 		"eslint-plugin-license-header": "^0.6.1",
@@ -49,6 +49,6 @@
 	},
 	"dependencies": {
 		"clipboard-polyfill": "^4.0.0",
-		"uuid": "^9.0.0"
+		"uuid": "^10.0.0"
 	}
 }
