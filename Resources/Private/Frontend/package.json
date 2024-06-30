@@ -42,7 +42,7 @@
 		"stylelint": "^16.0.0",
 		"stylelint-config-sass-guidelines": "^11.0.0",
 		"stylelint-copyright": "^3.2.1",
-		"stylelint-header": "^1.0.0",
+		"stylelint-header": "^2.0.0",
 		"tslib": "^2.6.0",
 		"typescript": "^5.0.4",
 		"typescript-eslint": "^7.6.0"
