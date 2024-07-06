@@ -25,7 +25,7 @@ It supports multiple languages and custom crawler implementations.
 * Multi-language support
 * Support for custom crawlers
 * Console command
-* Compatible with TYPO3 12.4 LTS and 13.1
+* Compatible with TYPO3 12.4 LTS and 13.2
 
 ## 🔥 Installation
 
