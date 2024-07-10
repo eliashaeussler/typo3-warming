@@ -65,7 +65,7 @@ final class CacheWarmupLegacyController
             $warmupRequest = $this->mapper->map(ValueObject\Request\WarmupRequest::class, $request->getQueryParams());
         } catch (Valinor\Mapper\MappingError $error) {
             $errors = Valinor\Mapper\Tree\Message\Messages::flattenFromNode($error->node());
-            $messages = array_map('strval', $errors->toArray());
+            $messages = array_map(strval(...), $errors->toArray());
 
             $this->logger->error(
                 'Error during mapping of query parameters to warmup request object.',
