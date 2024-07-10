@@ -85,12 +85,12 @@ final class WarmupFinishedEvent implements SSE\Event\Event
                 'total' => \count($failedUrls) + \count($successfulUrls),
             ],
             'urls' => [
-                'failed' => array_map('strval', $failedUrls),
-                'successful' => array_map('strval', $successfulUrls),
+                'failed' => array_map(strval(...), $failedUrls),
+                'successful' => array_map(strval(...), $successfulUrls),
             ],
             'excluded' => [
-                'sitemaps' => array_map('strval', $this->result->getExcludedSitemaps()),
-                'urls' => array_map('strval', $this->result->getExcludedUrls()),
+                'sitemaps' => array_map(strval(...), $this->result->getExcludedSitemaps()),
+                'urls' => array_map(strval(...), $this->result->getExcludedUrls()),
             ],
             'messages' => $this->buildMessages($state),
         ];
