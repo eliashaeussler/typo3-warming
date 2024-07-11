@@ -88,7 +88,8 @@
 			"@composer -d Tests/CGL update"
 		],
 		"post-autoload-dump": [
-			"@environment:prepare"
+			"@environment:prepare",
+			"Tests/Build/Scripts/fix_invalid_package_path.sh"
 		],
 		"cgl": "@composer -d Tests/CGL --",
 		"docs": [
