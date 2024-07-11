@@ -58,7 +58,7 @@ export default [
         targets: '../../Public/JavaScript/*',
         force: true,
       }),
-      multiInput.default({
+      multiInput({
         relative: 'src/scripts',
       }),
       nodeResolve(),
