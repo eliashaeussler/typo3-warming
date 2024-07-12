@@ -23,6 +23,7 @@ export default {
     'stylelint-header',
   ],
   rules: {
+    '@stylistic/indentation': 4,
     'max-nesting-depth': 2,
     'header/header': [
       './res/license-header.txt',
