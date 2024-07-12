@@ -18,15 +18,15 @@
  */
 
 warming-report-modal {
-  display: flex;
-  flex-direction: column;
-  min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
 
-  > .panel-container {
-    flex-grow: 1;
-  }
+    > .panel-container {
+        flex-grow: 1;
+    }
 
-  > .tx-warming-request-id {
-    color: var(--typo3-light-secondary-color);
-  }
+    > .tx-warming-request-id {
+        color: var(--typo3-light-secondary-color);
+    }
 }
