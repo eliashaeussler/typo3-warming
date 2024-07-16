@@ -4884,16 +4884,16 @@
         },
         {
             "name": "rector/rector",
-            "version": "1.2.0",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "2fa387553db22b6f9bcccf5ff16f2c2c18a52a65"
+                "reference": "b38a3eed3ce2046f40c001255e2fec9d2746bacf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/2fa387553db22b6f9bcccf5ff16f2c2c18a52a65",
-                "reference": "2fa387553db22b6f9bcccf5ff16f2c2c18a52a65",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/b38a3eed3ce2046f40c001255e2fec9d2746bacf",
+                "reference": "b38a3eed3ce2046f40c001255e2fec9d2746bacf",
                 "shasum": ""
             },
             "require": {
@@ -4931,7 +4931,7 @@
             ],
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/1.2.0"
+                "source": "https://github.com/rectorphp/rector/tree/1.2.1"
             },
             "funding": [
                 {
@@ -4939,7 +4939,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-07-01T14:24:45+00:00"
+            "time": "2024-07-16T00:22:54+00:00"
         },
         {
             "name": "saschaegerer/phpstan-typo3",
@@ -5140,16 +5140,16 @@
         },
         {
             "name": "ssch/typo3-rector",
-            "version": "v2.6.2",
+            "version": "v2.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabbelasichon/typo3-rector.git",
-                "reference": "1018e0239b310fa696bef2b8f40d9783fc8dfd2b"
+                "reference": "579c34544df85d71e9f5d99e7f9b25555ac29358"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabbelasichon/typo3-rector/zipball/1018e0239b310fa696bef2b8f40d9783fc8dfd2b",
-                "reference": "1018e0239b310fa696bef2b8f40d9783fc8dfd2b",
+                "url": "https://api.github.com/repos/sabbelasichon/typo3-rector/zipball/579c34544df85d71e9f5d99e7f9b25555ac29358",
+                "reference": "579c34544df85d71e9f5d99e7f9b25555ac29358",
                 "shasum": ""
             },
             "require": {
@@ -5252,7 +5252,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-07-02T12:32:58+00:00"
+            "time": "2024-07-16T07:28:45+00:00"
         },
         {
             "name": "symfony/cache",
