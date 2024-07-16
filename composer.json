@@ -66,11 +66,11 @@
 	},
 	"config": {
 		"allow-plugins": {
+			"captainhook/plugin-composer": false,
 			"ergebnis/composer-normalize": true,
 			"phpstan/extension-installer": true,
 			"typo3/class-alias-loader": true,
-			"typo3/cms-composer-installers": true,
-			"captainhook/plugin-composer": false
+			"typo3/cms-composer-installers": true
 		},
 		"bin-dir": ".Build/bin",
 		"sort-packages": true,
