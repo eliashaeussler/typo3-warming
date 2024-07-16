@@ -19,7 +19,7 @@
 		"rss": "https://github.com/eliashaeussler/typo3-warming/releases.atom"
 	},
 	"require": {
-		"php": "~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0",
+		"php": "~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0",
 		"ext-json": "*",
 		"eliashaeussler/cache-warmup": ">= 0.5.0 < 1.0.0",
 		"guzzlehttp/guzzle": "^6.3 || ^7.0",
@@ -66,11 +66,11 @@
 	},
 	"config": {
 		"allow-plugins": {
+			"captainhook/plugin-composer": false,
 			"ergebnis/composer-normalize": true,
 			"phpstan/extension-installer": true,
 			"typo3/class-alias-loader": true,
-			"typo3/cms-composer-installers": true,
-			"captainhook/plugin-composer": false
+			"typo3/cms-composer-installers": true
 		},
 		"bin-dir": ".Build/bin",
 		"sort-packages": true,
