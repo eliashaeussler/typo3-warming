@@ -2876,9 +2876,9 @@ rollup-plugin-delete@^2.0.0:
     del "^5.1.0"
 
 rollup-plugin-multi-input@^1.4.1:
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-multi-input/-/rollup-plugin-multi-input-1.4.2.tgz#025cbbb40f4815e8a9eb4d550c71991688f63621"
-  integrity sha512-6PQxsdVR3i+WYeSlo29il6rf2MXYb/3Y61z8GzqoOKKhuerH7yeEJ/5ufDy34JnMVEdgIqEdWG7nQtMYNvmPtw==
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-multi-input/-/rollup-plugin-multi-input-1.5.0.tgz#d4c34c128bddf94bfbc04726e53201bc719f9077"
+  integrity sha512-Tgb/pz1VxzYCk/MPTh0dhLb/zme4tWb72S9KtwVgGVupkdngUPQZqRUld25f8tAb18z1lfvz4Mn7ihDQLr+L9g==
   dependencies:
     fast-glob "3.3.2"
 
