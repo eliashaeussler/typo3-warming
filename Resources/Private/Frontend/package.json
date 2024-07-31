@@ -45,7 +45,7 @@
 		"stylelint-header": "^2.0.0",
 		"tslib": "^2.6.0",
 		"typescript": "^5.0.4",
-		"typescript-eslint": "^7.6.0"
+		"typescript-eslint": "^8.0.0"
 	},
 	"dependencies": {
 		"clipboard-polyfill": "^4.0.0",
