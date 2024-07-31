@@ -41,7 +41,7 @@ final class TemplateRenderer
     public function render(string $templatePath, array $variables = []): string
     {
         $view = Core\Utility\GeneralUtility::makeInstance(Fluid\View\StandaloneView::class);
-        $view->getTemplatePaths()->fillDefaultsByPackageName(Extension::KEY);
+        $view->getRenderingContext()->getTemplatePaths()->fillDefaultsByPackageName(Extension::KEY);
         $view->assignMultiple($variables);
 
         return $view->render($templatePath);
