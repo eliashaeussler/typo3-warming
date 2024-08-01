@@ -188,7 +188,7 @@ export class SitesModal extends LitElement {
             // Push site language
             sites[site] ??= [];
             sites[site].push(selection.getLanguageId());
-          } catch (InvalidSiteSelectionException) {
+          } catch {
             // Continue with next input field.
           }
           break;
