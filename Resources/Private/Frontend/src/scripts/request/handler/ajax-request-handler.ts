@@ -18,7 +18,7 @@
  */
 
 import AjaxRequest from '@typo3/core/ajax/ajax-request.js';
-import AjaxResponse from '@typo3/core/ajax/ajax-response.js';
+import type AjaxResponse from '@typo3/core/ajax/ajax-response.js';
 import Modal from '@typo3/backend/modal.js';
 
 import {ProgressModal} from '@eliashaeussler/typo3-warming/backend/modal/progress-modal';
