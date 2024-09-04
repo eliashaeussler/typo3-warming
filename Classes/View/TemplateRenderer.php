@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\View;
 
-use EliasHaeussler\Typo3Warming\Extension;
 use TYPO3\CMS\Core;
 use TYPO3\CMS\Fluid;
 
@@ -35,15 +34,33 @@ use TYPO3\CMS\Fluid;
  */
 final class TemplateRenderer
 {
+    private readonly Fluid\Core\Rendering\RenderingContext $renderingContext;
+
+    public function __construct(
+        private readonly Fluid\Core\Rendering\RenderingContextFactory $renderingContextFactory,
+    ) {
+        $this->renderingContext = $this->createRenderingContext();
+    }
+
     /**
      * @param array<string, mixed> $variables
      */
     public function render(string $templatePath, array $variables = []): string
     {
-        $view = Core\Utility\GeneralUtility::makeInstance(Fluid\View\StandaloneView::class);
-        $view->getRenderingContext()->getTemplatePaths()->fillDefaultsByPackageName(Extension::KEY);
+        $view = Core\Utility\GeneralUtility::makeInstance(Fluid\View\StandaloneView::class, $this->renderingContext);
         $view->assignMultiple($variables);
 
         return $view->render($templatePath);
+    }
+
+    private function createRenderingContext(): Fluid\Core\Rendering\RenderingContext
+    {
+        $rootPath = dirname(__DIR__, 2) . '/Resources/Private';
+
+        return $this->renderingContextFactory->create([
+            'templateRootPaths' => [$rootPath . '/Templates'],
+            'partialRootPaths' => [$rootPath . '/Partials'],
+            'layoutRootPaths' => [$rootPath . '/Layouts'],
+        ]);
     }
 }
