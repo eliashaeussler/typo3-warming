@@ -47,7 +47,7 @@ final class TemplateRendererTest extends TestingFramework\Core\Functional\Functi
     {
         parent::setUp();
 
-        $this->subject = new Src\View\TemplateRenderer();
+        $this->subject = $this->get(Src\View\TemplateRenderer::class);
     }
 
     #[Framework\Attributes\Test]

@@ -54,11 +54,51 @@ final class ResponseFactoryTest extends TestingFramework\Core\Functional\Functio
     }
 
     #[Framework\Attributes\Test]
+    public function okReturnsOkResponse(): void
+    {
+        $expected = new Core\Http\Response();
+        $actual = $this->subject->ok();
+
+        self::assertSame((string)$expected->getBody(), (string)$actual->getBody());
+        self::assertEquals($expected, $actual->withBody($expected->getBody()));
+    }
+
+    #[Framework\Attributes\Test]
+    public function htmlReturnsHtmlResponse(): void
+    {
+        $expected = new Core\Http\HtmlResponse('foo');
+        $actual = $this->subject->html('foo');
+
+        self::assertSame((string)$expected->getBody(), (string)$actual->getBody());
+        self::assertEquals($expected, $actual->withBody($expected->getBody()));
+    }
+
+    #[Framework\Attributes\Test]
     public function htmlTemplateReturnsHtmlResponseWithRenderedTemplate(): void
     {
         $actual = $this->subject->htmlTemplate('Modal/SitesModal');
 
         self::assertInstanceOf(Core\Http\HtmlResponse::class, $actual);
         self::assertNotEmpty((string)$actual->getBody());
+    }
+
+    #[Framework\Attributes\Test]
+    public function jsonReturnsJsonResponse(): void
+    {
+        $expected = new Core\Http\JsonResponse(['foo' => 'baz']);
+        $actual = $this->subject->json(['foo' => 'baz']);
+
+        self::assertSame((string)$expected->getBody(), (string)$actual->getBody());
+        self::assertEquals($expected, $actual->withBody($expected->getBody()));
+    }
+
+    #[Framework\Attributes\Test]
+    public function badRequestReturnsBadRequestResponse(): void
+    {
+        $expected = new Core\Http\Response(null, 400, [], 'foo');
+        $actual = $this->subject->badRequest('foo');
+
+        self::assertSame((string)$expected->getBody(), (string)$actual->getBody());
+        self::assertEquals($expected, $actual->withBody($expected->getBody()));
     }
 }
