@@ -101,7 +101,8 @@
 		"docs:cleanup": "rm -rf .Build/docs",
 		"docs:open": "open .Build/docs/Result/project/0.0.0/Index.html",
 		"environment:prepare": [
-			"[ -L config ] || ln -snvf Tests/Build/Configuration config",
+			"rm -rf config",
+			"cp -r Tests/Build/Configuration config",
 			"codecept build"
 		],
 		"test": [
