@@ -17,33 +17,12 @@ services:
       - '../Classes/Result/*'
       - '../Classes/ValueObject/*'
 
-  EliasHaeussler\Typo3Warming\Configuration\Configuration:
-    public: true
-  EliasHaeussler\Typo3Warming\Controller\CacheWarmupController:
-    public: true
-  EliasHaeussler\Typo3Warming\Controller\CacheWarmupLegacyController:
-    public: true
-  EliasHaeussler\Typo3Warming\Controller\FetchSitesController:
-    public: true
-  EliasHaeussler\Typo3Warming\Crawler\Strategy\CrawlingStrategyFactory:
-    arguments:
-      $strategies: !tagged_locator { tag: 'warming.crawling_strategy', default_index_method: 'getName' }
-  EliasHaeussler\Typo3Warming\Http\Client\ClientFactory:
-    public: true
-  EliasHaeussler\Typo3Warming\Service\CacheWarmupService:
-    public: true
-
   EliasHaeussler\Typo3Warming\Command\ShowUserAgentCommand:
     tags:
       - name: console.command
         command: warming:showuseragent
         description: 'Show custom "User-Agent" header to be used for Frontend requests by default crawlers.'
         schedulable: false
-  EliasHaeussler\Typo3Warming\Command\WarmupCommand:
-    tags:
-      - name: console.command
-        command: warming:cachewarmup
-        description: 'Warm up Frontend caches of single pages and/or whole sites using their XML sitemaps.'
 
   CuyZ\Valinor\Mapper\TreeMapper:
     factory: ['@EliasHaeussler\Typo3Warming\Mapper\MapperFactory', 'get']

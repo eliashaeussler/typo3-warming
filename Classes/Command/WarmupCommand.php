@@ -39,6 +39,10 @@ use TYPO3\CMS\Core;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
+#[Console\Attribute\AsCommand(
+    name: 'warming:cachewarmup',
+    description: 'Warm up Frontend caches of single pages and/or whole sites using their XML sitemaps.',
+)]
 final class WarmupCommand extends Console\Command\Command
 {
     private const ALL_LANGUAGES = -1;

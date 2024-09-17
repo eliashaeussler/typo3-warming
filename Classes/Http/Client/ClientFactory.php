@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Http\Client;
 
 use GuzzleHttp\ClientInterface;
+use Symfony\Component\DependencyInjection;
 use TYPO3\CMS\Core;
 
 /**
@@ -32,6 +33,7 @@ use TYPO3\CMS\Core;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
+#[DependencyInjection\Attribute\Autoconfigure(public: true)]
 final class ClientFactory
 {
     public function __construct(

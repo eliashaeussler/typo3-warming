@@ -30,6 +30,7 @@ use EliasHaeussler\Typo3Warming\Http;
 use EliasHaeussler\Typo3Warming\Utility;
 use EliasHaeussler\Typo3Warming\ValueObject;
 use Psr\Http\Message;
+use Symfony\Component\DependencyInjection;
 use TYPO3\CMS\Backend;
 use TYPO3\CMS\Core;
 
@@ -39,6 +40,7 @@ use TYPO3\CMS\Core;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
+#[DependencyInjection\Attribute\Autoconfigure(public: true)]
 final class FetchSitesController
 {
     public function __construct(
