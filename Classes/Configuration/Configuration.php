@@ -26,6 +26,7 @@ namespace EliasHaeussler\Typo3Warming\Configuration;
 use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3Warming\Crawler;
 use EliasHaeussler\Typo3Warming\Extension;
+use Symfony\Component\DependencyInjection;
 use TYPO3\CMS\Core;
 use TYPO3\CMS\Extbase;
 
@@ -35,6 +36,7 @@ use TYPO3\CMS\Extbase;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
+#[DependencyInjection\Attribute\Autoconfigure(public: true)]
 final class Configuration
 {
     private const DEFAULT_CRAWLER = Crawler\ConcurrentUserAgentCrawler::class;

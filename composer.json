@@ -29,12 +29,12 @@
 		"psr/event-dispatcher": "^1.0",
 		"psr/http-message": "^1.1 || ^2.0",
 		"psr/log": "^1.0 || ^2.0 || ^3.0",
-		"symfony/console": "^6.0 || ^7.0",
-		"symfony/dependency-injection": "^6.0 || ^7.0",
-		"typo3/cms-backend": "~12.4.2 || ~13.3.0",
-		"typo3/cms-core": "~12.4.2 || ~13.3.0",
-		"typo3/cms-extbase": "~12.4.2 || ~13.3.0",
-		"typo3/cms-fluid": "~12.4.2 || ~13.3.0"
+		"symfony/console": "^6.4 || ^7.0",
+		"symfony/dependency-injection": "^6.4 || ^7.0",
+		"typo3/cms-backend": "~12.4.8 || ~13.3.0",
+		"typo3/cms-core": "~12.4.8 || ~13.3.0",
+		"typo3/cms-extbase": "~12.4.8 || ~13.3.0",
+		"typo3/cms-fluid": "~12.4.8 || ~13.3.0"
 	},
 	"require-dev": {
 		"codeception/module-asserts": "^3.0",
@@ -44,10 +44,10 @@
 		"eliashaeussler/transient-logger": "^1.0",
 		"eliashaeussler/typo3-codeception-helper": "^1.0",
 		"phpunit/phpcov": "^9.0 || ^10.0",
-		"symfony/config": "^6.0 || ^7.0",
-		"typo3/cms-install": "~12.4.2 || ~13.3.0",
-		"typo3/cms-seo": "~12.4.2 || ~13.3.0",
-		"typo3/cms-tstemplate": "~12.4.2 || ~13.3.0",
+		"symfony/config": "^6.4 || ^7.0",
+		"typo3/cms-install": "~12.4.8 || ~13.3.0",
+		"typo3/cms-seo": "~12.4.8 || ~13.3.0",
+		"typo3/cms-tstemplate": "~12.4.8 || ~13.3.0",
 		"typo3/testing-framework": "^8.2.1"
 	},
 	"autoload": {

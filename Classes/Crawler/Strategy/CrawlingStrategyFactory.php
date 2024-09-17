@@ -38,6 +38,7 @@ final class CrawlingStrategyFactory
      * @param DependencyInjection\ServiceLocator<CacheWarmup\Crawler\Strategy\CrawlingStrategy> $strategies
      */
     public function __construct(
+        #[DependencyInjection\Attribute\AutowireLocator('warming.crawling_strategy', defaultIndexMethod: 'getName')]
         private readonly DependencyInjection\ServiceLocator $strategies,
     ) {}
 

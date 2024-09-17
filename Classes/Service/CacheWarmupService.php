@@ -35,6 +35,7 @@ use EliasHaeussler\Typo3Warming\Utility;
 use EliasHaeussler\Typo3Warming\ValueObject;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\EventDispatcher;
+use Symfony\Component\DependencyInjection;
 use TYPO3\CMS\Core;
 
 /**
@@ -43,6 +44,7 @@ use TYPO3\CMS\Core;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
+#[DependencyInjection\Attribute\Autoconfigure(public: true)]
 final class CacheWarmupService
 {
     private CacheWarmup\Crawler\CrawlerInterface $crawler;
