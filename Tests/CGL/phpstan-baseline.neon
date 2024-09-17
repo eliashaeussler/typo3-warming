@@ -41,7 +41,7 @@ parameters:
 			path: ../Functional/Command/WarmupCommandTest.php
 
 		-
-			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor invoked with 4 parameters, 2\\-3 required\\.$#"
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor invoked with 5 parameters, 2\\-3 required\\.$#"
 			count: 1
 			path: ../Functional/Command/WarmupCommandTest.php
 
@@ -57,6 +57,11 @@ parameters:
 
 		-
 			message: "#^Parameter \\#3 \\$coreCache of class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor expects TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\PhpFrontend\\|null, TYPO3\\\\CMS\\\\Core\\\\EventDispatcher\\\\NoopEventDispatcher given\\.$#"
+			count: 1
+			path: ../Functional/Command/WarmupCommandTest.php
+
+		-
+			message: "#^Service \"TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\Loader\\\\YamlFileLoader\" is not registered in the container\\.$#"
 			count: 1
 			path: ../Functional/Command/WarmupCommandTest.php
 
@@ -76,7 +81,7 @@ parameters:
 			path: ../Functional/Controller/CacheWarmupLegacyControllerTest.php
 
 		-
-			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor invoked with 4 parameters, 2\\-3 required\\.$#"
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor invoked with 5 parameters, 2\\-3 required\\.$#"
 			count: 1
 			path: ../Functional/Controller/CacheWarmupLegacyControllerTest.php
 
@@ -92,6 +97,11 @@ parameters:
 
 		-
 			message: "#^Parameter \\#3 \\$coreCache of class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor expects TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\PhpFrontend\\|null, TYPO3\\\\CMS\\\\Core\\\\EventDispatcher\\\\NoopEventDispatcher given\\.$#"
+			count: 1
+			path: ../Functional/Controller/CacheWarmupLegacyControllerTest.php
+
+		-
+			message: "#^Service \"TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\Loader\\\\YamlFileLoader\" is not registered in the container\\.$#"
 			count: 1
 			path: ../Functional/Controller/CacheWarmupLegacyControllerTest.php
 
@@ -116,7 +126,7 @@ parameters:
 			path: ../Functional/Http/Message/Event/WarmupFinishedEventTest.php
 
 		-
-			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor invoked with 4 parameters, 2\\-3 required\\.$#"
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor invoked with 5 parameters, 2\\-3 required\\.$#"
 			count: 1
 			path: ../Functional/Http/Message/Event/WarmupFinishedEventTest.php
 
@@ -132,6 +142,11 @@ parameters:
 
 		-
 			message: "#^Parameter \\#3 \\$coreCache of class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor expects TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\PhpFrontend\\|null, TYPO3\\\\CMS\\\\Core\\\\EventDispatcher\\\\NoopEventDispatcher given\\.$#"
+			count: 1
+			path: ../Functional/Http/Message/Event/WarmupFinishedEventTest.php
+
+		-
+			message: "#^Service \"TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\Loader\\\\YamlFileLoader\" is not registered in the container\\.$#"
 			count: 1
 			path: ../Functional/Http/Message/Event/WarmupFinishedEventTest.php
 
@@ -151,7 +166,7 @@ parameters:
 			path: ../Functional/Log/Writer/DatabaseWriterTest.php
 
 		-
-			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor invoked with 4 parameters, 2\\-3 required\\.$#"
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor invoked with 5 parameters, 2\\-3 required\\.$#"
 			count: 1
 			path: ../Functional/Log/Writer/DatabaseWriterTest.php
 
@@ -167,6 +182,11 @@ parameters:
 
 		-
 			message: "#^Parameter \\#3 \\$coreCache of class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor expects TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\PhpFrontend\\|null, TYPO3\\\\CMS\\\\Core\\\\EventDispatcher\\\\NoopEventDispatcher given\\.$#"
+			count: 1
+			path: ../Functional/Log/Writer/DatabaseWriterTest.php
+
+		-
+			message: "#^Service \"TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\Loader\\\\YamlFileLoader\" is not registered in the container\\.$#"
 			count: 1
 			path: ../Functional/Log/Writer/DatabaseWriterTest.php
 
@@ -186,7 +206,7 @@ parameters:
 			path: ../Functional/Service/CacheWarmupServiceTest.php
 
 		-
-			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor invoked with 4 parameters, 2\\-3 required\\.$#"
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor invoked with 5 parameters, 2\\-3 required\\.$#"
 			count: 1
 			path: ../Functional/Service/CacheWarmupServiceTest.php
 
@@ -202,6 +222,11 @@ parameters:
 
 		-
 			message: "#^Parameter \\#3 \\$coreCache of class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor expects TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\PhpFrontend\\|null, TYPO3\\\\CMS\\\\Core\\\\EventDispatcher\\\\NoopEventDispatcher given\\.$#"
+			count: 1
+			path: ../Functional/Service/CacheWarmupServiceTest.php
+
+		-
+			message: "#^Service \"TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\Loader\\\\YamlFileLoader\" is not registered in the container\\.$#"
 			count: 1
 			path: ../Functional/Service/CacheWarmupServiceTest.php
 
@@ -221,7 +246,7 @@ parameters:
 			path: ../Functional/Utility/AccessUtilityTest.php
 
 		-
-			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor invoked with 4 parameters, 2\\-3 required\\.$#"
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor invoked with 5 parameters, 2\\-3 required\\.$#"
 			count: 1
 			path: ../Functional/Utility/AccessUtilityTest.php
 
@@ -237,6 +262,11 @@ parameters:
 
 		-
 			message: "#^Parameter \\#3 \\$coreCache of class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor expects TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\PhpFrontend\\|null, TYPO3\\\\CMS\\\\Core\\\\EventDispatcher\\\\NoopEventDispatcher given\\.$#"
+			count: 1
+			path: ../Functional/Utility/AccessUtilityTest.php
+
+		-
+			message: "#^Service \"TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\Loader\\\\YamlFileLoader\" is not registered in the container\\.$#"
 			count: 1
 			path: ../Functional/Utility/AccessUtilityTest.php
 
@@ -256,7 +286,7 @@ parameters:
 			path: ../Functional/Utility/HttpUtilityTest.php
 
 		-
-			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor invoked with 4 parameters, 2\\-3 required\\.$#"
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor invoked with 5 parameters, 2\\-3 required\\.$#"
 			count: 1
 			path: ../Functional/Utility/HttpUtilityTest.php
 
@@ -272,6 +302,11 @@ parameters:
 
 		-
 			message: "#^Parameter \\#3 \\$coreCache of class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor expects TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Frontend\\\\PhpFrontend\\|null, TYPO3\\\\CMS\\\\Core\\\\EventDispatcher\\\\NoopEventDispatcher given\\.$#"
+			count: 1
+			path: ../Functional/Utility/HttpUtilityTest.php
+
+		-
+			message: "#^Service \"TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\Loader\\\\YamlFileLoader\" is not registered in the container\\.$#"
 			count: 1
 			path: ../Functional/Utility/HttpUtilityTest.php
 
