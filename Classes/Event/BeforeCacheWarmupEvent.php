@@ -42,7 +42,7 @@ final class BeforeCacheWarmupEvent
         private readonly array $sites,
         private readonly array $pages,
         private readonly ?CacheWarmup\Crawler\Strategy\CrawlingStrategy $crawlingStrategy,
-        private readonly CacheWarmup\Crawler\CrawlerInterface $crawler,
+        private readonly CacheWarmup\Crawler\Crawler $crawler,
         private readonly CacheWarmup\CacheWarmer $cacheWarmer,
     ) {}
 
@@ -67,7 +67,7 @@ final class BeforeCacheWarmupEvent
         return $this->crawlingStrategy;
     }
 
-    public function getCrawler(): CacheWarmup\Crawler\CrawlerInterface
+    public function getCrawler(): CacheWarmup\Crawler\Crawler
     {
         return $this->crawler;
     }

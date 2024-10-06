@@ -46,7 +46,9 @@ class SiteAwareSitemap extends CacheWarmup\Sitemap\Sitemap
     }
 
     /**
-     * @throws CacheWarmup\Exception\InvalidUrlException
+     * @throws CacheWarmup\Exception\LocalFilePathIsMissingInUrl
+     * @throws CacheWarmup\Exception\UrlIsEmpty
+     * @throws CacheWarmup\Exception\UrlIsInvalid
      */
     public static function fromLocatedSitemap(Typo3SitemapLocator\Domain\Model\Sitemap $sitemap): self
     {

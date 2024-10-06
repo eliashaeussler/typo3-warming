@@ -27,7 +27,10 @@ use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3Warming\Configuration;
 use EliasHaeussler\Typo3Warming\Http;
 use GuzzleHttp\ClientInterface;
+use Psr\EventDispatcher;
+use Psr\Log;
 use Symfony\Component\Console;
+use Symfony\Component\OptionsResolver;
 use TYPO3\CMS\Core;
 
 /**
@@ -44,31 +47,27 @@ use TYPO3\CMS\Core;
  *     client_config: array<string, mixed>,
  * }>
  */
-final class OutputtingUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfigurableCrawler implements CacheWarmup\Crawler\LoggingCrawlerInterface, CacheWarmup\Crawler\VerboseCrawlerInterface
+final class OutputtingUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfigurableCrawler implements CacheWarmup\Crawler\LoggingCrawler, CacheWarmup\Crawler\VerboseCrawler
 {
     use CacheWarmup\Crawler\ConcurrentCrawlerTrait {
+        configureOptions as configureDefaultOptions;
         getRequestHeaders as getDefaultRequestHeaders;
     }
     use LoggingCrawlerTrait;
 
-    protected static array $defaultOptions = [
-        'concurrency' => 5,
-        'request_method' => 'GET',
-        'request_headers' => [],
-        'request_options' => [],
-        'client_config' => [],
-    ];
-
     private readonly Http\Client\ClientFactory $clientFactory;
     private readonly Configuration\Configuration $configuration;
     private Console\Output\OutputInterface $output;
-    private ClientInterface $client;
 
-    public function __construct(array $options = [])
-    {
+    public function __construct(
+        array $options = [],
+        ?Log\LoggerInterface $logger = null,
+        private readonly ?ClientInterface $client = null,
+        private readonly ?EventDispatcher\EventDispatcherInterface $eventDispatcher = null,
+    ) {
         $this->clientFactory = Core\Utility\GeneralUtility::makeInstance(Http\Client\ClientFactory::class);
         $this->configuration = Core\Utility\GeneralUtility::makeInstance(Configuration\Configuration::class);
-        $this->output = new Console\Output\ConsoleOutput();
+        $this->logger = $logger;
 
         parent::__construct($options);
     }
@@ -76,7 +75,7 @@ final class OutputtingUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfi
     public function crawl(array $urls): CacheWarmup\Result\CacheWarmupResult
     {
         $numberOfUrls = \count($urls);
-        $resultHandler = new CacheWarmup\Http\Message\Handler\ResultCollectorHandler();
+        $resultHandler = new CacheWarmup\Http\Message\Handler\ResultCollectorHandler($this->eventDispatcher);
         $logHandler = $this->createLogHandler();
 
         // Create progress response handler (depends on the available output)
@@ -86,8 +85,11 @@ final class OutputtingUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfi
             $progressBarHandler = new CacheWarmup\Http\Message\Handler\CompactProgressHandler($this->output, $numberOfUrls);
         }
 
+        // Create new client
+        $client = $this->client ?? $this->clientFactory->get($this->options['client_config']);
+
         // Create request pool
-        $pool = $this->createPool($urls, $this->client, [$resultHandler, $progressBarHandler, $logHandler]);
+        $pool = $this->createPool($urls, $client, [$resultHandler, $progressBarHandler, $logHandler]);
 
         // Start crawling
         $progressBarHandler->startProgressBar();
@@ -97,17 +99,17 @@ final class OutputtingUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfi
         return $resultHandler->getResult();
     }
 
-    public function setOptions(array $options): void
-    {
-        parent::setOptions($options);
-
-        // Recreate client with updated client config
-        $this->client = $this->clientFactory->get($this->options['client_config']);
-    }
-
     public function setOutput(Console\Output\OutputInterface $output): void
     {
         $this->output = $output;
+    }
+
+    protected function configureOptions(OptionsResolver\OptionsResolver $optionsResolver): void
+    {
+        $this->configureDefaultOptions($optionsResolver);
+
+        // Use GET instead of HEAD as default request method
+        $optionsResolver->setDefault('request_method', 'GET');
     }
 
     /**

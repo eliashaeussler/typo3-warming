@@ -60,6 +60,7 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
     private Core\Site\Entity\Site $site;
     private Src\Configuration\Configuration $configuration;
     private Core\Configuration\ExtensionConfiguration $extensionConfiguration;
+    private Tests\Functional\Fixtures\Classes\DummyEventDispatcher $eventDispatcher;
     private Console\Tester\CommandTester $commandTester;
 
     protected function setUp(): void
@@ -79,6 +80,7 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
         $this->configuration = $this->get(Src\Configuration\Configuration::class);
         $this->extensionConfiguration = $this->get(Core\Configuration\ExtensionConfiguration::class);
         $this->guzzleClientFactory = new Tests\Functional\Fixtures\Classes\DummyGuzzleClientFactory();
+        $this->eventDispatcher = new Tests\Functional\Fixtures\Classes\DummyEventDispatcher();
         $this->commandTester = new Console\Tester\CommandTester(
             new Src\Command\WarmupCommand(
                 new Src\Http\Client\ClientFactory(
@@ -88,6 +90,7 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
                 $this->get(Src\Crawler\Strategy\CrawlingStrategyFactory::class),
                 $this->get(Typo3SitemapLocator\Sitemap\SitemapLocator::class),
                 $this->get(Core\Site\SiteFinder::class),
+                $this->eventDispatcher,
             ),
         );
     }
@@ -316,6 +319,23 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
 
         self::assertSame(Console\Command\Command::SUCCESS, $this->commandTester->getStatusCode());
         self::assertEquals($expected, Tests\Functional\Fixtures\Classes\DummyVerboseCrawler::$crawledUrls);
+    }
+
+    #[Framework\Attributes\Test]
+    public function executeHandsOverEventDispatcher(): void
+    {
+        $this->commandTester->execute([
+            '--pages' => ['1'],
+        ]);
+
+        $dispatchedEvents = $this->eventDispatcher->dispatchedEvents;
+
+        self::assertCount(5, $dispatchedEvents);
+        self::assertInstanceOf(CacheWarmup\Event\ConfigResolved::class, $dispatchedEvents[0]);
+        self::assertInstanceOf(CacheWarmup\Event\UrlAdded::class, $dispatchedEvents[1]);
+        self::assertInstanceOf(CacheWarmup\Event\UrlAdded::class, $dispatchedEvents[2]);
+        self::assertInstanceOf(CacheWarmup\Event\CrawlingStarted::class, $dispatchedEvents[3]);
+        self::assertInstanceOf(CacheWarmup\Event\CrawlingFinished::class, $dispatchedEvents[4]);
     }
 
     #[Framework\Attributes\Test]

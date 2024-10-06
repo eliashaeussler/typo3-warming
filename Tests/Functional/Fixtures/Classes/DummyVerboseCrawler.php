@@ -34,7 +34,7 @@ use Symfony\Component\Console;
  * @license GPL-2.0-or-later
  * @internal
  */
-final class DummyVerboseCrawler implements CacheWarmup\Crawler\VerboseCrawlerInterface, CacheWarmup\Crawler\ConfigurableCrawlerInterface
+final class DummyVerboseCrawler implements CacheWarmup\Crawler\VerboseCrawler, CacheWarmup\Crawler\ConfigurableCrawler
 {
     /**
      * @var list<Message\UriInterface>

@@ -34,7 +34,7 @@ use Psr\Http\Message;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class StreamResponseHandler implements CacheWarmup\Http\Message\Handler\ResponseHandlerInterface
+final class StreamResponseHandler implements CacheWarmup\Http\Message\Handler\ResponseHandler
 {
     /**
      * @var list<string>

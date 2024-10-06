@@ -36,7 +36,7 @@ final class AfterCacheWarmupEvent
 {
     public function __construct(
         private readonly Result\CacheWarmupResult $result,
-        private readonly CacheWarmup\Crawler\CrawlerInterface $crawler,
+        private readonly CacheWarmup\Crawler\Crawler $crawler,
         private readonly CacheWarmup\CacheWarmer $cacheWarmer,
     ) {}
 
@@ -45,7 +45,7 @@ final class AfterCacheWarmupEvent
         return $this->result;
     }
 
-    public function getCrawler(): CacheWarmup\Crawler\CrawlerInterface
+    public function getCrawler(): CacheWarmup\Crawler\Crawler
     {
         return $this->crawler;
     }

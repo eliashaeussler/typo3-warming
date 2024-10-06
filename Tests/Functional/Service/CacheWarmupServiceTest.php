@@ -267,7 +267,7 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
         $this->mockSitemapResponse('en');
 
         $site = new Src\ValueObject\Request\SiteWarmupRequest($this->site);
-        $page = new Src\ValueObject\Request\PageWarmupRequest(1);
+        $page = new Src\ValueObject\Request\PageWarmupRequest(6);
 
         $this->subject->warmup(
             [$site],
@@ -276,9 +276,9 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
             CacheWarmup\Crawler\Strategy\SortByPriorityStrategy::getName(),
         );
 
-        self::assertCount(2, $this->eventDispatcher->dispatchedEvents);
+        self::assertCount(12, $this->eventDispatcher->dispatchedEvents);
 
-        $actual = $this->eventDispatcher->dispatchedEvents[0];
+        $actual = $this->eventDispatcher->dispatchedEvents[7];
 
         self::assertInstanceOf(Src\Event\BeforeCacheWarmupEvent::class, $actual);
         self::assertSame([$site], $actual->getSites());
@@ -305,6 +305,7 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-2', 0.7, origin: $origin),
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-1', 0.5, origin: $origin),
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-2/subsite-2-1', 0.5, origin: $origin),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-1-l-1'),
         ];
 
         $cacheWarmupResult = new CacheWarmup\Result\CacheWarmupResult();
@@ -320,15 +321,15 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
                 new Src\ValueObject\Request\SiteWarmupRequest($this->site),
             ],
             [
-                new Src\ValueObject\Request\PageWarmupRequest(1),
+                new Src\ValueObject\Request\PageWarmupRequest(6),
             ],
             50,
             CacheWarmup\Crawler\Strategy\SortByPriorityStrategy::getName(),
         );
 
-        self::assertCount(2, $this->eventDispatcher->dispatchedEvents);
+        self::assertCount(12, $this->eventDispatcher->dispatchedEvents);
 
-        $actual = $this->eventDispatcher->dispatchedEvents[1];
+        $actual = $this->eventDispatcher->dispatchedEvents[11];
 
         self::assertInstanceOf(Src\Event\AfterCacheWarmupEvent::class, $actual);
         self::assertEquals($cacheWarmupResult, $actual->getResult()->getResult());
@@ -346,15 +347,15 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
     }
 
     /**
-     * @param class-string<CacheWarmup\Crawler\CrawlerInterface>|CacheWarmup\Crawler\CrawlerInterface $crawler
+     * @param class-string<CacheWarmup\Crawler\Crawler>|CacheWarmup\Crawler\Crawler $crawler
      * @param array<string, mixed> $options
      */
     #[Framework\Attributes\Test]
     #[Framework\Attributes\DataProvider('setCrawlerSetsGivenCrawlerDataProvider')]
     public function setCrawlerSetsGivenCrawler(
-        string|CacheWarmup\Crawler\CrawlerInterface $crawler,
+        string|CacheWarmup\Crawler\Crawler $crawler,
         array $options,
-        CacheWarmup\Crawler\CrawlerInterface $expected,
+        CacheWarmup\Crawler\Crawler $expected,
     ): void {
         $this->subject->setCrawler($crawler, $options);
 
@@ -363,9 +364,9 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
 
     /**
      * @return Generator<string, array{
-     *     class-string<CacheWarmup\Crawler\CrawlerInterface>|CacheWarmup\Crawler\CrawlerInterface,
+     *     class-string<CacheWarmup\Crawler\Crawler>|CacheWarmup\Crawler\Crawler,
      *     array<string, mixed>,
-     *     CacheWarmup\Crawler\CrawlerInterface,
+     *     CacheWarmup\Crawler\Crawler,
      * }>
      */
     public static function setCrawlerSetsGivenCrawlerDataProvider(): \Generator

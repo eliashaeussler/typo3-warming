@@ -30,6 +30,7 @@ use EliasHaeussler\Typo3Warming\Crawler;
 use EliasHaeussler\Typo3Warming\Domain;
 use EliasHaeussler\Typo3Warming\Http;
 use EliasHaeussler\Typo3Warming\Utility;
+use Psr\EventDispatcher;
 use Symfony\Component\Console;
 use TYPO3\CMS\Core;
 
@@ -53,6 +54,7 @@ final class WarmupCommand extends Console\Command\Command
         private readonly Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
         private readonly Typo3SitemapLocator\Sitemap\SitemapLocator $sitemapLocator,
         private readonly Core\Site\SiteFinder $siteFinder,
+        private readonly EventDispatcher\EventDispatcherInterface $eventDispatcher,
     ) {
         parent::__construct();
     }
@@ -205,7 +207,7 @@ final class WarmupCommand extends Console\Command\Command
         $client = $this->clientFactory->get($clientOptions);
 
         // Initialize sub command
-        $subCommand = new CacheWarmup\Command\CacheWarmupCommand($client);
+        $subCommand = new CacheWarmup\Command\CacheWarmupCommand($client, $this->eventDispatcher);
         $subCommand->setApplication($this->getApplication() ?? new Console\Application());
 
         // Initialize sub command input
@@ -313,7 +315,9 @@ final class WarmupCommand extends Console\Command\Command
      * @param array<string> $sites
      * @param list<int> $languages
      * @return list<Domain\Model\SiteAwareSitemap>
-     * @throws CacheWarmup\Exception\InvalidUrlException
+     * @throws CacheWarmup\Exception\LocalFilePathIsMissingInUrl
+     * @throws CacheWarmup\Exception\UrlIsEmpty
+     * @throws CacheWarmup\Exception\UrlIsInvalid
      * @throws Core\Exception\SiteNotFoundException
      * @throws Typo3SitemapLocator\Exception\BaseUrlIsNotSupported
      * @throws Typo3SitemapLocator\Exception\SitemapIsMissing

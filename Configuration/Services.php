@@ -33,5 +33,5 @@ return static function (
 
     // External services
     $services = $containerConfigurator->services();
-    $services->set(CacheWarmup\Crawler\CrawlerFactory::class);
+    $services->set(CacheWarmup\Crawler\CrawlerFactory::class)->autowire();
 };
