@@ -9,6 +9,17 @@ Migration
 This page lists all notable changes and required migrations when
 upgrading to a new major version of this extension.
 
+..  _version-3.0.0:
+
+Version 3.0.0
+=============
+
+Upgrade of `eliashaeussler/cache-warmup` library
+------------------------------------------------
+
+-   Custom crawlers must be rewritten to match the updated codebase.
+    Read more in the library's `release notes <https://github.com/eliashaeussler/cache-warmup/releases/tag/3.0.0>`__.
+
 ..  _version-2.0.0:
 
 Version 2.0.0

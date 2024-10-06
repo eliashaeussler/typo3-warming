@@ -32,7 +32,7 @@ use EliasHaeussler\SSE;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-interface StreamableCrawler extends CacheWarmup\Crawler\CrawlerInterface
+interface StreamableCrawler extends CacheWarmup\Crawler\Crawler
 {
     public function setStream(SSE\Stream\EventStream $stream): void;
 }

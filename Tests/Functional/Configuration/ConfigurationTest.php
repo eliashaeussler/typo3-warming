@@ -110,7 +110,7 @@ final class ConfigurationTest extends TestingFramework\Core\Functional\Functiona
         $this->extensionConfiguration->set(Src\Extension::KEY, ['crawlerOptions' => '"foo"']);
 
         $this->expectExceptionObject(
-            CacheWarmup\Exception\InvalidCrawlerOptionException::forInvalidType('"foo"'),
+            new CacheWarmup\Exception\CrawlerOptionIsInvalid('"foo"'),
         );
 
         $this->subject->getCrawlerOptions();
@@ -171,7 +171,7 @@ final class ConfigurationTest extends TestingFramework\Core\Functional\Functiona
         $this->extensionConfiguration->set(Src\Extension::KEY, ['verboseCrawlerOptions' => '"foo"']);
 
         $this->expectExceptionObject(
-            CacheWarmup\Exception\InvalidCrawlerOptionException::forInvalidType('"foo"'),
+            new CacheWarmup\Exception\CrawlerOptionIsInvalid('"foo"'),
         );
 
         $this->subject->getVerboseCrawlerOptions();
@@ -207,7 +207,7 @@ final class ConfigurationTest extends TestingFramework\Core\Functional\Functiona
         $this->extensionConfiguration->set(Src\Extension::KEY, ['parserClientOptions' => '"foo"']);
 
         $this->expectExceptionObject(
-            CacheWarmup\Exception\InvalidCrawlerOptionException::forInvalidType('"foo"'),
+            new CacheWarmup\Exception\CrawlerOptionIsInvalid('"foo"'),
         );
 
         $this->subject->getParserClientOptions();

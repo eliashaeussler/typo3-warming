@@ -33,7 +33,7 @@ use Psr\Http\Message;
  * @license GPL-2.0-or-later
  * @internal
  */
-final class DummyCrawler implements CacheWarmup\Crawler\CrawlerInterface, CacheWarmup\Crawler\ConfigurableCrawlerInterface
+final class DummyCrawler implements CacheWarmup\Crawler\ConfigurableCrawler
 {
     /**
      * @var list<Message\UriInterface>

@@ -47,10 +47,12 @@ use TYPO3\CMS\Core;
 #[DependencyInjection\Attribute\Autoconfigure(public: true)]
 final class CacheWarmupService
 {
-    private CacheWarmup\Crawler\CrawlerInterface $crawler;
+    private CacheWarmup\Crawler\Crawler $crawler;
 
     /**
-     * @throws CacheWarmup\Exception\InvalidCrawlerException
+     * @throws CacheWarmup\Exception\CrawlerDoesNotExist
+     * @throws CacheWarmup\Exception\CrawlerIsInvalid
+     * @throws CacheWarmup\Exception\CrawlerOptionIsInvalid
      */
     public function __construct(
         private readonly Http\Client\ClientFactory $clientFactory,
@@ -88,7 +90,11 @@ final class CacheWarmupService
             $this->crawler,
             $crawlingStrategy,
             true,
-            $this->configuration->getExcludePatterns(),
+            array_map(
+                CacheWarmup\Config\Option\ExcludePattern::create(...),
+                $this->configuration->getExcludePatterns(),
+            ),
+            $this->eventDispatcher,
         );
 
         foreach ($sites as $siteWarmupRequest) {
@@ -137,23 +143,25 @@ final class CacheWarmupService
         return $result;
     }
 
-    public function getCrawler(): CacheWarmup\Crawler\CrawlerInterface
+    public function getCrawler(): CacheWarmup\Crawler\Crawler
     {
         return $this->crawler;
     }
 
     /**
-     * @param class-string<CacheWarmup\Crawler\CrawlerInterface>|CacheWarmup\Crawler\CrawlerInterface $crawler
+     * @param class-string<CacheWarmup\Crawler\Crawler>|CacheWarmup\Crawler\Crawler $crawler
      * @param array<string, mixed> $options
-     * @throws CacheWarmup\Exception\InvalidCrawlerException
+     * @throws CacheWarmup\Exception\CrawlerDoesNotExist
+     * @throws CacheWarmup\Exception\CrawlerIsInvalid
+     * @throws CacheWarmup\Exception\CrawlerOptionIsInvalid
      */
-    public function setCrawler(string|CacheWarmup\Crawler\CrawlerInterface $crawler, array $options = []): self
+    public function setCrawler(string|CacheWarmup\Crawler\Crawler $crawler, array $options = []): self
     {
         if ($options !== []) {
             $options = $this->crawlerFactory->parseCrawlerOptions($options);
         }
 
-        if ($crawler instanceof CacheWarmup\Crawler\ConfigurableCrawlerInterface && $options !== []) {
+        if ($crawler instanceof CacheWarmup\Crawler\ConfigurableCrawler && $options !== []) {
             $crawler->setOptions($options);
         }
 

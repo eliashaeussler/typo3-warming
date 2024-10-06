@@ -28,6 +28,9 @@ use EliasHaeussler\SSE;
 use EliasHaeussler\Typo3Warming\Configuration;
 use EliasHaeussler\Typo3Warming\Http;
 use GuzzleHttp\ClientInterface;
+use Psr\EventDispatcher;
+use Psr\Log;
+use Symfony\Component\OptionsResolver;
 use TYPO3\CMS\Core;
 
 /**
@@ -44,30 +47,27 @@ use TYPO3\CMS\Core;
  *     client_config: array<string, mixed>,
  * }>
  */
-final class ConcurrentUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfigurableCrawler implements CacheWarmup\Crawler\LoggingCrawlerInterface, StreamableCrawler
+final class ConcurrentUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfigurableCrawler implements CacheWarmup\Crawler\LoggingCrawler, StreamableCrawler
 {
     use CacheWarmup\Crawler\ConcurrentCrawlerTrait {
+        configureOptions as configureDefaultOptions;
         getRequestHeaders as getDefaultRequestHeaders;
     }
     use LoggingCrawlerTrait;
 
-    protected static array $defaultOptions = [
-        'concurrency' => 5,
-        'request_method' => 'GET',
-        'request_headers' => [],
-        'request_options' => [],
-        'client_config' => [],
-    ];
-
     private readonly Http\Client\ClientFactory $clientFactory;
     private readonly Configuration\Configuration $configuration;
-    private ClientInterface $client;
     private ?SSE\Stream\EventStream $stream = null;
 
-    public function __construct(array $options = [])
-    {
+    public function __construct(
+        array $options = [],
+        ?Log\LoggerInterface $logger = null,
+        private readonly ?ClientInterface $client = null,
+        private readonly ?EventDispatcher\EventDispatcherInterface $eventDispatcher = null,
+    ) {
         $this->clientFactory = Core\Utility\GeneralUtility::makeInstance(Http\Client\ClientFactory::class);
         $this->configuration = Core\Utility\GeneralUtility::makeInstance(Configuration\Configuration::class);
+        $this->logger = $logger;
 
         parent::__construct($options);
     }
@@ -75,7 +75,7 @@ final class ConcurrentUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfi
     public function crawl(array $urls): CacheWarmup\Result\CacheWarmupResult
     {
         $numberOfUrls = \count($urls);
-        $resultHandler = new CacheWarmup\Http\Message\Handler\ResultCollectorHandler();
+        $resultHandler = new CacheWarmup\Http\Message\Handler\ResultCollectorHandler($this->eventDispatcher);
         $logHandler = $this->createLogHandler();
         $handlers = [$resultHandler, $logHandler];
 
@@ -84,24 +84,27 @@ final class ConcurrentUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfi
             $handlers[] = $streamHandler;
         }
 
+        // Create new client
+        $client = $this->client ?? $this->clientFactory->get($this->options['client_config']);
+
         // Start crawling
-        $pool = $this->createPool($urls, $this->client, $handlers);
+        $pool = $this->createPool($urls, $client, $handlers);
         $pool->promise()->wait();
 
         return $resultHandler->getResult();
     }
 
-    public function setOptions(array $options): void
-    {
-        parent::setOptions($options);
-
-        // Recreate client with updated client config
-        $this->client = $this->clientFactory->get($this->options['client_config']);
-    }
-
     public function setStream(SSE\Stream\EventStream $stream): void
     {
         $this->stream = $stream;
+    }
+
+    protected function configureOptions(OptionsResolver\OptionsResolver $optionsResolver): void
+    {
+        $this->configureDefaultOptions($optionsResolver);
+
+        // Use GET instead of HEAD as default request method
+        $optionsResolver->setDefault('request_method', 'GET');
     }
 
     /**

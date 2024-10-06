@@ -57,19 +57,19 @@ final class Configuration
     }
 
     /**
-     * @return class-string<CacheWarmup\Crawler\CrawlerInterface>
+     * @return class-string<CacheWarmup\Crawler\Crawler>
      */
     public function getCrawler(): string
     {
         try {
-            /** @var class-string<CacheWarmup\Crawler\CrawlerInterface>|null $crawler */
+            /** @var class-string<CacheWarmup\Crawler\Crawler>|null $crawler */
             $crawler = $this->configuration->get(Extension::KEY, 'crawler');
 
             if (!\is_string($crawler)) {
                 return self::DEFAULT_CRAWLER;
             }
 
-            if (!is_a($crawler, CacheWarmup\Crawler\CrawlerInterface::class, true)) {
+            if (!is_a($crawler, CacheWarmup\Crawler\Crawler::class, true)) {
                 return self::DEFAULT_CRAWLER;
             }
 
@@ -81,6 +81,7 @@ final class Configuration
 
     /**
      * @return array<string, mixed>
+     * @throws CacheWarmup\Exception\CrawlerOptionIsInvalid
      */
     public function getCrawlerOptions(): array
     {
@@ -99,19 +100,19 @@ final class Configuration
     }
 
     /**
-     * @return class-string<CacheWarmup\Crawler\VerboseCrawlerInterface>
+     * @return class-string<CacheWarmup\Crawler\VerboseCrawler>
      */
     public function getVerboseCrawler(): string
     {
         try {
-            /** @var class-string<CacheWarmup\Crawler\VerboseCrawlerInterface>|null $crawler */
+            /** @var class-string<CacheWarmup\Crawler\VerboseCrawler>|null $crawler */
             $crawler = $this->configuration->get(Extension::KEY, 'verboseCrawler');
 
             if (!\is_string($crawler)) {
                 return self::DEFAULT_VERBOSE_CRAWLER;
             }
 
-            if (!is_a($crawler, CacheWarmup\Crawler\VerboseCrawlerInterface::class, true)) {
+            if (!is_a($crawler, CacheWarmup\Crawler\VerboseCrawler::class, true)) {
                 return self::DEFAULT_VERBOSE_CRAWLER;
             }
 
@@ -123,6 +124,7 @@ final class Configuration
 
     /**
      * @return array<string, mixed>
+     * @throws CacheWarmup\Exception\CrawlerOptionIsInvalid
      */
     public function getVerboseCrawlerOptions(): array
     {
@@ -142,6 +144,7 @@ final class Configuration
 
     /**
      * @return array<string, mixed>
+     * @throws CacheWarmup\Exception\CrawlerOptionIsInvalid
      */
     public function getParserClientOptions(): array
     {
