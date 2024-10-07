@@ -138,4 +138,3 @@ command. It supports multiple languages and custom crawler implementations.
     :hidden:
 
     Sitemap
-    genindex
