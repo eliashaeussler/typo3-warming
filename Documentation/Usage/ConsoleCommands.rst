@@ -131,6 +131,47 @@ The following command options are available:
                 typo3/sysext/core/bin/typo3 warming:cachewarmup -l 0 -l 1
                 typo3/sysext/core/bin/typo3 warming:cachewarmup -l 0,1
 
+..  confval:: -c|--config
+
+    :Required: false
+    :type: string
+    :Default: none
+    :Multiple allowed: false
+
+    An external configuration file can be used to provide a more
+    fine-grained configuration for cache warmup. The file path may
+    contain references to extensions (see example below).
+
+    ..  note::
+        Config file options will be merged with command options,
+        whereas command options receive higher priority. It's even
+        possible to use environment variables for configuration. Read
+        more in the `official documentation <https://cache-warmup.dev/configuration.html>`__.
+
+    At the moment, the following file formats are supported:
+
+    -   JSON
+    -   PHP
+    -   YAML
+
+    Example:
+
+    ..  tabs::
+
+        ..  group-tab:: Composer-based installation
+
+            ..  code-block:: bash
+
+                vendor/bin/typo3 warming:cachewarmup --config cache-warmup.yaml
+                vendor/bin/typo3 warming:cachewarmup --config EXT:sitepackage/Configuration/cache-warmup.yaml
+
+        ..  group-tab:: Legacy installation
+
+            ..  code-block:: bash
+
+                typo3/sysext/core/bin/typo3 warming:cachewarmup --config cache-warmup.yaml
+                typo3/sysext/core/bin/typo3 warming:cachewarmup --config EXT:sitepackage/Configuration/cache-warmup.yaml
+
 ..  confval:: --limit
 
     :Required: false

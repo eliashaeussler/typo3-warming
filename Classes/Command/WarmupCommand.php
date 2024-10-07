@@ -55,6 +55,7 @@ final class WarmupCommand extends Console\Command\Command
         private readonly Typo3SitemapLocator\Sitemap\SitemapLocator $sitemapLocator,
         private readonly Core\Site\SiteFinder $siteFinder,
         private readonly EventDispatcher\EventDispatcherInterface $eventDispatcher,
+        private readonly Core\Package\PackageManager $packageManager,
     ) {
         parent::__construct();
     }
@@ -97,6 +98,17 @@ final class WarmupCommand extends Console\Command\Command
             '',
             '<info>Additional options</info>',
             '<info>==================</info>',
+            '',
+            '* <comment>Configuration file</comment>',
+            '  ├─ A preconfigured set of configuration options can be written to a configuration file.',
+            '  │  This file can be passed using the <info>--config</info> option.',
+            '  │  It may also contain extension paths, e.g. <info>EXT:sitepackage/Configuration/cache-warmup.json</info>.',
+            '  │  The following file formats are currently supported:',
+            '  │  * <info>json</info>',
+            '  │  * <info>php</info>',
+            '  │  * <info>yaml</info>',
+            '  │  * <info>yml</info>',
+            '  └─ Example: <comment>warming:cachewarmup --config path/to/cache-warmup.json</comment>',
             '',
             '* <comment>Strict mode</comment>',
             '  ├─ You can pass the <info>--strict</info> (or <info>-x</info>) option to terminate execution with an error code',
@@ -165,6 +177,12 @@ final class WarmupCommand extends Console\Command\Command
             'l',
             Console\Input\InputOption::VALUE_REQUIRED | Console\Input\InputOption::VALUE_IS_ARRAY,
             'Optional identifiers of languages for which caches are to be warmed up.',
+        );
+        $this->addOption(
+            'config',
+            'c',
+            Console\Input\InputOption::VALUE_REQUIRED,
+            'Path to optional configuration file',
         );
         $this->addOption(
             'limit',
@@ -241,6 +259,7 @@ final class WarmupCommand extends Console\Command\Command
         $languages = $this->resolveLanguages($input->getOption('languages'));
         $urls = array_unique($this->resolvePages($input->getOption('pages'), $languages));
         $sitemaps = array_unique($this->resolveSites($input->getOption('sites'), $languages));
+        $config = $input->getOption('config');
         $limit = max(0, (int)$input->getOption('limit'));
         $strategy = $input->getOption('strategy');
         $format = $input->getOption('format');
@@ -272,6 +291,15 @@ final class WarmupCommand extends Console\Command\Command
         // Add crawling strategy
         if ($strategy !== null) {
             $subCommandParameters['--strategy'] = $strategy;
+        }
+
+        // Add config file
+        if ($config !== null) {
+            if (Core\Utility\PathUtility::isExtensionPath($config)) {
+                $config = $this->packageManager->resolvePackagePath($config);
+            }
+
+            $subCommandParameters['--config'] = $config;
         }
 
         return $subCommandParameters;
