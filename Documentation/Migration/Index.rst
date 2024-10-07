@@ -18,7 +18,21 @@ Upgrade of `eliashaeussler/cache-warmup` library
 ------------------------------------------------
 
 -   Custom crawlers must be rewritten to match the updated codebase.
-    Read more in the library's `release notes <https://github.com/eliashaeussler/cache-warmup/releases/tag/3.0.0>`__.
+-   Read more in the library's `release notes <https://github.com/eliashaeussler/cache-warmup/releases/tag/3.0.0>`__.
+
+:php:`StreamResponseHandler` is now result-aware
+------------------------------------------------
+
+-   :php:class:`EliasHaeussler\\Typo3Warming\\Http\\Message\\Handler\\StreamResponseHandler`
+    now depends on a given
+    :php:class:`EliasHaeussler\\CacheWarmup\\Result\\CacheWarmupResult`.
+-   The result object is generated and updated by the
+    :php:class:`EliasHaeussler\\CacheWarmup\\Http\\Message\\Handler\\ResultCollectorHandler`.
+-   Make sure to use both handlers together when using the stream response handler.
+-   Pass the result object from result collection handler when instantiating the
+    stream response handler.
+-   See :php:class:`EliasHaeussler\\Typo3Warming\\Crawler\\ConcurrentUserAgentCrawler`
+    for a dedicated example.
 
 ..  _version-2.0.0:
 
