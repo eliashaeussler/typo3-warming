@@ -80,7 +80,11 @@ final class ConcurrentUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfi
         $handlers = [$resultHandler, $logHandler];
 
         if ($this->stream !== null) {
-            $streamHandler = new Http\Message\Handler\StreamResponseHandler($this->stream, $numberOfUrls);
+            $streamHandler = new Http\Message\Handler\StreamResponseHandler(
+                $this->stream,
+                $numberOfUrls,
+                $resultHandler->getResult(),
+            );
             $handlers[] = $streamHandler;
         }
 

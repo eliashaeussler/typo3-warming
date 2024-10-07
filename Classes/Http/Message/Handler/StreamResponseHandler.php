@@ -36,19 +36,10 @@ use Psr\Http\Message;
  */
 final class StreamResponseHandler implements CacheWarmup\Http\Message\Handler\ResponseHandler
 {
-    /**
-     * @var list<string>
-     */
-    private array $successfulUrls = [];
-
-    /**
-     * @var list<string>
-     */
-    private array $failedUrls = [];
-
     public function __construct(
         private readonly SSE\Stream\EventStream $stream,
         private readonly int $numberOfUrls,
+        private readonly CacheWarmup\Result\CacheWarmupResult $result,
     ) {}
 
     /**
@@ -58,8 +49,6 @@ final class StreamResponseHandler implements CacheWarmup\Http\Message\Handler\Re
      */
     public function onSuccess(Message\ResponseInterface $response, Message\UriInterface $uri): void
     {
-        $this->successfulUrls[] = (string)$uri;
-
         $this->sendEvent($uri);
     }
 
@@ -70,8 +59,6 @@ final class StreamResponseHandler implements CacheWarmup\Http\Message\Handler\Re
      */
     public function onFailure(\Throwable $exception, Message\UriInterface $uri): void
     {
-        $this->failedUrls[] = (string)$uri;
-
         $this->sendEvent($uri);
     }
 
@@ -84,11 +71,16 @@ final class StreamResponseHandler implements CacheWarmup\Http\Message\Handler\Re
     {
         $event = new Http\Message\Event\WarmupProgressEvent(
             (string)$currentUrl,
-            $this->successfulUrls,
-            $this->failedUrls,
+            array_map(self::resultToUrl(...), $this->result->getSuccessful()),
+            array_map(self::resultToUrl(...), $this->result->getFailed()),
             $this->numberOfUrls,
         );
 
         $this->stream->sendEvent($event);
+    }
+
+    private static function resultToUrl(CacheWarmup\Result\CrawlingResult $result): string
+    {
+        return (string)$result->getUri();
     }
 }

@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Tests\Unit\Http\Message\Handler;
 
+use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3Warming as Src;
 use EliasHaeussler\Typo3Warming\Tests;
 use PHPUnit\Framework;
@@ -39,6 +40,7 @@ use TYPO3\TestingFramework;
 final class StreamResponseHandlerTest extends TestingFramework\Core\Unit\UnitTestCase
 {
     private Tests\Unit\Fixtures\DummyEventStream $eventStream;
+    private CacheWarmup\Result\CacheWarmupResult $result;
     private Src\Http\Message\Handler\StreamResponseHandler $subject;
 
     protected function setUp(): void
@@ -46,12 +48,19 @@ final class StreamResponseHandlerTest extends TestingFramework\Core\Unit\UnitTes
         parent::setUp();
 
         $this->eventStream = new Tests\Unit\Fixtures\DummyEventStream();
-        $this->subject = new Src\Http\Message\Handler\StreamResponseHandler($this->eventStream, 5);
+        $this->result = new CacheWarmup\Result\CacheWarmupResult();
+        $this->subject = new Src\Http\Message\Handler\StreamResponseHandler(
+            $this->eventStream,
+            5,
+            $this->result,
+        );
     }
 
     #[Framework\Attributes\Test]
     public function onSuccessSendsWarmupProgressEvent(): void
     {
+        $uri = new Core\Http\Uri('https://typo3-testing.local/');
+        $response = new Core\Http\Response();
         $expected = new Src\Http\Message\Event\WarmupProgressEvent(
             'https://typo3-testing.local/',
             ['https://typo3-testing.local/'],
@@ -59,10 +68,11 @@ final class StreamResponseHandlerTest extends TestingFramework\Core\Unit\UnitTes
             5,
         );
 
-        $this->subject->onSuccess(
-            new Core\Http\Response(),
-            new Core\Http\Uri('https://typo3-testing.local/'),
+        $this->result->addResult(
+            CacheWarmup\Result\CrawlingResult::createSuccessful($uri, ['response' => $response]),
         );
+
+        $this->subject->onSuccess($response, $uri);
 
         self::assertEquals([$expected], $this->eventStream->receivedEvents);
     }
@@ -70,6 +80,8 @@ final class StreamResponseHandlerTest extends TestingFramework\Core\Unit\UnitTes
     #[Framework\Attributes\Test]
     public function onFailureSendsWarmupProgressEvent(): void
     {
+        $exception = new \Exception();
+        $uri = new Core\Http\Uri('https://typo3-testing.local/');
         $expected = new Src\Http\Message\Event\WarmupProgressEvent(
             'https://typo3-testing.local/',
             [],
@@ -77,10 +89,11 @@ final class StreamResponseHandlerTest extends TestingFramework\Core\Unit\UnitTes
             5,
         );
 
-        $this->subject->onFailure(
-            new \Exception(),
-            new Core\Http\Uri('https://typo3-testing.local/'),
+        $this->result->addResult(
+            CacheWarmup\Result\CrawlingResult::createFailed($uri, ['exception' => $exception]),
         );
+
+        $this->subject->onFailure($exception, $uri);
 
         self::assertEquals([$expected], $this->eventStream->receivedEvents);
     }
