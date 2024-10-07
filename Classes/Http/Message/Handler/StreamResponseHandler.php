@@ -71,16 +71,11 @@ final class StreamResponseHandler implements CacheWarmup\Http\Message\Handler\Re
     {
         $event = new Http\Message\Event\WarmupProgressEvent(
             (string)$currentUrl,
-            array_map(self::resultToUrl(...), $this->result->getSuccessful()),
-            array_map(self::resultToUrl(...), $this->result->getFailed()),
+            array_map('strval', $this->result->getSuccessful()),
+            array_map('strval', $this->result->getFailed()),
             $this->numberOfUrls,
         );
 
         $this->stream->sendEvent($event);
-    }
-
-    private static function resultToUrl(CacheWarmup\Result\CrawlingResult $result): string
-    {
-        return (string)$result->getUri();
     }
 }
