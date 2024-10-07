@@ -91,6 +91,7 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
                 $this->get(Typo3SitemapLocator\Sitemap\SitemapLocator::class),
                 $this->get(Core\Site\SiteFinder::class),
                 $this->eventDispatcher,
+                $this->get(Core\Package\PackageManager::class),
             ),
         );
     }
@@ -188,6 +189,19 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
 
         self::assertSame(Console\Command\Command::SUCCESS, $this->commandTester->getStatusCode());
         self::assertEquals($expected, Tests\Functional\Fixtures\Classes\DummyVerboseCrawler::$crawledUrls);
+    }
+
+    #[Framework\Attributes\Test]
+    public function executeRespectsConfigurationFile(): void
+    {
+        $this->commandTester->execute([
+            '--pages' => ['1', '2', '3', '4'],
+            // Provides exclude pattern for all sitemaps and URLs
+            '--config' => 'EXT:warming/Tests/Functional/Fixtures/Files/cache-warmup.yaml',
+        ]);
+
+        self::assertSame(Console\Command\Command::SUCCESS, $this->commandTester->getStatusCode());
+        self::assertCount(0, Tests\Functional\Fixtures\Classes\DummyVerboseCrawler::$crawledUrls);
     }
 
     #[Framework\Attributes\Test]
