@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://typo3-testing.local/foo/</loc>
+        <priority>1.0</priority>
+    </url>
+    <url>
+        <loc>https://typo3-testing.local/foo/subsite-1</loc>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://typo3-testing.local/foo/subsite-2</loc>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://typo3-testing.local/foo/subsite-2/subsite-2-1</loc>
+        <priority>0.5</priority>
+    </url>
+</urlset>

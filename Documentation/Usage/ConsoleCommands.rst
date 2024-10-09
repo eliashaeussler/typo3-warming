@@ -76,13 +76,20 @@ The following command options are available:
 ..  confval:: -s|--sites
 
     :Required: false
-    :type: integer or string (site identifier)
+    :type: integer or string (site identifier or `all`)
     :Default: none
     :Multiple allowed: true
 
     Use this option to provide a list of sites to be warmed up. You
     can either pass the appropriate site identifiers or the site's
     root page IDs.
+
+    ..  versionadded:: 3.1.0
+
+        `Feature: #720 - Allow warming up all available sites at once <https://github.com/eliashaeussler/typo3-warming/pull/720>`__
+
+        You can also pass the special keyword `all` to warm up all
+        available sites at once.
 
     Example:
 
@@ -94,6 +101,7 @@ The following command options are available:
 
                 vendor/bin/typo3 warming:cachewarmup -s my-cool-site
                 vendor/bin/typo3 warming:cachewarmup -s 1
+                vendor/bin/typo3 warming:cachewarmup -s all
 
         ..  group-tab:: Legacy installation
 
@@ -101,6 +109,7 @@ The following command options are available:
 
                 typo3/sysext/core/bin/typo3 warming:cachewarmup -s my-cool-site
                 typo3/sysext/core/bin/typo3 warming:cachewarmup -s 1
+                typo3/sysext/core/bin/typo3 warming:cachewarmup -s all
 
 ..  confval:: -l|--languages
 

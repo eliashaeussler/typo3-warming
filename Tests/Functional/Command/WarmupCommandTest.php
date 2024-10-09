@@ -61,6 +61,7 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
     private Src\Configuration\Configuration $configuration;
     private Core\Configuration\ExtensionConfiguration $extensionConfiguration;
     private Tests\Functional\Fixtures\Classes\DummyEventDispatcher $eventDispatcher;
+    private Core\Site\SiteFinder $siteFinder;
     private Console\Tester\CommandTester $commandTester;
 
     protected function setUp(): void
@@ -81,6 +82,7 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
         $this->extensionConfiguration = $this->get(Core\Configuration\ExtensionConfiguration::class);
         $this->guzzleClientFactory = new Tests\Functional\Fixtures\Classes\DummyGuzzleClientFactory();
         $this->eventDispatcher = new Tests\Functional\Fixtures\Classes\DummyEventDispatcher();
+        $this->siteFinder = $this->get(Core\Site\SiteFinder::class);
         $this->commandTester = new Console\Tester\CommandTester(
             new Src\Command\WarmupCommand(
                 new Src\Http\Client\ClientFactory(
@@ -89,7 +91,7 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
                 $this->configuration,
                 $this->get(Src\Crawler\Strategy\CrawlingStrategyFactory::class),
                 $this->get(Typo3SitemapLocator\Sitemap\SitemapLocator::class),
-                $this->get(Core\Site\SiteFinder::class),
+                $this->siteFinder,
                 $this->eventDispatcher,
                 $this->get(Core\Package\PackageManager::class),
             ),
@@ -184,11 +186,35 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
         ];
 
         $this->commandTester->execute([
-            '--sites' => [self::$testSiteIdentifier],
+            '--sites' => ['test-site'],
         ]);
 
         self::assertSame(Console\Command\Command::SUCCESS, $this->commandTester->getStatusCode());
         self::assertEquals($expected, Tests\Functional\Fixtures\Classes\DummyVerboseCrawler::$crawledUrls);
+    }
+
+    #[Framework\Attributes\Test]
+    public function executeCrawlsAllAvailableSites(): void
+    {
+        // First site
+        $this->mockSitemapResponse('en', 'de', 'fr');
+
+        // Second site
+        $this->createSite(
+            'https://typo3-testing.local/foo/',
+            'test-site-2',
+        );
+        $this->mockSitemapResponse('en_2', 'de_2', 'fr_2');
+
+        // Force cache recreation after second site was created
+        $this->siteFinder->getAllSites(false);
+
+        $this->commandTester->execute([
+            '--sites' => ['all'],
+        ]);
+
+        self::assertSame(Console\Command\Command::SUCCESS, $this->commandTester->getStatusCode());
+        self::assertCount(12, Tests\Functional\Fixtures\Classes\DummyVerboseCrawler::$crawledUrls);
     }
 
     #[Framework\Attributes\Test]

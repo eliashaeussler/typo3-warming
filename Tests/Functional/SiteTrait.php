@@ -33,10 +33,10 @@ use TYPO3\CMS\Core;
  */
 trait SiteTrait
 {
-    private static string $testSiteIdentifier = 'test-site';
-
-    private function createSite(string $baseUrl = 'https://typo3-testing.local/'): Core\Site\Entity\Site
-    {
+    private function createSite(
+        string $baseUrl = 'https://typo3-testing.local/',
+        string $identifier = 'test-site',
+    ): Core\Site\Entity\Site {
         $configPath = $this->instancePath . '/typo3conf/sites';
 
         if ((new Core\Information\Typo3Version())->getMajorVersion() >= 13) {
@@ -65,9 +65,9 @@ trait SiteTrait
             );
         }
 
-        $siteWriter->createNewBasicSite(static::$testSiteIdentifier, 1, $baseUrl);
+        $siteWriter->createNewBasicSite($identifier, 1, $baseUrl);
 
-        $rawConfig = $siteConfiguration->load(static::$testSiteIdentifier);
+        $rawConfig = $siteConfiguration->load($identifier);
         $rawConfig['languages'][1] = [
             'title' => 'German',
             'enabled' => true,
@@ -93,9 +93,9 @@ trait SiteTrait
             'languageId' => 2,
         ];
 
-        $siteWriter->write(static::$testSiteIdentifier, $rawConfig);
+        $siteWriter->write($identifier, $rawConfig);
 
-        $site = $siteConfiguration->getAllExistingSites()[static::$testSiteIdentifier] ?? null;
+        $site = $siteConfiguration->getAllExistingSites()[$identifier] ?? null;
 
         self::assertInstanceOf(Core\Site\Entity\Site::class, $site);
 
