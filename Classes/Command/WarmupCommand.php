@@ -47,6 +47,7 @@ use TYPO3\CMS\Core;
 final class WarmupCommand extends Console\Command\Command
 {
     private const ALL_LANGUAGES = -1;
+    private const ALL_SITES = 'all';
 
     public function __construct(
         private readonly Http\Client\ClientFactory $clientFactory,
@@ -82,6 +83,9 @@ Both types can also be combined or extended by the specification of one or more 
 If you omit the language option, the caches of all languages of the requested pages and sites
 will be warmed up.
 
+You can also use the special keyword <info>all</info> for <info>sites</info>.
+This will cause all available sites to be warmed up.
+
 Examples:
 
 * <comment>warming:cachewarmup -p 1,2,3</comment>
@@ -102,6 +106,10 @@ Examples:
 * <comment>warming:cachewarmup -s 1 -l 0,1</comment>
   ├─ Sites: <info>Root page ID 1</info> or <info>identifier "main"</info>
   └─ Languages: <info>0 and 1</info>
+
+* <comment>warming:cachewarmup -s all</comment>
+  ├─ Sites: <info>all</info>
+  └─ Languages: <info>all</info>
 
 <info>Additional options</info>
 <info>==================</info>
@@ -360,10 +368,16 @@ HELP
         $resolvedSitemaps = [];
 
         foreach ($sites as $siteList) {
-            foreach (Core\Utility\GeneralUtility::trimExplode(',', $siteList, true) as $site) {
+            $siteList = Core\Utility\GeneralUtility::trimExplode(',', $siteList, true);
+
+            if (in_array(self::ALL_SITES, $siteList, true)) {
+                $siteList = $this->siteFinder->getAllSites();
+            }
+
+            foreach ($siteList as $site) {
                 if (Core\Utility\MathUtility::canBeInterpretedAsInteger($site)) {
                     $site = $this->siteFinder->getSiteByRootPageId((int)$site);
-                } else {
+                } elseif (is_string($site)) {
                     $site = $this->siteFinder->getSiteByIdentifier($site);
                 }
 
