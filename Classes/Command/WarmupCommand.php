@@ -62,103 +62,108 @@ final class WarmupCommand extends Console\Command\Command
 
     protected function configure(): void
     {
+        $v = fn(mixed $value) => $value;
+        $decoratedCrawlingStrategies = \implode(PHP_EOL, array_map(
+            static fn(string $strategy) => '  │  * <info>' . $strategy . '</info>',
+            array_keys($this->crawlingStrategyFactory->getAll()),
+        ));
+
         $this->setDescription('Warm up Frontend caches of single pages and/or whole sites using their XML sitemaps.');
-        $this->setHelp(implode(PHP_EOL, [
-            'This command can be used in many ways to warm up frontend caches.',
-            'Some possible combinations and options are shown below.',
-            '',
-            '<info>Sites and pages</info>',
-            '<info>===============</info>',
-            '',
-            'To warm up caches, either <info>pages</info> or <info>sites</info> can be specified.',
-            'Both types can also be combined or extended by the specification of one or more <info>languages</info>.',
-            'If you omit the language option, the caches of all languages of the requested pages and sites',
-            'will be warmed up.',
-            '',
-            'Examples:',
-            '',
-            '* <comment>warming:cachewarmup -p 1,2,3</comment>',
-            '  ├─ Pages: <info>1, 2 and 3</info>',
-            '  └─ Languages: <info>all</info>',
-            '',
-            '* <comment>warming:cachewarmup -s 1</comment>',
-            '* <comment>warming:cachewarmup -s main</comment>',
-            '  ├─ Sites: <info>Root page ID 1</info> or <info>identifier "main"</info>',
-            '  └─ Languages: <info>all</info>',
-            '',
-            '* <comment>warming:cachewarmup -p 1 -s 1</comment>',
-            '* <comment>warming:cachewarmup -p 1 -s main</comment>',
-            '  ├─ Pages: <info>1</info>',
-            '  ├─ Sites: <info>Root page ID 1</info> or <info>identifier "main"</info>',
-            '  └─ Languages: <info>all</info>',
-            '',
-            '* <comment>warming:cachewarmup -s 1 -l 0,1</comment>',
-            '  ├─ Sites: <info>Root page ID 1</info> or <info>identifier "main"</info>',
-            '  └─ Languages: <info>0 and 1</info>',
-            '',
-            '<info>Additional options</info>',
-            '<info>==================</info>',
-            '',
-            '* <comment>Configuration file</comment>',
-            '  ├─ A preconfigured set of configuration options can be written to a configuration file.',
-            '  │  This file can be passed using the <info>--config</info> option.',
-            '  │  It may also contain extension paths, e.g. <info>EXT:sitepackage/Configuration/cache-warmup.json</info>.',
-            '  │  The following file formats are currently supported:',
-            '  │  * <info>json</info>',
-            '  │  * <info>php</info>',
-            '  │  * <info>yaml</info>',
-            '  │  * <info>yml</info>',
-            '  └─ Example: <comment>warming:cachewarmup --config path/to/cache-warmup.json</comment>',
-            '',
-            '* <comment>Strict mode</comment>',
-            '  ├─ You can pass the <info>--strict</info> (or <info>-x</info>) option to terminate execution with an error code',
-            '  │  if individual caches warm up incorrectly.',
-            '  │  This is especially useful for automated execution of cache warmups.',
-            '  ├─ Default: <info>false</info>',
-            '  └─ Example: <comment>warming:cachewarmup -s 1 --strict</comment>',
-            '',
-            '* <comment>Crawl limit</comment>',
-            '  ├─ The maximum number of pages to be warmed up can be defined via the extension configuration <info>limit</info>.',
-            '  │  It can be overridden by using the <info>--limit</info> option.',
-            '  │  The value <info>0</info> deactivates the crawl limit.',
-            '  ├─ Default: <info>' . $this->configuration->getLimit() . '</info>',
-            '  ├─ Example: <comment>warming:cachewarmup -s 1 --limit 100</comment> (limits crawling to 100 pages)',
-            '  └─ Example: <comment>warming:cachewarmup -s 1 --limit 0</comment> (no limit)',
-            '',
-            '* <comment>Crawling strategy</comment>',
-            '  ├─ A crawling strategy defines how URLs will be crawled, e.g. by sorting them by a specific property.',
-            '  │  It can be defined via the extension configuration <info>strategy</info> or by using the <info>--strategy</info> option.',
-            '  │  The following strategies are currently available:',
-            ...array_map(
-                static fn(string $strategy) => '  │  * <info>' . $strategy . '</info>',
-                array_keys($this->crawlingStrategyFactory->getAll()),
-            ),
-            '  ├─ Default: <info>' . ($this->configuration->getStrategy() ?? 'none') . '</info>',
-            '  └─ Example: <comment>warming:cachewarmup --strategy ' . CacheWarmup\Crawler\Strategy\SortByPriorityStrategy::getName() . '</comment>',
-            '',
-            '* <comment>Format output</comment>',
-            '  ├─ By default, all user-oriented output is printed as plain text to the console.',
-            '  │  However, you can use other formatters by using the <info>--format</info> (or <info>-f</info>) option.',
-            '  ├─ Default: <info>' . CacheWarmup\Formatter\TextFormatter::getType() . '</info>',
-            '  ├─ Example: <comment>warming:cachewarmup --format ' . CacheWarmup\Formatter\TextFormatter::getType() . '</comment> (normal output as plaintext)',
-            '  └─ Example: <comment>warming:cachewarmup --format ' . CacheWarmup\Formatter\JsonFormatter::getType() . '</comment> (displays output as JSON)',
-            '',
-            '<info>Crawling configuration</info>',
-            '<info>======================</info>',
-            '',
-            '* <comment>Alternative crawler</comment>',
-            '  ├─ Use the extension configuration <info>verboseCrawler</info> to use an alternative crawler for',
-            '  │  command-line requests. For warmup requests triggered via the TYPO3 backend, you can use the',
-            '  │  extension configuration <info>crawler</info>.',
-            '  ├─ Currently used default crawler: <info>' . $this->configuration->getCrawler() . '</info>',
-            '  └─ Currently used verbose crawler: <info>' . $this->configuration->getVerboseCrawler() . '</info>',
-            '',
-            '* <comment>Custom User-Agent header</comment>',
-            '  ├─ When the default crawler is used, each warmup request is executed with a special User-Agent header.',
-            '  │  This header is generated from the encryption key of the TYPO3 installation.',
-            '  │  It can be used, for example, to exclude warmup requests from your search statistics.',
-            '  └─ Current User-Agent: <info>' . $this->configuration->getUserAgent() . '</info>',
-        ]));
+        $this->setHelp(
+            <<<HELP
+This command can be used in many ways to warm up frontend caches.
+Some possible combinations and options are shown below.
+
+<info>Sites and pages</info>
+<info>===============</info>
+
+To warm up caches, either <info>pages</info> or <info>sites</info> can be specified.
+Both types can also be combined or extended by the specification of one or more <info>languages</info>.
+If you omit the language option, the caches of all languages of the requested pages and sites
+will be warmed up.
+
+Examples:
+
+* <comment>warming:cachewarmup -p 1,2,3</comment>
+  ├─ Pages: <info>1, 2 and 3</info>
+  └─ Languages: <info>all</info>
+
+* <comment>warming:cachewarmup -s 1</comment>
+* <comment>warming:cachewarmup -s main</comment>
+  ├─ Sites: <info>Root page ID 1</info> or <info>identifier "main"</info>
+  └─ Languages: <info>all</info>
+
+* <comment>warming:cachewarmup -p 1 -s 1</comment>
+* <comment>warming:cachewarmup -p 1 -s main</comment>
+  ├─ Pages: <info>1</info>
+  ├─ Sites: <info>Root page ID 1</info> or <info>identifier "main"</info>
+  └─ Languages: <info>all</info>
+
+* <comment>warming:cachewarmup -s 1 -l 0,1</comment>
+  ├─ Sites: <info>Root page ID 1</info> or <info>identifier "main"</info>
+  └─ Languages: <info>0 and 1</info>
+
+<info>Additional options</info>
+<info>==================</info>
+
+* <comment>Configuration file</comment>
+  ├─ A preconfigured set of configuration options can be written to a configuration file.
+  │  This file can be passed using the <info>--config</info> option.
+  │  It may also contain extension paths, e.g. <info>EXT:sitepackage/Configuration/cache-warmup.json</info>.
+  │  The following file formats are currently supported:
+  │  * <info>json</info>
+  │  * <info>php</info>
+  │  * <info>yaml</info>
+  │  * <info>yml</info>
+  └─ Example: <comment>warming:cachewarmup --config path/to/cache-warmup.json</comment>
+
+* <comment>Strict mode</comment>
+  ├─ You can pass the <info>--strict</info> (or <info>-x</info>) option to terminate execution with an error code
+  │  if individual caches warm up incorrectly.
+  │  This is especially useful for automated execution of cache warmups.
+  ├─ Default: <info>false</info>
+  └─ Example: <comment>warming:cachewarmup -s 1 --strict</comment>
+
+* <comment>Crawl limit</comment>
+  ├─ The maximum number of pages to be warmed up can be defined via the extension configuration <info>limit</info>.
+  │  It can be overridden by using the <info>--limit</info> option.
+  │  The value <info>0</info> deactivates the crawl limit.
+  ├─ Default: <info>{$v($this->configuration->getLimit())}</info>
+  ├─ Example: <comment>warming:cachewarmup -s 1 --limit 100</comment> (limits crawling to 100 pages)
+  └─ Example: <comment>warming:cachewarmup -s 1 --limit 0</comment> (no limit)
+
+* <comment>Crawling strategy</comment>
+  ├─ A crawling strategy defines how URLs will be crawled, e.g. by sorting them by a specific property.
+  │  It can be defined via the extension configuration <info>strategy</info> or by using the <info>--strategy</info> option.
+  │  The following strategies are currently available:
+{$decoratedCrawlingStrategies}
+  ├─ Default: <info>{$v($this->configuration->getStrategy() ?? 'none')}</info>
+  └─ Example: <comment>warming:cachewarmup --strategy {$v(CacheWarmup\Crawler\Strategy\SortByPriorityStrategy::getName())}</comment>
+
+* <comment>Format output</comment>
+  ├─ By default, all user-oriented output is printed as plain text to the console.
+  │  However, you can use other formatters by using the <info>--format</info> (or <info>-f</info>) option.
+  ├─ Default: <info>{$v(CacheWarmup\Formatter\TextFormatter::getType())}</info>
+  ├─ Example: <comment>warming:cachewarmup --format {$v(CacheWarmup\Formatter\TextFormatter::getType())}</comment> (normal output as plaintext)
+  └─ Example: <comment>warming:cachewarmup --format {$v(CacheWarmup\Formatter\JsonFormatter::getType())}</comment> (displays output as JSON)
+
+<info>Crawling configuration</info>
+<info>======================</info>
+
+* <comment>Alternative crawler</comment>
+  ├─ Use the extension configuration <info>verboseCrawler</info> to use an alternative crawler for
+  │  command-line requests. For warmup requests triggered via the TYPO3 backend, you can use the
+  │  extension configuration <info>crawler</info>.
+  ├─ Currently used default crawler: <info>{$v($this->configuration->getCrawler())}</info>
+  └─ Currently used verbose crawler: <info>{$v($this->configuration->getVerboseCrawler())}</info>
+
+* <comment>Custom User-Agent header</comment>
+  ├─ When the default crawler is used, each warmup request is executed with a special User-Agent header.
+  │  This header is generated from the encryption key of the TYPO3 installation.
+  │  It can be used, for example, to exclude warmup requests from your search statistics.
+  └─ Current User-Agent: <info>{$v($this->configuration->getUserAgent())}</info>
+HELP
+        );
 
         $this->addOption(
             'pages',
