@@ -24,7 +24,6 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Tests\Unit\Mapper;
 
 use EliasHaeussler\Typo3Warming as Src;
-use EliasHaeussler\Typo3Warming\Tests;
 use PHPUnit\Framework;
 use TYPO3\CMS\Core;
 use TYPO3\TestingFramework;
@@ -38,14 +37,14 @@ use TYPO3\TestingFramework;
 #[Framework\Attributes\CoversClass(Src\Mapper\MapperFactory::class)]
 final class MapperFactoryTest extends TestingFramework\Core\Unit\UnitTestCase
 {
-    private Tests\Unit\Fixtures\DummySiteFinder $siteFinder;
+    private Core\Site\SiteFinder&Framework\MockObject\MockObject $siteFinder;
     private Src\Mapper\MapperFactory $subject;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->siteFinder = new Tests\Unit\Fixtures\DummySiteFinder();
+        $this->siteFinder = $this->createMock(Core\Site\SiteFinder::class);
         $this->subject = new Src\Mapper\MapperFactory($this->siteFinder);
     }
 
@@ -54,7 +53,7 @@ final class MapperFactoryTest extends TestingFramework\Core\Unit\UnitTestCase
     {
         $site = new Core\Site\Entity\Site('foo', 1, []);
 
-        $this->siteFinder->expectedSite = $site;
+        $this->siteFinder->method('getSiteByIdentifier')->willReturn($site);
 
         $mapper = $this->subject->get();
 

@@ -16,11 +16,11 @@ jobs:
       fail-fast: false
       matrix:
         php-version: ["8.1", "8.2", "8.3"]
-        typo3-version: ["12.4", "13.3"]
+        typo3-version: ["12.4", "13.4"]
         dependencies: ["highest", "lowest"]
         exclude:
           - php-version: "8.1"
-            typo3-version: "13.3"
+            typo3-version: "13.4"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -49,7 +49,8 @@ jobs:
         uses: ramsey/composer-install@v2
         with:
           dependency-versions: ${{ matrix.dependencies }}
-          composer-options: --with=typo3/cms-core:"^${{ matrix.typo3-version }}"
+          # @todo Remove temporary constraint for TF once TF v9 is released
+          composer-options: --with=typo3/cms-core:"^${{ matrix.typo3-version }}" ${{ matrix.typo3-version == '13.4' && '--with=typo3/testing-framework:dev-main' || '' }}
 
       # Run tests
       - name: Run acceptance tests
