@@ -38,31 +38,27 @@ trait SiteTrait
         string $identifier = 'test-site',
     ): Core\Site\Entity\Site {
         $configPath = $this->instancePath . '/typo3conf/sites';
+        $eventDispatcher = new Core\EventDispatcher\NoopEventDispatcher();
 
         if ((new Core\Information\Typo3Version())->getMajorVersion() >= 13) {
-            $coreCache = new Core\Cache\Frontend\NullFrontend('core');
-            $eventDispatcher = new Core\EventDispatcher\NoopEventDispatcher();
             $yamlFileLoader = $this->get(Core\Configuration\Loader\YamlFileLoader::class);
-
             $siteConfiguration = new Core\Configuration\SiteConfiguration(
                 $configPath,
                 $this->get(Core\Site\SiteSettingsFactory::class),
+                $this->get(Core\Site\Set\SetRegistry::class),
                 $eventDispatcher,
-                $coreCache,
+                new Core\Cache\Frontend\NullFrontend('core'),
                 $yamlFileLoader,
+                new Core\Cache\Frontend\NullFrontend('runtime'),
             );
             $siteWriter = new Core\Configuration\SiteWriter(
                 $configPath,
                 $eventDispatcher,
-                $coreCache,
                 $yamlFileLoader,
             );
         } else {
             // @todo Remove once support for TYPO3 v12 is dropped
-            $siteConfiguration = $siteWriter = new Core\Configuration\SiteConfiguration(
-                $configPath,
-                new Core\EventDispatcher\NoopEventDispatcher(),
-            );
+            $siteConfiguration = $siteWriter = new Core\Configuration\SiteConfiguration($configPath, $eventDispatcher);
         }
 
         $siteWriter->createNewBasicSite($identifier, 1, $baseUrl);
