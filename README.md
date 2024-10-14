@@ -59,6 +59,11 @@ modified versions of the original
 icon from TYPO3 core which is originally licensed under
 [MIT License](https://github.com/TYPO3/TYPO3.Icons/blob/main/LICENSE).
 
+## 🔒 Security Policy
+
+Please read our [security policy](SECURITY.md) if you discover a security
+vulnerability in this extension.
+
 ## ⭐ License
 
 This project is licensed under [GNU General Public License 2.0 (or later)](LICENSE.md).

@@ -51,6 +51,14 @@ There are several ways to get support for this extension:
 * Slack: https://typo3.slack.com/archives/C0400CSGWAY
 * GitHub: https://github.com/eliashaeussler/typo3-warming/issues
 
+..  _security-policy:
+
+Security Policy
+===============
+
+Please read our `security policy <https://github.com/eliashaeussler/typo3-warming/blob/main/SECURITY.md>`__
+if you discover a security vulnerability in this extension.
+
 ..  _license:
 
 License
