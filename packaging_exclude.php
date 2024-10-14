@@ -53,6 +53,7 @@ return [
         'phpunit.functional.xml',
         'phpunit.unit.xml',
         'renovate.json',
+        'SECURITY.md',
         'version-bumper.yaml',
     ],
 ];
