@@ -44,7 +44,6 @@ using their XML sitemaps.
 The following command options are available:
 
 ..  confval:: -p|--pages
-
     :Required: false
     :type: integer
     :Default: none
@@ -74,7 +73,6 @@ The following command options are available:
                 typo3/sysext/core/bin/typo3 warming:cachewarmup -p 1,2,3
 
 ..  confval:: -s|--sites
-
     :Required: false
     :type: integer or string (site identifier or `all`)
     :Default: none
@@ -112,7 +110,6 @@ The following command options are available:
                 typo3/sysext/core/bin/typo3 warming:cachewarmup -s all
 
 ..  confval:: -l|--languages
-
     :Required: false
     :type: integer
     :Default: :php:`-1` (all languages)
@@ -141,7 +138,6 @@ The following command options are available:
                 typo3/sysext/core/bin/typo3 warming:cachewarmup -l 0,1
 
 ..  confval:: -c|--config
-
     :Required: false
     :type: string
     :Default: none
@@ -182,7 +178,7 @@ The following command options are available:
                 typo3/sysext/core/bin/typo3 warming:cachewarmup --config EXT:sitepackage/Configuration/cache-warmup.yaml
 
 ..  confval:: --limit
-
+    :name: command-limit
     :Required: false
     :type: integer
     :Default: :typoscript:`limit` value from :ref:`extension configuration <extension-configuration>`
@@ -210,7 +206,7 @@ The following command options are available:
                 typo3/sysext/core/bin/typo3 warming:cachewarmup --limit 100
 
 ..  confval:: --strategy
-
+    :name: command-strategy
     :Required: false
     :type: string
     :Default: :typoscript:`strategy` value from :ref:`extension configuration <extension-configuration>`
@@ -237,7 +233,6 @@ The following command options are available:
                 typo3/sysext/core/bin/typo3 warming:cachewarmup --strategy sort-by-priority
 
 ..  confval:: -x|--strict
-
     :Required: false
     :type: boolean
     :Default: false

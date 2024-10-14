@@ -20,7 +20,7 @@ an appropriate class method.
 
         Get the configured :ref:`crawler class <extconf-crawler>`.
 
-        :returntype: :php:`class-string<EliasHaeussler\CacheWarmup\Crawler\CrawlerInterface>`
+        :returntype: :php:`class-string<EliasHaeussler\CacheWarmup\Crawler\Crawler>`
 
     ..  php:method:: getCrawlerOptions()
 
@@ -32,7 +32,7 @@ an appropriate class method.
 
         Get the configured :ref:`verbose crawler class <extconf-verboseCrawler>`.
 
-        :returntype: :php:`class-string<EliasHaeussler\CacheWarmup\Crawler\VerboseCrawlerInterface>`
+        :returntype: :php:`class-string<EliasHaeussler\CacheWarmup\Crawler\VerboseCrawler>`
 
     ..  php:method:: getVerboseCrawlerOptions()
 

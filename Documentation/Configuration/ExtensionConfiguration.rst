@@ -16,26 +16,23 @@ Crawler
 ..  _extconf-crawler:
 
 ..  confval:: crawler
-
     :type: string (FQCN)
-    :Default: :php:class:`EliasHaeussler\\Typo3Warming\\Crawler\\ConcurrentUserAgentCrawler`
+    :Default: :php:`\EliasHaeussler\Typo3Warming\Crawler\ConcurrentUserAgentCrawler`
 
     Default crawler to be used for crawling the requested pages.
 
     ..  note::
 
-        Custom crawlers must implement
-        :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\Crawler`.
+        Custom crawlers must implement :php:`\EliasHaeussler\CacheWarmup\Crawler\Crawler`.
 
 ..  _extconf-crawlerOptions:
 
 ..  confval:: crawlerOptions
-
     :type: string (JSON)
 
     JSON-encoded string of custom crawler options for the default
-    :ref:`crawler <extconf-crawler>`. Applies only to crawlers implementing the
-    :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\ConfigurableCrawler`.
+    :ref:`crawler <extconf-crawler>`. Applies only to crawlers implementing
+    :php:`\EliasHaeussler\CacheWarmup\Crawler\ConfigurableCrawler`.
     For more information read :ref:`configurable-crawlers`.
 
     ..  tip::
@@ -51,26 +48,23 @@ Crawler
 ..  _extconf-verboseCrawler:
 
 ..  confval:: verboseCrawler
-
     :type: string (FQCN)
-    :Default: :php:class:`EliasHaeussler\\Typo3Warming\\Crawler\\OutputtingUserAgentCrawler`
+    :Default: :php:`\EliasHaeussler\Typo3Warming\Crawler\OutputtingUserAgentCrawler`
 
     Verbose crawler to be used for cache warmup from the command-line.
 
     ..  note::
 
-        Custom verbose crawlers must implement
-        :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\VerboseCrawler`.
+        Custom verbose crawlers must implement :php:`\EliasHaeussler\CacheWarmup\Crawler\VerboseCrawler`.
 
 ..  _extconf-verboseCrawlerOptions:
 
 ..  confval:: verboseCrawlerOptions
-
     :type: string (JSON)
 
     JSON-encoded string of custom crawler options for the
     :ref:`verbose crawler <extconf-verboseCrawler>`. Applies only to crawlers implementing
-    the :php:interface:`EliasHaeussler\\CacheWarmup\\Crawler\\ConfigurableCrawler`.
+    the :php:`\EliasHaeussler\CacheWarmup\Crawler\ConfigurableCrawler`.
     For more information read :ref:`configurable-crawlers`.
 
     ..  tip::
@@ -86,7 +80,6 @@ Crawler
 ..  _extconf-parserClientOptions:
 
 ..  confval:: parserClientOptions
-
     :type: string (JSON)
 
     ..  versionadded:: 1.2.0
@@ -116,7 +109,7 @@ Options
 ..  _extconf-limit:
 
 ..  confval:: limit
-
+    :name: extconf-limit
     :type: integer
     :Default: 250
 
@@ -124,13 +117,11 @@ Options
 
     ..  tip::
 
-        Can be set to :typoscript:`0` to crawl all available pages in
-        XML sitemaps.
+        Can be set to :typoscript:`0` to crawl all available pages in XML sitemaps.
 
 ..  _extconf-exclude:
 
 ..  confval:: exclude
-
     :type: string (comma-separated list)
 
     Comma-separated list of exclude patterns to exclude URLs from cache
@@ -143,7 +134,7 @@ Options
 ..  _extconf-strategy:
 
 ..  confval:: strategy
-
+    :name: extconf-strategy
     :type: string
 
     Name of an available crawling strategy to use for cache warmup. Crawling
@@ -162,7 +153,6 @@ Page tree
 ..  _extconf-enablePageTree:
 
 ..  confval:: enablePageTree
-
     :type: boolean
     :Default: 1
 
@@ -172,7 +162,6 @@ Page tree
 ..  _extconf-supportedDoktypes:
 
 ..  confval:: supportedDoktypes
-
     :type: string (comma-separated list)
     :Default: 1
 
@@ -189,7 +178,6 @@ Toolbar
 ..  _extconf-enableToolbar:
 
 ..  confval:: enableToolbar
-
     :type: boolean
     :Default: 1
 

@@ -26,7 +26,7 @@ BeforeCacheWarmupEvent
 ======================
 
 This event is dispatched right before cache warmup is triggered
-via :php:meth:`EliasHaeussler\\CacheWarmup\\CacheWarmer::run`. It
+via :php:`\EliasHaeussler\CacheWarmup\CacheWarmer::run`. It
 allows to add additional sitemaps and URLs to the cache warmer or
 modify the crawling behavior in other ways.
 
@@ -37,7 +37,7 @@ AfterCacheWarmupEvent
 
 Once cache warmup is finished, this event is dispatched. It
 provides the cache warmup result together with the original
-instance of :php:class:`EliasHaeussler\\CacheWarmup\\CacheWarmer`
+instance of :php:`\EliasHaeussler\CacheWarmup\CacheWarmer`
 and the used crawler.
 
 ..  seealso::

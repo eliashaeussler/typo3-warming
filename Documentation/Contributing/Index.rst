@@ -1,5 +1,17 @@
 ..  include:: /Includes.rst.txt
 
+..  image:: https://img.shields.io/coverallsCoverage/github/eliashaeussler/typo3-warming?logo=coveralls
+    :target: https://coveralls.io/github/eliashaeussler/typo3-warming
+
+..  image:: https://img.shields.io/codeclimate/maintainability/eliashaeussler/typo3-warming?logo=codeclimate
+    :target: https://codeclimate.com/github/eliashaeussler/typo3-warming/maintainability
+
+..  image:: https://img.shields.io/github/actions/workflow/status/eliashaeussler/typo3-warming/cgl.yaml?label=cgl&logo=github
+    :target: https://github.com/eliashaeussler/typo3-warming/actions/workflows/cgl.yaml
+
+..  image:: https://img.shields.io/github/actions/workflow/status/eliashaeussler/typo3-warming/tests.yaml?label=tests&logo=github
+    :target: https://github.com/eliashaeussler/typo3-warming/actions/workflows/tests.yaml
+
 ..  _contributing:
 
 ============
@@ -76,9 +88,6 @@ You can access the DDEV site at https://typo3-ext-warming.ddev.site/.
 Check code quality
 ------------------
 
-..  image:: https://github.com/eliashaeussler/typo3-warming/actions/workflows/cgl.yaml/badge.svg
-    :target: https://github.com/eliashaeussler/typo3-warming/actions/workflows/cgl.yaml
-
 ..  _cgl-typo3:
 
 TYPO3
@@ -135,14 +144,6 @@ Frontend
 
 Run tests
 ---------
-
-..  image:: https://github.com/eliashaeussler/typo3-warming/actions/workflows/tests.yaml/badge.svg
-    :target: https://github.com/eliashaeussler/typo3-warming/actions/workflows/tests.yaml
-
-..  rst-class:: d-inline-block mb-3
-
-..  image:: https://img.shields.io/coverallsCoverage/github/eliashaeussler/typo3-warming?logo=coveralls
-    :target: https://coveralls.io/github/eliashaeussler/typo3-warming
 
 ..  code-block:: bash
 

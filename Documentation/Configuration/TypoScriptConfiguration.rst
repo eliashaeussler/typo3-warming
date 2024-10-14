@@ -16,7 +16,6 @@ Constants
 ..  _typoscript-constants-view.templateRootPath:
 
 ..  confval:: view.templateRootPath
-
     :type: string
     :Path: module.tx_warming
 
@@ -30,7 +29,6 @@ Constants
 ..  _typoscript-constants-view.partialRootPath:
 
 ..  confval:: view.partialRootPath
-
     :type: string
     :Path: module.tx_warming
 

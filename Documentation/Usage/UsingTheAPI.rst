@@ -36,7 +36,7 @@ warmup directly in PHP code.
 
         Set crawler to use for cache warmup.
 
-        :param string|EliasHaeussler\\CacheWarmup\\Crawler\\CrawlerInterface $crawler: The crawler to use for cache warmup.
+        :param string|EliasHaeussler\CacheWarmup\Crawler\Crawler $crawler: The crawler to use for cache warmup.
         :returns: The service object (fluent setter).
 
 ..  _api-example:
@@ -44,7 +44,7 @@ warmup directly in PHP code.
 Example
 =======
 
-::
+..  code-block:: php
 
     use EliasHaeussler\CacheWarmup;
     use EliasHaeussler\Typo3Warming;

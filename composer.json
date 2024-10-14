@@ -96,9 +96,9 @@
 			"@docs:build",
 			"@docs:open"
 		],
-		"docs:build": "docker-compose run --rm docs",
+		"docs:build": "docker compose run --rm docs",
 		"docs:cleanup": "rm -rf .Build/docs",
-		"docs:open": "open .Build/docs/Result/project/0.0.0/Index.html",
+		"docs:open": "open .Build/docs/Index.html",
 		"environment:prepare": [
 			"rm -rf config",
 			"cp -r Tests/Build/Configuration config",

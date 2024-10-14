@@ -7,7 +7,6 @@ Permissions
 ===========
 
 ..  note::
-
     Cache warmup can also be enabled or disabled globally. Check
     out the extension configuration for :ref:`page tree <extconf-enablePageTree>`
     and :ref:`backend toolbar <extconf-enableToolbar>`.
@@ -22,7 +21,6 @@ specific users/usergroups and sites/pages. Add the following
 configuration to the :typoscript:`options.cacheWarmup` User TSconfig:
 
 ..  confval:: allowedSites
-
     :Path: :typoscript:`options.cacheWarmup.allowedSites`
     :type: string (comma-separated list)
 
@@ -36,7 +34,6 @@ configuration to the :typoscript:`options.cacheWarmup` User TSconfig:
         options.cacheWarmup.allowedSites = my-dummy-site,another-dummy-site
 
 ..  confval:: allowedPages
-
     :Path: :typoscript:`options.cacheWarmup.allowedPages`
     :type: string (comma-separated list)
 
