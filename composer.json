@@ -24,7 +24,7 @@
 		"cuyz/valinor": "^1.3",
 		"eliashaeussler/cache-warmup": "^3.2",
 		"eliashaeussler/sse": "^1.0.1",
-		"eliashaeussler/typo3-sitemap-locator": "dev-feature/typo3-13.4",
+		"eliashaeussler/typo3-sitemap-locator": "^0.1.0",
 		"guzzlehttp/guzzle": "^7.5",
 		"psr/event-dispatcher": "^1.0",
 		"psr/http-message": "^1.1 || ^2.0",
@@ -52,8 +52,6 @@
 		"typo3/cms-tstemplate": "~12.4.8 || ~13.4.0",
 		"typo3/testing-framework": "^8.2.3"
 	},
-	"minimum-stability": "dev",
-	"prefer-stable": true,
 	"autoload": {
 		"psr-4": {
 			"EliasHaeussler\\Typo3Warming\\": "Classes/"
