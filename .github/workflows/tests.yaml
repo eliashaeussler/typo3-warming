@@ -16,11 +16,23 @@ jobs:
       fail-fast: false
       matrix:
         php-version: ["8.1", "8.2", "8.3"]
-        typo3-version: ["12.4", "13.3"]
+        typo3-version: ["12.4", "13.4"]
         dependencies: ["highest", "lowest"]
         exclude:
           - php-version: "8.1"
-            typo3-version: "13.3"
+            typo3-version: "13.4"
+
+        # Enforce PHPUnit ^11.2 for TYPO3 13.4 & lowest dependencies
+        # since it adds support for doubling readonly classes (SiteFinder in our case)
+        include:
+          - php-version: "8.2"
+            typo3-version: "13.4"
+            dependencies: "lowest"
+            composer-options: "--with=phpunit/phpunit:^11.2"
+          - php-version: "8.3"
+            typo3-version: "13.4"
+            dependencies: "lowest"
+            composer-options: "--with=phpunit/phpunit:^11.2"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -49,7 +61,7 @@ jobs:
         uses: ramsey/composer-install@v2
         with:
           dependency-versions: ${{ matrix.dependencies }}
-          composer-options: --with=typo3/cms-core:"^${{ matrix.typo3-version }}"
+          composer-options: --with=typo3/cms-core:"^${{ matrix.typo3-version }}" ${{ matrix.composer-options }}
 
       # Run tests
       - name: Run acceptance tests
