@@ -22,7 +22,8 @@
     flex-direction: row;
     height: 100%;
     overflow: auto;
-    margin: 0 calc(var(--bs-modal-padding) * -1);
+    /* ´@todo Remove fallback once support for TYPO3 v12 is dropped */
+    margin: 0 calc(var(--typo3-modal-padding, var(--bs-modal-padding)) * -1);
 }
 
 .tx-warming-sites,
@@ -30,7 +31,8 @@
     position: relative;
     flex-grow: 1;
     overflow: auto;
-    padding: 0 var(--bs-modal-padding);
+    /* ´@todo Remove fallback once support for TYPO3 v12 is dropped */
+    padding: 0 var(--typo3-modal-padding, var(--bs-modal-padding));
 }
 
 .tx-warming-sites {
@@ -57,8 +59,8 @@
     line-height: var(--typo3-component-line-height);
     padding: var(--typo3-list-item-padding-y) var(--typo3-list-item-padding-x);
     border-radius: calc(var(--typo3-component-border-radius) - var(--typo3-component-border-width));
-    color: var(--typo3-light-color);
-    background-color: var(--typo3-light-bg);
+    /* ´@todo Remove fallback once support for TYPO3 v12 is dropped */
+    color: var(--typo3-state-default-color, var(--typo3-light-color));
     pointer-events: all;
 
     &-disabled {
@@ -67,8 +69,10 @@
     }
 
     &-select-all {
-        background-color: var(--bs-gray-100);
-        outline: 1px solid var(--bs-gray-200);
+        /* ´@todo Remove fallback once support for TYPO3 v12 is dropped */
+        background-color: var(--typo3-state-default-bg, var(--bs-gray-100));
+        /* ´@todo Remove fallback once support for TYPO3 v12 is dropped */
+        outline: 1px solid var(--typo3-state-default-border-color, var(--bs-gray-200));
         outline-offset: -1px;
         z-index: 1;
     }
@@ -85,14 +89,18 @@
         }
 
         &:hover {
-            background-color: var(--typo3-light-hover-bg);
-            outline: 1px solid var(--typo3-light-hover-border-color);
+            /* ´@todo Remove fallback once support for TYPO3 v12 is dropped */
+            background-color: var(--typo3-state-default-hover-bg, var(--typo3-light-hover-bg));
+            /* ´@todo Remove fallback once support for TYPO3 v12 is dropped */
+            outline: 1px solid var(--typo3-state-default-hover-border-color, var(--typo3-light-hover-border-color));
         }
 
         &:focus,
         &.active {
-            background-color: var(--typo3-light-focus-bg);
-            outline: 1px solid var(--typo3-light-focus-border-color);
+            /* ´@todo Remove fallback once support for TYPO3 v12 is dropped */
+            background-color: var(--typo3-state-default-focus-bg, var(--typo3-light-focus-bg));
+            /* ´@todo Remove fallback once support for TYPO3 v12 is dropped */
+            outline: 1px solid var(--typo3-state-default-focus-border-color, var(--typo3-light-focus-border-color));
         }
     }
 

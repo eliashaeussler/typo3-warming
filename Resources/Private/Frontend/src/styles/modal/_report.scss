@@ -27,6 +27,7 @@ warming-report-modal {
     }
 
     > .tx-warming-request-id {
-        color: var(--typo3-light-secondary-color);
+        /* ´@todo Remove fallback once support for TYPO3 v12 is dropped */
+        color: var(--typo3-component-variant-color, var(--typo3-light-secondary-color));
     }
 }
