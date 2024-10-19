@@ -28,7 +28,7 @@ caches of specific sites or pages.
 
         Check if the current user can warm up caches of the given site.
 
-        :param TYPO3\\CMS\\Core\\Site\\Entity\\Site $site: The site to be checked.
+        :param TYPO3\CMS\Core\Site\Entity\Site $site: The site to be checked.
         :param int $languageId: Optional language ID to be included in the check.
         :returntype: bool
 

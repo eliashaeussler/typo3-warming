@@ -23,7 +23,8 @@ Crawler
 
     ..  note::
 
-        Custom crawlers must implement :php:`\EliasHaeussler\CacheWarmup\Crawler\Crawler`.
+        Custom crawlers must implement
+        :php:interface:`\\EliasHaeussler\\CacheWarmup\\Crawler\\Crawler`.
 
 ..  _extconf-crawlerOptions:
 
@@ -31,9 +32,9 @@ Crawler
     :type: string (JSON)
 
     JSON-encoded string of custom crawler options for the default
-    :ref:`crawler <extconf-crawler>`. Applies only to crawlers implementing
-    :php:`\EliasHaeussler\CacheWarmup\Crawler\ConfigurableCrawler`.
-    For more information read :ref:`configurable-crawlers`.
+    :ref:`crawler <extconf-crawler>`. Applies only to crawlers implementing the
+    :php:interface:`\EliasHaeussler\CacheWarmup\Crawler\ConfigurableCrawler`
+    interface. For more information read :ref:`configurable-crawlers`.
 
     ..  tip::
 
@@ -55,7 +56,8 @@ Crawler
 
     ..  note::
 
-        Custom verbose crawlers must implement :php:`\EliasHaeussler\CacheWarmup\Crawler\VerboseCrawler`.
+        Custom verbose crawlers must implement the
+        :php:interface:`\EliasHaeussler\CacheWarmup\Crawler\VerboseCrawler` interface.
 
 ..  _extconf-verboseCrawlerOptions:
 
@@ -64,7 +66,7 @@ Crawler
 
     JSON-encoded string of custom crawler options for the
     :ref:`verbose crawler <extconf-verboseCrawler>`. Applies only to crawlers implementing
-    the :php:`\EliasHaeussler\CacheWarmup\Crawler\ConfigurableCrawler`.
+    the :php:interface:`\EliasHaeussler\CacheWarmup\Crawler\ConfigurableCrawler` interface.
     For more information read :ref:`configurable-crawlers`.
 
     ..  tip::
