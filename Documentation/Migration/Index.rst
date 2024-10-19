@@ -70,8 +70,9 @@ Default crawlers
 
 -   Default crawlers are now :php:`final`. Custom crawlers can no
     longer extend default crawlers. Implement
-    :php:`\EliasHaeussler\CacheWarmup\Crawler\Crawler` or
-    :php:`\EliasHaeussler\CacheWarmup\Crawler\VerboseCrawler` instead.
+    :php:interface:`\EliasHaeussler\CacheWarmup\Crawler\Crawler`
+    or :php:interface:`\EliasHaeussler\CacheWarmup\Crawler\VerboseCrawler`
+    instead.
 -   :php:`CrawlerFactory` from `eliashaeussler/cache-warmup` library
     is now used to instantiate crawlers. Dependency injection is no
     longer possible.
@@ -82,13 +83,13 @@ Default crawlers
 -   :php:`\EliasHaeussler\Typo3Warming\Crawler\RequestAwareInterface`
     and :php:`\EliasHaeussler\Typo3Warming\Crawler\RequestAwareTrait`
     were removed. Use
-    :php:`\EliasHaeussler\Typo3Warming\Crawler\StreamableCrawler`
+    :php:interface:`\EliasHaeussler\Typo3Warming\Crawler\StreamableCrawler`
     in combination with
     :php:`\EliasHaeussler\Typo3Warming\Http\Message\Handler\StreamResponseHandler`
     instead.
 -   :php:`\EliasHaeussler\Typo3Warming\Crawler\UserAgentTrait`
     was removed. Provide an own implementation that calls
-    :php:`\EliasHaeussler\Typo3Warming\Configuration\Configuration::getUserAgent`
+    :php:meth:`\EliasHaeussler\Typo3Warming\Configuration\Configuration::getUserAgent`
     instead.
 
 Warmup request handling
@@ -104,12 +105,12 @@ Warmup request handling
     :php:`\EliasHaeussler\Typo3Warming\ValueObject\Request\WarmupRequest`
     was removed. Use the returned
     :php:`\EliasHaeussler\Typo3Warming\Result\CacheWarmupResult`
-    from :php:`\EliasHaeussler\Typo3Warming\Service\CacheWarmupService::warmup`
+    from :php:meth:`\EliasHaeussler\Typo3Warming\Service\CacheWarmupService::warmup`
     instead.
 -   :php:`\EliasHaeussler\Typo3Warming\Service\CacheWarmupService::warmupPages`
     and :php:`\EliasHaeussler\Typo3Warming\Service\CacheWarmupService::warmupSites`
     were combined to a new method
-    :php:`\EliasHaeussler\Typo3Warming\Service\CacheWarmupService::warmup`.
+    :php:meth:`\EliasHaeussler\Typo3Warming\Service\CacheWarmupService::warmup`.
     Use this method with dedicated instances of
     :php:`\EliasHaeussler\Typo3Warming\ValueObject\Request\SiteWarmupRequest` and
     :php:`\EliasHaeussler\Typo3Warming\ValueObject\Request\PageWarmupRequest`.
