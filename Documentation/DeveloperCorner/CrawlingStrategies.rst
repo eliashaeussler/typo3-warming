@@ -21,13 +21,13 @@ prioritize specific URLs or provide additional information to URLs.
         Prepare given URLs for crawling.
 
         :param array $urls: List of URLs to be prepared for crawling.
-        :returntype: :php:`list<EliasHaeussler\CacheWarmup\Sitemap\Url>`
+        :returntype: :php:`list<\EliasHaeussler\CacheWarmup\Sitemap\Url>`
 
     ..  php:staticmethod:: getName()
 
         Get name of crawling strategy for use as identifier.
 
-        :returntype: string
+        :returntype: :php:`string`
 
 ..  _shipped-crawling-strategies:
 

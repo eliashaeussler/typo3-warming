@@ -20,31 +20,31 @@ an appropriate class method.
 
         Get the configured :ref:`crawler class <extconf-crawler>`.
 
-        :returntype: :php:`class-string<EliasHaeussler\CacheWarmup\Crawler\Crawler>`
+        :returntype: :php:`class-string<\EliasHaeussler\CacheWarmup\Crawler\Crawler>`
 
     ..  php:method:: getCrawlerOptions()
 
         Get the configured :ref:`crawler options <extconf-crawlerOptions>`.
 
-        :returntype: array
+        :returntype: :php:`array`
 
     ..  php:method:: getVerboseCrawler()
 
         Get the configured :ref:`verbose crawler class <extconf-verboseCrawler>`.
 
-        :returntype: :php:`class-string<EliasHaeussler\CacheWarmup\Crawler\VerboseCrawler>`
+        :returntype: :php:`class-string<\EliasHaeussler\CacheWarmup\Crawler\VerboseCrawler>`
 
     ..  php:method:: getVerboseCrawlerOptions()
 
         Get the configured :ref:`verbose crawler options <extconf-verboseCrawlerOptions>`.
 
-        :returntype: array
+        :returntype: :php:`array`
 
     ..  php:method:: getLimit()
 
         Get the configured :ref:`crawler limit <extconf-limit>`.
 
-        :returntype: int
+        :returntype: :php:`int`
 
     ..  php:method:: getExcludePatterns()
 
@@ -56,13 +56,13 @@ an appropriate class method.
 
         Get the configured :ref:`crawling strategy <extconf-strategy>`.
 
-        :returntype: string|null
+        :returntype: :php:`string|null`
 
     ..  php:method:: isEnabledInPageTree()
 
         Check whether cache warmup from :ref:`page tree <extconf-enablePageTree>` is enabled.
 
-        :returntype: bool
+        :returntype: :php:`bool`
 
     ..  php:method:: getSupportedDoktypes()
 
@@ -75,13 +75,13 @@ an appropriate class method.
 
         Check whether cache warmup from :ref:`toolbar <extconf-enableToolbar>` is enabled.
 
-        :returntype: bool
+        :returntype: :php:`bool`
 
     ..  php:method:: getUserAgent()
 
         Get the calculated user-agent.
 
-        :returntype: string
+        :returntype: :php:`string`
 
 ..  seealso::
 

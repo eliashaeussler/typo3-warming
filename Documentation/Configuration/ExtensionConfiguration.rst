@@ -23,8 +23,7 @@ Crawler
 
     ..  note::
 
-        Custom crawlers must implement
-        :php:interface:`\\EliasHaeussler\\CacheWarmup\\Crawler\\Crawler`.
+        Custom crawlers must implement the :php:interface:`\EliasHaeussler\CacheWarmup\Crawler\Crawler` interface.
 
 ..  _extconf-crawlerOptions:
 

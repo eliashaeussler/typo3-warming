@@ -69,10 +69,10 @@ Default crawlers
 ----------------
 
 -   Default crawlers are now :php:`final`. Custom crawlers can no
-    longer extend default crawlers. Implement
+    longer extend default crawlers. Implement the
     :php:interface:`\EliasHaeussler\CacheWarmup\Crawler\Crawler`
     or :php:interface:`\EliasHaeussler\CacheWarmup\Crawler\VerboseCrawler`
-    instead.
+    interface instead.
 -   :php:`CrawlerFactory` from `eliashaeussler/cache-warmup` library
     is now used to instantiate crawlers. Dependency injection is no
     longer possible.

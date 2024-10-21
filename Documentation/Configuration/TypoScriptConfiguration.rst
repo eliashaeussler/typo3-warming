@@ -17,7 +17,7 @@ Constants
 
 ..  confval:: view.templateRootPath
     :type: string
-    :Path: module.tx_warming
+    :Path: :typoscript:`module.tx_warming`
 
     Additional path to template root used in Backend context. Within this
     path, Fluid templates can be overwritten.
@@ -30,7 +30,7 @@ Constants
 
 ..  confval:: view.partialRootPath
     :type: string
-    :Path: module.tx_warming
+    :Path: :typoscript:`module.tx_warming`
 
     Additional path to template partials used in Backend context. Within
     this path, Fluid partials can be overwritten.

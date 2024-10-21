@@ -24,19 +24,19 @@ warmup directly in PHP code.
         :param array $pages: List of page warmup requests.
         :param int $limit: Optional cache warmup limit.
         :param string $strategy: Optional crawling strategy.
-        :returntype: EliasHaeussler\\Typo3Warming\\Result\\CacheWarmupResult
+        :returntype: :php:`\EliasHaeussler\Typo3Warming\Result\CacheWarmupResult`
 
     ..  php:method:: getCrawler()
 
         Return crawler being used for cache warmup.
 
-        :returntype: Psr\\Http\\Message\\UriInterface
+        :returntype: :php:`\Psr\Http\Message\UriInterface`
 
     ..  php:method:: setCrawler($crawler)
 
         Set crawler to use for cache warmup.
 
-        :param string|EliasHaeussler\CacheWarmup\Crawler\Crawler $crawler: The crawler to use for cache warmup.
+        :param string|\EliasHaeussler\CacheWarmup\Crawler\Crawler $crawler: The crawler to use for cache warmup.
         :returns: The service object (fluent setter).
 
 ..  _api-example:

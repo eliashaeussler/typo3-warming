@@ -22,7 +22,7 @@ implement a custom crawler on this page.
         Crawl a given list of URLs.
 
         :param array $urls: List of URLs to be crawled.
-        :returntype: EliasHaeussler\\CacheWarmup\\Result\\CacheWarmupResult
+        :returntype: :php:`\EliasHaeussler\CacheWarmup\Result\CacheWarmupResult`
 
 ..  _default-crawlers:
 
@@ -58,8 +58,8 @@ Available interfaces
 
 The actual cache warmup is done via the library
 `eliashaeussler/cache-warmup <https://github.com/eliashaeussler/cache-warmup>`__.
-It provides the :php:interface:`\\EliasHaeussler\\CacheWarmup\\Crawler\\Crawler`,
-interface which must be implemented when developing your own crawler.
+It provides the :php:interface:`\EliasHaeussler\CacheWarmup\Crawler\Crawler`
+interface, which must be implemented when developing your own crawler.
 
 ..  _verbose-crawlers:
 
@@ -80,7 +80,7 @@ interface that redirects user-oriented output to an instance of
 
         Set output where to redirect user-oriented output.
 
-        :param Symfony\Component\Console\Output\OutputInterface $output: Output where to redirect user-oriented output.
+        :param \Symfony\Component\Console\Output\OutputInterface $output: Output where to redirect user-oriented output.
 
 ..  _configurable-crawlers:
 
@@ -128,7 +128,7 @@ TYPO3's log manager. Read more about logging in the :ref:`official documentation
 
         Inject PSR-3 compatible logger.
 
-        :param Psr\Log\LoggerInterface $logger: PSR-3 compatible logger.
+        :param \Psr\Log\LoggerInterface $logger: PSR-3 compatible logger.
 
     ..  php:method:: setLogLevel($logLevel)
 
@@ -200,7 +200,7 @@ which takes care of sending appropriate events.
 
         Set event stream used to send cache warmup events.
 
-        :param EliasHaeussler\SSE\Stream\EventStream $stream: Event stream used to send cache warmup events.
+        :param \EliasHaeussler\SSE\Stream\EventStream $stream: Event stream used to send cache warmup events.
 
 ..  _steps-to-implement-a-new-crawler:
 
