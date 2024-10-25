@@ -59,7 +59,6 @@ final class CacheWarmupLegacyControllerTest extends TestingFramework\Core\Functi
     ];
 
     private Core\Site\Entity\Site $site;
-    private Tests\Functional\Fixtures\Classes\DummyGuzzleClientFactory $guzzleClientFactory;
     private Src\Controller\CacheWarmupLegacyController $subject;
 
     protected function setUp(): void
