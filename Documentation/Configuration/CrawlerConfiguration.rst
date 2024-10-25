@@ -37,5 +37,5 @@ In addition, the following crawler options are available:
     ..  note::
 
         Only URLs matching the site's base URL are handled by the sub request handler. All
-        other URLs (e.g. pages linking to external URLs) will be handled by the Guzzle's
-        default handler.
+        other URLs (e.g. pages linking to external URLs) will be handled by Guzzle's default
+        handler.
