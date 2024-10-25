@@ -29,7 +29,9 @@ use EliasHaeussler\Typo3Warming as Src;
 use EliasHaeussler\Typo3Warming\Tests;
 use PHPUnit\Framework;
 use Symfony\Component\Console;
+use Symfony\Component\DependencyInjection;
 use TYPO3\CMS\Core;
+use TYPO3\CMS\Frontend;
 use TYPO3\TestingFramework;
 
 /**
@@ -42,6 +44,7 @@ use TYPO3\TestingFramework;
 final class OutputtingUserAgentCrawlerTest extends TestingFramework\Core\Functional\FunctionalTestCase
 {
     use Tests\Functional\ClientMockTrait;
+    use Tests\Functional\SiteTrait;
 
     protected array $testExtensionsToLoad = [
         'sitemap_locator',
@@ -51,19 +54,28 @@ final class OutputtingUserAgentCrawlerTest extends TestingFramework\Core\Functio
     protected bool $initializeDatabase = false;
 
     private Console\Output\BufferedOutput $output;
+    private Frontend\Http\Application&Framework\MockObject\MockObject $applicationMock;
     private Src\Crawler\OutputtingUserAgentCrawler $subject;
 
     protected function setUp(): void
     {
         parent::setUp();
 
+        $this->createSite();
+
         $this->guzzleClientFactory = new Tests\Functional\Fixtures\Classes\DummyGuzzleClientFactory();
         $this->output = new Console\Output\BufferedOutput();
+        $this->applicationMock = $this->createMock(Frontend\Http\Application::class);
 
         Core\Utility\GeneralUtility::addInstance(
             Src\Http\Client\ClientFactory::class,
             new Src\Http\Client\ClientFactory($this->guzzleClientFactory),
         );
+
+        // Mock frontend application for sub request handling tests
+        $container = $this->getContainer();
+        self::assertInstanceOf(DependencyInjection\ContainerInterface::class, $container);
+        $container->set(Frontend\Http\Application::class, $this->applicationMock);
 
         $this->subject = new Src\Crawler\OutputtingUserAgentCrawler();
         $this->subject->setOutput($this->output);
@@ -173,5 +185,26 @@ final class OutputtingUserAgentCrawlerTest extends TestingFramework\Core\Functio
 
         self::assertCount(1, $logger->getByLogLevel(TransientLogger\Log\LogLevel::Error));
         self::assertCount(1, $logger->getByLogLevel(TransientLogger\Log\LogLevel::Info));
+    }
+
+    #[Framework\Attributes\Test]
+    public function crawlUsesSubRequestHandler(): void
+    {
+        $this->subject->setOptions(['perform_subrequests' => true]);
+
+        $urls = [
+            new Core\Http\Uri('https://typo3-testing.local/'),
+            new Core\Http\Uri('https://typo3-testing.local/de/'),
+        ];
+        $response = new Core\Http\Response();
+
+        $this->applicationMock->method('handle')->willReturn($response);
+
+        $actual = $this->subject->crawl($urls);
+
+        self::assertTrue($actual->isSuccessful());
+        self::assertCount(2, $actual->getSuccessful());
+        self::assertSame(['response' => $response], $actual->getSuccessful()[0]->getData());
+        self::assertSame(['response' => $response], $actual->getSuccessful()[1]->getData());
     }
 }
