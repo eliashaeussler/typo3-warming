@@ -121,9 +121,144 @@ parameters:
 			path: ../Functional/Controller/CacheWarmupLegacyControllerTest.php
 
 		-
+			message: "#^Call to method createNewBasicSite\\(\\) on an unknown class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteWriter\\.$#"
+			count: 1
+			path: ../Functional/Crawler/ConcurrentUserAgentCrawlerTest.php
+
+		-
+			message: "#^Call to method write\\(\\) on an unknown class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteWriter\\.$#"
+			count: 1
+			path: ../Functional/Crawler/ConcurrentUserAgentCrawlerTest.php
+
+		-
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor invoked with 7 parameters, 2\\-3 required\\.$#"
+			count: 1
+			path: ../Functional/Crawler/ConcurrentUserAgentCrawlerTest.php
+
+		-
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Site\\\\Set\\\\SetRegistry not found\\.$#"
+			count: 1
+			path: ../Functional/Crawler/ConcurrentUserAgentCrawlerTest.php
+
+		-
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteSettingsFactory not found\\.$#"
+			count: 1
+			path: ../Functional/Crawler/ConcurrentUserAgentCrawlerTest.php
+
+		-
+			message: "#^Instantiated class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteWriter not found\\.$#"
+			count: 1
+			path: ../Functional/Crawler/ConcurrentUserAgentCrawlerTest.php
+
+		-
+			message: "#^Service \"TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\Loader\\\\YamlFileLoader\" is not registered in the container\\.$#"
+			count: 1
+			path: ../Functional/Crawler/ConcurrentUserAgentCrawlerTest.php
+
+		-
+			message: "#^Service \"TYPO3\\\\CMS\\\\Core\\\\Site\\\\Set\\\\SetRegistry\" is not registered in the container\\.$#"
+			count: 1
+			path: ../Functional/Crawler/ConcurrentUserAgentCrawlerTest.php
+
+		-
+			message: "#^Service \"TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteSettingsFactory\" is not registered in the container\\.$#"
+			count: 1
+			path: ../Functional/Crawler/ConcurrentUserAgentCrawlerTest.php
+
+		-
+			message: "#^Call to method createNewBasicSite\\(\\) on an unknown class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteWriter\\.$#"
+			count: 1
+			path: ../Functional/Crawler/OutputtingUserAgentCrawlerTest.php
+
+		-
+			message: "#^Call to method write\\(\\) on an unknown class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteWriter\\.$#"
+			count: 1
+			path: ../Functional/Crawler/OutputtingUserAgentCrawlerTest.php
+
+		-
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor invoked with 7 parameters, 2\\-3 required\\.$#"
+			count: 1
+			path: ../Functional/Crawler/OutputtingUserAgentCrawlerTest.php
+
+		-
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Site\\\\Set\\\\SetRegistry not found\\.$#"
+			count: 1
+			path: ../Functional/Crawler/OutputtingUserAgentCrawlerTest.php
+
+		-
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteSettingsFactory not found\\.$#"
+			count: 1
+			path: ../Functional/Crawler/OutputtingUserAgentCrawlerTest.php
+
+		-
+			message: "#^Instantiated class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteWriter not found\\.$#"
+			count: 1
+			path: ../Functional/Crawler/OutputtingUserAgentCrawlerTest.php
+
+		-
+			message: "#^Service \"TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\Loader\\\\YamlFileLoader\" is not registered in the container\\.$#"
+			count: 1
+			path: ../Functional/Crawler/OutputtingUserAgentCrawlerTest.php
+
+		-
+			message: "#^Service \"TYPO3\\\\CMS\\\\Core\\\\Site\\\\Set\\\\SetRegistry\" is not registered in the container\\.$#"
+			count: 1
+			path: ../Functional/Crawler/OutputtingUserAgentCrawlerTest.php
+
+		-
+			message: "#^Service \"TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteSettingsFactory\" is not registered in the container\\.$#"
+			count: 1
+			path: ../Functional/Crawler/OutputtingUserAgentCrawlerTest.php
+
+		-
 			message: "#^EliasHaeussler\\\\Typo3Warming\\\\Tests\\\\Functional\\\\Fixtures\\\\Classes\\\\DummyPackageManager\\:\\:__construct\\(\\) does not call parent constructor from TYPO3\\\\CMS\\\\Core\\\\Package\\\\PackageManager\\.$#"
 			count: 1
 			path: ../Functional/Fixtures/Classes/DummyPackageManager.php
+
+		-
+			message: "#^Call to method createNewBasicSite\\(\\) on an unknown class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteWriter\\.$#"
+			count: 1
+			path: ../Functional/Http/Client/Handler/SubRequestHandlerTest.php
+
+		-
+			message: "#^Call to method write\\(\\) on an unknown class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteWriter\\.$#"
+			count: 1
+			path: ../Functional/Http/Client/Handler/SubRequestHandlerTest.php
+
+		-
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteConfiguration constructor invoked with 7 parameters, 2\\-3 required\\.$#"
+			count: 1
+			path: ../Functional/Http/Client/Handler/SubRequestHandlerTest.php
+
+		-
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Site\\\\Set\\\\SetRegistry not found\\.$#"
+			count: 1
+			path: ../Functional/Http/Client/Handler/SubRequestHandlerTest.php
+
+		-
+			message: "#^Class TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteSettingsFactory not found\\.$#"
+			count: 1
+			path: ../Functional/Http/Client/Handler/SubRequestHandlerTest.php
+
+		-
+			message: "#^Instantiated class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteWriter not found\\.$#"
+			count: 1
+			path: ../Functional/Http/Client/Handler/SubRequestHandlerTest.php
+
+		-
+			message: "#^Service \"TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\Loader\\\\YamlFileLoader\" is not registered in the container\\.$#"
+			count: 1
+			path: ../Functional/Http/Client/Handler/SubRequestHandlerTest.php
+
+		-
+			message: "#^Service \"TYPO3\\\\CMS\\\\Core\\\\Site\\\\Set\\\\SetRegistry\" is not registered in the container\\.$#"
+			count: 1
+			path: ../Functional/Http/Client/Handler/SubRequestHandlerTest.php
+
+		-
+			message: "#^Service \"TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteSettingsFactory\" is not registered in the container\\.$#"
+			count: 1
+			path: ../Functional/Http/Client/Handler/SubRequestHandlerTest.php
 
 		-
 			message: "#^Call to method createNewBasicSite\\(\\) on an unknown class TYPO3\\\\CMS\\\\Core\\\\Configuration\\\\SiteWriter\\.$#"

@@ -28,6 +28,7 @@ use EliasHaeussler\SSE;
 use EliasHaeussler\Typo3Warming\Configuration;
 use EliasHaeussler\Typo3Warming\Http;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\HandlerStack;
 use Psr\EventDispatcher;
 use Psr\Log;
 use Symfony\Component\OptionsResolver;
@@ -45,6 +46,7 @@ use TYPO3\CMS\Core;
  *     request_headers: array<string, string>,
  *     request_options: array<string, mixed>,
  *     client_config: array<string, mixed>,
+ *     perform_subrequests: bool,
  * }>
  */
 final class ConcurrentUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfigurableCrawler implements CacheWarmup\Crawler\LoggingCrawler, StreamableCrawler
@@ -57,6 +59,7 @@ final class ConcurrentUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfi
 
     private readonly Http\Client\ClientFactory $clientFactory;
     private readonly Configuration\Configuration $configuration;
+    private readonly Http\Client\Handler\SubRequestHandler $subRequestHandler;
     private ?SSE\Stream\EventStream $stream = null;
 
     public function __construct(
@@ -67,6 +70,7 @@ final class ConcurrentUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfi
     ) {
         $this->clientFactory = Core\Utility\GeneralUtility::makeInstance(Http\Client\ClientFactory::class);
         $this->configuration = Core\Utility\GeneralUtility::makeInstance(Configuration\Configuration::class);
+        $this->subRequestHandler = Core\Utility\GeneralUtility::makeInstance(Http\Client\Handler\SubRequestHandler::class);
         $this->logger = $logger;
 
         parent::__construct($options);
@@ -91,6 +95,11 @@ final class ConcurrentUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfi
         // Create new client
         $client = $this->client ?? $this->clientFactory->get($this->options['client_config']);
 
+        // Inject sub request handler
+        if ($this->options['perform_subrequests'] && !isset($this->options['request_options']['handler'])) {
+            $this->options['request_options']['handler'] = HandlerStack::create($this->subRequestHandler);
+        }
+
         // Start crawling
         $pool = $this->createPool($urls, $client, $handlers);
         $pool->promise()->wait();
@@ -109,6 +118,12 @@ final class ConcurrentUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfi
 
         // Use GET instead of HEAD as default request method
         $optionsResolver->setDefault('request_method', 'GET');
+
+        // Add option for sub request handler
+        $optionsResolver->define('perform_subrequests')
+            ->allowedTypes('bool')
+            ->default(false)
+        ;
     }
 
     /**
