@@ -49,6 +49,6 @@
 	},
 	"dependencies": {
 		"clipboard-polyfill": "^4.0.0",
-		"uuid": "^10.0.0"
+		"uuid": "^11.0.0"
 	}
 }
