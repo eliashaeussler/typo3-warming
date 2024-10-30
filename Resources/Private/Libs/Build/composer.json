@@ -16,6 +16,21 @@
 		"eliashaeussler/cache-warmup": "^3.2",
 		"eliashaeussler/sse": "^1.0.1"
 	},
+	"provide": {
+		"guzzlehttp/guzzle": "*",
+		"guzzlehttp/promises": "*",
+		"guzzlehttp/psr7": "*",
+		"psr/event-dispatcher": "*",
+		"psr/http-factory": "*",
+		"psr/http-message": "*",
+		"psr/log": "*",
+		"symfony/console": "*",
+		"symfony/dependency-injection": "*",
+		"symfony/event-dispatcher": "*",
+		"symfony/filesystem": "*",
+		"symfony/options-resolver": "*",
+		"symfony/yaml": "*"
+	},
 	"config": {
 		"allow-plugins": {
 			"php-http/discovery": false
