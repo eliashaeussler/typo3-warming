@@ -93,7 +93,7 @@ export default [
       }),
       postcss({
         extract: 'backend.css',
-        minimize: isDev ? false: minimizeOptions,
+        minimize: isDev ? false : minimizeOptions,
         sourceMap: isDev ? 'inline' : false,
         use: ['sass'],
       }),
