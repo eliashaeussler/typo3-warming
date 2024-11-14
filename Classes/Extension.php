@@ -92,32 +92,32 @@ final class Extension
     public static function registerTypoScript(): void
     {
         Core\Utility\ExtensionManagementUtility::addTypoScriptSetup('
-            module.tx_warming {
-                view {
-                    templateRootPaths {
-                        0 = EXT:warming/Resources/Private/Templates/
-                        10 = {$module.tx_warming.view.templateRootPath}
-                    }
-                    partialRootPaths {
-                        0 = EXT:warming/Resources/Private/Partials/
-                        10 = {$module.tx_warming.view.partialRootPath}
-                    }
-                }
-            }
+module.tx_warming {
+    view {
+        templateRootPaths {
+            0 = EXT:warming/Resources/Private/Templates/
+            10 = {$module.tx_warming.view.templateRootPath}
+        }
+        partialRootPaths {
+            0 = EXT:warming/Resources/Private/Partials/
+            10 = {$module.tx_warming.view.partialRootPath}
+        }
+    }
+}
         ');
 
         Core\Utility\ExtensionManagementUtility::addTypoScriptConstants('
-            # customcategory=warming=Warming
-            # customsubcategory=view=View
+# customcategory=warming=Warming
+# customsubcategory=view=View
 
-            module.tx_warming {
-                view {
-                    # cat=warming/view/10; type=string; label=Path to template root
-                    templateRootPath =
-                    # cat=warming/view/20; type=string; label=Path to template partials
-                    partialRootPath =
-                }
-            }
+module.tx_warming {
+    view {
+        # cat=warming/view/10; type=string; label=Path to template root
+        templateRootPath =
+        # cat=warming/view/20; type=string; label=Path to template partials
+        partialRootPath =
+    }
+}
         ');
     }
 
