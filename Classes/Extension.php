@@ -85,6 +85,43 @@ final class Extension
     }
 
     /**
+     * Register global TypoScript setup & constants.
+     *
+     * FOR USE IN ext_localconf.php ONLY.
+     */
+    public static function registerTypoScript(): void
+    {
+        Core\Utility\ExtensionManagementUtility::addTypoScriptSetup('
+            module.tx_warming {
+                view {
+                    templateRootPaths {
+                        0 = EXT:warming/Resources/Private/Templates/
+                        10 = {$module.tx_warming.view.templateRootPath}
+                    }
+                    partialRootPaths {
+                        0 = EXT:warming/Resources/Private/Partials/
+                        10 = {$module.tx_warming.view.partialRootPath}
+                    }
+                }
+            }
+        ');
+
+        Core\Utility\ExtensionManagementUtility::addTypoScriptConstants('
+            # customcategory=warming=Warming
+            # customsubcategory=view=View
+
+            module.tx_warming {
+                view {
+                    # cat=warming/view/10; type=string; label=Path to template root
+                    templateRootPath =
+                    # cat=warming/view/20; type=string; label=Path to template partials
+                    partialRootPath =
+                }
+            }
+        ');
+    }
+
+    /**
      * Register custom styles for Backend.
      *
      * FOR USE IN ext_tables.php ONLY.
