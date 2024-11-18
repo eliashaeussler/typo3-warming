@@ -35,7 +35,7 @@ use TYPO3\CMS\Frontend;
  * SubRequestHandler
  *
  * @author Elias Häußler <elias@haeussler.dev>
- * @license GPL-3.0-or-later
+ * @license GPL-2.0-or-later
  */
 #[DependencyInjection\Attribute\Autoconfigure(public: true)]
 final class SubRequestHandler

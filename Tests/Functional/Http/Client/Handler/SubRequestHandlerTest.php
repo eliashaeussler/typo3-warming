@@ -35,7 +35,7 @@ use TYPO3\TestingFramework;
  * SubRequestHandlerTest
  *
  * @author Elias Häußler <elias@haeussler.dev>
- * @license GPL-3.0-or-later
+ * @license GPL-2.0-or-later
  */
 #[Framework\Attributes\CoversClass(Src\Http\Client\Handler\SubRequestHandler::class)]
 final class SubRequestHandlerTest extends TestingFramework\Core\Functional\FunctionalTestCase
