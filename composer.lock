@@ -878,16 +878,16 @@
         },
         {
             "name": "eliashaeussler/cache-warmup",
-            "version": "3.2.1",
+            "version": "3.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/cache-warmup.git",
-                "reference": "2b07613b794abe6b5fa363246cb3f38d2743bbff"
+                "reference": "d4bf5943faedc4882dc0716ef4108fc1c850f5d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/cache-warmup/zipball/2b07613b794abe6b5fa363246cb3f38d2743bbff",
-                "reference": "2b07613b794abe6b5fa363246cb3f38d2743bbff",
+                "url": "https://api.github.com/repos/eliashaeussler/cache-warmup/zipball/d4bf5943faedc4882dc0716ef4108fc1c850f5d0",
+                "reference": "d4bf5943faedc4882dc0716ef4108fc1c850f5d0",
                 "shasum": ""
             },
             "require": {
@@ -900,7 +900,7 @@
                 "guzzlehttp/guzzle": "^7.0",
                 "guzzlehttp/promises": "^1.0 || ^2.0",
                 "guzzlehttp/psr7": "^2.0",
-                "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0",
                 "psr/event-dispatcher": "^1.0",
                 "psr/http-message": "^1.0 || ^2.0",
                 "psr/log": "^2.0 || ^3.0",
@@ -952,41 +952,41 @@
             "homepage": "https://cache-warmup.dev/",
             "support": {
                 "issues": "https://github.com/eliashaeussler/cache-warmup/issues",
-                "source": "https://github.com/eliashaeussler/cache-warmup/tree/3.2.1"
+                "source": "https://github.com/eliashaeussler/cache-warmup/tree/3.2.2"
             },
-            "time": "2024-11-05T10:00:07+00:00"
+            "time": "2024-11-26T21:02:28+00:00"
         },
         {
             "name": "eliashaeussler/sse",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/sse.git",
-                "reference": "260b7e4896172cedd149c6452207d89419f0979c"
+                "reference": "01ed3c130c952af84bdf6bf2d3e5977538280f0b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/sse/zipball/260b7e4896172cedd149c6452207d89419f0979c",
-                "reference": "260b7e4896172cedd149c6452207d89419f0979c",
+                "url": "https://api.github.com/repos/eliashaeussler/sse/zipball/01ed3c130c952af84bdf6bf2d3e5977538280f0b",
+                "reference": "01ed3c130c952af84bdf6bf2d3e5977538280f0b",
                 "shasum": ""
             },
             "require": {
-                "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0",
                 "php-http/discovery": "^1.18",
                 "psr/http-factory": "^1.0",
                 "psr/http-message": "^1.0 || ^2.0"
             },
             "require-dev": {
-                "armin/editorconfig-cli": "^1.6",
-                "eliashaeussler/php-cs-fixer-config": "^1.2",
+                "armin/editorconfig-cli": "^1.8 || ^2.0",
+                "eliashaeussler/php-cs-fixer-config": "^2.0",
                 "eliashaeussler/phpstan-config": "^2.1",
-                "eliashaeussler/rector-config": "^1.6",
+                "eliashaeussler/rector-config": "^3.0",
                 "ergebnis/composer-normalize": "^2.31",
                 "nyholm/psr7": "^1.8",
                 "phpstan/extension-installer": "^1.3",
                 "phpstan/phpstan-phpunit": "^1.3",
                 "phpstan/phpstan-symfony": "^1.3",
-                "phpunit/phpunit": "^10.2"
+                "phpunit/phpunit": "^10.2 || ^11.0"
             },
             "type": "library",
             "autoload": {
@@ -1009,9 +1009,9 @@
             "description": "PHP implementation of server-sent events using event streams",
             "support": {
                 "issues": "https://github.com/eliashaeussler/sse/issues",
-                "source": "https://github.com/eliashaeussler/sse/tree/1.1.0"
+                "source": "https://github.com/eliashaeussler/sse/tree/1.1.1"
             },
-            "time": "2023-10-31T20:22:55+00:00"
+            "time": "2024-11-26T20:27:21+00:00"
         },
         {
             "name": "eliashaeussler/typo3-sitemap-locator",
@@ -1080,23 +1080,23 @@
         },
         {
             "name": "eliashaeussler/valinor-xml",
-            "version": "1.0.1",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/valinor-xml.git",
-                "reference": "bba4bbc81afc48a84fd692a598db72d1c904dd40"
+                "reference": "7cf143d08be169edcb9101777df048e7b705c1c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/valinor-xml/zipball/bba4bbc81afc48a84fd692a598db72d1c904dd40",
-                "reference": "bba4bbc81afc48a84fd692a598db72d1c904dd40",
+                "url": "https://api.github.com/repos/eliashaeussler/valinor-xml/zipball/7cf143d08be169edcb9101777df048e7b705c1c5",
+                "reference": "7cf143d08be169edcb9101777df048e7b705c1c5",
                 "shasum": ""
             },
             "require": {
                 "cuyz/valinor": "^1.3",
                 "ext-mbstring": "*",
                 "mtownsend/xml-to-array": "^2.0",
-                "php": "~8.1.0 || ~8.2.0 || ~8.3.0"
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0"
             },
             "require-dev": {
                 "armin/editorconfig-cli": "^1.8 || ^2.0",
@@ -1129,9 +1129,9 @@
             "description": "XML source for cuyz/valinor",
             "support": {
                 "issues": "https://github.com/eliashaeussler/valinor-xml/issues",
-                "source": "https://github.com/eliashaeussler/valinor-xml/tree/1.0.1"
+                "source": "https://github.com/eliashaeussler/valinor-xml/tree/1.0.3"
             },
-            "time": "2024-10-21T06:11:01+00:00"
+            "time": "2024-11-26T20:59:11+00:00"
         },
         {
             "name": "enshrined/svg-sanitize",
@@ -6833,21 +6833,21 @@
         },
         {
             "name": "cypresslab/gitelephant",
-            "version": "v4.5.0",
+            "version": "v4.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/matteosister/GitElephant.git",
-                "reference": "6f396bdb41fa0b2e5e414e16188f6eb107021947"
+                "reference": "4e546eee4c9ad1e0226054f5756c4ef5217e2929"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matteosister/GitElephant/zipball/6f396bdb41fa0b2e5e414e16188f6eb107021947",
-                "reference": "6f396bdb41fa0b2e5e414e16188f6eb107021947",
+                "url": "https://api.github.com/repos/matteosister/GitElephant/zipball/4e546eee4c9ad1e0226054f5756c4ef5217e2929",
+                "reference": "4e546eee4c9ad1e0226054f5756c4ef5217e2929",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.0",
-                "phpcollection/phpcollection": "~0.4|~0.5",
+                "phpoption/phpoption": "1.*",
                 "symfony/filesystem": ">=3.4",
                 "symfony/finder": ">=3.4",
                 "symfony/process": ">=3.4"
@@ -6884,7 +6884,7 @@
             ],
             "support": {
                 "issues": "https://github.com/matteosister/GitElephant/issues",
-                "source": "https://github.com/matteosister/GitElephant/tree/v4.5.0"
+                "source": "https://github.com/matteosister/GitElephant/tree/v4.6.0"
             },
             "funding": [
                 {
@@ -6892,38 +6892,38 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-10-08T12:56:52+00:00"
+            "time": "2024-11-26T16:23:11+00:00"
         },
         {
             "name": "eliashaeussler/transient-logger",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/transient-logger.git",
-                "reference": "2a0d361d6361f3ea3cf91c9080d426e520e3575f"
+                "reference": "e2f6a167f070400f1bf22fcef670dfcebdd3979c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/transient-logger/zipball/2a0d361d6361f3ea3cf91c9080d426e520e3575f",
-                "reference": "2a0d361d6361f3ea3cf91c9080d426e520e3575f",
+                "url": "https://api.github.com/repos/eliashaeussler/transient-logger/zipball/e2f6a167f070400f1bf22fcef670dfcebdd3979c",
+                "reference": "e2f6a167f070400f1bf22fcef670dfcebdd3979c",
                 "shasum": ""
             },
             "require": {
-                "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0",
                 "psr/log": "^1.0 || ^2.0 || ^3.0"
             },
             "provide": {
                 "psr/log-implementation": "1.0 || 2.0 || 3.0"
             },
             "require-dev": {
-                "armin/editorconfig-cli": "^1.7",
-                "eliashaeussler/php-cs-fixer-config": "^1.3",
+                "armin/editorconfig-cli": "^1.8 || ^2.0",
+                "eliashaeussler/php-cs-fixer-config": "^2.0",
                 "eliashaeussler/phpstan-config": "^2.4",
-                "eliashaeussler/rector-config": "^2.0",
+                "eliashaeussler/rector-config": "^3.0",
                 "ergebnis/composer-normalize": "^2.39",
                 "phpstan/extension-installer": "^1.3",
                 "phpstan/phpstan-phpunit": "^1.3",
-                "phpunit/phpunit": "^10.4"
+                "phpunit/phpunit": "^10.4 || ^11.0"
             },
             "type": "library",
             "autoload": {
@@ -6946,9 +6946,9 @@
             "description": "PSR-3 compliant logger to store logs in memory, especially useful for testing",
             "support": {
                 "issues": "https://github.com/eliashaeussler/transient-logger/issues",
-                "source": "https://github.com/eliashaeussler/transient-logger/tree/1.0.0"
+                "source": "https://github.com/eliashaeussler/transient-logger/tree/1.0.1"
             },
-            "time": "2023-11-23T09:41:00+00:00"
+            "time": "2024-11-26T20:36:35+00:00"
         },
         {
             "name": "eliashaeussler/typo3-codeception-helper",
@@ -7370,61 +7370,6 @@
                 "source": "https://github.com/php-webdriver/php-webdriver/tree/1.15.2"
             },
             "time": "2024-11-21T15:12:59+00:00"
-        },
-        {
-            "name": "phpcollection/phpcollection",
-            "version": "0.6.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/schmittjoh/php-collection.git",
-                "reference": "56d18c8c2c0400f2838703246ac7de919a605763"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/php-collection/zipball/56d18c8c2c0400f2838703246ac7de919a605763",
-                "reference": "56d18c8c2c0400f2838703246ac7de919a605763",
-                "shasum": ""
-            },
-            "require": {
-                "phpoption/phpoption": "1.*"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^9.5"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.4-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "PhpCollection": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache2"
-            ],
-            "authors": [
-                {
-                    "name": "Johannes M. Schmitt",
-                    "email": "schmittjoh@gmail.com"
-                }
-            ],
-            "description": "General-Purpose Collection Library for PHP",
-            "keywords": [
-                "collection",
-                "list",
-                "map",
-                "sequence",
-                "set"
-            ],
-            "support": {
-                "issues": "https://github.com/schmittjoh/php-collection/issues",
-                "source": "https://github.com/schmittjoh/php-collection/tree/0.6.0"
-            },
-            "time": "2022-03-21T13:02:41+00:00"
         },
         {
             "name": "phpoption/phpoption",
