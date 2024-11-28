@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ["8.1", "8.2", "8.3"]
+        php-version: ["8.1", "8.2", "8.3", "8.4"]
         typo3-version: ["12.4", "13.4"]
         dependencies: ["highest", "lowest"]
         exclude:
@@ -30,6 +30,10 @@ jobs:
             dependencies: "lowest"
             composer-options: "--with=phpunit/phpunit:^11.2"
           - php-version: "8.3"
+            typo3-version: "13.4"
+            dependencies: "lowest"
+            composer-options: "--with=phpunit/phpunit:^11.2"
+          - php-version: "8.4"
             typo3-version: "13.4"
             dependencies: "lowest"
             composer-options: "--with=phpunit/phpunit:^11.2"
