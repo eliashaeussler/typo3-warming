@@ -37,7 +37,7 @@ final class HttpUtility
     /**
      * @throws Core\Exception\SiteNotFoundException
      */
-    public static function generateUri(int $pageId, int $languageId = null): ?Message\UriInterface
+    public static function generateUri(int $pageId, ?int $languageId = null): ?Message\UriInterface
     {
         $pageRepository = Core\Utility\GeneralUtility::makeInstance(Core\Domain\Repository\PageRepository::class);
         $siteFinder = Core\Utility\GeneralUtility::makeInstance(Core\Site\SiteFinder::class);

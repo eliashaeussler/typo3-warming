@@ -234,7 +234,7 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
         return $attributes;
     }
 
-    private function canWarmupCachesOfSite(Core\Site\Entity\SiteLanguage $siteLanguage = null): bool
+    private function canWarmupCachesOfSite(?Core\Site\Entity\SiteLanguage $siteLanguage = null): bool
     {
         $site = $this->getCurrentSite();
         $languageId = $siteLanguage?->getLanguageId();

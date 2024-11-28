@@ -35,7 +35,7 @@ use TYPO3\CMS\Core;
  */
 final class AccessUtility
 {
-    public static function canWarmupCacheOfPage(int $pageId, int $languageId = null): bool
+    public static function canWarmupCacheOfPage(int $pageId, ?int $languageId = null): bool
     {
         return self::checkPagePermissions($pageId, $languageId)
             && self::isPageAccessible($pageId)
@@ -43,7 +43,7 @@ final class AccessUtility
         ;
     }
 
-    public static function canWarmupCacheOfSite(Core\Site\Entity\Site $site, int $languageId = null): bool
+    public static function canWarmupCacheOfSite(Core\Site\Entity\Site $site, ?int $languageId = null): bool
     {
         return self::checkPagePermissions($site->getRootPageId(), $languageId)
             && self::isSiteAccessible($site->getIdentifier())
@@ -51,7 +51,7 @@ final class AccessUtility
         ;
     }
 
-    private static function checkPagePermissions(int $pageId, int $languageId = null): bool
+    private static function checkPagePermissions(int $pageId, ?int $languageId = null): bool
     {
         $backendUser = Utility\BackendUtility::getBackendUser();
 
