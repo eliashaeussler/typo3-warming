@@ -55,7 +55,7 @@ final class DummyEventStream implements SSE\Stream\EventStream
         $this->receivedEvents[] = $event;
     }
 
-    public function sendMessage(string $name = 'message', float|bool|int|string $data = null): void
+    public function sendMessage(string $name = 'message', float|bool|int|string|null $data = null): void
     {
         // Intentionally left blank.
     }

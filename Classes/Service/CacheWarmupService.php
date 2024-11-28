@@ -80,8 +80,8 @@ final class CacheWarmupService
     public function warmup(
         array $sites = [],
         array $pages = [],
-        int $limit = null,
-        string $strategy = null,
+        ?int $limit = null,
+        ?string $strategy = null,
     ): Result\CacheWarmupResult {
         $crawlingStrategy = $this->createCrawlingStrategy($strategy);
         $cacheWarmer = new CacheWarmup\CacheWarmer(
@@ -174,7 +174,7 @@ final class CacheWarmupService
         return $this;
     }
 
-    private function createCrawlingStrategy(string $strategy = null): ?CacheWarmup\Crawler\Strategy\CrawlingStrategy
+    private function createCrawlingStrategy(?string $strategy = null): ?CacheWarmup\Crawler\Strategy\CrawlingStrategy
     {
         $strategy ??= $this->configuration->getStrategy();
 
