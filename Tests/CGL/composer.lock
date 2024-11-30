@@ -5237,13 +5237,13 @@
             ],
             "type": "rector-extension",
             "extra": {
-                "branch-alias": {
-                    "dev-main": "2.0-dev"
-                },
                 "rector": {
                     "includes": [
                         "config/config.php"
                     ]
+                },
+                "branch-alias": {
+                    "dev-main": "2.0-dev"
                 }
             },
             "autoload": {
