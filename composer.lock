@@ -1013,16 +1013,16 @@
         },
         {
             "name": "eliashaeussler/typo3-sitemap-locator",
-            "version": "0.1.9",
+            "version": "0.1.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/typo3-sitemap-locator.git",
-                "reference": "db168ad3a854152d4e1c0002eb217a536117e46e"
+                "reference": "248ef5f1a9a7a1ff8ac3ebfa3dad6ae33ea1ec16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/typo3-sitemap-locator/zipball/db168ad3a854152d4e1c0002eb217a536117e46e",
-                "reference": "db168ad3a854152d4e1c0002eb217a536117e46e",
+                "url": "https://api.github.com/repos/eliashaeussler/typo3-sitemap-locator/zipball/248ef5f1a9a7a1ff8ac3ebfa3dad6ae33ea1ec16",
+                "reference": "248ef5f1a9a7a1ff8ac3ebfa3dad6ae33ea1ec16",
                 "shasum": ""
             },
             "require": {
@@ -1072,9 +1072,9 @@
             "description": "Extension for TYPO3 CMS to locate XML sitemaps as part of a configured site",
             "support": {
                 "issues": "https://github.com/eliashaeussler/typo3-sitemap-locator/issues",
-                "source": "https://github.com/eliashaeussler/typo3-sitemap-locator/tree/0.1.9"
+                "source": "https://github.com/eliashaeussler/typo3-sitemap-locator/tree/0.1.10"
             },
-            "time": "2024-11-27T18:50:25+00:00"
+            "time": "2024-12-19T13:10:10+00:00"
         },
         {
             "name": "eliashaeussler/valinor-xml",
@@ -6778,13 +6778,13 @@
             },
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-main": "3.x-dev"
-                },
                 "phpstan": {
                     "includes": [
                         "extension.neon"
                     ]
+                },
+                "branch-alias": {
+                    "dev-main": "3.x-dev"
                 }
             },
             "autoload": {
