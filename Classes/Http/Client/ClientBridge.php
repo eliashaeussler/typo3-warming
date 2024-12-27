@@ -23,44 +23,55 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Http\Client;
 
+use EliasHaeussler\CacheWarmup;
+use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
-use Symfony\Component\DependencyInjection;
+use Psr\EventDispatcher;
 use TYPO3\CMS\Core;
 
 /**
- * ClientFactory
+ * ClientBridge
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
+ * @internal
  */
-#[DependencyInjection\Attribute\Autoconfigure(public: true)]
-final class ClientFactory
+final class ClientBridge
 {
+    private ?ClientInterface $client = null;
+
     public function __construct(
         private readonly Core\Http\Client\GuzzleClientFactory $guzzleClientFactory,
+        private readonly EventDispatcher\EventDispatcherInterface $eventDispatcher,
     ) {}
 
-    /**
-     * @param array<string, mixed> $config
-     */
-    public function get(array $config = []): ClientInterface
+    public function getClientFactory(): CacheWarmup\Http\Client\ClientFactory
     {
-        // Early return if no client config is set
-        if ($config === []) {
-            return $this->guzzleClientFactory->getClient();
+        return new CacheWarmup\Http\Client\ClientFactory($this->eventDispatcher, $this->getClientConfig());
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getClientConfig(): array
+    {
+        $this->client ??= $this->guzzleClientFactory->getClient();
+
+        return $this->getClientConfigFromReflection($this->client);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getClientConfigFromReflection(ClientInterface $client): array
+    {
+        if (!($client instanceof Client)) {
+            return [];
         }
 
-        // Merge initial TYPO3 config with actual client config
-        $initialConfig = $GLOBALS['TYPO3_CONF_VARS']['HTTP'] ??= [];
-        Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($GLOBALS['TYPO3_CONF_VARS']['HTTP'], $config);
+        $reflection = new \ReflectionObject($client);
+        $property = $reflection->getProperty('config');
 
-        // Initialize client and restore initial config
-        try {
-            $client = $this->guzzleClientFactory->getClient();
-        } finally {
-            $GLOBALS['TYPO3_CONF_VARS']['HTTP'] = $initialConfig;
-        }
-
-        return $client;
+        return $property->getValue($client);
     }
 }

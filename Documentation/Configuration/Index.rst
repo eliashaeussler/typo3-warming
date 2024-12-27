@@ -20,5 +20,6 @@ Learn what configuration options are available on the following pages:
     SiteConfiguration
     TypoScriptConfiguration
     CrawlerConfiguration
+    ParserConfiguration
     Permissions
     Logging

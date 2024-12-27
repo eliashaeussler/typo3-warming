@@ -23,9 +23,9 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Controller;
 
+use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3SitemapLocator;
 use EliasHaeussler\Typo3Warming\Configuration;
-use EliasHaeussler\Typo3Warming\Crawler;
 use EliasHaeussler\Typo3Warming\Http;
 use EliasHaeussler\Typo3Warming\Utility;
 use EliasHaeussler\Typo3Warming\ValueObject;
@@ -45,7 +45,7 @@ final class FetchSitesController
 {
     public function __construct(
         private readonly Configuration\Configuration $configuration,
-        private readonly Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
+        private readonly CacheWarmup\Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
         private readonly Core\Imaging\IconFactory $iconFactory,
         private readonly Http\Message\ResponseFactory $responseFactory,
         private readonly Core\Site\SiteFinder $siteFinder,
@@ -58,6 +58,7 @@ final class FetchSitesController
      */
     public function __invoke(): Message\ResponseInterface
     {
+        $crawlingStrategy = $this->configuration->getStrategy();
         $siteGroups = [];
 
         foreach (array_filter($this->siteFinder->getAllSites(), Utility\AccessUtility::canWarmupCacheOfSite(...)) as $site) {
@@ -79,9 +80,9 @@ final class FetchSitesController
             'userAgent' => $this->configuration->getUserAgent(),
             'configuration' => [
                 'limit' => $this->configuration->getLimit(),
-                'strategy' => $this->configuration->getStrategy(),
+                'strategy' => $crawlingStrategy !== null ? $crawlingStrategy::getName() : null,
             ],
-            'availableStrategies' => array_keys($this->crawlingStrategyFactory->getAll()),
+            'availableStrategies' => $this->crawlingStrategyFactory->getAll(),
             'isAdmin' => Utility\BackendUtility::getBackendUser()->isAdmin(),
         ]);
     }

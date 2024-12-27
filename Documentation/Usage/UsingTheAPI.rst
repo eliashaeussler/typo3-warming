@@ -22,22 +22,9 @@ warmup directly in PHP code.
 
         :param array $sites: List of site warmup requests.
         :param array $pages: List of page warmup requests.
-        :param int $limit: Optional cache warmup limit.
-        :param string $strategy: Optional crawling strategy.
+        :param int|null $limit: Optional cache warmup limit.
+        :param \EliasHaeussler\CacheWarmup\Crawler\Strategy\CrawlingStrategy|null $strategy: Optional crawling strategy.
         :returntype: :php:`\EliasHaeussler\Typo3Warming\Result\CacheWarmupResult`
-
-    ..  php:method:: getCrawler()
-
-        Return crawler being used for cache warmup.
-
-        :returntype: :php:`\Psr\Http\Message\UriInterface`
-
-    ..  php:method:: setCrawler($crawler)
-
-        Set crawler to use for cache warmup.
-
-        :param string|\EliasHaeussler\CacheWarmup\Crawler\Crawler $crawler: The crawler to use for cache warmup.
-        :returns: The service object (fluent setter).
 
 ..  _api-example:
 
@@ -68,7 +55,7 @@ Example
 
     // Define optional cache warmup options
     $limit = 100;
-    $strategy = CacheWarmup\Crawler\Strategy\SortByPriorityStrategy::getName();
+    $strategy = new CacheWarmup\Crawler\Strategy\SortByPriorityStrategy();
 
     // Run cache warmup for sites and pages
     $result = $cacheWarmupService->warmup($sites, $pages, $limit, $strategy);

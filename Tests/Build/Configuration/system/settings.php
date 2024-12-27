@@ -65,7 +65,7 @@ return [
             'enableToolbar' => true,
             'exclude' => '',
             'limit' => '250',
-            'parserClientOptions' => '',
+            'parserOptions' => '',
             'strategy' => '',
             'supportedDoktypes' => '1',
             'verboseCrawler' => 'EliasHaeussler\\Typo3Warming\\Crawler\\OutputtingUserAgentCrawler',

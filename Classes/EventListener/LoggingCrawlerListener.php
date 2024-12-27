@@ -21,39 +21,35 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3Warming\Tests\Functional\Fixtures\Classes;
+namespace EliasHaeussler\Typo3Warming\EventListener;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Handler;
+use EliasHaeussler\CacheWarmup;
 use TYPO3\CMS\Core;
 
 /**
- * DummyGuzzleClientFactory
+ * LoggingCrawlerListener
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  * @internal
  */
-final class DummyGuzzleClientFactory extends Core\Http\Client\GuzzleClientFactory
+final class LoggingCrawlerListener
 {
-    public readonly Handler\MockHandler $handler;
+    public function __construct(
+        private readonly Core\Log\LogManager $logManager,
+    ) {}
 
-    /**
-     * @var array<string, mixed>
-     */
-    public array $lastOptions = [];
-
-    public function __construct()
+    // @todo Enable attribute once support for TYPO3 v12 is dropped
+    // #[\TYPO3\CMS\Core\Attribute\AsEventListener('eliashaeussler/typo3-warming/logging-crawler')]
+    public function __invoke(CacheWarmup\Event\Crawler\CrawlerConstructed $event): void
     {
-        $this->handler = new Handler\MockHandler();
-    }
+        $crawler = $event->crawler();
 
-    public function getClient(): ClientInterface
-    {
-        $httpOptions = $this->lastOptions = $GLOBALS['TYPO3_CONF_VARS']['HTTP'];
-        $httpOptions['handler'] = $this->handler;
+        if (!($crawler instanceof CacheWarmup\Crawler\LoggingCrawler)) {
+            return;
+        }
 
-        return new Client($httpOptions);
+        $logger = $this->logManager->getLogger($crawler::class);
+        $crawler->setLogger($logger);
     }
 }
