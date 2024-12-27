@@ -809,16 +809,16 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "4.0.2",
+            "version": "4.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "ebaaf5be6c0286928352e054f2d5125608e5405e"
+                "reference": "b115554301161fa21467629f1e1391c1936de517"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/ebaaf5be6c0286928352e054f2d5125608e5405e",
-                "reference": "ebaaf5be6c0286928352e054f2d5125608e5405e",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/b115554301161fa21467629f1e1391c1936de517",
+                "reference": "b115554301161fa21467629f1e1391c1936de517",
                 "shasum": ""
             },
             "require": {
@@ -864,7 +864,7 @@
             ],
             "support": {
                 "issues": "https://github.com/egulias/EmailValidator/issues",
-                "source": "https://github.com/egulias/EmailValidator/tree/4.0.2"
+                "source": "https://github.com/egulias/EmailValidator/tree/4.0.3"
             },
             "funding": [
                 {
@@ -872,7 +872,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-10-06T06:47:41+00:00"
+            "time": "2024-12-27T00:36:43+00:00"
         },
         {
             "name": "eliashaeussler/cache-warmup",
@@ -1013,16 +1013,16 @@
         },
         {
             "name": "eliashaeussler/typo3-sitemap-locator",
-            "version": "0.1.9",
+            "version": "0.1.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/typo3-sitemap-locator.git",
-                "reference": "db168ad3a854152d4e1c0002eb217a536117e46e"
+                "reference": "248ef5f1a9a7a1ff8ac3ebfa3dad6ae33ea1ec16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/typo3-sitemap-locator/zipball/db168ad3a854152d4e1c0002eb217a536117e46e",
-                "reference": "db168ad3a854152d4e1c0002eb217a536117e46e",
+                "url": "https://api.github.com/repos/eliashaeussler/typo3-sitemap-locator/zipball/248ef5f1a9a7a1ff8ac3ebfa3dad6ae33ea1ec16",
+                "reference": "248ef5f1a9a7a1ff8ac3ebfa3dad6ae33ea1ec16",
                 "shasum": ""
             },
             "require": {
@@ -1072,9 +1072,9 @@
             "description": "Extension for TYPO3 CMS to locate XML sitemaps as part of a configured site",
             "support": {
                 "issues": "https://github.com/eliashaeussler/typo3-sitemap-locator/issues",
-                "source": "https://github.com/eliashaeussler/typo3-sitemap-locator/tree/0.1.9"
+                "source": "https://github.com/eliashaeussler/typo3-sitemap-locator/tree/0.1.10"
             },
-            "time": "2024-11-27T18:50:25+00:00"
+            "time": "2024-12-19T13:10:10+00:00"
         },
         {
             "name": "eliashaeussler/valinor-xml",
@@ -6778,13 +6778,13 @@
             },
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-main": "3.x-dev"
-                },
                 "phpstan": {
                     "includes": [
                         "extension.neon"
                     ]
+                },
+                "branch-alias": {
+                    "dev-main": "3.x-dev"
                 }
             },
             "autoload": {
@@ -7830,16 +7830,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "10.5.39",
+            "version": "10.5.40",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "4e89eff200b801db58f3d580ad7426431949eaa9"
+                "reference": "e6ddda95af52f69c1e0c7b4f977cccb58048798c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/4e89eff200b801db58f3d580ad7426431949eaa9",
-                "reference": "4e89eff200b801db58f3d580ad7426431949eaa9",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/e6ddda95af52f69c1e0c7b4f977cccb58048798c",
+                "reference": "e6ddda95af52f69c1e0c7b4f977cccb58048798c",
                 "shasum": ""
             },
             "require": {
@@ -7911,7 +7911,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.5.39"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.5.40"
             },
             "funding": [
                 {
@@ -7927,7 +7927,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-12-11T10:51:07+00:00"
+            "time": "2024-12-21T05:49:06+00:00"
         },
         {
             "name": "psy/psysh",
