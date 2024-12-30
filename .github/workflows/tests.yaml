@@ -92,7 +92,9 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: acceptance-reports-${{ matrix.php-version }}-${{ matrix.typo3-version }}-${{ matrix.dependencies }}
-          path: .Build/log/acceptance-reports
+          path: |
+            .Build/log/acceptance-reports
+            var/log/typo3_*.log
         if: failure()
 
   coverage:
@@ -149,7 +151,9 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: acceptance-reports-coverage
-          path: .Build/log/acceptance-reports
+          path: |
+            .Build/log/acceptance-reports
+            var/log/typo3_*.log
         if: failure()
 
   coverage-report:
