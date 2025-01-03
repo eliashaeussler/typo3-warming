@@ -21,34 +21,40 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3Warming\Tests\Unit\Fixtures;
+namespace EliasHaeussler\Typo3Warming\EventListener;
 
-use Psr\Http\Message;
+use EliasHaeussler\CacheWarmup;
+use EliasHaeussler\Typo3Warming\Http;
 use TYPO3\CMS\Core;
 
 /**
- * DummyRequestFactory
+ * ClientOptionsListener
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  * @internal
  */
-final class DummyRequestFactory extends Core\Http\RequestFactory
+final class ClientOptionsListener
 {
     public function __construct(
-        public Message\ResponseInterface $response = new Core\Http\Response(),
-        public ?\Throwable $exception = null,
+        private readonly Http\Client\ClientBridge $clientBridge,
     ) {}
 
-    /**
-     * @param array<string, mixed> $options
-     */
-    public function request(string $uri, string $method = 'GET', array $options = []): Message\ResponseInterface
+    // @todo Enable attribute once support for TYPO3 v12 is dropped
+    // #[\TYPO3\CMS\Core\Attribute\AsEventListener('eliashaeussler/typo3-warming/client-options')]
+    public function __invoke(CacheWarmup\Event\Config\ConfigResolved $event): void
     {
-        if ($this->exception !== null) {
-            throw $this->exception;
+        $clientOptions = $event->config()->getClientOptions();
+        $config = $this->clientBridge->getClientConfig();
+
+        // Overwrite handler if not exists yet
+        if (!isset($clientOptions['handler']) && isset($config['handler'])) {
+            $clientOptions['handler'] = $config['handler'];
+            unset($config['handler']);
         }
 
-        return $this->response;
+        Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($clientOptions, $config);
+
+        $event->config()->setClientOptions($clientOptions);
     }
 }

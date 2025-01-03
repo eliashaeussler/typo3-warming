@@ -27,6 +27,7 @@ use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\SSE;
 use EliasHaeussler\Typo3Warming\Configuration;
 use EliasHaeussler\Typo3Warming\Http;
+use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\HandlerStack;
 use Psr\EventDispatcher;
@@ -45,7 +46,7 @@ use TYPO3\CMS\Core;
  *     request_method: string,
  *     request_headers: array<string, string>,
  *     request_options: array<string, mixed>,
- *     client_config: array<string, mixed>,
+ *     write_response_body: bool,
  *     perform_subrequests: bool,
  * }>
  */
@@ -53,11 +54,10 @@ final class ConcurrentUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfi
 {
     use CacheWarmup\Crawler\ConcurrentCrawlerTrait {
         configureOptions as configureDefaultOptions;
-        getRequestHeaders as getDefaultRequestHeaders;
+        createRequestFactory as createBaseRequestFactory;
     }
     use LoggingCrawlerTrait;
 
-    private readonly Http\Client\ClientFactory $clientFactory;
     private readonly Configuration\Configuration $configuration;
     private readonly Http\Client\Handler\SubRequestHandler $subRequestHandler;
     private ?SSE\Stream\EventStream $stream = null;
@@ -65,10 +65,9 @@ final class ConcurrentUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfi
     public function __construct(
         array $options = [],
         ?Log\LoggerInterface $logger = null,
-        private readonly ?ClientInterface $client = null,
+        private readonly ClientInterface $client = new Client(),
         private readonly ?EventDispatcher\EventDispatcherInterface $eventDispatcher = null,
     ) {
-        $this->clientFactory = Core\Utility\GeneralUtility::makeInstance(Http\Client\ClientFactory::class);
         $this->configuration = Core\Utility\GeneralUtility::makeInstance(Configuration\Configuration::class);
         $this->subRequestHandler = Core\Utility\GeneralUtility::makeInstance(Http\Client\Handler\SubRequestHandler::class);
         $this->logger = $logger;
@@ -92,16 +91,13 @@ final class ConcurrentUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfi
             $handlers[] = $streamHandler;
         }
 
-        // Create new client
-        $client = $this->client ?? $this->clientFactory->get($this->options['client_config']);
-
         // Inject sub request handler
         if ($this->options['perform_subrequests'] && !isset($this->options['request_options']['handler'])) {
             $this->options['request_options']['handler'] = HandlerStack::create($this->subRequestHandler);
         }
 
         // Start crawling
-        $pool = $this->createPool($urls, $client, $handlers);
+        $pool = $this->createPool($urls, $this->client, $handlers);
         $pool->promise()->wait();
 
         return $resultHandler->getResult();
@@ -126,14 +122,11 @@ final class ConcurrentUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfi
         ;
     }
 
-    /**
-     * @return array<string, string>
-     */
-    protected function getRequestHeaders(): array
+    protected function createRequestFactory(): CacheWarmup\Http\Message\RequestFactory
     {
-        $headers = $this->getDefaultRequestHeaders();
+        $headers = $this->options['request_headers'];
         $headers['User-Agent'] = $this->configuration->getUserAgent();
 
-        return $headers;
+        return $this->createBaseRequestFactory()->withHeaders($headers);
     }
 }

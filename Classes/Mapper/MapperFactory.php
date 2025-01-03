@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Mapper;
 
 use CuyZ\Valinor;
+use EliasHaeussler\CacheWarmup;
 use TYPO3\CMS\Core;
 
 /**
@@ -31,10 +32,12 @@ use TYPO3\CMS\Core;
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
+ * @internal
  */
 final class MapperFactory
 {
     public function __construct(
+        private readonly CacheWarmup\Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
         private readonly Core\Site\SiteFinder $siteFinder,
     ) {}
 
@@ -42,6 +45,7 @@ final class MapperFactory
     {
         return (new Valinor\MapperBuilder())
             ->registerConstructor(
+                $this->crawlingStrategyFactory->get(...),
                 $this->mapSites(...),
             )
             ->allowSuperfluousKeys()

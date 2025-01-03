@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Tests\Unit\Mapper;
 
+use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3Warming as Src;
 use PHPUnit\Framework;
 use TYPO3\CMS\Core;
@@ -45,7 +46,10 @@ final class MapperFactoryTest extends TestingFramework\Core\Unit\UnitTestCase
         parent::setUp();
 
         $this->siteFinder = $this->createMock(Core\Site\SiteFinder::class);
-        $this->subject = new Src\Mapper\MapperFactory($this->siteFinder);
+        $this->subject = new Src\Mapper\MapperFactory(
+            new CacheWarmup\Crawler\Strategy\CrawlingStrategyFactory(),
+            $this->siteFinder,
+        );
     }
 
     #[Framework\Attributes\Test]

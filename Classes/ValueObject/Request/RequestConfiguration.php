@@ -23,6 +23,8 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\ValueObject\Request;
 
+use EliasHaeussler\CacheWarmup;
+
 /**
  * RequestConfiguration
  *
@@ -33,7 +35,7 @@ final class RequestConfiguration
 {
     public function __construct(
         private readonly ?int $limit = null,
-        private readonly ?string $strategy = null,
+        private readonly ?CacheWarmup\Crawler\Strategy\CrawlingStrategy $strategy = null,
     ) {}
 
     public function getLimit(): ?int
@@ -41,7 +43,7 @@ final class RequestConfiguration
         return $this->limit;
     }
 
-    public function getStrategy(): ?string
+    public function getStrategy(): ?CacheWarmup\Crawler\Strategy\CrawlingStrategy
     {
         return $this->strategy;
     }

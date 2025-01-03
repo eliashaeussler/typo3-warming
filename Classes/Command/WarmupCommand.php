@@ -26,9 +26,7 @@ namespace EliasHaeussler\Typo3Warming\Command;
 use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3SitemapLocator;
 use EliasHaeussler\Typo3Warming\Configuration;
-use EliasHaeussler\Typo3Warming\Crawler;
 use EliasHaeussler\Typo3Warming\Domain;
-use EliasHaeussler\Typo3Warming\Http;
 use EliasHaeussler\Typo3Warming\Utility;
 use Psr\EventDispatcher;
 use Symfony\Component\Console;
@@ -50,9 +48,8 @@ final class WarmupCommand extends Console\Command\Command
     private const ALL_SITES = 'all';
 
     public function __construct(
-        private readonly Http\Client\ClientFactory $clientFactory,
         private readonly Configuration\Configuration $configuration,
-        private readonly Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
+        private readonly CacheWarmup\Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
         private readonly Typo3SitemapLocator\Sitemap\SitemapLocator $sitemapLocator,
         private readonly Core\Site\SiteFinder $siteFinder,
         private readonly EventDispatcher\EventDispatcherInterface $eventDispatcher,
@@ -66,8 +63,13 @@ final class WarmupCommand extends Console\Command\Command
         $v = fn(mixed $value) => $value;
         $decoratedCrawlingStrategies = \implode(PHP_EOL, array_map(
             static fn(string $strategy) => '  │  * <info>' . $strategy . '</info>',
-            array_keys($this->crawlingStrategyFactory->getAll()),
+            $this->crawlingStrategyFactory->getAll(),
         ));
+
+        $crawlingStrategy = $this->configuration->getStrategy();
+        if ($crawlingStrategy !== null) {
+            $crawlingStrategy = $crawlingStrategy::getName();
+        }
 
         $this->setDescription('Warm up Frontend caches of single pages and/or whole sites using their XML sitemaps.');
         $this->setHelp(
@@ -145,7 +147,7 @@ Examples:
   │  It can be defined via the extension configuration <info>strategy</info> or by using the <info>--strategy</info> option.
   │  The following strategies are currently available:
 {$decoratedCrawlingStrategies}
-  ├─ Default: <info>{$v($this->configuration->getStrategy() ?? 'none')}</info>
+  ├─ Default: <info>{$v($crawlingStrategy)}</info>
   └─ Example: <comment>warming:cachewarmup --strategy {$v(CacheWarmup\Crawler\Strategy\SortByPriorityStrategy::getName())}</comment>
 
 * <comment>Format output</comment>
@@ -162,8 +164,8 @@ Examples:
   ├─ Use the extension configuration <info>verboseCrawler</info> to use an alternative crawler for
   │  command-line requests. For warmup requests triggered via the TYPO3 backend, you can use the
   │  extension configuration <info>crawler</info>.
-  ├─ Currently used default crawler: <info>{$v($this->configuration->getCrawler())}</info>
-  └─ Currently used verbose crawler: <info>{$v($this->configuration->getVerboseCrawler())}</info>
+  ├─ Currently used default crawler: <info>{$v($this->configuration->getCrawler()::class)}</info>
+  └─ Currently used verbose crawler: <info>{$v($this->configuration->getVerboseCrawler()::class)}</info>
 
 * <comment>Custom User-Agent header</comment>
   ├─ When the default crawler is used, each warmup request is executed with a special User-Agent header.
@@ -209,7 +211,7 @@ HELP
             null,
             Console\Input\InputOption::VALUE_REQUIRED,
             'Optional strategy to prepare URLs before crawling them.',
-            $this->configuration->getStrategy(),
+            $crawlingStrategy,
         );
         $this->addOption(
             'format',
@@ -233,12 +235,8 @@ HELP
      */
     protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output): int
     {
-        // Initialize client
-        $clientOptions = $this->configuration->getParserClientOptions();
-        $client = $this->clientFactory->get($clientOptions);
-
         // Initialize sub command
-        $subCommand = new CacheWarmup\Command\CacheWarmupCommand($client, $this->eventDispatcher);
+        $subCommand = new CacheWarmup\Command\CacheWarmupCommand($this->eventDispatcher);
         $subCommand->setApplication($this->getApplication() ?? new Console\Application());
 
         // Initialize sub command input
@@ -261,7 +259,9 @@ HELP
 
     /**
      * @return array<string, mixed>
+     * @throws CacheWarmup\Exception\Exception
      * @throws Core\Exception\SiteNotFoundException
+     * @throws Core\Package\Exception
      * @throws \JsonException
      * @throws Typo3SitemapLocator\Exception\BaseUrlIsNotSupported
      * @throws Typo3SitemapLocator\Exception\SitemapIsMissing
@@ -276,24 +276,30 @@ HELP
         $limit = max(0, (int)$input->getOption('limit'));
         $strategy = $input->getOption('strategy');
         $format = $input->getOption('format');
-        $excludePatterns = $this->configuration->getExcludePatterns();
 
-        // Fetch crawler and crawler options
+        // Fetch input options from extension configuration
+        $excludePatterns = $this->configuration->getExcludePatterns();
         $crawler = $this->configuration->getVerboseCrawler();
         $crawlerOptions = $this->configuration->getVerboseCrawlerOptions();
+        $parserOptions = $this->configuration->getParserOptions();
 
         // Initialize sub-command parameters
         $subCommandParameters = [
             'sitemaps' => $sitemaps,
             '--urls' => $urls,
             '--limit' => $limit,
-            '--crawler' => $crawler,
+            '--crawler' => $crawler::class,
             '--format' => $format,
         ];
 
         // Add crawler options to sub-command parameters
         if ($crawlerOptions !== []) {
             $subCommandParameters['--crawler-options'] = json_encode($crawlerOptions, JSON_THROW_ON_ERROR);
+        }
+
+        // Add parser options to sub-command parameters
+        if ($parserOptions !== []) {
+            $subCommandParameters['--parser-options'] = json_encode($parserOptions, JSON_THROW_ON_ERROR);
         }
 
         // Add exclude patterns

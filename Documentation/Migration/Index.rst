@@ -9,6 +9,23 @@ Migration
 This page lists all notable changes and required migrations when
 upgrading to a new major version of this extension.
 
+..  seealso::
+
+    Make sure to check out the `migration guide <https://cache-warmup.dev/migration.html>`__
+    of the `eliashaeussler/cache-warmup` library as well.
+
+..  _version-4.0.0:
+
+Version 4.0.0
+=============
+
+Upgrade of `eliashaeussler/cache-warmup` library
+------------------------------------------------
+
+-   Crawling response body is no longer attached to response objects. Enable
+    crawler option `write_response_body` to restore previous behavior.
+-   Read more in the library's `release notes <https://github.com/eliashaeussler/cache-warmup/releases/tag/4.0.0>`__.
+
 ..  _version-3.0.0:
 
 Version 3.0.0

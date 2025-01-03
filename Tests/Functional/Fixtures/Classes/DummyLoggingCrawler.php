@@ -21,17 +21,35 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+namespace EliasHaeussler\Typo3Warming\Tests\Functional\Fixtures\Classes;
+
 use EliasHaeussler\CacheWarmup;
-use Symfony\Component\DependencyInjection;
+use EliasHaeussler\CacheWarmup\Result;
+use Psr\Log;
 
-return static function (
-    DependencyInjection\Loader\Configurator\ContainerConfigurator $containerConfigurator,
-    DependencyInjection\ContainerBuilder $container,
-): void {
-    $container->registerForAutoconfiguration(CacheWarmup\Crawler\Strategy\CrawlingStrategy::class)
-        ->addTag('warming.crawling_strategy');
+/**
+ * DummyLoggingCrawler
+ *
+ * @author Elias Häußler <elias@haeussler.dev>
+ * @license GPL-2.0-or-later
+ */
+final class DummyLoggingCrawler implements CacheWarmup\Crawler\LoggingCrawler
+{
+    public ?Log\LoggerInterface $logger = null;
+    public string $logLevel = Log\LogLevel::ERROR;
 
-    // External services
-    $services = $containerConfigurator->services();
-    $services->set(CacheWarmup\Crawler\CrawlerFactory::class)->autowire();
-};
+    public function crawl(array $urls): Result\CacheWarmupResult
+    {
+        return new Result\CacheWarmupResult();
+    }
+
+    public function setLogger(Log\LoggerInterface $logger): void
+    {
+        $this->logger = $logger;
+    }
+
+    public function setLogLevel(string $logLevel): void
+    {
+        $this->logLevel = $logLevel;
+    }
+}

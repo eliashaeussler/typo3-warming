@@ -61,26 +61,20 @@ final class ConcurrentUserAgentCrawlerTest extends TestingFramework\Core\Functio
 
         $this->createSite();
 
-        $this->guzzleClientFactory = new Tests\Functional\Fixtures\Classes\DummyGuzzleClientFactory();
         $this->applicationMock = $this->createMock(Frontend\Http\Application::class);
-
-        Core\Utility\GeneralUtility::addInstance(
-            Src\Http\Client\ClientFactory::class,
-            new Src\Http\Client\ClientFactory($this->guzzleClientFactory),
-        );
 
         // Mock frontend application for sub request handling tests
         $container = $this->getContainer();
         self::assertInstanceOf(DependencyInjection\ContainerInterface::class, $container);
         $container->set(Frontend\Http\Application::class, $this->applicationMock);
 
-        $this->subject = new Src\Crawler\ConcurrentUserAgentCrawler();
+        $this->subject = new Src\Crawler\ConcurrentUserAgentCrawler(client: $this->createClient());
     }
 
     #[Framework\Attributes\Test]
     public function crawlCrawlsGivenUrlsAndReturnsResult(): void
     {
-        $this->guzzleClientFactory->handler->append(
+        $this->handler->append(
             $response1 = new Core\Http\Response(),
             $response2 = new Core\Http\Response(),
         );
@@ -100,7 +94,7 @@ final class ConcurrentUserAgentCrawlerTest extends TestingFramework\Core\Functio
     #[Framework\Attributes\Test]
     public function crawlSendsCustomUserAgentHeader(): void
     {
-        $this->guzzleClientFactory->handler->append(new Core\Http\Response());
+        $this->handler->append(new Core\Http\Response());
 
         $urls = [
             new Core\Http\Uri('https://typo3-testing.local/'),
@@ -110,7 +104,7 @@ final class ConcurrentUserAgentCrawlerTest extends TestingFramework\Core\Functio
 
         self::assertSame(
             [$this->get(Src\Configuration\Configuration::class)->getUserAgent()],
-            $this->guzzleClientFactory->handler->getLastRequest()?->getHeader('User-Agent'),
+            $this->handler->getLastRequest()?->getHeader('User-Agent'),
         );
     }
 
@@ -121,7 +115,7 @@ final class ConcurrentUserAgentCrawlerTest extends TestingFramework\Core\Functio
 
         $this->subject->setStream($eventStream);
 
-        $this->guzzleClientFactory->handler->append(
+        $this->handler->append(
             new Core\Http\Response(),
             new Core\Http\Response(),
         );
@@ -161,7 +155,7 @@ final class ConcurrentUserAgentCrawlerTest extends TestingFramework\Core\Functio
     {
         $logger = new TransientLogger\TransientLogger();
 
-        $this->guzzleClientFactory->handler->append(
+        $this->handler->append(
             new Core\Http\Response(),
             new \Exception()
         );
