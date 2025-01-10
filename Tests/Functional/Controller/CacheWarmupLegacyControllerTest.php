@@ -75,18 +75,24 @@ final class CacheWarmupLegacyControllerTest extends TestingFramework\Core\Functi
         $backendUser = $this->setUpBackendUser(3);
         $GLOBALS['LANG'] = $this->get(Core\Localization\LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
-        $this->guzzleClientFactory = new Tests\Functional\Fixtures\Classes\DummyGuzzleClientFactory();
         $this->subject = new Src\Controller\CacheWarmupLegacyController(
             new Log\NullLogger(),
             $this->get(Valinor\Mapper\TreeMapper::class),
             $this->get(Src\Http\Message\ResponseFactory::class),
             new Src\Service\CacheWarmupService(
-                new Src\Http\Client\ClientFactory($this->guzzleClientFactory),
+                new CacheWarmup\Http\Client\ClientFactory(
+                    new Core\EventDispatcher\NoopEventDispatcher(),
+                    $this->getClientOptions(),
+                ),
                 $this->get(Src\Configuration\Configuration::class),
-                $this->get(CacheWarmup\Crawler\CrawlerFactory::class),
-                $this->get(Src\Crawler\Strategy\CrawlingStrategyFactory::class),
                 new Core\EventDispatcher\NoopEventDispatcher(),
-                $this->get(Typo3SitemapLocator\Sitemap\SitemapLocator::class),
+                new Typo3SitemapLocator\Sitemap\SitemapLocator(
+                    $this->get(Core\Http\RequestFactory::class),
+                    /* @phpstan-ignore symfonyContainer.privateService */
+                    $this->get(Typo3SitemapLocator\Cache\SitemapsCache::class),
+                    new Core\EventDispatcher\NoopEventDispatcher(),
+                    [new Typo3SitemapLocator\Sitemap\Provider\DefaultProvider()],
+                ),
             ),
         );
     }

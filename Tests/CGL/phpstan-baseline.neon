@@ -484,13 +484,3 @@ parameters:
 			message: "#^Service \"TYPO3\\\\CMS\\\\Core\\\\Site\\\\SiteSettingsFactory\" is not registered in the container\\.$#"
 			count: 1
 			path: ../Functional/Utility/HttpUtilityTest.php
-
-		-
-			message: "#^EliasHaeussler\\\\Typo3Warming\\\\Tests\\\\Unit\\\\Fixtures\\\\DummyRequestFactory\\:\\:__construct\\(\\) does not call parent constructor from TYPO3\\\\CMS\\\\Core\\\\Http\\\\RequestFactory\\.$#"
-			count: 1
-			path: ../Unit/Fixtures/DummyRequestFactory.php
-
-		-
-			message: "#^Parameter \\#3 \\$options \\(array\\<string, mixed\\>\\) of method EliasHaeussler\\\\Typo3Warming\\\\Tests\\\\Unit\\\\Fixtures\\\\DummyRequestFactory\\:\\:request\\(\\) should be contravariant with parameter \\$options \\(array\\) of method TYPO3\\\\CMS\\\\Core\\\\Http\\\\RequestFactory\\:\\:request\\(\\)$#"
-			count: 1
-			path: ../Unit/Fixtures/DummyRequestFactory.php

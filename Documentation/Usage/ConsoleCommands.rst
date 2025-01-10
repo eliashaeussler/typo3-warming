@@ -25,7 +25,7 @@ using their XML sitemaps.
     If you use `warming:cachewarmup` in your deployment process and the sitemap is protected with HTTP authentication
     (basic auth) or the website does not have a valid SSL certificate, you can configure this in the extension
     configuration with :ref:`verboseCrawlerOptions <extconf-verboseCrawlerOptions>` and
-    :ref:`parserClientOptions <extconf-parserClientOptions>`.
+    :ref:`parserOptions <extconf-parserOptions>`.
 
 ..  tabs::
 

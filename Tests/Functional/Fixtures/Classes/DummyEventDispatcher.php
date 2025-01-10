@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Tests\Functional\Fixtures\Classes;
 
-use Psr\EventDispatcher;
+use Symfony\Component\EventDispatcher;
 
 /**
  * DummyEventDispatcher
@@ -32,17 +32,17 @@ use Psr\EventDispatcher;
  * @license GPL-2.0-or-later
  * @internal
  */
-final class DummyEventDispatcher implements EventDispatcher\EventDispatcherInterface
+final class DummyEventDispatcher extends EventDispatcher\EventDispatcher
 {
     /**
      * @var list<object>
      */
     public array $dispatchedEvents = [];
 
-    public function dispatch(object $event): object
+    public function dispatch(object $event, ?string $eventName = null): object
     {
         $this->dispatchedEvents[] = $event;
 
-        return $event;
+        return parent::dispatch($event, $eventName);
     }
 }
