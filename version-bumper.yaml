@@ -1,20 +1,10 @@
-filesToModify:
-  - path: Documentation/guides.xml
-    patterns:
-      - 'release="{%version%}"'
-    reportUnmatched: true
-  - path: Resources/Private/Frontend/package.json
-    patterns:
-      - '"version": "{%version%}"'
-    reportUnmatched: true
-  - path: Resources/Private/Frontend/package-lock.json
-    patterns:
-      - '"name": "@eliashaeussler/typo3-warming",\s+"version": "{%version%}"'
-    reportUnmatched: true
-  - path: ext_emconf.php
-    patterns:
-      - "'version' => '{%version%}'"
-    reportUnmatched: true
+presets:
+  - name: typo3-commit-guidelines
+  - name: typo3-extension
+  - name: npm-package
+    options:
+      packageName: '@eliashaeussler/typo3-warming'
+      path: Resources/Private/Frontend
 
 releaseOptions:
   commitMessage: '[RELEASE] Release of EXT:warming {%version%}'
