@@ -21,43 +21,64 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3Warming\Utility;
+namespace EliasHaeussler\Typo3Warming\Http\Message;
 
+use EliasHaeussler\Typo3Warming\Domain;
 use Psr\Http\Message;
 use TYPO3\CMS\Core;
 
 /**
- * HttpUtility
+ * PageUriBuilder
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class HttpUtility
+final class PageUriBuilder
 {
+    public function __construct(
+        private readonly Core\Domain\Repository\PageRepository $pageRepository,
+        private readonly Domain\Repository\SiteRepository $siteRepository,
+        private readonly Domain\Repository\SiteLanguageRepository $siteLanguageRepository,
+    ) {}
+
     /**
+     * @param positive-int $pageId
      * @throws Core\Exception\SiteNotFoundException
      */
-    public static function generateUri(int $pageId, ?int $languageId = null): ?Message\UriInterface
+    public function build(int $pageId, ?int $languageId = null): ?Message\UriInterface
     {
-        $pageRepository = Core\Utility\GeneralUtility::makeInstance(Core\Domain\Repository\PageRepository::class);
-        $siteFinder = Core\Utility\GeneralUtility::makeInstance(Core\Site\SiteFinder::class);
-        $page = $pageRepository->getPage($pageId);
+        $page = $this->pageRepository->getPage($pageId);
 
         // Early return if page does not exist
         if ($page === []) {
             return null;
         }
 
-        // Resolve site and site language
-        $site = $siteFinder->getSiteByPageId($pageId);
-        $siteLanguage = $languageId !== null ? $site->getLanguageById($languageId) : $site->getDefaultLanguage();
+        // Resolve site
+        $site = $this->siteRepository->findOneByPageId($pageId);
+
+        // Early return if site is inaccessible
+        if ($site === null) {
+            return null;
+        }
+
+        // Resolve site language
+        $siteLanguage = $this->siteLanguageRepository->findOneByLanguageId(
+            $site,
+            $languageId ?? $site->getDefaultLanguage()->getLanguageId(),
+        );
+
+        // Early return if site language is inaccessible
+        if ($siteLanguage === null) {
+            return null;
+        }
 
         // Check if page is suitable for language
-        if ($languageId > 0) {
+        if ($siteLanguage->getLanguageId() > 0) {
             $languageAspect = Core\Context\LanguageAspectFactory::createFromSiteLanguage($siteLanguage);
-            $page = $pageRepository->getLanguageOverlay('pages', $page, $languageAspect);
+            $page = $this->pageRepository->getLanguageOverlay('pages', $page, $languageAspect);
 
-            if ($page === null || !$pageRepository->isPageSuitableForLanguage($page, $languageAspect)) {
+            if ($page === null || !$this->pageRepository->isPageSuitableForLanguage($page, $languageAspect)) {
                 return null;
             }
         }

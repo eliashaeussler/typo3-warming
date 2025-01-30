@@ -25,6 +25,7 @@ namespace EliasHaeussler\Typo3Warming\Backend\ContextMenu\ItemProviders;
 
 use EliasHaeussler\Typo3SitemapLocator;
 use EliasHaeussler\Typo3Warming\Configuration;
+use EliasHaeussler\Typo3Warming\Domain;
 use EliasHaeussler\Typo3Warming\Utility;
 use TYPO3\CMS\Backend;
 use TYPO3\CMS\Core;
@@ -75,7 +76,8 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
 
     public function __construct(
         private readonly Typo3SitemapLocator\Sitemap\SitemapLocator $sitemapLocator,
-        private readonly Core\Site\SiteFinder $siteFinder,
+        private readonly Domain\Repository\SiteRepository $siteRepository,
+        private readonly Domain\Repository\SiteLanguageRepository $siteLanguageRepository,
         private readonly Configuration\Configuration $configuration,
     ) {
         parent::__construct();
@@ -162,15 +164,14 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
                 continue;
             }
 
-            // Get all languages of current site that are available
-            // for the current Backend user
-            $languages = $site->getAvailableLanguages($this->backendUser);
+            // Get all languages of current site that are available for the current backend user
+            $languages = $this->siteLanguageRepository->findAll($site, $this->backendUser);
 
             // Remove sites where no XML sitemap is available
             if ($itemName === self::ITEM_MODE_SITE) {
                 $languages = array_filter(
                     $languages,
-                    fn(Core\Site\Entity\SiteLanguage $siteLanguage): bool => $this->canWarmupCachesOfSite($siteLanguage)
+                    fn(Core\Site\Entity\SiteLanguage $siteLanguage): bool => $this->canWarmupCachesOfSite($siteLanguage),
                 );
             } else {
                 $languages = array_filter(
@@ -237,12 +238,9 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
     private function canWarmupCachesOfSite(?Core\Site\Entity\SiteLanguage $siteLanguage = null): bool
     {
         $site = $this->getCurrentSite();
-        $languageId = $siteLanguage?->getLanguageId();
 
-        if ($site === null ||
-            $site->getRootPageId() !== (int)$this->identifier ||
-            !Utility\AccessUtility::canWarmupCacheOfSite($site, $languageId)
-        ) {
+        // Skip item if we're not in site context or resolved site is unexpected
+        if ($site === null || $site->getRootPageId() !== (int)$this->identifier) {
             return false;
         }
 
@@ -262,8 +260,11 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
 
     private function getCurrentSite(): ?Core\Site\Entity\Site
     {
+        /** @var positive-int $pageId */
+        $pageId = (int)$this->identifier;
+
         try {
-            return $this->siteFinder->getSiteByPageId((int)$this->identifier);
+            return $this->siteRepository->findOneByPageId($pageId);
         } catch (Core\Exception\SiteNotFoundException) {
             return null;
         }

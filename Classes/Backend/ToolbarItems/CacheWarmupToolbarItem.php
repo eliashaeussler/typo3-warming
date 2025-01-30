@@ -24,7 +24,7 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Backend\ToolbarItems;
 
 use EliasHaeussler\Typo3Warming\Configuration;
-use EliasHaeussler\Typo3Warming\Utility;
+use EliasHaeussler\Typo3Warming\Domain;
 use EliasHaeussler\Typo3Warming\View;
 use TYPO3\CMS\Backend;
 use TYPO3\CMS\Core;
@@ -40,7 +40,7 @@ final class CacheWarmupToolbarItem implements Backend\Toolbar\ToolbarItemInterfa
     public function __construct(
         private readonly Configuration\Configuration $configuration,
         private readonly View\TemplateRenderer $renderer,
-        private readonly Core\Site\SiteFinder $siteFinder,
+        private readonly Domain\Repository\SiteRepository $siteRepository,
         Core\Page\PageRenderer $pageRenderer,
     ) {
         $pageRenderer->loadJavaScriptModule('@eliashaeussler/typo3-warming/backend/toolbar-menu.js');
@@ -93,13 +93,7 @@ final class CacheWarmupToolbarItem implements Backend\Toolbar\ToolbarItemInterfa
             return false;
         }
 
-        foreach ($this->siteFinder->getAllSites() as $site) {
-            if (Utility\AccessUtility::canWarmupCacheOfSite($site)) {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->siteRepository->countAll() > 0;
     }
 
     public function getItem(): string
