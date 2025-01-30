@@ -30,11 +30,11 @@ use EliasHaeussler\Typo3Warming\Exception;
 use EliasHaeussler\Typo3Warming\Http;
 use EliasHaeussler\Typo3Warming\Service;
 use EliasHaeussler\Typo3Warming\ValueObject;
+use EliasHaeussler\ValinorXml;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message;
 use Psr\Log;
 use Symfony\Component\DependencyInjection;
-use TYPO3\CMS\Core;
 
 /**
  * CacheWarmupLegacyController
@@ -54,11 +54,13 @@ final class CacheWarmupLegacyController
 
     /**
      * @throws CacheWarmup\Exception\Exception
-     * @throws Core\Exception\SiteNotFoundException
      * @throws Exception\MissingPageIdException
      * @throws GuzzleException
      * @throws Typo3SitemapLocator\Exception\BaseUrlIsNotSupported
      * @throws Typo3SitemapLocator\Exception\SitemapIsMissing
+     * @throws ValinorXml\Exception\ArrayPathHasUnexpectedType
+     * @throws ValinorXml\Exception\ArrayPathIsInvalid
+     * @throws ValinorXml\Exception\XmlIsMalformed
      */
     public function __invoke(Message\ServerRequestInterface $request): Message\ResponseInterface
     {

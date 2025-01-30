@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 use CuyZ\Valinor;
 use EliasHaeussler\CacheWarmup;
+use EliasHaeussler\Typo3SitemapLocator;
 use EliasHaeussler\Typo3Warming\Tests;
 use Symfony\Component\DependencyInjection;
 use TYPO3\CMS\Core;
@@ -67,6 +68,11 @@ return static function (DependencyInjection\ContainerBuilder $containerBuilder):
     );
     $containerBuilder->addCompilerPass(
         Tests\Build\DependencyInjection\CompilerPass\PublicServicePass::fromClass(Valinor\Mapper\TreeMapper::class),
+        DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_REMOVING,
+        200,
+    );
+    $containerBuilder->addCompilerPass(
+        Tests\Build\DependencyInjection\CompilerPass\PublicServicePass::fromClass(Typo3SitemapLocator\Cache\SitemapsCache::class),
         DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_REMOVING,
         200,
     );

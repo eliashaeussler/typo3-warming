@@ -47,8 +47,6 @@ final class SubRequestHandlerTest extends TestingFramework\Core\Functional\Funct
         'warming',
     ];
 
-    protected bool $initializeDatabase = false;
-
     private Frontend\Http\Application&Framework\MockObject\MockObject $applicationMock;
     private Src\Http\Client\Handler\SubRequestHandler $subject;
 
@@ -56,12 +54,16 @@ final class SubRequestHandlerTest extends TestingFramework\Core\Functional\Funct
     {
         parent::setUp();
 
+        $this->importCSVDataSet(\dirname(__DIR__, 3) . '/Fixtures/Database/be_users.csv');
+        $this->importCSVDataSet(\dirname(__DIR__, 3) . '/Fixtures/Database/pages.csv');
+
         $this->createSite();
+        $this->setUpBackendUser(3);
 
         $this->applicationMock = $this->createMock(Frontend\Http\Application::class);
         $this->subject = new Src\Http\Client\Handler\SubRequestHandler(
             $this->applicationMock,
-            $this->get(Core\Site\SiteFinder::class),
+            $this->get(Src\Domain\Repository\SiteRepository::class),
         );
     }
 

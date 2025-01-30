@@ -39,9 +39,18 @@ $container = Core\Core\Bootstrap::init($classLoader);
 // Disable TYPO3's phar stream wrapper to allow execution of PHPStan
 stream_wrapper_restore('phar');
 
+// Disable TCA to avoid instantiation of PageRepository
+$tca = $GLOBALS['TCA'];
+unset($GLOBALS['TCA']);
+
 // Initialize application and add command
-$application = new Console\Application();
-$application->add($container->get(Command\ShowUserAgentCommand::class));
-$application->add($container->get(Command\WarmupCommand::class));
+try {
+    $application = new Console\Application();
+    $application->add($container->get(Command\ShowUserAgentCommand::class));
+    $application->add($container->get(Command\WarmupCommand::class));
+} finally {
+    // Restore TCA
+    $GLOBALS['TCA'] = $tca;
+}
 
 return $application;

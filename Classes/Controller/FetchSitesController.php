@@ -26,8 +26,8 @@ namespace EliasHaeussler\Typo3Warming\Controller;
 use EliasHaeussler\Typo3SitemapLocator;
 use EliasHaeussler\Typo3Warming\Configuration;
 use EliasHaeussler\Typo3Warming\Crawler;
+use EliasHaeussler\Typo3Warming\Domain;
 use EliasHaeussler\Typo3Warming\Http;
-use EliasHaeussler\Typo3Warming\Security;
 use EliasHaeussler\Typo3Warming\Utility;
 use EliasHaeussler\Typo3Warming\ValueObject;
 use Psr\Http\Message;
@@ -49,9 +49,9 @@ final class FetchSitesController
         private readonly Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
         private readonly Core\Imaging\IconFactory $iconFactory,
         private readonly Http\Message\ResponseFactory $responseFactory,
-        private readonly Core\Site\SiteFinder $siteFinder,
+        private readonly Domain\Repository\SiteRepository $siteRepository,
+        private readonly Domain\Repository\SiteLanguageRepository $siteLanguageRepository,
         private readonly Typo3SitemapLocator\Sitemap\SitemapLocator $sitemapLocator,
-        private readonly Security\WarmupPermissionGuard $accessGuard,
     ) {}
 
     /**
@@ -61,15 +61,8 @@ final class FetchSitesController
     public function __invoke(): Message\ResponseInterface
     {
         $siteGroups = [];
-        $sites = array_filter(
-            $this->siteFinder->getAllSites(),
-            fn(Core\Site\Entity\Site $site) => $this->accessGuard->canWarmupCacheOfSite(
-                $site,
-                Security\Context\PermissionContext::forCurrentBackendUser(),
-            ),
-        );
 
-        foreach ($sites as $site) {
+        foreach ($this->siteRepository->findAll() as $site) {
             $row = Backend\Utility\BackendUtility::getRecord('pages', $site->getRootPageId(), '*', ' AND hidden = 0');
 
             if (!\is_array($row)) {
@@ -105,14 +98,23 @@ final class FetchSitesController
         $items = [];
 
         // Check all available languages for possible sitemaps
-        foreach ($this->sitemapLocator->locateAllBySite($site) as $i => $sitemaps) {
+        foreach ($this->sitemapLocator->locateAllBySite($site) as $sitemaps) {
             foreach ($sitemaps as $sitemap) {
-                $siteLanguage = $sitemap->getSiteLanguage();
-                $url = null;
+                $siteLanguage = $this->siteLanguageRepository->findOneByLanguageId(
+                    $sitemap->getSite(),
+                    $sitemap->getSiteLanguage()->getLanguageId(),
+                );
+
+                // Skip sitemap if site language is inaccessible
+                if ($siteLanguage === null) {
+                    continue;
+                }
 
                 // Check if sitemap exists
                 if ($this->sitemapLocator->isValidSitemap($sitemap)) {
                     $url = (string)$sitemap->getUri();
+                } else {
+                    $url = null;
                 }
 
                 $items[] = new ValueObject\Modal\SiteGroupItem(

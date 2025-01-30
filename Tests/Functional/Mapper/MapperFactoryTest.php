@@ -21,9 +21,10 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3Warming\Tests\Unit\Mapper;
+namespace EliasHaeussler\Typo3Warming\Tests\Functional\Mapper;
 
 use EliasHaeussler\Typo3Warming as Src;
+use EliasHaeussler\Typo3Warming\Tests;
 use PHPUnit\Framework;
 use TYPO3\CMS\Core;
 use TYPO3\TestingFramework;
@@ -35,39 +36,48 @@ use TYPO3\TestingFramework;
  * @license GPL-2.0-or-later
  */
 #[Framework\Attributes\CoversClass(Src\Mapper\MapperFactory::class)]
-final class MapperFactoryTest extends TestingFramework\Core\Unit\UnitTestCase
+final class MapperFactoryTest extends TestingFramework\Core\Functional\FunctionalTestCase
 {
-    private Core\Site\SiteFinder&Framework\MockObject\MockObject $siteFinder;
+    use Tests\Functional\SiteTrait;
+
+    protected array $testExtensionsToLoad = [
+        'sitemap_locator',
+        'warming',
+    ];
+
+    private Core\Site\Entity\Site $site;
     private Src\Mapper\MapperFactory $subject;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->siteFinder = $this->createMock(Core\Site\SiteFinder::class);
-        $this->subject = new Src\Mapper\MapperFactory($this->siteFinder);
+        $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/be_users.csv');
+        $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/pages.csv');
+
+        $this->site = $this->createSite();
+
+        $this->setUpBackendUser(3);
+
+        $this->subject = $this->get(Src\Mapper\MapperFactory::class);
     }
 
     #[Framework\Attributes\Test]
     public function getReturnsMapper(): void
     {
-        $site = new Core\Site\Entity\Site('foo', 1, []);
-
-        $this->siteFinder->method('getSiteByIdentifier')->willReturn($site);
-
         $mapper = $this->subject->get();
 
         $expected = [
-            'site' => $site,
+            'site' => $this->site,
         ];
 
         $actual = $mapper->map(
             'array{site: \TYPO3\CMS\Core\Site\Entity\Site}',
             [
-                'site' => 'foo',
+                'site' => 'test-site',
             ],
         );
 
-        self::assertSame($expected, $actual);
+        self::assertEquals($expected, $actual);
     }
 }

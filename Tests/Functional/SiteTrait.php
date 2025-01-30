@@ -33,24 +33,34 @@ use TYPO3\CMS\Core;
  */
 trait SiteTrait
 {
+    /**
+     * @param list<int> $languagesToExcludeFromWarming
+     */
     private function createSite(
         string $baseUrl = 'https://typo3-testing.local/',
         string $identifier = 'test-site',
+        int $rootPageId = 1,
+        array $languagesToExcludeFromWarming = [],
     ): Core\Site\Entity\Site {
         $configPath = $this->instancePath . '/typo3conf/sites';
         $eventDispatcher = new Core\EventDispatcher\NoopEventDispatcher();
 
         if ((new Core\Information\Typo3Version())->getMajorVersion() >= 13) {
+            /* @phpstan-ignore symfonyContainer.serviceNotFound */
             $yamlFileLoader = $this->get(Core\Configuration\Loader\YamlFileLoader::class);
+            /* @phpstan-ignore arguments.count */
             $siteConfiguration = new Core\Configuration\SiteConfiguration(
                 $configPath,
+                /* @phpstan-ignore class.notFound, argument.type, symfonyContainer.serviceNotFound */
                 $this->get(Core\Site\SiteSettingsFactory::class),
+                /* @phpstan-ignore class.notFound, argument.type, symfonyContainer.serviceNotFound */
                 $this->get(Core\Site\Set\SetRegistry::class),
                 $eventDispatcher,
                 new Core\Cache\Frontend\NullFrontend('core'),
                 $yamlFileLoader,
                 new Core\Cache\Frontend\NullFrontend('runtime'),
             );
+            /* @phpstan-ignore class.notFound */
             $siteWriter = new Core\Configuration\SiteWriter(
                 $configPath,
                 $eventDispatcher,
@@ -61,9 +71,11 @@ trait SiteTrait
             $siteConfiguration = $siteWriter = new Core\Configuration\SiteConfiguration($configPath, $eventDispatcher);
         }
 
-        $siteWriter->createNewBasicSite($identifier, 1, $baseUrl);
+        /* @phpstan-ignore class.notFound */
+        $siteWriter->createNewBasicSite($identifier, $rootPageId, $baseUrl);
 
         $rawConfig = $siteConfiguration->load($identifier);
+        $rawConfig['warming_exclude'] = in_array(0, $languagesToExcludeFromWarming, true);
         $rawConfig['languages'][1] = [
             'title' => 'German',
             'enabled' => true,
@@ -75,6 +87,7 @@ trait SiteTrait
             'fallbacks' => '',
             'flag' => 'de',
             'languageId' => 1,
+            'warming_exclude' => in_array(1, $languagesToExcludeFromWarming, true),
         ];
         $rawConfig['languages'][2] = [
             'title' => 'French',
@@ -87,8 +100,10 @@ trait SiteTrait
             'fallbacks' => '',
             'flag' => 'fr',
             'languageId' => 2,
+            'warming_exclude' => in_array(2, $languagesToExcludeFromWarming, true),
         ];
 
+        /* @phpstan-ignore class.notFound */
         $siteWriter->write($identifier, $rawConfig);
 
         $site = $siteConfiguration->getAllExistingSites()[$identifier] ?? null;

@@ -85,15 +85,22 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
         $this->siteFinder = $this->get(Core\Site\SiteFinder::class);
         $this->commandTester = new Console\Tester\CommandTester(
             new Src\Command\WarmupCommand(
-                new Src\Http\Client\ClientFactory(
-                    $this->guzzleClientFactory,
-                ),
+                new Src\Http\Client\ClientFactory($this->guzzleClientFactory),
                 $this->configuration,
                 $this->get(Src\Crawler\Strategy\CrawlingStrategyFactory::class),
-                $this->get(Typo3SitemapLocator\Sitemap\SitemapLocator::class),
-                $this->siteFinder,
+                new Typo3SitemapLocator\Sitemap\SitemapLocator(
+                    $this->get(Core\Http\RequestFactory::class),
+                    $this->get(Typo3SitemapLocator\Cache\SitemapsCache::class),
+                    $this->eventDispatcher,
+                    [
+                        new Typo3SitemapLocator\Sitemap\Provider\DefaultProvider(),
+                    ],
+                ),
+                $this->get(Src\Domain\Repository\SiteRepository::class),
+                $this->get(Src\Domain\Repository\SiteLanguageRepository::class),
                 $this->eventDispatcher,
                 $this->get(Core\Package\PackageManager::class),
+                $this->get(Src\Http\Message\PageUriBuilder::class),
             ),
         );
     }
@@ -113,6 +120,7 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
         $expected = [
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/'),
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/'),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/fr/'),
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-1'),
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/subsite-1-l-1'),
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-2'),
@@ -248,6 +256,28 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
     }
 
     #[Framework\Attributes\Test]
+    public function executeCrawlsAllLanguages(): void
+    {
+        $expected = [
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/'),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/'),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/fr/'),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-1'),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/subsite-1-l-1'),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-2'),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-2/subsite-2-1'),
+        ];
+
+        $this->commandTester->execute([
+            '--languages' => ['1', '-1'],
+            '--pages' => ['1', '2', '3', '4'],
+        ]);
+
+        self::assertSame(Console\Command\Command::SUCCESS, $this->commandTester->getStatusCode());
+        self::assertEquals($expected, Tests\Functional\Fixtures\Classes\DummyVerboseCrawler::$crawledUrls);
+    }
+
+    #[Framework\Attributes\Test]
     public function executeRespectsLimit(): void
     {
         $expected = [
@@ -274,6 +304,7 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
 
         $expected = [
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/'),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/fr/'),
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-1'),
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-2'),
         ];
@@ -370,12 +401,13 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
 
         $dispatchedEvents = $this->eventDispatcher->dispatchedEvents;
 
-        self::assertCount(5, $dispatchedEvents);
+        self::assertCount(6, $dispatchedEvents);
         self::assertInstanceOf(CacheWarmup\Event\ConfigResolved::class, $dispatchedEvents[0]);
         self::assertInstanceOf(CacheWarmup\Event\UrlAdded::class, $dispatchedEvents[1]);
         self::assertInstanceOf(CacheWarmup\Event\UrlAdded::class, $dispatchedEvents[2]);
-        self::assertInstanceOf(CacheWarmup\Event\CrawlingStarted::class, $dispatchedEvents[3]);
-        self::assertInstanceOf(CacheWarmup\Event\CrawlingFinished::class, $dispatchedEvents[4]);
+        self::assertInstanceOf(CacheWarmup\Event\UrlAdded::class, $dispatchedEvents[3]);
+        self::assertInstanceOf(CacheWarmup\Event\CrawlingStarted::class, $dispatchedEvents[4]);
+        self::assertInstanceOf(CacheWarmup\Event\CrawlingFinished::class, $dispatchedEvents[5]);
     }
 
     #[Framework\Attributes\Test]
