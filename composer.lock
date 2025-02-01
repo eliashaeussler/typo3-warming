@@ -6520,16 +6520,16 @@
         },
         {
             "name": "codeception/module-db",
-            "version": "3.1.4",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/module-db.git",
-                "reference": "06be16dcf4dda46eaef9454f1361d62bcb971c36"
+                "reference": "23bc6a37472b9d5935bc8cf8defc9d59e852c0c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/module-db/zipball/06be16dcf4dda46eaef9454f1361d62bcb971c36",
-                "reference": "06be16dcf4dda46eaef9454f1361d62bcb971c36",
+                "url": "https://api.github.com/repos/Codeception/module-db/zipball/23bc6a37472b9d5935bc8cf8defc9d59e852c0c2",
+                "reference": "23bc6a37472b9d5935bc8cf8defc9d59e852c0c2",
                 "shasum": ""
             },
             "require": {
@@ -6572,9 +6572,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Codeception/module-db/issues",
-                "source": "https://github.com/Codeception/module-db/tree/3.1.4"
+                "source": "https://github.com/Codeception/module-db/tree/3.2.0"
             },
-            "time": "2024-05-16T20:12:18+00:00"
+            "time": "2025-01-31T21:25:45+00:00"
         },
         {
             "name": "codeception/module-webdriver",
@@ -7831,16 +7831,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "10.5.43",
+            "version": "10.5.44",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "fb117a8772c14fdc41acb1ded0de44de0c9091f9"
+                "reference": "1381c62769be4bb88fa4c5aec1366c7c66ca4f36"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/fb117a8772c14fdc41acb1ded0de44de0c9091f9",
-                "reference": "fb117a8772c14fdc41acb1ded0de44de0c9091f9",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/1381c62769be4bb88fa4c5aec1366c7c66ca4f36",
+                "reference": "1381c62769be4bb88fa4c5aec1366c7c66ca4f36",
                 "shasum": ""
             },
             "require": {
@@ -7912,7 +7912,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.5.43"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.5.44"
             },
             "funding": [
                 {
@@ -7928,7 +7928,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-01-29T13:59:45+00:00"
+            "time": "2025-01-31T07:00:38+00:00"
         },
         {
             "name": "psy/psysh",
