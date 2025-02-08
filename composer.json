@@ -87,7 +87,7 @@
 	},
 	"scripts": {
 		"post-install-cmd": [
-			"@composer -d Tests/CGL install"
+			"@cgl install"
 		],
 		"post-autoload-dump": [
 			"@environment:prepare"
