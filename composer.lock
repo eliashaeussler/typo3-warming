@@ -6520,16 +6520,16 @@
         },
         {
             "name": "codeception/module-db",
-            "version": "3.2.0",
+            "version": "3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/module-db.git",
-                "reference": "23bc6a37472b9d5935bc8cf8defc9d59e852c0c2"
+                "reference": "8a295c40d009f9821fae5e32c4d3ce10273e57a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/module-db/zipball/23bc6a37472b9d5935bc8cf8defc9d59e852c0c2",
-                "reference": "23bc6a37472b9d5935bc8cf8defc9d59e852c0c2",
+                "url": "https://api.github.com/repos/Codeception/module-db/zipball/8a295c40d009f9821fae5e32c4d3ce10273e57a6",
+                "reference": "8a295c40d009f9821fae5e32c4d3ce10273e57a6",
                 "shasum": ""
             },
             "require": {
@@ -6572,9 +6572,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Codeception/module-db/issues",
-                "source": "https://github.com/Codeception/module-db/tree/3.2.0"
+                "source": "https://github.com/Codeception/module-db/tree/3.2.1"
             },
-            "time": "2025-01-31T21:25:45+00:00"
+            "time": "2025-02-06T19:34:04+00:00"
         },
         {
             "name": "codeception/module-webdriver",
@@ -6951,16 +6951,16 @@
         },
         {
             "name": "eliashaeussler/typo3-codeception-helper",
-            "version": "1.1.2",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/typo3-codeception-helper.git",
-                "reference": "6b1018fd98dccb3c97f4a5c201e123ca48ea2e86"
+                "reference": "ab6cdf44d846314c0da0d0c9472517aa1d9d529b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/typo3-codeception-helper/zipball/6b1018fd98dccb3c97f4a5c201e123ca48ea2e86",
-                "reference": "6b1018fd98dccb3c97f4a5c201e123ca48ea2e86",
+                "url": "https://api.github.com/repos/eliashaeussler/typo3-codeception-helper/zipball/ab6cdf44d846314c0da0d0c9472517aa1d9d529b",
+                "reference": "ab6cdf44d846314c0da0d0c9472517aa1d9d529b",
                 "shasum": ""
             },
             "require": {
@@ -6978,9 +6978,12 @@
                 "eliashaeussler/rector-config": "^3.0",
                 "ergebnis/composer-normalize": "^2.30",
                 "phpstan/extension-installer": "^1.2",
-                "phpstan/phpstan-phpunit": "^1.1",
+                "phpstan/phpstan-phpunit": "^2.0",
                 "phpunit/phpunit": "^10.2 || ^11.0",
                 "symfony/finder": "^5.4 || ^6.0 || ^7.0"
+            },
+            "suggest": {
+                "codeception/module-webdriver": "Require Codeception's WebDriver module to use the `Backend` module (^4.0)"
             },
             "type": "library",
             "autoload": {
@@ -7003,22 +7006,22 @@
             "description": "Helper functions for Codeception tests within TYPO3 extensions",
             "support": {
                 "issues": "https://github.com/eliashaeussler/typo3-codeception-helper/issues",
-                "source": "https://github.com/eliashaeussler/typo3-codeception-helper/tree/1.1.2"
+                "source": "https://github.com/eliashaeussler/typo3-codeception-helper/tree/1.2.0"
             },
-            "time": "2024-11-27T17:52:54+00:00"
+            "time": "2025-02-07T11:01:50+00:00"
         },
         {
             "name": "eliashaeussler/version-bumper",
-            "version": "2.3.0",
+            "version": "2.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/version-bumper.git",
-                "reference": "d4efddcb67ebd62746d2c650e339d39c0133da0f"
+                "reference": "21727820f5d25c4c257b511cf4e01b92b737735e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/version-bumper/zipball/d4efddcb67ebd62746d2c650e339d39c0133da0f",
-                "reference": "d4efddcb67ebd62746d2c650e339d39c0133da0f",
+                "url": "https://api.github.com/repos/eliashaeussler/version-bumper/zipball/21727820f5d25c4c257b511cf4e01b92b737735e",
+                "reference": "21727820f5d25c4c257b511cf4e01b92b737735e",
                 "shasum": ""
             },
             "require": {
@@ -7067,9 +7070,9 @@
             "description": "Composer plugin to bump project versions during release preparations",
             "support": {
                 "issues": "https://github.com/eliashaeussler/version-bumper/issues",
-                "source": "https://github.com/eliashaeussler/version-bumper/tree/2.3.0"
+                "source": "https://github.com/eliashaeussler/version-bumper/tree/2.3.1"
             },
-            "time": "2025-01-16T21:23:25+00:00"
+            "time": "2025-02-08T18:05:28+00:00"
         },
         {
             "name": "myclabs/deep-copy",
