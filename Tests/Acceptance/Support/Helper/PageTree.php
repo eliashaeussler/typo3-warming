@@ -84,23 +84,41 @@ final class PageTree extends TestingFramework\Core\Acceptance\Helper\AbstractPag
     {
         $I = $this->tester;
 
-        foreach ($path as $depth => $selector) {
-            $contextMenuId = sprintf('#contentMenu%d', $depth);
+        $remaining = \count($path);
+        $contextMenuIdentifier = $this->usesNewContextMenuIdentifiers()
+            ? '[data-contextmenu-parent="root"]'
+            : '#contentMenu0';
 
-            $I->waitForElementVisible($contextMenuId, 5);
+        foreach ($path as $depth => $selector) {
+            --$remaining;
+
+            $I->waitForElementVisible($contextMenuIdentifier, 5);
             $I->executeInSelenium(
-                function (WebDriver\Remote\RemoteWebDriver $webDriver) use ($contextMenuId, $selector): void {
-                    $contextMenu = $webDriver->findElement(WebDriver\WebDriverBy::cssSelector($contextMenuId));
+                function (WebDriver\Remote\RemoteWebDriver $webDriver) use (&$contextMenuIdentifier, $remaining, $selector): void {
+                    $contextMenu = $webDriver->findElement(WebDriver\WebDriverBy::cssSelector($contextMenuIdentifier));
                     $items = $contextMenu->findElements(WebDriver\WebDriverBy::tagName('li'));
 
                     foreach ($items as $item) {
                         if ($item->getText() === $selector) {
                             $webDriver->getMouse()->click($item->getCoordinates());
+
+                            if ($this->usesNewContextMenuIdentifiers() && $remaining > 0) {
+                                $button = $item->findElement(WebDriver\WebDriverBy::tagName('button'));
+                                $contextMenuIdentifier = \sprintf(
+                                    '[data-contextmenu-parent="%s"]',
+                                    $button->getAttribute('data-contextmenu-id'),
+                                );
+                            }
+
                             break;
                         }
                     }
                 },
             );
+
+            if (!$this->usesNewContextMenuIdentifiers()) {
+                $contextMenuIdentifier = \sprintf('#contentMenu%d', $depth + 1);
+            }
         }
     }
 
@@ -137,5 +155,13 @@ final class PageTree extends TestingFramework\Core\Acceptance\Helper\AbstractPag
         }
 
         return $context;
+    }
+
+    /**
+     * @see https://review.typo3.org/c/Packages/TYPO3.CMS/+/87887
+     */
+    public function usesNewContextMenuIdentifiers(): bool
+    {
+        return \version_compare($this->typo3Version->getVersion(), '13.4.5', '>=');
     }
 }

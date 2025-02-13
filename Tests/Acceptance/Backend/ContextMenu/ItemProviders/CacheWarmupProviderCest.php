@@ -33,6 +33,16 @@ use EliasHaeussler\Typo3Warming\Tests;
  */
 final class CacheWarmupProviderCest
 {
+    private string $contextMenuSubmenuSelector;
+
+    public function _before(Tests\Acceptance\Support\Helper\PageTree $pageTree): void
+    {
+        $this->contextMenuSubmenuSelector = $pageTree->usesNewContextMenuIdentifiers()
+            ? Tests\Acceptance\Support\Enums\Selectors::ContextMenuSubmenu->value
+            : Tests\Acceptance\Support\Enums\Selectors::ContextMenuSubmenuLegacy->value
+        ;
+    }
+
     public function canSeeContextMenuItemsAsAdmin(
         Tests\Acceptance\Support\AcceptanceTester $I,
         Tests\Acceptance\Support\Helper\PageTree $pageTree,
@@ -155,8 +165,8 @@ final class CacheWarmupProviderCest
         $pageTree->openContextMenu(['Main']);
         $pageTree->selectInContextMenu(['Warmup cache for this page']);
 
-        $I->see('English', Tests\Acceptance\Support\Enums\Selectors::ContextMenuSubmenu->value);
-        $I->see('German', Tests\Acceptance\Support\Enums\Selectors::ContextMenuSubmenu->value);
+        $I->see('English', $this->contextMenuSubmenuSelector);
+        $I->see('German', $this->contextMenuSubmenuSelector);
     }
 
     public function canSeeOnlyPermittedLanguagesAsPermittedUser(
@@ -171,8 +181,8 @@ final class CacheWarmupProviderCest
         $pageTree->openContextMenu(['Main']);
         $pageTree->selectInContextMenu(['Warmup cache for this page']);
 
-        $I->see('English', Tests\Acceptance\Support\Enums\Selectors::ContextMenuSubmenu->value);
-        $I->dontSee('German', Tests\Acceptance\Support\Enums\Selectors::ContextMenuSubmenu->value);
+        $I->see('English', $this->contextMenuSubmenuSelector);
+        $I->dontSee('German', $this->contextMenuSubmenuSelector);
     }
 
     public function canRunCacheWarmupForSite(
