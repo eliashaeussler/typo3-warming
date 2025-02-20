@@ -8,6 +8,8 @@ languages:
     locale: en_US.UTF-8
     navigationTitle: English
     flag: us
+    hreflang: ''
+    websiteTitle: ''
   -
     title: German
     enabled: true
@@ -20,6 +22,9 @@ languages:
     fallbacks: ''
     flag: de
     languageId: 1
+    hreflang: ''
+    warming_exclude: false
 rootPageId: 7
+warming_exclude: false
 websiteTitle: ''
-xml_sitemap_path: 'invalid-sitemap.xml'
+xml_sitemap_path: invalid-sitemap.xml

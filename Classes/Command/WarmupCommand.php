@@ -29,7 +29,6 @@ use EliasHaeussler\Typo3Warming\Configuration;
 use EliasHaeussler\Typo3Warming\Crawler;
 use EliasHaeussler\Typo3Warming\Domain;
 use EliasHaeussler\Typo3Warming\Http;
-use EliasHaeussler\Typo3Warming\Utility;
 use Psr\EventDispatcher;
 use Symfony\Component\Console;
 use TYPO3\CMS\Core;
@@ -54,9 +53,11 @@ final class WarmupCommand extends Console\Command\Command
         private readonly Configuration\Configuration $configuration,
         private readonly Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
         private readonly Typo3SitemapLocator\Sitemap\SitemapLocator $sitemapLocator,
-        private readonly Core\Site\SiteFinder $siteFinder,
+        private readonly Domain\Repository\SiteRepository $siteRepository,
+        private readonly Domain\Repository\SiteLanguageRepository $siteLanguageRepository,
         private readonly EventDispatcher\EventDispatcherInterface $eventDispatcher,
         private readonly Core\Package\PackageManager $packageManager,
+        private readonly Http\Message\PageUriBuilder $pageUriBuilder,
     ) {
         parent::__construct();
     }
@@ -226,6 +227,11 @@ HELP
         );
     }
 
+    protected function initialize(Console\Input\InputInterface $input, Console\Output\OutputInterface $output): void
+    {
+        Core\Core\Bootstrap::initializeBackendAuthentication();
+    }
+
     /**
      * @throws Console\Exception\ExceptionInterface
      * @throws Core\Exception\SiteNotFoundException
@@ -331,16 +337,17 @@ HELP
         foreach ($pages as $pageList) {
             $normalizedPages = Core\Utility\GeneralUtility::intExplode(',', $pageList, true);
 
+            /** @var positive-int $page */
             foreach ($normalizedPages as $page) {
                 $languageIds = $languages;
 
-                if ($languageIds === [self::ALL_LANGUAGES]) {
-                    $site = $this->siteFinder->getSiteByPageId($page);
-                    $languageIds = array_keys($site->getLanguages());
+                if (\in_array(self::ALL_LANGUAGES, $languageIds, true)) {
+                    $site = $this->siteRepository->findOneByPageId($page);
+                    $languageIds = array_keys($site?->getLanguages() ?? []);
                 }
 
                 foreach ($languageIds as $languageId) {
-                    $uri = Utility\HttpUtility::generateUri($page, $languageId);
+                    $uri = $this->pageUriBuilder->build($page, $languageId);
 
                     if ($uri !== null) {
                         $resolvedUrls[] = (string)$uri;
@@ -365,34 +372,51 @@ HELP
      */
     private function resolveSites(array $sites, array $languages): array
     {
+        $requestedSites = [];
         $resolvedSitemaps = [];
 
         foreach ($sites as $siteList) {
-            $siteList = Core\Utility\GeneralUtility::trimExplode(',', $siteList, true);
+            $requestedSites += Core\Utility\GeneralUtility::trimExplode(',', $siteList, true);
 
-            if (in_array(self::ALL_SITES, $siteList, true)) {
-                $siteList = $this->siteFinder->getAllSites();
+            if (\in_array(self::ALL_SITES, $requestedSites, true)) {
+                $requestedSites = $this->siteRepository->findAll();
+
+                break;
+            }
+        }
+
+        foreach ($requestedSites as $site) {
+            if (Core\Utility\MathUtility::canBeInterpretedAsInteger($site)) {
+                /** @var positive-int $rootPageId */
+                $rootPageId = (int)$site;
+                $site = $this->siteRepository->findOneByRootPageId($rootPageId);
+            } elseif (is_string($site)) {
+                $site = $this->siteRepository->findOneByIdentifier($site);
             }
 
-            foreach ($siteList as $site) {
-                if (Core\Utility\MathUtility::canBeInterpretedAsInteger($site)) {
-                    $site = $this->siteFinder->getSiteByRootPageId((int)$site);
-                } elseif (is_string($site)) {
-                    $site = $this->siteFinder->getSiteByIdentifier($site);
+            // Skip inaccessible sites
+            if ($site === null) {
+                continue;
+            }
+
+            $languageIds = $languages;
+
+            if ([self::ALL_LANGUAGES] === $languageIds) {
+                $languageIds = array_keys($site->getLanguages());
+            }
+
+            foreach ($languageIds as $languageId) {
+                $siteLanguage = $this->siteLanguageRepository->findOneByLanguageId($site, $languageId);
+
+                // Skip inaccessible site languages
+                if ($siteLanguage === null) {
+                    continue;
                 }
 
-                $languageIds = $languages;
+                $sitemaps = $this->sitemapLocator->locateBySite($site, $siteLanguage);
 
-                if ([self::ALL_LANGUAGES] === $languageIds) {
-                    $languageIds = array_keys($site->getLanguages());
-                }
-
-                foreach ($languageIds as $languageId) {
-                    $sitemaps = $this->sitemapLocator->locateBySite($site, $site->getLanguageById($languageId));
-
-                    foreach ($sitemaps as $sitemap) {
-                        $resolvedSitemaps[] = Domain\Model\SiteAwareSitemap::fromLocatedSitemap($sitemap);
-                    }
+                foreach ($sitemaps as $sitemap) {
+                    $resolvedSitemaps[] = Domain\Model\SiteAwareSitemap::fromLocatedSitemap($sitemap);
                 }
             }
         }
