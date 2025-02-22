@@ -121,16 +121,16 @@
         },
         {
             "name": "cuyz/valinor",
-            "version": "1.14.2",
+            "version": "1.14.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CuyZ/Valinor.git",
-                "reference": "1881c77d555b00c2f969dfbbc2c7dbd939ae97ea"
+                "reference": "1d75537ea0141452f65dc340e4932015592537e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CuyZ/Valinor/zipball/1881c77d555b00c2f969dfbbc2c7dbd939ae97ea",
-                "reference": "1881c77d555b00c2f969dfbbc2c7dbd939ae97ea",
+                "url": "https://api.github.com/repos/CuyZ/Valinor/zipball/1d75537ea0141452f65dc340e4932015592537e2",
+                "reference": "1d75537ea0141452f65dc340e4932015592537e2",
                 "shasum": ""
             },
             "require": {
@@ -143,6 +143,7 @@
                 "infection/infection": "^0.27",
                 "marcocesarato/php-conventional-changelog": "^1.12",
                 "mikey179/vfsstream": "^1.6.10",
+                "phpbench/phpbench": "^1.3",
                 "phpstan/phpstan": "^2.0",
                 "phpstan/phpstan-phpunit": "^2.0",
                 "phpstan/phpstan-strict-rules": "^2.0",
@@ -182,7 +183,7 @@
             ],
             "support": {
                 "issues": "https://github.com/CuyZ/Valinor/issues",
-                "source": "https://github.com/CuyZ/Valinor/tree/1.14.2"
+                "source": "https://github.com/CuyZ/Valinor/tree/1.14.3"
             },
             "funding": [
                 {
@@ -190,7 +191,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-01-09T09:48:05+00:00"
+            "time": "2025-02-17T18:33:46+00:00"
         },
         {
             "name": "dasprid/enum",
@@ -6192,16 +6193,16 @@
         },
         {
             "name": "codeception/codeception",
-            "version": "5.2.0",
+            "version": "5.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/Codeception.git",
-                "reference": "5f74784541891f054a3f17dcb87a94b3f2552e0d"
+                "reference": "6e06224627dcd89e7d4753f44ba4df35034b6314"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/5f74784541891f054a3f17dcb87a94b3f2552e0d",
-                "reference": "5f74784541891f054a3f17dcb87a94b3f2552e0d",
+                "url": "https://api.github.com/repos/Codeception/Codeception/zipball/6e06224627dcd89e7d4753f44ba4df35034b6314",
+                "reference": "6e06224627dcd89e7d4753f44ba4df35034b6314",
                 "shasum": ""
             },
             "require": {
@@ -6212,13 +6213,13 @@
                 "ext-json": "*",
                 "ext-mbstring": "*",
                 "php": "^8.1",
-                "phpunit/php-code-coverage": "^9.2 || ^10.0 || ^11.0",
-                "phpunit/php-text-template": "^2.0 || ^3.0 || ^4.0",
-                "phpunit/php-timer": "^5.0.3 || ^6.0 || ^7.0",
-                "phpunit/phpunit": "^9.5.20 || ^10.0 || ^11.0",
+                "phpunit/php-code-coverage": "^9.2 || ^10.0 || ^11.0 || ^12.0",
+                "phpunit/php-text-template": "^2.0 || ^3.0 || ^4.0 || ^5.0",
+                "phpunit/php-timer": "^5.0.3 || ^6.0 || ^7.0 || ^8.0",
+                "phpunit/phpunit": "^9.5.20 || ^10.0 || ^11.0 || ^12.0",
                 "psy/psysh": "^0.11.2 || ^0.12",
-                "sebastian/comparator": "^4.0.5 || ^5.0 || ^6.0",
-                "sebastian/diff": "^4.0.3 || ^5.0 || ^6.0",
+                "sebastian/comparator": "^4.0.5 || ^5.0 || ^6.0 || ^7.0",
+                "sebastian/diff": "^4.0.3 || ^5.0 || ^6.0 || ^7.0",
                 "symfony/console": ">=5.4.24 <8.0",
                 "symfony/css-selector": ">=5.4.24 <8.0",
                 "symfony/event-dispatcher": ">=5.4.24 <8.0",
@@ -6236,7 +6237,7 @@
             },
             "require-dev": {
                 "codeception/lib-innerbrowser": "*@dev",
-                "codeception/lib-web": "^1.0",
+                "codeception/lib-web": "*@dev",
                 "codeception/module-asserts": "*@dev",
                 "codeception/module-cli": "*@dev",
                 "codeception/module-db": "*@dev",
@@ -6301,7 +6302,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Codeception/Codeception/issues",
-                "source": "https://github.com/Codeception/Codeception/tree/5.2.0"
+                "source": "https://github.com/Codeception/Codeception/tree/5.2.1"
             },
             "funding": [
                 {
@@ -6309,7 +6310,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2025-02-16T20:29:26+00:00"
+            "time": "2025-02-20T14:52:49+00:00"
         },
         {
             "name": "codeception/lib-asserts",
