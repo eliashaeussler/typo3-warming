@@ -227,7 +227,7 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
         ]);
 
         self::assertSame(Console\Command\Command::SUCCESS, $this->commandTester->getStatusCode());
-        self::assertCount(0, Tests\Functional\Fixtures\Classes\DummyVerboseCrawler::$crawledUrls);
+        self::assertSame([], Tests\Functional\Fixtures\Classes\DummyVerboseCrawler::$crawledUrls);
     }
 
     #[Framework\Attributes\Test]
