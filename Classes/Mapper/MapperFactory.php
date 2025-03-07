@@ -24,6 +24,8 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Mapper;
 
 use CuyZ\Valinor;
+use EliasHaeussler\Typo3Warming\Domain;
+use EliasHaeussler\Typo3Warming\Exception;
 use TYPO3\CMS\Core;
 
 /**
@@ -35,7 +37,7 @@ use TYPO3\CMS\Core;
 final class MapperFactory
 {
     public function __construct(
-        private readonly Core\Site\SiteFinder $siteFinder,
+        private readonly Domain\Repository\SiteRepository $siteRepository,
     ) {}
 
     public function get(): Valinor\Mapper\TreeMapper
@@ -51,12 +53,12 @@ final class MapperFactory
     }
 
     /**
-     * @pure
      * @throws Core\Exception\SiteNotFoundException
+     * @throws Exception\SiteCannotBeWarmed
      */
     private function mapSites(string $siteIdentifier): Core\Site\Entity\Site
     {
-        /** @phpstan-ignore possiblyImpure.methodCall */
-        return $this->siteFinder->getSiteByIdentifier($siteIdentifier);
+        return $this->siteRepository->findOneByIdentifier($siteIdentifier)
+            ?? throw new Exception\SiteCannotBeWarmed($siteIdentifier);
     }
 }
