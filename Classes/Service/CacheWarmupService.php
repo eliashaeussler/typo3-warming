@@ -31,7 +31,6 @@ use EliasHaeussler\Typo3Warming\Domain;
 use EliasHaeussler\Typo3Warming\Event;
 use EliasHaeussler\Typo3Warming\Http;
 use EliasHaeussler\Typo3Warming\Result;
-use EliasHaeussler\Typo3Warming\Utility;
 use EliasHaeussler\Typo3Warming\ValueObject;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\EventDispatcher;
@@ -61,6 +60,7 @@ final class CacheWarmupService
         private readonly Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
         private readonly EventDispatcher\EventDispatcherInterface $eventDispatcher,
         private readonly Typo3SitemapLocator\Sitemap\SitemapLocator $sitemapLocator,
+        private readonly Http\Message\PageUriBuilder $pageUriBuilder,
     ) {
         $this->setCrawler(
             $this->configuration->getCrawler(),
@@ -118,10 +118,10 @@ final class CacheWarmupService
             }
 
             foreach ($languageIds as $languageId) {
-                $url = Utility\HttpUtility::generateUri($pageWarmupRequest->getPage(), $languageId);
+                $uri = $this->pageUriBuilder->build($pageWarmupRequest->getPage(), $languageId);
 
-                if ($url !== null) {
-                    $cacheWarmer->addUrl((string)$url);
+                if ($uri !== null) {
+                    $cacheWarmer->addUrl((string)$uri);
                 }
             }
         }
