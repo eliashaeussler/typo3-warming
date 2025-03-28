@@ -65,6 +65,7 @@ final class CacheWarmupService
 
     /**
      * @param list<ValueObject\Request\SiteWarmupRequest> $sites
+     * @param non-negative-int|null $limit
      * @param list<ValueObject\Request\PageWarmupRequest> $pages
      * @throws CacheWarmup\Exception\Exception
      * @throws GuzzleException

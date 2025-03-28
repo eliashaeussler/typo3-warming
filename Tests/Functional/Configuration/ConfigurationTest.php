@@ -238,11 +238,11 @@ final class ConfigurationTest extends TestingFramework\Core\Functional\Functiona
     }
 
     #[Framework\Attributes\Test]
-    public function getLimitReturnsAbsoluteValue(): void
+    public function getLimitReturnsNonNegativeIntegerValue(): void
     {
         $this->extensionConfiguration->set(Src\Extension::KEY, ['limit' => -1]);
 
-        self::assertSame(1, $this->subject->getLimit());
+        self::assertSame(0, $this->subject->getLimit());
     }
 
     #[Framework\Attributes\Test]

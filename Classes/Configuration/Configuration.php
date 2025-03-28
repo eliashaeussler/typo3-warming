@@ -179,6 +179,9 @@ final class Configuration
         }
     }
 
+    /**
+     * @return non-negative-int
+     */
     public function getLimit(): int
     {
         try {
@@ -188,7 +191,7 @@ final class Configuration
                 return self::DEFAULT_LIMIT;
             }
 
-            return abs((int)$limit);
+            return max(0, (int)$limit);
         } catch (Core\Exception) {
             return self::DEFAULT_LIMIT;
         }

@@ -33,11 +33,17 @@ use EliasHaeussler\CacheWarmup;
  */
 final class RequestConfiguration
 {
+    /**
+     * @param non-negative-int|null $limit
+     */
     public function __construct(
         private readonly ?int $limit = null,
         private readonly ?CacheWarmup\Crawler\Strategy\CrawlingStrategy $strategy = null,
     ) {}
 
+    /**
+     * @return non-negative-int|null
+     */
     public function getLimit(): ?int
     {
         return $this->limit;
