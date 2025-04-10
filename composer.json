@@ -40,10 +40,11 @@
 		"typo3/cms-frontend": "~12.4.21 || ~13.4.0"
 	},
 	"require-dev": {
+		"codeception/codeception": "^5.2",
 		"codeception/module-asserts": "^3.0",
 		"codeception/module-cli": "^2.0",
-		"codeception/module-db": "^3.1",
-		"codeception/module-webdriver": "^4.0",
+		"codeception/module-db": "^3.2",
+		"codeception/module-webdriver": "^4.0.3",
 		"eliashaeussler/transient-logger": "^1.0",
 		"eliashaeussler/typo3-codeception-helper": "^1.0",
 		"eliashaeussler/valinor-xml": "^1.0.3",
