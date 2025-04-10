@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Http\Client\Handler;
 
+use EliasHaeussler\Typo3Warming\Domain;
 use GuzzleHttp\Exception;
 use GuzzleHttp\Promise;
 use GuzzleHttp\Utils;
@@ -52,9 +53,9 @@ final class SubRequestHandler
 
     public function __construct(
         private readonly Frontend\Http\Application $application,
-        Core\Site\SiteFinder $siteFinder,
+        Domain\Repository\SiteRepository $siteRepository,
     ) {
-        $this->supportedBaseUrls = $this->resolveBaseUrls($siteFinder);
+        $this->supportedBaseUrls = $this->resolveBaseUrls($siteRepository);
         $this->fallbackHandler = Utils::chooseHandler();
     }
 
@@ -111,12 +112,11 @@ final class SubRequestHandler
     }
 
     /**
-     * @param Core\Site\SiteFinder $siteFinder
      * @return list<string>
      */
-    private function resolveBaseUrls(Core\Site\SiteFinder $siteFinder): array
+    private function resolveBaseUrls(Domain\Repository\SiteRepository $siteRepository): array
     {
-        $sites = $siteFinder->getAllSites();
+        $sites = $siteRepository->findAll();
         $baseUrls = [];
 
         foreach ($sites as $site) {
