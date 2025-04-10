@@ -18,7 +18,6 @@ composer_version: "2"
 disable_settings_management: true
 web_environment:
     - TESTING_DOMAIN=$DDEV_HOSTNAME
-    - XDEBUG_MODE=coverage
     - TYPO3_CONTEXT=Development/DDEV
     - typo3DatabaseHost=db
     - typo3DatabaseUsername=root

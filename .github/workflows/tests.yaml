@@ -109,7 +109,7 @@ jobs:
           autostart: false
       - name: Configure and start DDEV
         run: |
-          ddev config --project-type=typo3 --xdebug-enabled=true
+          ddev config --project-type=typo3
           ddev start
 
       # Install dependencies
