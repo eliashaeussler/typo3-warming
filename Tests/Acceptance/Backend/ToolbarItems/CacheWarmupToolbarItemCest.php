@@ -58,6 +58,7 @@ final class CacheWarmupToolbarItemCest
     ): void {
         $extensionConfiguration->write('enableToolbar', false);
 
+        $I->wait(2);
         $I->loginAs('admin');
         $I->dontSeeElement(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
 
