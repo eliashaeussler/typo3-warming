@@ -48,6 +48,7 @@
 		"eliashaeussler/typo3-codeception-helper": "^1.0",
 		"eliashaeussler/version-bumper": "^2.1.1",
 		"phpunit/phpcov": "^9.0 || ^10.0",
+		"phpunit/phpunit": "^10.5.35 || ^11.5",
 		"symfony/config": "^6.4 || ^7.0",
 		"typo3/cms-install": "~12.4.8 || ~13.4.0",
 		"typo3/cms-seo": "~12.4.8 || ~13.4.0",
