@@ -17,29 +17,6 @@ jobs:
         exclude:
           - php-version: "8.1"
             typo3-version: "13.4"
-
-        # Enforce PHPUnit ^11.2 for TYPO3 13.4 & lowest dependencies
-        # since it adds support for doubling readonly classes (SiteFinder in our case)
-        include:
-          - php-version: "8.2"
-            typo3-version: "13.4"
-            dependencies: "lowest"
-            composer-options: "--with=phpunit/phpunit:^11.2"
-          - php-version: "8.3"
-            typo3-version: "13.4"
-            dependencies: "lowest"
-            composer-options: "--with=phpunit/phpunit:^11.2"
-
-          # Enforce eliashaeussler/valinor-xml ^1.0.3 for PHP 8.4 & lowest dependencies
-          # since 1.0.2 has broken PHP 8.4 support
-          - php-version: "8.4"
-            typo3-version: "12.4"
-            dependencies: "lowest"
-            composer-options: "--with=eliashaeussler/valinor-xml:^1.0.3"
-          - php-version: "8.4"
-            typo3-version: "13.4"
-            dependencies: "lowest"
-            composer-options: "--with=phpunit/phpunit:^11.2 --with=eliashaeussler/valinor-xml:^1.0.3"
     steps:
       - uses: actions/checkout@v4
         with:
