@@ -17,6 +17,22 @@ jobs:
         exclude:
           - php-version: "8.1"
             typo3-version: "13.4"
+
+        # Enforce PHPUnit ^11.5 for TYPO3 13.4 & lowest dependencies
+        # since it adds support for doubling readonly classes (SiteFinder in our case)
+        include:
+          - php-version: "8.2"
+            typo3-version: "13.4"
+            dependencies: "lowest"
+            composer-options: "--with=phpunit/phpunit:^11.5"
+          - php-version: "8.3"
+            typo3-version: "13.4"
+            dependencies: "lowest"
+            composer-options: "--with=phpunit/phpunit:^11.5"
+          - php-version: "8.4"
+            typo3-version: "13.4"
+            dependencies: "lowest"
+            composer-options: "--with=phpunit/phpunit:^11.5"
     steps:
       - uses: actions/checkout@v4
         with:
