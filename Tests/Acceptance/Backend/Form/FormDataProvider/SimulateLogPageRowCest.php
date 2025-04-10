@@ -43,10 +43,10 @@ final class SimulateLogPageRowCest
 
         $numberOfLogs = $I->grabNumRecords(Src\Domain\Model\Log::TABLE_NAME);
         $randomLogNumber = random_int(1, $numberOfLogs);
+        $selector = sprintf('tr[data-table="tx_warming_domain_model_log"]:nth-child(%d) td.col-title a', $randomLogNumber);
 
-        $I->click(
-            sprintf('tr[data-table="tx_warming_domain_model_log"]:nth-child(%d) td.col-title a', $randomLogNumber),
-        );
+        $I->scrollToElementInModule($selector);
+        $I->click($selector);
 
         $recordUid = $I->grabFromCurrentUrl('~edit%5Btx_warming_domain_model_log%5D%5B(\\d+)%5D=edit~');
 

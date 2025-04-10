@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "194432e61fdd419017bce01c503092be",
+    "content-hash": "caa66749baacc5673c0fad552d4ad8aa",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -6963,16 +6963,16 @@
         },
         {
             "name": "eliashaeussler/typo3-codeception-helper",
-            "version": "1.2.0",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/typo3-codeception-helper.git",
-                "reference": "ab6cdf44d846314c0da0d0c9472517aa1d9d529b"
+                "reference": "04a8175b55713b63ebc73f0f2d81d3efcbc99a9f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/typo3-codeception-helper/zipball/ab6cdf44d846314c0da0d0c9472517aa1d9d529b",
-                "reference": "ab6cdf44d846314c0da0d0c9472517aa1d9d529b",
+                "url": "https://api.github.com/repos/eliashaeussler/typo3-codeception-helper/zipball/04a8175b55713b63ebc73f0f2d81d3efcbc99a9f",
+                "reference": "04a8175b55713b63ebc73f0f2d81d3efcbc99a9f",
                 "shasum": ""
             },
             "require": {
@@ -6991,7 +6991,7 @@
                 "ergebnis/composer-normalize": "^2.30",
                 "phpstan/extension-installer": "^1.2",
                 "phpstan/phpstan-phpunit": "^2.0",
-                "phpunit/phpunit": "^10.2 || ^11.0",
+                "phpunit/phpunit": "^10.2 || ^11.0 || ^12.0",
                 "symfony/finder": "^5.4 || ^6.0 || ^7.0"
             },
             "suggest": {
@@ -7018,9 +7018,9 @@
             "description": "Helper functions for Codeception tests within TYPO3 extensions",
             "support": {
                 "issues": "https://github.com/eliashaeussler/typo3-codeception-helper/issues",
-                "source": "https://github.com/eliashaeussler/typo3-codeception-helper/tree/1.2.0"
+                "source": "https://github.com/eliashaeussler/typo3-codeception-helper/tree/1.2.1"
             },
-            "time": "2025-02-07T11:01:50+00:00"
+            "time": "2025-04-10T18:20:47+00:00"
         },
         {
             "name": "eliashaeussler/version-bumper",
