@@ -25,6 +25,7 @@ namespace EliasHaeussler\Typo3Warming\Backend\ContextMenu\ItemProviders;
 
 use EliasHaeussler\Typo3SitemapLocator;
 use EliasHaeussler\Typo3Warming\Configuration;
+use EliasHaeussler\Typo3Warming\Security;
 use EliasHaeussler\Typo3Warming\Utility;
 use TYPO3\CMS\Backend;
 use TYPO3\CMS\Core;
@@ -77,6 +78,7 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
         private readonly Typo3SitemapLocator\Sitemap\SitemapLocator $sitemapLocator,
         private readonly Core\Site\SiteFinder $siteFinder,
         private readonly Configuration\Configuration $configuration,
+        private readonly Security\WarmupPermissionGuard $accessGuard,
     ) {
         parent::__construct();
     }
@@ -118,7 +120,10 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
             return $this->canWarmupCachesOfSite();
         }
 
-        return Utility\AccessUtility::canWarmupCacheOfPage((int)$this->identifier);
+        return $this->accessGuard->canWarmupCacheOfPage(
+            (int)$this->identifier,
+            Security\Context\PermissionContext::forCurrentBackendUser(),
+        );
     }
 
     /**
@@ -175,10 +180,10 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
             } else {
                 $languages = array_filter(
                     $languages,
-                    fn(Core\Site\Entity\SiteLanguage $siteLanguage): bool => Utility\AccessUtility::canWarmupCacheOfPage(
+                    fn(Core\Site\Entity\SiteLanguage $siteLanguage): bool => $this->accessGuard->canWarmupCacheOfPage(
                         (int)$this->identifier,
-                        $siteLanguage->getLanguageId(),
-                    )
+                        Security\Context\PermissionContext::forLanguageAndCurrentBackendUser($siteLanguage->getLanguageId()),
+                    ),
                 );
             }
 
@@ -237,11 +242,14 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
     private function canWarmupCachesOfSite(?Core\Site\Entity\SiteLanguage $siteLanguage = null): bool
     {
         $site = $this->getCurrentSite();
-        $languageId = $siteLanguage?->getLanguageId();
+        $context = new Security\Context\PermissionContext(
+            $siteLanguage?->getLanguageId(),
+            Utility\BackendUtility::getBackendUser(),
+        );
 
         if ($site === null ||
             $site->getRootPageId() !== (int)$this->identifier ||
-            !Utility\AccessUtility::canWarmupCacheOfSite($site, $languageId)
+            !$this->accessGuard->canWarmupCacheOfSite($site, $context)
         ) {
             return false;
         }

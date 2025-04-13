@@ -49,5 +49,5 @@ configuration to the :typoscript:`options.cacheWarmup` User TSconfig:
 
 ..  seealso::
 
-    You might also want to check out :ref:`access-utility` for the
+    You might also want to check out :ref:`warmup-permission-guard` for the
     actual implementation of the permission check.

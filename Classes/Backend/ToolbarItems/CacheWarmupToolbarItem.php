@@ -24,7 +24,7 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Backend\ToolbarItems;
 
 use EliasHaeussler\Typo3Warming\Configuration;
-use EliasHaeussler\Typo3Warming\Utility;
+use EliasHaeussler\Typo3Warming\Security;
 use EliasHaeussler\Typo3Warming\View;
 use TYPO3\CMS\Backend;
 use TYPO3\CMS\Core;
@@ -41,6 +41,7 @@ final class CacheWarmupToolbarItem implements Backend\Toolbar\ToolbarItemInterfa
         private readonly Configuration\Configuration $configuration,
         private readonly View\TemplateRenderer $renderer,
         private readonly Core\Site\SiteFinder $siteFinder,
+        private readonly Security\WarmupPermissionGuard $accessGuard,
         Core\Page\PageRenderer $pageRenderer,
     ) {
         $pageRenderer->loadJavaScriptModule('@eliashaeussler/typo3-warming/backend/toolbar-menu.js');
@@ -94,7 +95,7 @@ final class CacheWarmupToolbarItem implements Backend\Toolbar\ToolbarItemInterfa
         }
 
         foreach ($this->siteFinder->getAllSites() as $site) {
-            if (Utility\AccessUtility::canWarmupCacheOfSite($site)) {
+            if ($this->accessGuard->canWarmupCacheOfSite($site, Security\Context\PermissionContext::forCurrentBackendUser())) {
                 return true;
             }
         }

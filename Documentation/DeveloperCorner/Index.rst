@@ -18,5 +18,5 @@ into the cache warmup process.
     CrawlingStrategies
     SitemapProviders
     ConfigurationAPI
-    AccessUtility
+    WarmupPermissionGuard
     Events
