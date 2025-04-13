@@ -574,67 +574,67 @@ parameters:
 			message: '#^Call to method createNewBasicSite\(\) on an unknown class TYPO3\\CMS\\Core\\Configuration\\SiteWriter\.$#'
 			identifier: class.notFound
 			count: 1
-			path: ../Functional/Utility/AccessUtilityTest.php
+			path: ../Functional/Security/WarmupPermissionGuardTest.php
 
 		-
 			message: '#^Call to method write\(\) on an unknown class TYPO3\\CMS\\Core\\Configuration\\SiteWriter\.$#'
 			identifier: class.notFound
 			count: 1
-			path: ../Functional/Utility/AccessUtilityTest.php
+			path: ../Functional/Security/WarmupPermissionGuardTest.php
 
 		-
 			message: '#^Class TYPO3\\CMS\\Core\\Configuration\\SiteConfiguration constructor invoked with 7 parameters, 2\-3 required\.$#'
 			identifier: arguments.count
 			count: 1
-			path: ../Functional/Utility/AccessUtilityTest.php
+			path: ../Functional/Security/WarmupPermissionGuardTest.php
 
 		-
 			message: '#^Class TYPO3\\CMS\\Core\\Site\\Set\\SetRegistry not found\.$#'
 			identifier: class.notFound
 			count: 1
-			path: ../Functional/Utility/AccessUtilityTest.php
+			path: ../Functional/Security/WarmupPermissionGuardTest.php
 
 		-
 			message: '#^Class TYPO3\\CMS\\Core\\Site\\SiteSettingsFactory not found\.$#'
 			identifier: class.notFound
 			count: 1
-			path: ../Functional/Utility/AccessUtilityTest.php
+			path: ../Functional/Security/WarmupPermissionGuardTest.php
 
 		-
 			message: '#^Instantiated class TYPO3\\CMS\\Core\\Configuration\\SiteWriter not found\.$#'
 			identifier: class.notFound
 			count: 1
-			path: ../Functional/Utility/AccessUtilityTest.php
+			path: ../Functional/Security/WarmupPermissionGuardTest.php
 
 		-
 			message: '#^Parameter \#2 \$eventDispatcher of class TYPO3\\CMS\\Core\\Configuration\\SiteConfiguration constructor expects Psr\\EventDispatcher\\EventDispatcherInterface, TYPO3\\CMS\\Core\\Site\\SiteSettingsFactory given\.$#'
 			identifier: argument.type
 			count: 1
-			path: ../Functional/Utility/AccessUtilityTest.php
+			path: ../Functional/Security/WarmupPermissionGuardTest.php
 
 		-
 			message: '#^Parameter \#3 \$coreCache of class TYPO3\\CMS\\Core\\Configuration\\SiteConfiguration constructor expects TYPO3\\CMS\\Core\\Cache\\Frontend\\PhpFrontend\|null, TYPO3\\CMS\\Core\\Site\\Set\\SetRegistry given\.$#'
 			identifier: argument.type
 			count: 1
-			path: ../Functional/Utility/AccessUtilityTest.php
+			path: ../Functional/Security/WarmupPermissionGuardTest.php
 
 		-
 			message: '#^Service "TYPO3\\CMS\\Core\\Configuration\\Loader\\YamlFileLoader" is not registered in the container\.$#'
 			identifier: symfonyContainer.serviceNotFound
 			count: 1
-			path: ../Functional/Utility/AccessUtilityTest.php
+			path: ../Functional/Security/WarmupPermissionGuardTest.php
 
 		-
 			message: '#^Service "TYPO3\\CMS\\Core\\Site\\Set\\SetRegistry" is not registered in the container\.$#'
 			identifier: symfonyContainer.serviceNotFound
 			count: 1
-			path: ../Functional/Utility/AccessUtilityTest.php
+			path: ../Functional/Security/WarmupPermissionGuardTest.php
 
 		-
 			message: '#^Service "TYPO3\\CMS\\Core\\Site\\SiteSettingsFactory" is not registered in the container\.$#'
 			identifier: symfonyContainer.serviceNotFound
 			count: 1
-			path: ../Functional/Utility/AccessUtilityTest.php
+			path: ../Functional/Security/WarmupPermissionGuardTest.php
 
 		-
 			message: '#^Call to method createNewBasicSite\(\) on an unknown class TYPO3\\CMS\\Core\\Configuration\\SiteWriter\.$#'

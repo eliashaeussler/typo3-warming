@@ -41,6 +41,11 @@ return static function (DependencyInjection\ContainerBuilder $containerBuilder):
         200,
     );
     $containerBuilder->addCompilerPass(
+        new Tests\Build\DependencyInjection\CompilerPass\PublicServicePass('/^cache\\.runtime$/'),
+        DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_REMOVING,
+        200,
+    );
+    $containerBuilder->addCompilerPass(
         new Tests\Build\DependencyInjection\CompilerPass\PublicServicePass('/^cache\\.warming$/'),
         DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_REMOVING,
         200,

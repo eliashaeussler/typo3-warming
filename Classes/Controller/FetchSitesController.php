@@ -27,6 +27,7 @@ use EliasHaeussler\Typo3SitemapLocator;
 use EliasHaeussler\Typo3Warming\Configuration;
 use EliasHaeussler\Typo3Warming\Crawler;
 use EliasHaeussler\Typo3Warming\Http;
+use EliasHaeussler\Typo3Warming\Security;
 use EliasHaeussler\Typo3Warming\Utility;
 use EliasHaeussler\Typo3Warming\ValueObject;
 use Psr\Http\Message;
@@ -50,6 +51,7 @@ final class FetchSitesController
         private readonly Http\Message\ResponseFactory $responseFactory,
         private readonly Core\Site\SiteFinder $siteFinder,
         private readonly Typo3SitemapLocator\Sitemap\SitemapLocator $sitemapLocator,
+        private readonly Security\WarmupPermissionGuard $accessGuard,
     ) {}
 
     /**
@@ -59,8 +61,15 @@ final class FetchSitesController
     public function __invoke(): Message\ResponseInterface
     {
         $siteGroups = [];
+        $sites = array_filter(
+            $this->siteFinder->getAllSites(),
+            fn(Core\Site\Entity\Site $site) => $this->accessGuard->canWarmupCacheOfSite(
+                $site,
+                Security\Context\PermissionContext::forCurrentBackendUser(),
+            ),
+        );
 
-        foreach (array_filter($this->siteFinder->getAllSites(), Utility\AccessUtility::canWarmupCacheOfSite(...)) as $site) {
+        foreach ($sites as $site) {
             $row = Backend\Utility\BackendUtility::getRecord('pages', $site->getRootPageId(), '*', ' AND hidden = 0');
 
             if (!\is_array($row)) {
