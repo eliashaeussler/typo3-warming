@@ -5,7 +5,7 @@
 # TYPO3 extension `warming`
 
 [![Coverage](https://img.shields.io/coverallsCoverage/github/eliashaeussler/typo3-warming?logo=coveralls)](https://coveralls.io/github/eliashaeussler/typo3-warming)
-[![Maintainability](https://img.shields.io/codeclimate/maintainability/eliashaeussler/typo3-warming?logo=codeclimate)](https://codeclimate.com/github/eliashaeussler/typo3-warming/maintainability)
+[![Maintainability](https://qlty.sh/badges/64b58163-ecdf-4df8-8c35-90821337aef6/maintainability.svg)](https://qlty.sh/gh/eliashaeussler/projects/typo3-warming)
 [![CGL](https://img.shields.io/github/actions/workflow/status/eliashaeussler/typo3-warming/cgl.yaml?label=cgl&logo=github)](https://github.com/eliashaeussler/typo3-warming/actions/workflows/cgl.yaml)
 [![Tests](https://img.shields.io/github/actions/workflow/status/eliashaeussler/typo3-warming/tests.yaml?label=tests&logo=github)](https://github.com/eliashaeussler/typo3-warming/actions/workflows/tests.yaml)
 [![Supported TYPO3 versions](https://typo3-badges.dev/badge/warming/typo3/shields.svg)](https://extensions.typo3.org/extension/warming)
