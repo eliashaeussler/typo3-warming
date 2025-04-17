@@ -84,7 +84,15 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
             $this->get(CacheWarmup\Crawler\CrawlerFactory::class),
             $this->get(Src\Crawler\Strategy\CrawlingStrategyFactory::class),
             $this->eventDispatcher,
-            $this->get(Typo3SitemapLocator\Sitemap\SitemapLocator::class),
+            new Typo3SitemapLocator\Sitemap\SitemapLocator(
+                $this->get(Core\Http\RequestFactory::class),
+                $this->get(Typo3SitemapLocator\Cache\SitemapsCache::class),
+                $this->eventDispatcher,
+                [
+                    new Typo3SitemapLocator\Sitemap\Provider\DefaultProvider(),
+                ],
+            ),
+            $this->get(Src\Http\Message\PageUriBuilder::class),
         );
     }
 

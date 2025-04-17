@@ -7,6 +7,36 @@
 				<source>Sitemap</source>
 			</trans-unit>
 
+			<trans-unit id="palettes.warming" resname="palettes.warming">
+				<source>Cache warmup</source>
+			</trans-unit>
+
+			<trans-unit id="site.warming_exclude.label" resname="site.warming_exclude.label">
+				<source>Allow cache warmup for this site</source>
+			</trans-unit>
+			<trans-unit id="site.warming_exclude.description" resname="site.warming_exclude.description">
+				<source>If disabled, this site won't be available for cache warmup in Backend and CLI context.</source>
+			</trans-unit>
+			<trans-unit id="site.warming_exclude.checked" resname="site.warming_exclude.checked">
+				<source>Enabled</source>
+			</trans-unit>
+			<trans-unit id="site.warming_exclude.unchecked" resname="site.warming_exclude.unchecked">
+				<source>Disabled</source>
+			</trans-unit>
+
+			<trans-unit id="site_language.warming_exclude.label" resname="site_language.warming_exclude.label">
+				<source>Allow cache warmup for this language</source>
+			</trans-unit>
+			<trans-unit id="site_language.warming_exclude.description" resname="site_language.warming_exclude.description">
+				<source>If disabled, this language won't be available for cache warmup in Backend and CLI context.</source>
+			</trans-unit>
+			<trans-unit id="site_language.warming_exclude.checked" resname="site_language.warming_exclude.checked">
+				<source>Enabled</source>
+			</trans-unit>
+			<trans-unit id="site_language.warming_exclude.unchecked" resname="site_language.warming_exclude.unchecked">
+				<source>Disabled</source>
+			</trans-unit>
+
 			<trans-unit id="tx_warming_domain_model_log" resname="tx_warming_domain_model_log">
 				<source>Cache warmup log</source>
 			</trans-unit>

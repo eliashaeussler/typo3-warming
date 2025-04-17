@@ -31,11 +31,11 @@ use EliasHaeussler\Typo3Warming\Crawler;
 use EliasHaeussler\Typo3Warming\Http;
 use EliasHaeussler\Typo3Warming\Service;
 use EliasHaeussler\Typo3Warming\ValueObject;
+use EliasHaeussler\ValinorXml;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message;
 use Psr\Log;
 use Symfony\Component\DependencyInjection;
-use TYPO3\CMS\Core;
 
 /**
  * CacheWarmupController
@@ -55,14 +55,16 @@ final class CacheWarmupController
 
     /**
      * @throws CacheWarmup\Exception\Exception
-     * @throws Core\Exception\SiteNotFoundException
      * @throws GuzzleException
-     * @throws \JsonException
      * @throws SSE\Exception\StreamIsActive
      * @throws SSE\Exception\StreamIsClosed
      * @throws SSE\Exception\StreamIsInactive
      * @throws Typo3SitemapLocator\Exception\BaseUrlIsNotSupported
      * @throws Typo3SitemapLocator\Exception\SitemapIsMissing
+     * @throws ValinorXml\Exception\ArrayPathHasUnexpectedType
+     * @throws ValinorXml\Exception\ArrayPathIsInvalid
+     * @throws ValinorXml\Exception\XmlIsMalformed
+     * @throws \JsonException
      */
     public function __invoke(Message\ServerRequestInterface $request): Message\ResponseInterface
     {

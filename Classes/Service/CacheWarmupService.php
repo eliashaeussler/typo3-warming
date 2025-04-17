@@ -31,12 +31,11 @@ use EliasHaeussler\Typo3Warming\Domain;
 use EliasHaeussler\Typo3Warming\Event;
 use EliasHaeussler\Typo3Warming\Http;
 use EliasHaeussler\Typo3Warming\Result;
-use EliasHaeussler\Typo3Warming\Utility;
 use EliasHaeussler\Typo3Warming\ValueObject;
+use EliasHaeussler\ValinorXml;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\EventDispatcher;
 use Symfony\Component\DependencyInjection;
-use TYPO3\CMS\Core;
 
 /**
  * CacheWarmupService
@@ -61,6 +60,7 @@ final class CacheWarmupService
         private readonly Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
         private readonly EventDispatcher\EventDispatcherInterface $eventDispatcher,
         private readonly Typo3SitemapLocator\Sitemap\SitemapLocator $sitemapLocator,
+        private readonly Http\Message\PageUriBuilder $pageUriBuilder,
     ) {
         $this->setCrawler(
             $this->configuration->getCrawler(),
@@ -72,10 +72,12 @@ final class CacheWarmupService
      * @param list<ValueObject\Request\SiteWarmupRequest> $sites
      * @param list<ValueObject\Request\PageWarmupRequest> $pages
      * @throws CacheWarmup\Exception\Exception
-     * @throws Core\Exception\SiteNotFoundException
      * @throws GuzzleException
      * @throws Typo3SitemapLocator\Exception\BaseUrlIsNotSupported
      * @throws Typo3SitemapLocator\Exception\SitemapIsMissing
+     * @throws ValinorXml\Exception\ArrayPathHasUnexpectedType
+     * @throws ValinorXml\Exception\ArrayPathIsInvalid
+     * @throws ValinorXml\Exception\XmlIsMalformed
      */
     public function warmup(
         array $sites = [],
@@ -118,10 +120,10 @@ final class CacheWarmupService
             }
 
             foreach ($languageIds as $languageId) {
-                $url = Utility\HttpUtility::generateUri($pageWarmupRequest->getPage(), $languageId);
+                $uri = $this->pageUriBuilder->build($pageWarmupRequest->getPage(), $languageId);
 
-                if ($url !== null) {
-                    $cacheWarmer->addUrl((string)$url);
+                if ($uri !== null) {
+                    $cacheWarmer->addUrl((string)$uri);
                 }
             }
         }

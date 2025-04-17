@@ -25,8 +25,8 @@ namespace EliasHaeussler\Typo3Warming\Backend\ContextMenu\ItemProviders;
 
 use EliasHaeussler\Typo3SitemapLocator;
 use EliasHaeussler\Typo3Warming\Configuration;
+use EliasHaeussler\Typo3Warming\Domain;
 use EliasHaeussler\Typo3Warming\Security;
-use EliasHaeussler\Typo3Warming\Utility;
 use TYPO3\CMS\Backend;
 use TYPO3\CMS\Core;
 
@@ -76,9 +76,10 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
 
     public function __construct(
         private readonly Typo3SitemapLocator\Sitemap\SitemapLocator $sitemapLocator,
-        private readonly Core\Site\SiteFinder $siteFinder,
+        private readonly Domain\Repository\SiteRepository $siteRepository,
+        private readonly Domain\Repository\SiteLanguageRepository $siteLanguageRepository,
         private readonly Configuration\Configuration $configuration,
-        private readonly Security\WarmupPermissionGuard $accessGuard,
+        private readonly Security\WarmupPermissionGuard $permissionGuard,
     ) {
         parent::__construct();
     }
@@ -120,7 +121,7 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
             return $this->canWarmupCachesOfSite();
         }
 
-        return $this->accessGuard->canWarmupCacheOfPage(
+        return $this->permissionGuard->canWarmupCacheOfPage(
             (int)$this->identifier,
             Security\Context\PermissionContext::forCurrentBackendUser(),
         );
@@ -167,20 +168,19 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
                 continue;
             }
 
-            // Get all languages of current site that are available
-            // for the current Backend user
-            $languages = $site->getAvailableLanguages($this->backendUser);
+            // Get all languages of current site that are available for the current backend user
+            $languages = $this->siteLanguageRepository->findAll($site);
 
             // Remove sites where no XML sitemap is available
             if ($itemName === self::ITEM_MODE_SITE) {
                 $languages = array_filter(
                     $languages,
-                    fn(Core\Site\Entity\SiteLanguage $siteLanguage): bool => $this->canWarmupCachesOfSite($siteLanguage)
+                    fn(Core\Site\Entity\SiteLanguage $siteLanguage): bool => $this->canWarmupCachesOfSite($siteLanguage),
                 );
             } else {
                 $languages = array_filter(
                     $languages,
-                    fn(Core\Site\Entity\SiteLanguage $siteLanguage): bool => $this->accessGuard->canWarmupCacheOfPage(
+                    fn(Core\Site\Entity\SiteLanguage $siteLanguage): bool => $this->permissionGuard->canWarmupCacheOfPage(
                         (int)$this->identifier,
                         Security\Context\PermissionContext::forLanguageAndCurrentBackendUser($siteLanguage->getLanguageId()),
                     ),
@@ -242,15 +242,9 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
     private function canWarmupCachesOfSite(?Core\Site\Entity\SiteLanguage $siteLanguage = null): bool
     {
         $site = $this->getCurrentSite();
-        $context = new Security\Context\PermissionContext(
-            $siteLanguage?->getLanguageId(),
-            Utility\BackendUtility::getBackendUser(),
-        );
 
-        if ($site === null ||
-            $site->getRootPageId() !== (int)$this->identifier ||
-            !$this->accessGuard->canWarmupCacheOfSite($site, $context)
-        ) {
+        // Skip item if we're not in site context or resolved site is unexpected
+        if ($site === null || $site->getRootPageId() !== (int)$this->identifier) {
             return false;
         }
 
@@ -270,10 +264,9 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
 
     private function getCurrentSite(): ?Core\Site\Entity\Site
     {
-        try {
-            return $this->siteFinder->getSiteByPageId((int)$this->identifier);
-        } catch (Core\Exception\SiteNotFoundException) {
-            return null;
-        }
+        /** @var positive-int $pageId */
+        $pageId = (int)$this->identifier;
+
+        return $this->siteRepository->findOneByPageId($pageId);
     }
 }

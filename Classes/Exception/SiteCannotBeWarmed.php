@@ -21,43 +21,21 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3Warming\Mapper;
-
-use CuyZ\Valinor;
-use EliasHaeussler\Typo3Warming\Domain;
-use EliasHaeussler\Typo3Warming\Exception;
-use TYPO3\CMS\Core;
+namespace EliasHaeussler\Typo3Warming\Exception;
 
 /**
- * MapperFactory
+ * SiteCannotBeWarmed
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class MapperFactory
+final class SiteCannotBeWarmed extends Exception
 {
-    public function __construct(
-        private readonly Domain\Repository\SiteRepository $siteRepository,
-    ) {}
-
-    public function get(): Valinor\Mapper\TreeMapper
+    public function __construct(string $identifier)
     {
-        return (new Valinor\MapperBuilder())
-            ->registerConstructor(
-                $this->mapSites(...),
-            )
-            ->allowSuperfluousKeys()
-            ->enableFlexibleCasting()
-            ->mapper()
-        ;
-    }
-
-    /**
-     * @throws Exception\SiteCannotBeWarmed
-     */
-    private function mapSites(string $siteIdentifier): Core\Site\Entity\Site
-    {
-        return $this->siteRepository->findOneByIdentifier($siteIdentifier)
-            ?? throw new Exception\SiteCannotBeWarmed($siteIdentifier);
+        parent::__construct(
+            sprintf('The site "%s" is not available for cache warmup.', $identifier),
+            1738272532,
+        );
     }
 }

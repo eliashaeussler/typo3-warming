@@ -75,6 +75,7 @@ final class CacheWarmupLegacyControllerTest extends TestingFramework\Core\Functi
         $backendUser = $this->setUpBackendUser(3);
         $GLOBALS['LANG'] = $this->get(Core\Localization\LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
+        $eventDispatcher = new Core\EventDispatcher\NoopEventDispatcher();
         $this->guzzleClientFactory = new Tests\Functional\Fixtures\Classes\DummyGuzzleClientFactory();
         $this->subject = new Src\Controller\CacheWarmupLegacyController(
             new Log\NullLogger(),
@@ -85,8 +86,16 @@ final class CacheWarmupLegacyControllerTest extends TestingFramework\Core\Functi
                 $this->get(Src\Configuration\Configuration::class),
                 $this->get(CacheWarmup\Crawler\CrawlerFactory::class),
                 $this->get(Src\Crawler\Strategy\CrawlingStrategyFactory::class),
-                new Core\EventDispatcher\NoopEventDispatcher(),
-                $this->get(Typo3SitemapLocator\Sitemap\SitemapLocator::class),
+                $eventDispatcher,
+                new Typo3SitemapLocator\Sitemap\SitemapLocator(
+                    $this->get(Core\Http\RequestFactory::class),
+                    $this->get(Typo3SitemapLocator\Cache\SitemapsCache::class),
+                    $eventDispatcher,
+                    [
+                        new Typo3SitemapLocator\Sitemap\Provider\DefaultProvider(),
+                    ],
+                ),
+                $this->get(Src\Http\Message\PageUriBuilder::class),
             ),
         );
     }

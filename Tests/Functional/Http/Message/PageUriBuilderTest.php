@@ -21,7 +21,7 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3Warming\Tests\Functional\Utility;
+namespace EliasHaeussler\Typo3Warming\Tests\Functional\Http\Message;
 
 use EliasHaeussler\Typo3Warming as Src;
 use EliasHaeussler\Typo3Warming\Tests;
@@ -30,29 +30,49 @@ use TYPO3\CMS\Core;
 use TYPO3\TestingFramework;
 
 /**
- * HttpUtilityTest
+ * PageUriBuilderTest
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-#[Framework\Attributes\CoversClass(Src\Utility\HttpUtility::class)]
-final class HttpUtilityTest extends TestingFramework\Core\Functional\FunctionalTestCase
+#[Framework\Attributes\CoversClass(Src\Http\Message\PageUriBuilder::class)]
+final class PageUriBuilderTest extends TestingFramework\Core\Functional\FunctionalTestCase
 {
     use Tests\Functional\SiteTrait;
+
+    protected array $testExtensionsToLoad = [
+        'sitemap_locator',
+        'warming',
+    ];
+
+    private Src\Http\Message\PageUriBuilder $subject;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/pages.csv');
+        $this->importCSVDataSet(\dirname(__DIR__, 2) . '/Fixtures/Database/be_groups.csv');
+        $this->importCSVDataSet(\dirname(__DIR__, 2) . '/Fixtures/Database/be_users.csv');
+        $this->importCSVDataSet(\dirname(__DIR__, 2) . '/Fixtures/Database/pages.csv');
 
         $this->createSite();
+        $this->setUpBackendUser(3);
+
+        $this->subject = $this->get(Src\Http\Message\PageUriBuilder::class);
     }
 
     #[Framework\Attributes\Test]
     public function generateUriReturnsNullIfPageDoesNotExist(): void
     {
-        self::assertNull(Src\Utility\HttpUtility::generateUri(99));
+        self::assertNull($this->subject->build(99));
+    }
+
+    #[Framework\Attributes\Test]
+    public function generateUriReturnsNullIfRelatedSiteIsNotAccessible(): void
+    {
+        $this->setUpBackendUser(2);
+
+        self::assertNull($this->subject->build(2));
     }
 
     #[Framework\Attributes\Test]
@@ -60,14 +80,22 @@ final class HttpUtilityTest extends TestingFramework\Core\Functional\FunctionalT
     {
         self::assertEquals(
             new Core\Http\Uri('https://typo3-testing.local/subsite-1'),
-            Src\Utility\HttpUtility::generateUri(2),
+            $this->subject->build(2),
         );
     }
 
     #[Framework\Attributes\Test]
     public function generateUriReturnsNullIfPageIsNotAvailableWithinGivenLanguage(): void
     {
-        self::assertNull(Src\Utility\HttpUtility::generateUri(3, 1));
+        self::assertNull($this->subject->build(3, 1));
+    }
+
+    #[Framework\Attributes\Test]
+    public function generateUriReturnsNullIfGivenSiteLanguageIsNotAccessible(): void
+    {
+        $this->setUpBackendUser(1);
+
+        self::assertNull($this->subject->build(1, 1));
     }
 
     #[Framework\Attributes\Test]
@@ -75,7 +103,7 @@ final class HttpUtilityTest extends TestingFramework\Core\Functional\FunctionalT
     {
         self::assertEquals(
             new Core\Http\Uri('https://typo3-testing.local/de/subsite-1-l-1'),
-            Src\Utility\HttpUtility::generateUri(2, 1),
+            $this->subject->build(2, 1),
         );
     }
 }
