@@ -121,10 +121,7 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
             return $this->canWarmupCachesOfSite();
         }
 
-        return $this->permissionGuard->canWarmupCacheOfPage(
-            (int)$this->identifier,
-            Security\Context\PermissionContext::forCurrentBackendUser(),
-        );
+        return $this->permissionGuard->canWarmupCacheOfPage((int)$this->identifier);
     }
 
     /**
@@ -182,7 +179,7 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
                     $languages,
                     fn(Core\Site\Entity\SiteLanguage $siteLanguage): bool => $this->permissionGuard->canWarmupCacheOfPage(
                         (int)$this->identifier,
-                        Security\Context\PermissionContext::forLanguageAndCurrentBackendUser($siteLanguage->getLanguageId()),
+                        new Security\Context\PermissionContext($siteLanguage->getLanguageId()),
                     ),
                 );
             }

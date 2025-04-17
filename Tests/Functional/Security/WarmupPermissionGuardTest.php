@@ -52,6 +52,8 @@ final class WarmupPermissionGuardTest extends TestingFramework\Core\Functional\F
         $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/be_users.csv');
         $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/pages.csv');
 
+        $this->setUpBackendUser(3);
+
         $this->site = $this->createSite();
         $this->cache = $this->get('cache.runtime');
         $this->subject = new Src\Security\WarmupPermissionGuard($this->cache);
@@ -85,8 +87,7 @@ final class WarmupPermissionGuardTest extends TestingFramework\Core\Functional\F
     #[Framework\Attributes\Test]
     public function canWarmupCacheOfPageReturnsTrueForAdmins(): void
     {
-        $backendUser = $this->setUpBackendUser(3);
-        $context = new Src\Security\Context\PermissionContext(backendUser: $backendUser);
+        $context = new Src\Security\Context\PermissionContext();
 
         self::assertTrue($this->subject->canWarmupCacheOfPage(1, $context));
     }
@@ -130,8 +131,7 @@ final class WarmupPermissionGuardTest extends TestingFramework\Core\Functional\F
     #[Framework\Attributes\Test]
     public function canWarmupCacheOfPageReturnsFalseForPageWithoutTranslation(): void
     {
-        $backendUser = $this->setUpBackendUser(3);
-        $context = new Src\Security\Context\PermissionContext(1, $backendUser);
+        $context = new Src\Security\Context\PermissionContext(1);
 
         self::assertFalse($this->subject->canWarmupCacheOfPage(3, $context));
     }
@@ -143,12 +143,6 @@ final class WarmupPermissionGuardTest extends TestingFramework\Core\Functional\F
         $context = new Src\Security\Context\PermissionContext(1, $backendUser);
 
         self::assertFalse($this->subject->canWarmupCacheOfPage(1, $context));
-    }
-
-    #[Framework\Attributes\Test]
-    public function canWarmupCacheOfPageReturnsTrueIfUserIsOmittedInContext(): void
-    {
-        self::assertTrue($this->subject->canWarmupCacheOfPage(2));
     }
 
     #[Framework\Attributes\Test]
@@ -177,8 +171,7 @@ final class WarmupPermissionGuardTest extends TestingFramework\Core\Functional\F
     #[Framework\Attributes\Test]
     public function canWarmupCacheOfSiteReturnsTrueForAdmins(): void
     {
-        $backendUser = $this->setUpBackendUser(3);
-        $context = new Src\Security\Context\PermissionContext(backendUser: $backendUser);
+        $context = new Src\Security\Context\PermissionContext();
 
         self::assertTrue($this->subject->canWarmupCacheOfSite($this->site, $context));
     }
@@ -204,8 +197,7 @@ final class WarmupPermissionGuardTest extends TestingFramework\Core\Functional\F
     #[Framework\Attributes\Test]
     public function canWarmupCacheOfSiteWithGivenLanguageReturnsTrueForAdmins(): void
     {
-        $backendUser = $this->setUpBackendUser(3);
-        $context = new Src\Security\Context\PermissionContext(1, $backendUser);
+        $context = new Src\Security\Context\PermissionContext(1);
 
         self::assertTrue($this->subject->canWarmupCacheOfSite($this->site, $context));
     }
@@ -217,11 +209,5 @@ final class WarmupPermissionGuardTest extends TestingFramework\Core\Functional\F
         $context = new Src\Security\Context\PermissionContext(2, $backendUser);
 
         self::assertFalse($this->subject->canWarmupCacheOfSite($this->site, $context));
-    }
-
-    #[Framework\Attributes\Test]
-    public function canWarmupCacheOfSiteReturnsTrueIfUserIsOmittedInContext(): void
-    {
-        self::assertTrue($this->subject->canWarmupCacheOfSite($this->site));
     }
 }

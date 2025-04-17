@@ -34,18 +34,12 @@ use TYPO3\CMS\Core;
  */
 final class PermissionContext
 {
+    public readonly Core\Authentication\BackendUserAuthentication $backendUser;
+
     public function __construct(
         public readonly ?int $languageId = null,
-        public readonly ?Core\Authentication\BackendUserAuthentication $backendUser = null,
-    ) {}
-
-    public static function forLanguageAndCurrentBackendUser(int $languageId): self
-    {
-        return new self($languageId, Utility\BackendUtility::getBackendUser());
-    }
-
-    public static function forCurrentBackendUser(): self
-    {
-        return new self(backendUser: Utility\BackendUtility::getBackendUser());
+        ?Core\Authentication\BackendUserAuthentication $backendUser = null,
+    ) {
+        $this->backendUser = $backendUser ?? Utility\BackendUtility::getBackendUser();
     }
 }

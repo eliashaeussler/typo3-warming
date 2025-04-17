@@ -85,7 +85,7 @@ final class SiteLanguageRepository
 
     private function isAccessible(Core\Site\Entity\Site $site, Core\Site\Entity\SiteLanguage $siteLanguage): bool
     {
-        $context = Security\Context\PermissionContext::forLanguageAndCurrentBackendUser($siteLanguage->getLanguageId());
+        $context = new Security\Context\PermissionContext($siteLanguage->getLanguageId());
 
         return !$this->isExcluded($siteLanguage) && $this->permissionGuard->canWarmupCacheOfSite($site, $context);
     }
