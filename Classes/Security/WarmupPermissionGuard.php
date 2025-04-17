@@ -91,11 +91,6 @@ final class WarmupPermissionGuard
             return false;
         }
 
-        // Early return if no backend user rights should be checked
-        if ($context->backendUser === null) {
-            return true;
-        }
-
         // Early return if backend user has admin privileges
         if ($context->backendUser->isAdmin()) {
             return true;
@@ -106,7 +101,7 @@ final class WarmupPermissionGuard
 
     private function hasLanguageAccess(Context\PermissionContext $context): bool
     {
-        if ($context->languageId === null || $context->backendUser === null) {
+        if ($context->languageId === null) {
             return true;
         }
 
@@ -119,10 +114,6 @@ final class WarmupPermissionGuard
 
     private function isAllowedPage(int $pageId, Context\PermissionContext $context): bool
     {
-        if ($context->backendUser === null) {
-            return true;
-        }
-
         if ($context->backendUser->isAdmin()) {
             return true;
         }
@@ -164,10 +155,6 @@ final class WarmupPermissionGuard
 
     private function isAllowedSite(string $siteIdentifier, Context\PermissionContext $context): bool
     {
-        if ($context->backendUser === null) {
-            return true;
-        }
-
         if ($context->backendUser->isAdmin()) {
             return true;
         }

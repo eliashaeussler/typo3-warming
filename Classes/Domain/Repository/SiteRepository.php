@@ -115,9 +115,7 @@ final class SiteRepository
 
     private function isAccessible(Core\Site\Entity\Site $site): bool
     {
-        $context = Security\Context\PermissionContext::forCurrentBackendUser();
-
-        return !$this->isExcluded($site) && $this->permissionGuard->canWarmupCacheOfSite($site, $context);
+        return !$this->isExcluded($site) && $this->permissionGuard->canWarmupCacheOfSite($site);
     }
 
     private function isExcluded(Core\Site\Entity\Site $site): bool

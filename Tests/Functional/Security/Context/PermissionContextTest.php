@@ -44,22 +44,12 @@ final class PermissionContextTest extends TestingFramework\Core\Functional\Funct
     }
 
     #[Framework\Attributes\Test]
-    public function forLanguageAndCurrentBackendUserReturnsContextForGivenLanguageAndCurrentBackendUser(): void
+    public function constructorUsesCurrentBackendUserIfNoBackendUserGiven(): void
     {
         $backendUser = $this->setUpBackendUser(3);
 
-        $expected = new Src\Security\Context\PermissionContext(1, $backendUser);
+        $actual = new Src\Security\Context\PermissionContext();
 
-        self::assertEquals($expected, Src\Security\Context\PermissionContext::forLanguageAndCurrentBackendUser(1));
-    }
-
-    #[Framework\Attributes\Test]
-    public function forCurrentBackendUserReturnsContextForCurrentBackendUser(): void
-    {
-        $backendUser = $this->setUpBackendUser(3);
-
-        $expected = new Src\Security\Context\PermissionContext(backendUser: $backendUser);
-
-        self::assertEquals($expected, Src\Security\Context\PermissionContext::forCurrentBackendUser());
+        self::assertEquals($backendUser, $actual->backendUser);
     }
 }
