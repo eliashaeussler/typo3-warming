@@ -3,8 +3,8 @@
 ..  image:: https://img.shields.io/coverallsCoverage/github/eliashaeussler/typo3-warming?logo=coveralls
     :target: https://coveralls.io/github/eliashaeussler/typo3-warming
 
-..  image:: https://img.shields.io/codeclimate/maintainability/eliashaeussler/typo3-warming?logo=codeclimate
-    :target: https://codeclimate.com/github/eliashaeussler/typo3-warming/maintainability
+..  image:: https://qlty.sh/badges/64b58163-ecdf-4df8-8c35-90821337aef6/maintainability.svg
+    :target: https://qlty.sh/gh/eliashaeussler/projects/typo3-warming
 
 ..  image:: https://img.shields.io/github/actions/workflow/status/eliashaeussler/typo3-warming/cgl.yaml?label=cgl&logo=github
     :target: https://github.com/eliashaeussler/typo3-warming/actions/workflows/cgl.yaml
