@@ -21,12 +21,13 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3Warming\Tests\Functional\EventListener;
+namespace EliasHaeussler\Typo3Warming\Tests\Unit\EventListener;
 
 use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3Warming as Src;
 use EliasHaeussler\Typo3Warming\Tests;
 use PHPUnit\Framework;
+use Psr\Log;
 use TYPO3\CMS\Core;
 use TYPO3\TestingFramework;
 
@@ -37,39 +38,54 @@ use TYPO3\TestingFramework;
  * @license GPL-2.0-or-later
  */
 #[Framework\Attributes\CoversClass(Src\EventListener\LoggingCrawlerListener::class)]
-final class LoggingCrawlerListenerTest extends TestingFramework\Core\Functional\FunctionalTestCase
+final class LoggingCrawlerListenerTest extends TestingFramework\Core\Unit\UnitTestCase
 {
-    protected array $testExtensionsToLoad = [
-        'sitemap_locator',
-        'warming',
-    ];
-
-    protected bool $initializeDatabase = false;
-
+    private Core\Log\LogManager&Framework\MockObject\MockObject $logManagerMock;
     private Src\EventListener\LoggingCrawlerListener $subject;
-    private CacheWarmup\Event\Crawler\CrawlerConstructed $event;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->subject = $this->get(Src\EventListener\LoggingCrawlerListener::class);
-        $this->event = new CacheWarmup\Event\Crawler\CrawlerConstructed(
-            new Tests\Functional\Fixtures\Classes\DummyLoggingCrawler(),
-        );
+        $this->logManagerMock = $this->createMock(Core\Log\LogManager::class);
+        $this->subject = new Src\EventListener\LoggingCrawlerListener($this->logManagerMock);
     }
 
     #[Framework\Attributes\Test]
     public function invokeInjectsCrawlerSpecificLogger(): void
     {
-        ($this->subject)($this->event);
+        $event = new CacheWarmup\Event\Crawler\CrawlerConstructed(
+            new Tests\Functional\Fixtures\Classes\DummyLoggingCrawler(),
+        );
 
-        $logManager = $this->get(Core\Log\LogManager::class);
-        $expected = $logManager->getLogger(Tests\Functional\Fixtures\Classes\DummyLoggingCrawler::class);
+        $logger = new Log\NullLogger();
 
-        /** @var Tests\Functional\Fixtures\Classes\DummyLoggingCrawler $crawler */
-        $crawler = $this->event->crawler();
+        $this->logManagerMock
+            ->expects(self::once())
+            ->method('getLogger')
+            ->willReturn($logger)
+        ;
 
-        self::assertSame($expected, $crawler->logger);
+        ($this->subject)($event);
+
+        $crawler = $event->crawler();
+
+        self::assertInstanceOf(Tests\Functional\Fixtures\Classes\DummyLoggingCrawler::class, $crawler);
+        self::assertSame($logger, $crawler->logger);
+    }
+
+    #[Framework\Attributes\Test]
+    public function invokeDoesNothingIfCrawlerIsNotSupported(): void
+    {
+        $event = new CacheWarmup\Event\Crawler\CrawlerConstructed(
+            new Tests\Functional\Fixtures\Classes\DummyCrawler(),
+        );
+
+        $this->logManagerMock
+            ->expects(self::never())
+            ->method('getLogger')
+        ;
+
+        ($this->subject)($event);
     }
 }
