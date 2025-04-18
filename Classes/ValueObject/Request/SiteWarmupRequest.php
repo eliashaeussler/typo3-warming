@@ -31,14 +31,14 @@ use TYPO3\CMS\Core\Site\Entity\Site;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class SiteWarmupRequest
+final readonly class SiteWarmupRequest
 {
     /**
      * @param list<int<0, max>> $languageIds
      */
     public function __construct(
-        private readonly Site $site,
-        private readonly array $languageIds = [],
+        private Site $site,
+        private array $languageIds = [],
     ) {}
 
     public function getSite(): Site

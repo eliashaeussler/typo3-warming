@@ -58,7 +58,7 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
     ];
 
     private Core\Site\Entity\Site $site;
-    private Src\Configuration\Configuration $configuration;
+    private Typo3SitemapLocator\Cache\SitemapsCache $cache;
     private Core\Configuration\ExtensionConfiguration $extensionConfiguration;
     private Tests\Functional\Fixtures\Classes\DummyEventDispatcher $eventDispatcher;
     private Core\Site\SiteFinder $siteFinder;
@@ -76,32 +76,23 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
 
         // Set up backend user
         $backendUser = $this->setUpBackendUser(3);
-        $GLOBALS['LANG'] = $this->get(Core\Localization\LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+        $GLOBALS['LANG'] = $this->get(Core\Localization\LanguageServiceFactory::class)
+            ->createFromUserPreferences($backendUser);
 
-        $this->configuration = $this->get(Src\Configuration\Configuration::class);
+        $this->createMockHandler();
+
+        $this->cache = $this->get(Typo3SitemapLocator\Cache\SitemapsCache::class);
         $this->extensionConfiguration = $this->get(Core\Configuration\ExtensionConfiguration::class);
-        $this->guzzleClientFactory = new Tests\Functional\Fixtures\Classes\DummyGuzzleClientFactory();
         $this->eventDispatcher = new Tests\Functional\Fixtures\Classes\DummyEventDispatcher();
         $this->siteFinder = $this->get(Core\Site\SiteFinder::class);
-        $this->commandTester = new Console\Tester\CommandTester(
-            new Src\Command\WarmupCommand(
-                new Src\Http\Client\ClientFactory($this->guzzleClientFactory),
-                $this->configuration,
-                $this->get(Src\Crawler\Strategy\CrawlingStrategyFactory::class),
-                new Typo3SitemapLocator\Sitemap\SitemapLocator(
-                    $this->get(Core\Http\RequestFactory::class),
-                    $this->get(Typo3SitemapLocator\Cache\SitemapsCache::class),
-                    $this->eventDispatcher,
-                    [
-                        new Typo3SitemapLocator\Sitemap\Provider\DefaultProvider(),
-                    ],
-                ),
-                $this->get(Src\Domain\Repository\SiteRepository::class),
-                $this->get(Src\Domain\Repository\SiteLanguageRepository::class),
-                $this->eventDispatcher,
-                $this->get(Core\Package\PackageManager::class),
-                $this->get(Src\Http\Message\PageUriBuilder::class),
-            ),
+        $this->commandTester = $this->createCommandTester();
+
+        // Inject client mock handler when config is resolved
+        $this->eventDispatcher->addListener(
+            CacheWarmup\Event\Config\ConfigResolved::class,
+            function (CacheWarmup\Event\Config\ConfigResolved $event) {
+                $event->config()->setClientOption('handler', $this->handler);
+            },
         );
     }
 
@@ -176,13 +167,11 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
             new Core\Http\Uri('https://typo3-testing.local/sitemap.xml'),
             $this->site,
             $this->site->getDefaultLanguage(),
-            true,
         );
         $originDE = new Src\Domain\Model\SiteAwareSitemap(
             new Core\Http\Uri('https://typo3-testing.local/de/sitemap.xml'),
             $this->site,
             $this->site->getLanguageById(1),
-            true,
         );
         $expected = [
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/', 1.0, origin: $originEN),
@@ -208,10 +197,7 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
         $this->mockSitemapResponse('en', 'de', 'fr');
 
         // Second site
-        $this->createSite(
-            'https://typo3-testing.local/foo/',
-            'test-site-2',
-        );
+        $this->createSite('https://typo3-testing.local/foo/', 'test-site-2');
         $this->mockSitemapResponse('en_2', 'de_2', 'fr_2');
 
         // Force cache recreation after second site was created
@@ -339,26 +325,29 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
     }
 
     #[Framework\Attributes\Test]
-    public function executeRespectsParserClientOptions(): void
+    public function executeRespectsParserOptions(): void
     {
+        $this->mockSitemapResponse('en');
+
         $originalConfiguration = $this->extensionConfiguration->get(Src\Extension::KEY);
         $newConfiguration = $originalConfiguration;
-        $newConfiguration['parserClientOptions'] = '{"foo":"baz"}';
+        $newConfiguration['parserOptions'] = '{"request_options":{"auth":["username","password"]}}';
 
         $this->extensionConfiguration->set(Src\Extension::KEY, $newConfiguration);
 
         $this->commandTester->execute([
-            '--pages' => ['1'],
+            '--sites' => ['1'],
+            '--languages' => ['0'],
         ]);
 
         self::assertSame(Console\Command\Command::SUCCESS, $this->commandTester->getStatusCode());
-        self::assertSame('baz', $this->guzzleClientFactory->lastOptions['foo'] ?? null);
+        self::assertSame(['username', 'password'], $this->handler->getLastOptions()['auth'] ?? null);
 
         $this->extensionConfiguration->set(Src\Extension::KEY, $originalConfiguration);
     }
 
     #[Framework\Attributes\Test]
-    public function executeRespectsStrategy(): void
+    public function executeRespectsGivenStrategy(): void
     {
         $this->mockSitemapResponse('en', 'de', 'fr');
 
@@ -366,13 +355,11 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
             new Core\Http\Uri('https://typo3-testing.local/sitemap.xml'),
             $this->site,
             $this->site->getDefaultLanguage(),
-            true,
         );
         $originDE = new Src\Domain\Model\SiteAwareSitemap(
             new Core\Http\Uri('https://typo3-testing.local/de/sitemap.xml'),
             $this->site,
             $this->site->getLanguageById(1),
-            true,
         );
         $expected = [
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/', 1.0, origin: $originEN),
@@ -393,6 +380,53 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
     }
 
     #[Framework\Attributes\Test]
+    public function executeRespectsConfiguredStrategy(): void
+    {
+        $this->mockSitemapResponse('en', 'de', 'fr');
+
+        // Overwrite extension configuration
+        $this->extensionConfiguration->set(Src\Extension::KEY, [
+            'strategy' => CacheWarmup\Crawler\Strategy\SortByPriorityStrategy::getName(),
+            'verboseCrawler' => Tests\Functional\Fixtures\Classes\DummyVerboseCrawler::class,
+        ]);
+
+        // Recreate command tester to reconfigure command
+        $this->commandTester = $this->createCommandTester();
+
+        $originEN = new Src\Domain\Model\SiteAwareSitemap(
+            new Core\Http\Uri('https://typo3-testing.local/sitemap.xml'),
+            $this->site,
+            $this->site->getDefaultLanguage(),
+        );
+        $originDE = new Src\Domain\Model\SiteAwareSitemap(
+            new Core\Http\Uri('https://typo3-testing.local/de/sitemap.xml'),
+            $this->site,
+            $this->site->getLanguageById(1),
+        );
+        $expected = [
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/', 1.0, origin: $originEN),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/', 1.0, origin: $originDE),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-2', 0.7, origin: $originEN),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-1', 0.5, origin: $originEN),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-2/subsite-2-1', 0.5, origin: $originEN),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/subsite-1-l-1', 0.5, origin: $originDE),
+        ];
+
+        $this->commandTester->execute([
+            '--sites' => ['1'],
+            '--strategy' => CacheWarmup\Crawler\Strategy\SortByPriorityStrategy::getName(),
+        ]);
+
+        self::assertSame(Console\Command\Command::SUCCESS, $this->commandTester->getStatusCode());
+        self::assertEquals($expected, Tests\Functional\Fixtures\Classes\DummyVerboseCrawler::$crawledUrls);
+
+        // Reset extension configuration
+        $this->extensionConfiguration->set(Src\Extension::KEY, [
+            'verboseCrawler' => Tests\Functional\Fixtures\Classes\DummyVerboseCrawler::class,
+        ]);
+    }
+
+    #[Framework\Attributes\Test]
     public function executeHandsOverEventDispatcher(): void
     {
         $this->commandTester->execute([
@@ -401,13 +435,16 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
 
         $dispatchedEvents = $this->eventDispatcher->dispatchedEvents;
 
-        self::assertCount(6, $dispatchedEvents);
-        self::assertInstanceOf(CacheWarmup\Event\ConfigResolved::class, $dispatchedEvents[0]);
-        self::assertInstanceOf(CacheWarmup\Event\UrlAdded::class, $dispatchedEvents[1]);
-        self::assertInstanceOf(CacheWarmup\Event\UrlAdded::class, $dispatchedEvents[2]);
-        self::assertInstanceOf(CacheWarmup\Event\UrlAdded::class, $dispatchedEvents[3]);
-        self::assertInstanceOf(CacheWarmup\Event\CrawlingStarted::class, $dispatchedEvents[4]);
-        self::assertInstanceOf(CacheWarmup\Event\CrawlingFinished::class, $dispatchedEvents[5]);
+        self::assertCount(9, $dispatchedEvents);
+        self::assertInstanceOf(CacheWarmup\Event\Config\ConfigResolved::class, $dispatchedEvents[0]);
+        self::assertInstanceOf(CacheWarmup\Event\Http\ClientConstructed::class, $dispatchedEvents[1]);
+        self::assertInstanceOf(CacheWarmup\Event\Crawler\CrawlerConstructed::class, $dispatchedEvents[2]);
+        self::assertInstanceOf(CacheWarmup\Event\Parser\ParserConstructed::class, $dispatchedEvents[3]);
+        self::assertInstanceOf(CacheWarmup\Event\Parser\UrlAdded::class, $dispatchedEvents[4]);
+        self::assertInstanceOf(CacheWarmup\Event\Parser\UrlAdded::class, $dispatchedEvents[5]);
+        self::assertInstanceOf(CacheWarmup\Event\Parser\UrlAdded::class, $dispatchedEvents[6]);
+        self::assertInstanceOf(CacheWarmup\Event\Crawler\CrawlingStarted::class, $dispatchedEvents[7]);
+        self::assertInstanceOf(CacheWarmup\Event\Crawler\CrawlingFinished::class, $dispatchedEvents[8]);
     }
 
     #[Framework\Attributes\Test]
@@ -425,8 +462,33 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
 
     protected function tearDown(): void
     {
-        parent::tearDown();
+        $this->cache->remove($this->site, $this->site->getLanguageById(0));
+        $this->cache->remove($this->site, $this->site->getLanguageById(1));
+        $this->cache->remove($this->site, $this->site->getLanguageById(2));
 
         Tests\Functional\Fixtures\Classes\DummyVerboseCrawler::reset();
+
+        parent::tearDown();
+    }
+
+    private function createCommandTester(): Console\Tester\CommandTester
+    {
+        return new Console\Tester\CommandTester(
+            new Src\Command\WarmupCommand(
+                $this->get(Src\Configuration\Configuration::class),
+                $this->get(CacheWarmup\Crawler\Strategy\CrawlingStrategyFactory::class),
+                new Typo3SitemapLocator\Sitemap\SitemapLocator(
+                    $this->get(Core\Http\RequestFactory::class),
+                    $this->cache,
+                    $this->eventDispatcher,
+                    [new Typo3SitemapLocator\Sitemap\Provider\DefaultProvider()],
+                ),
+                $this->get(Src\Domain\Repository\SiteRepository::class),
+                $this->get(Src\Domain\Repository\SiteLanguageRepository::class),
+                $this->eventDispatcher,
+                $this->get(Core\Package\PackageManager::class),
+                $this->get(Src\Http\Message\PageUriBuilder::class),
+            ),
+        );
     }
 }

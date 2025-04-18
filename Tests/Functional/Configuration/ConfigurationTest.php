@@ -68,7 +68,7 @@ final class ConfigurationTest extends TestingFramework\Core\Functional\Functiona
     {
         $this->extensionConfiguration->set(Src\Extension::KEY);
 
-        self::assertSame(Src\Crawler\ConcurrentUserAgentCrawler::class, $this->subject->getCrawler());
+        self::assertInstanceOf(Src\Crawler\ConcurrentUserAgentCrawler::class, $this->subject->getCrawler());
     }
 
     #[Framework\Attributes\Test]
@@ -77,7 +77,7 @@ final class ConfigurationTest extends TestingFramework\Core\Functional\Functiona
     {
         $this->extensionConfiguration->set(Src\Extension::KEY, ['crawler' => $crawler]);
 
-        self::assertSame(Src\Crawler\ConcurrentUserAgentCrawler::class, $this->subject->getCrawler());
+        self::assertInstanceOf(Src\Crawler\ConcurrentUserAgentCrawler::class, $this->subject->getCrawler());
     }
 
     #[Framework\Attributes\Test]
@@ -85,7 +85,7 @@ final class ConfigurationTest extends TestingFramework\Core\Functional\Functiona
     {
         $this->extensionConfiguration->set(Src\Extension::KEY, ['crawler' => CacheWarmup\Crawler\ConcurrentCrawler::class]);
 
-        self::assertSame(CacheWarmup\Crawler\ConcurrentCrawler::class, $this->subject->getCrawler());
+        self::assertInstanceOf(CacheWarmup\Crawler\ConcurrentCrawler::class, $this->subject->getCrawler());
     }
 
     #[Framework\Attributes\Test]
@@ -110,7 +110,7 @@ final class ConfigurationTest extends TestingFramework\Core\Functional\Functiona
         $this->extensionConfiguration->set(Src\Extension::KEY, ['crawlerOptions' => '"foo"']);
 
         $this->expectExceptionObject(
-            new CacheWarmup\Exception\CrawlerOptionIsInvalid('"foo"'),
+            new CacheWarmup\Exception\OptionsAreMalformed('"foo"'),
         );
 
         $this->subject->getCrawlerOptions();
@@ -129,7 +129,7 @@ final class ConfigurationTest extends TestingFramework\Core\Functional\Functiona
     {
         $this->extensionConfiguration->set(Src\Extension::KEY);
 
-        self::assertSame(Src\Crawler\OutputtingUserAgentCrawler::class, $this->subject->getVerboseCrawler());
+        self::assertInstanceOf(Src\Crawler\OutputtingUserAgentCrawler::class, $this->subject->getVerboseCrawler());
     }
 
     #[Framework\Attributes\Test]
@@ -138,7 +138,7 @@ final class ConfigurationTest extends TestingFramework\Core\Functional\Functiona
     {
         $this->extensionConfiguration->set(Src\Extension::KEY, ['verboseCrawler' => $verboseCrawler]);
 
-        self::assertSame(Src\Crawler\OutputtingUserAgentCrawler::class, $this->subject->getVerboseCrawler());
+        self::assertInstanceOf(Src\Crawler\OutputtingUserAgentCrawler::class, $this->subject->getVerboseCrawler());
     }
 
     #[Framework\Attributes\Test]
@@ -146,7 +146,7 @@ final class ConfigurationTest extends TestingFramework\Core\Functional\Functiona
     {
         $this->extensionConfiguration->set(Src\Extension::KEY, ['verboseCrawler' => CacheWarmup\Crawler\OutputtingCrawler::class]);
 
-        self::assertSame(CacheWarmup\Crawler\OutputtingCrawler::class, $this->subject->getVerboseCrawler());
+        self::assertInstanceOf(CacheWarmup\Crawler\OutputtingCrawler::class, $this->subject->getVerboseCrawler());
     }
 
     #[Framework\Attributes\Test]
@@ -171,7 +171,7 @@ final class ConfigurationTest extends TestingFramework\Core\Functional\Functiona
         $this->extensionConfiguration->set(Src\Extension::KEY, ['verboseCrawlerOptions' => '"foo"']);
 
         $this->expectExceptionObject(
-            new CacheWarmup\Exception\CrawlerOptionIsInvalid('"foo"'),
+            new CacheWarmup\Exception\OptionsAreMalformed('"foo"'),
         );
 
         $this->subject->getVerboseCrawlerOptions();
@@ -186,39 +186,39 @@ final class ConfigurationTest extends TestingFramework\Core\Functional\Functiona
     }
 
     #[Framework\Attributes\Test]
-    public function getParserClientOptionsReturnsEmptyArrayIfNoParserClientOptionsAreConfigured(): void
+    public function getParserOptionsReturnsEmptyArrayIfNoParserOptionsAreConfigured(): void
     {
         $this->extensionConfiguration->set(Src\Extension::KEY);
 
-        self::assertSame([], $this->subject->getParserClientOptions());
+        self::assertSame([], $this->subject->getParserOptions());
     }
 
     #[Framework\Attributes\Test]
-    public function getParserClientOptionsReturnsEmptyArrayIfConfiguredParserClientOptionsAreOfInvalidType(): void
+    public function getParserOptionsReturnsEmptyArrayIfConfiguredParserOptionsAreOfInvalidType(): void
     {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['parserClientOptions' => ['foo' => 'baz']]);
+        $this->extensionConfiguration->set(Src\Extension::KEY, ['parserOptions' => ['foo' => 'baz']]);
 
-        self::assertSame([], $this->subject->getParserClientOptions());
+        self::assertSame([], $this->subject->getParserOptions());
     }
 
     #[Framework\Attributes\Test]
-    public function getParserClientOptionsThrowsExceptionIfConfiguredParserClientOptionsAreOfInvalidJson(): void
+    public function getParserOptionsThrowsExceptionIfConfiguredParserOptionsAreOfInvalidJson(): void
     {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['parserClientOptions' => '"foo"']);
+        $this->extensionConfiguration->set(Src\Extension::KEY, ['parserOptions' => '"foo"']);
 
         $this->expectExceptionObject(
-            new CacheWarmup\Exception\CrawlerOptionIsInvalid('"foo"'),
+            new CacheWarmup\Exception\OptionsAreMalformed('"foo"'),
         );
 
-        $this->subject->getParserClientOptions();
+        $this->subject->getParserOptions();
     }
 
     #[Framework\Attributes\Test]
-    public function getParserClientOptionsReturnsConfiguredParserClientOptions(): void
+    public function getParserOptionsReturnsConfiguredParserOptions(): void
     {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['parserClientOptions' => '{"foo":"baz"}']);
+        $this->extensionConfiguration->set(Src\Extension::KEY, ['parserOptions' => '{"foo":"baz"}']);
 
-        self::assertSame(['foo' => 'baz'], $this->subject->getParserClientOptions());
+        self::assertSame(['foo' => 'baz'], $this->subject->getParserOptions());
     }
 
     #[Framework\Attributes\Test]
@@ -238,11 +238,11 @@ final class ConfigurationTest extends TestingFramework\Core\Functional\Functiona
     }
 
     #[Framework\Attributes\Test]
-    public function getLimitReturnsAbsoluteValue(): void
+    public function getLimitReturnsNonNegativeIntegerValue(): void
     {
         $this->extensionConfiguration->set(Src\Extension::KEY, ['limit' => -1]);
 
-        self::assertSame(1, $this->subject->getLimit());
+        self::assertSame(0, $this->subject->getLimit());
     }
 
     #[Framework\Attributes\Test]
@@ -320,9 +320,14 @@ final class ConfigurationTest extends TestingFramework\Core\Functional\Functiona
     #[Framework\Attributes\Test]
     public function getStrategyReturnsConfiguredStrategy(): void
     {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['strategy' => 'sort-by-priority']);
+        $this->extensionConfiguration->set(Src\Extension::KEY, [
+            'strategy' => CacheWarmup\Crawler\Strategy\SortByPriorityStrategy::getName(),
+        ]);
 
-        self::assertSame('sort-by-priority', $this->subject->getStrategy());
+        self::assertInstanceOf(
+            CacheWarmup\Crawler\Strategy\SortByPriorityStrategy::class,
+            $this->subject->getStrategy(),
+        );
     }
 
     #[Framework\Attributes\Test]

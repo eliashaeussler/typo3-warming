@@ -27,6 +27,7 @@ use CuyZ\Valinor;
 use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\SSE;
 use EliasHaeussler\Typo3SitemapLocator;
+use EliasHaeussler\Typo3Warming\Configuration;
 use EliasHaeussler\Typo3Warming\Crawler;
 use EliasHaeussler\Typo3Warming\Http;
 use EliasHaeussler\Typo3Warming\Service;
@@ -44,13 +45,14 @@ use Symfony\Component\DependencyInjection;
  * @license GPL-2.0-or-later
  */
 #[DependencyInjection\Attribute\Autoconfigure(public: true)]
-final class CacheWarmupController
+final readonly class CacheWarmupController
 {
     public function __construct(
-        private readonly Log\LoggerInterface $logger,
-        private readonly Valinor\Mapper\TreeMapper $mapper,
-        private readonly Http\Message\ResponseFactory $responseFactory,
-        private readonly Service\CacheWarmupService $warmupService,
+        private Configuration\Configuration $configuration,
+        private Log\LoggerInterface $logger,
+        private Valinor\Mapper\TreeMapper $mapper,
+        private Http\Message\ResponseFactory $responseFactory,
+        private Service\CacheWarmupService $warmupService,
     ) {}
 
     /**
@@ -93,7 +95,7 @@ final class CacheWarmupController
         $eventStream->open();
 
         // Apply event stream to crawler
-        $crawler = $this->warmupService->getCrawler();
+        $crawler = $this->configuration->getCrawler();
         if ($crawler instanceof Crawler\StreamableCrawler) {
             $crawler->setStream($eventStream);
         }

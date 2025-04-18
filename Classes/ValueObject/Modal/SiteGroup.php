@@ -31,16 +31,16 @@ use TYPO3\CMS\Core;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class SiteGroup
+final readonly class SiteGroup
 {
     /**
      * @param list<SiteGroupItem> $items
      */
     public function __construct(
-        private readonly Core\Site\Entity\Site $site,
-        private readonly string $title,
-        private readonly string $iconIdentifier,
-        private readonly array $items,
+        private Core\Site\Entity\Site $site,
+        private string $title,
+        private string $iconIdentifier,
+        private array $items,
     ) {}
 
     public function getSite(): Core\Site\Entity\Site

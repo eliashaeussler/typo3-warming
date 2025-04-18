@@ -67,6 +67,11 @@ return static function (DependencyInjection\ContainerBuilder $containerBuilder):
         200,
     );
     $containerBuilder->addCompilerPass(
+        Tests\Build\DependencyInjection\CompilerPass\PublicServicePass::fromClass(CacheWarmup\Crawler\Strategy\CrawlingStrategyFactory::class),
+        DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_REMOVING,
+        200,
+    );
+    $containerBuilder->addCompilerPass(
         Tests\Build\DependencyInjection\CompilerPass\PublicServicePass::fromClass(Valinor\Mapper\TreeMapper::class),
         DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_REMOVING,
         200,

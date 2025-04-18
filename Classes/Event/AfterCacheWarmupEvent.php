@@ -32,12 +32,12 @@ use EliasHaeussler\Typo3Warming\Result;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class AfterCacheWarmupEvent
+final readonly class AfterCacheWarmupEvent
 {
     public function __construct(
-        private readonly Result\CacheWarmupResult $result,
-        private readonly CacheWarmup\Crawler\Crawler $crawler,
-        private readonly CacheWarmup\CacheWarmer $cacheWarmer,
+        private Result\CacheWarmupResult $result,
+        private CacheWarmup\Crawler\Crawler $crawler,
+        private CacheWarmup\CacheWarmer $cacheWarmer,
     ) {}
 
     public function getResult(): Result\CacheWarmupResult

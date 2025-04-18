@@ -29,7 +29,7 @@ namespace EliasHaeussler\Typo3Warming\ValueObject\Request;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class WarmupRequest
+final readonly class WarmupRequest
 {
     /**
      * @param non-empty-string $requestId
@@ -37,10 +37,10 @@ final class WarmupRequest
      * @param list<PageWarmupRequest> $pages
      */
     public function __construct(
-        private readonly string $requestId,
-        private readonly array $sites = [],
-        private readonly array $pages = [],
-        private readonly RequestConfiguration $configuration = new RequestConfiguration(),
+        private string $requestId,
+        private array $sites = [],
+        private array $pages = [],
+        private RequestConfiguration $configuration = new RequestConfiguration(),
     ) {}
 
     /**

@@ -33,12 +33,12 @@ use TYPO3\CMS\Core;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class PageUriBuilder
+final readonly class PageUriBuilder
 {
     public function __construct(
-        private readonly Core\Domain\Repository\PageRepository $pageRepository,
-        private readonly Domain\Repository\SiteRepository $siteRepository,
-        private readonly Domain\Repository\SiteLanguageRepository $siteLanguageRepository,
+        private Core\Domain\Repository\PageRepository $pageRepository,
+        private Domain\Repository\SiteRepository $siteRepository,
+        private Domain\Repository\SiteLanguageRepository $siteLanguageRepository,
     ) {}
 
     /**

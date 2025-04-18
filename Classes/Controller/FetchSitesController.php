@@ -23,9 +23,9 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Controller;
 
+use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3SitemapLocator;
 use EliasHaeussler\Typo3Warming\Configuration;
-use EliasHaeussler\Typo3Warming\Crawler;
 use EliasHaeussler\Typo3Warming\Domain;
 use EliasHaeussler\Typo3Warming\Http;
 use EliasHaeussler\Typo3Warming\Utility;
@@ -42,16 +42,16 @@ use TYPO3\CMS\Core;
  * @license GPL-2.0-or-later
  */
 #[DependencyInjection\Attribute\Autoconfigure(public: true)]
-final class FetchSitesController
+final readonly class FetchSitesController
 {
     public function __construct(
-        private readonly Configuration\Configuration $configuration,
-        private readonly Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
-        private readonly Core\Imaging\IconFactory $iconFactory,
-        private readonly Http\Message\ResponseFactory $responseFactory,
-        private readonly Domain\Repository\SiteRepository $siteRepository,
-        private readonly Domain\Repository\SiteLanguageRepository $siteLanguageRepository,
-        private readonly Typo3SitemapLocator\Sitemap\SitemapLocator $sitemapLocator,
+        private Configuration\Configuration $configuration,
+        private CacheWarmup\Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
+        private Core\Imaging\IconFactory $iconFactory,
+        private Http\Message\ResponseFactory $responseFactory,
+        private Domain\Repository\SiteRepository $siteRepository,
+        private Domain\Repository\SiteLanguageRepository $siteLanguageRepository,
+        private Typo3SitemapLocator\Sitemap\SitemapLocator $sitemapLocator,
     ) {}
 
     /**
@@ -60,6 +60,7 @@ final class FetchSitesController
      */
     public function __invoke(): Message\ResponseInterface
     {
+        $crawlingStrategy = $this->configuration->getStrategy();
         $siteGroups = [];
 
         foreach ($this->siteRepository->findAll() as $site) {
@@ -81,9 +82,9 @@ final class FetchSitesController
             'userAgent' => $this->configuration->getUserAgent(),
             'configuration' => [
                 'limit' => $this->configuration->getLimit(),
-                'strategy' => $this->configuration->getStrategy(),
+                'strategy' => $crawlingStrategy !== null ? $crawlingStrategy::getName() : null,
             ],
-            'availableStrategies' => array_keys($this->crawlingStrategyFactory->getAll()),
+            'availableStrategies' => $this->crawlingStrategyFactory->getAll(),
             'isAdmin' => Utility\BackendUtility::getBackendUser()->isAdmin(),
         ]);
     }

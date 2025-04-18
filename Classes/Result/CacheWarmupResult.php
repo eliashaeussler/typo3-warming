@@ -33,16 +33,16 @@ use TYPO3\CMS\Core;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class CacheWarmupResult
+final readonly class CacheWarmupResult
 {
     /**
      * @param list<CacheWarmup\Sitemap\Sitemap> $excludedSitemaps
      * @param list<CacheWarmup\Sitemap\Url> $excludedUrls
      */
     public function __construct(
-        private readonly CacheWarmup\Result\CacheWarmupResult $result,
-        private readonly array $excludedSitemaps = [],
-        private readonly array $excludedUrls = [],
+        private CacheWarmup\Result\CacheWarmupResult $result,
+        private array $excludedSitemaps = [],
+        private array $excludedUrls = [],
     ) {}
 
     public function getResult(): CacheWarmup\Result\CacheWarmupResult

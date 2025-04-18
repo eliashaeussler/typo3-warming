@@ -34,12 +34,12 @@ use Psr\Http\Message;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class StreamResponseHandler implements CacheWarmup\Http\Message\Handler\ResponseHandler
+final readonly class StreamResponseHandler implements CacheWarmup\Http\Message\Handler\ResponseHandler
 {
     public function __construct(
-        private readonly SSE\Stream\EventStream $stream,
-        private readonly int $numberOfUrls,
-        private readonly CacheWarmup\Result\CacheWarmupResult $result,
+        private SSE\Stream\EventStream $stream,
+        private int $numberOfUrls,
+        private CacheWarmup\Result\CacheWarmupResult $result,
     ) {}
 
     /**

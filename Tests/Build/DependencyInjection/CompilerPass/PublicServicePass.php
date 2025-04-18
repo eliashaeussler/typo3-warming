@@ -35,10 +35,10 @@ use Symfony\Component\DependencyInjection;
  *
  * @codeCoverageIgnore
  */
-final class PublicServicePass implements DependencyInjection\Compiler\CompilerPassInterface
+final readonly class PublicServicePass implements DependencyInjection\Compiler\CompilerPassInterface
 {
     public function __construct(
-        private readonly string $definitionPattern,
+        private string $definitionPattern,
     ) {}
 
     public static function fromClass(string $className): self
