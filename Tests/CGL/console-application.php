@@ -39,6 +39,9 @@ $container = Core\Core\Bootstrap::init($classLoader);
 // Disable TYPO3's phar stream wrapper to allow execution of PHPStan
 stream_wrapper_restore('phar');
 
+// Disable custom logging
+unset($GLOBALS['TYPO3_CONF_VARS']['LOG']['EliasHaeussler']);
+
 // Simulate backend user
 $GLOBALS['BE_USER'] = new Core\Authentication\BackendUserAuthentication();
 
