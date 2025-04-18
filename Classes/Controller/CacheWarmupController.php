@@ -45,14 +45,14 @@ use Symfony\Component\DependencyInjection;
  * @license GPL-2.0-or-later
  */
 #[DependencyInjection\Attribute\Autoconfigure(public: true)]
-final class CacheWarmupController
+final readonly class CacheWarmupController
 {
     public function __construct(
-        private readonly Configuration\Configuration $configuration,
-        private readonly Log\LoggerInterface $logger,
-        private readonly Valinor\Mapper\TreeMapper $mapper,
-        private readonly Http\Message\ResponseFactory $responseFactory,
-        private readonly Service\CacheWarmupService $warmupService,
+        private Configuration\Configuration $configuration,
+        private Log\LoggerInterface $logger,
+        private Valinor\Mapper\TreeMapper $mapper,
+        private Http\Message\ResponseFactory $responseFactory,
+        private Service\CacheWarmupService $warmupService,
     ) {}
 
     /**

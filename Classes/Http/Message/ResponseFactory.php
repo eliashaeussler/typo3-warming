@@ -33,10 +33,10 @@ use TYPO3\CMS\Core;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class ResponseFactory
+final readonly class ResponseFactory
 {
     public function __construct(
-        private readonly View\TemplateRenderer $renderer,
+        private View\TemplateRenderer $renderer,
     ) {}
 
     public function ok(): Message\ResponseInterface

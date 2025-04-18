@@ -29,15 +29,15 @@ namespace EliasHaeussler\Typo3Warming\ValueObject\Request;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class PageWarmupRequest
+final readonly class PageWarmupRequest
 {
     /**
      * @param positive-int $page
      * @param list<int<0, max>> $languageIds
      */
     public function __construct(
-        private readonly int $page,
-        private readonly array $languageIds = [],
+        private int $page,
+        private array $languageIds = [],
     ) {}
 
     /**

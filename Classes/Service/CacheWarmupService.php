@@ -43,7 +43,7 @@ use Symfony\Component\DependencyInjection;
  * @license GPL-2.0-or-later
  */
 #[DependencyInjection\Attribute\Autoconfigure(public: true)]
-final class CacheWarmupService
+final readonly class CacheWarmupService
 {
     private CacheWarmup\Crawler\Crawler $crawler;
 
@@ -54,11 +54,11 @@ final class CacheWarmupService
      * @throws CacheWarmup\Exception\OptionsAreMalformed
      */
     public function __construct(
-        private readonly CacheWarmup\Http\Client\ClientFactory $clientFactory,
-        private readonly Configuration\Configuration $configuration,
-        private readonly EventDispatcher\EventDispatcherInterface $eventDispatcher,
-        private readonly Typo3SitemapLocator\Sitemap\SitemapLocator $sitemapLocator,
-        private readonly Http\Message\PageUriBuilder $pageUriBuilder,
+        private CacheWarmup\Http\Client\ClientFactory $clientFactory,
+        private Configuration\Configuration $configuration,
+        private EventDispatcher\EventDispatcherInterface $eventDispatcher,
+        private Typo3SitemapLocator\Sitemap\SitemapLocator $sitemapLocator,
+        private Http\Message\PageUriBuilder $pageUriBuilder,
     ) {
         $this->crawler = $this->configuration->getCrawler();
     }

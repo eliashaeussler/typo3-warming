@@ -32,12 +32,12 @@ use TYPO3\CMS\Core;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class PermissionContext
+final readonly class PermissionContext
 {
-    public readonly Core\Authentication\BackendUserAuthentication $backendUser;
+    public Core\Authentication\BackendUserAuthentication $backendUser;
 
     public function __construct(
-        public readonly ?int $languageId = null,
+        public ?int $languageId = null,
         ?Core\Authentication\BackendUserAuthentication $backendUser = null,
     ) {
         $this->backendUser = $backendUser ?? Utility\BackendUtility::getBackendUser();

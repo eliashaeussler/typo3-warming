@@ -37,7 +37,7 @@ use TYPO3\CMS\Extbase;
  * @license GPL-2.0-or-later
  */
 #[DependencyInjection\Attribute\Autoconfigure(public: true)]
-final class Configuration
+final readonly class Configuration
 {
     private const DEFAULT_CRAWLER = Crawler\ConcurrentUserAgentCrawler::class;
     private const DEFAULT_VERBOSE_CRAWLER = Crawler\OutputtingUserAgentCrawler::class;
@@ -46,13 +46,13 @@ final class Configuration
         Core\Domain\Repository\PageRepository::DOKTYPE_DEFAULT,
     ];
 
-    private readonly string $userAgent;
+    private string $userAgent;
 
     public function __construct(
-        private readonly Core\Configuration\ExtensionConfiguration $configuration,
-        private readonly CacheWarmup\Crawler\CrawlerFactory $crawlerFactory,
-        private readonly CacheWarmup\Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
-        private readonly CacheWarmup\Config\Component\OptionsParser $optionsParser,
+        private Core\Configuration\ExtensionConfiguration $configuration,
+        private CacheWarmup\Crawler\CrawlerFactory $crawlerFactory,
+        private CacheWarmup\Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
+        private CacheWarmup\Config\Component\OptionsParser $optionsParser,
     ) {
         $this->userAgent = $this->generateUserAgent();
     }

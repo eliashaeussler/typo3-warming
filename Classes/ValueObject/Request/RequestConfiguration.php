@@ -31,14 +31,14 @@ use EliasHaeussler\CacheWarmup;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class RequestConfiguration
+final readonly class RequestConfiguration
 {
     /**
      * @param non-negative-int|null $limit
      */
     public function __construct(
-        private readonly ?int $limit = null,
-        private readonly ?CacheWarmup\Crawler\Strategy\CrawlingStrategy $strategy = null,
+        private ?int $limit = null,
+        private ?CacheWarmup\Crawler\Strategy\CrawlingStrategy $strategy = null,
     ) {}
 
     /**

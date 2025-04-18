@@ -36,11 +36,11 @@ use TYPO3\CMS\Core;
  * @license GPL-2.0-or-later
  * @internal
  */
-final class MapperFactory
+final readonly class MapperFactory
 {
     public function __construct(
-        private readonly CacheWarmup\Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
-        private readonly Domain\Repository\SiteRepository $siteRepository,
+        private CacheWarmup\Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
+        private Domain\Repository\SiteRepository $siteRepository,
     ) {}
 
     public function get(): Valinor\Mapper\TreeMapper

@@ -31,12 +31,12 @@ use TYPO3\CMS\Core;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class SiteGroupItem
+final readonly class SiteGroupItem
 {
     public function __construct(
-        private readonly Core\Site\Entity\SiteLanguage $language,
-        private readonly bool $defaultLanguage,
-        private readonly ?string $url = null,
+        private Core\Site\Entity\SiteLanguage $language,
+        private bool $defaultLanguage,
+        private ?string $url = null,
     ) {}
 
     public function getLanguage(): Core\Site\Entity\SiteLanguage

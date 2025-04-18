@@ -33,10 +33,10 @@ use TYPO3\CMS\Core;
  * @license GPL-2.0-or-later
  * @internal
  */
-final class LoggingCrawlerListener
+final readonly class LoggingCrawlerListener
 {
     public function __construct(
-        private readonly Core\Log\LogManager $logManager,
+        private Core\Log\LogManager $logManager,
     ) {}
 
     // @todo Enable attribute once support for TYPO3 v12 is dropped

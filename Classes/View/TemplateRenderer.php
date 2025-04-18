@@ -32,12 +32,12 @@ use TYPO3\CMS\Fluid;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class TemplateRenderer
+final readonly class TemplateRenderer
 {
-    private readonly Fluid\Core\Rendering\RenderingContext $renderingContext;
+    private Fluid\Core\Rendering\RenderingContext $renderingContext;
 
     public function __construct(
-        private readonly Fluid\Core\Rendering\RenderingContextFactory $renderingContextFactory,
+        private Fluid\Core\Rendering\RenderingContextFactory $renderingContextFactory,
     ) {
         $this->renderingContext = $this->createRenderingContext();
     }

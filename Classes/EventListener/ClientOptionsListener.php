@@ -34,10 +34,10 @@ use TYPO3\CMS\Core;
  * @license GPL-2.0-or-later
  * @internal
  */
-final class ClientOptionsListener
+final readonly class ClientOptionsListener
 {
     public function __construct(
-        private readonly Http\Client\ClientBridge $clientBridge,
+        private Http\Client\ClientBridge $clientBridge,
     ) {}
 
     // @todo Enable attribute once support for TYPO3 v12 is dropped

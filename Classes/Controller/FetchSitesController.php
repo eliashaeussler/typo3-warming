@@ -42,16 +42,16 @@ use TYPO3\CMS\Core;
  * @license GPL-2.0-or-later
  */
 #[DependencyInjection\Attribute\Autoconfigure(public: true)]
-final class FetchSitesController
+final readonly class FetchSitesController
 {
     public function __construct(
-        private readonly Configuration\Configuration $configuration,
-        private readonly CacheWarmup\Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
-        private readonly Core\Imaging\IconFactory $iconFactory,
-        private readonly Http\Message\ResponseFactory $responseFactory,
-        private readonly Domain\Repository\SiteRepository $siteRepository,
-        private readonly Domain\Repository\SiteLanguageRepository $siteLanguageRepository,
-        private readonly Typo3SitemapLocator\Sitemap\SitemapLocator $sitemapLocator,
+        private Configuration\Configuration $configuration,
+        private CacheWarmup\Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
+        private Core\Imaging\IconFactory $iconFactory,
+        private Http\Message\ResponseFactory $responseFactory,
+        private Domain\Repository\SiteRepository $siteRepository,
+        private Domain\Repository\SiteLanguageRepository $siteLanguageRepository,
+        private Typo3SitemapLocator\Sitemap\SitemapLocator $sitemapLocator,
     ) {}
 
     /**
