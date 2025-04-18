@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Tests\Unit\ValueObject\Request;
 
+use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3Warming as Src;
 use PHPUnit\Framework;
 use TYPO3\CMS\Core;
@@ -51,7 +52,10 @@ final class WarmupRequestTest extends TestingFramework\Core\Unit\UnitTestCase
             [1],
         );
         $this->page = new Src\ValueObject\Request\PageWarmupRequest(7);
-        $this->configuration = new Src\ValueObject\Request\RequestConfiguration(50, 'foo');
+        $this->configuration = new Src\ValueObject\Request\RequestConfiguration(
+            50,
+            new CacheWarmup\Crawler\Strategy\SortByPriorityStrategy(),
+        );
         $this->subject = new Src\ValueObject\Request\WarmupRequest(
             'foo',
             [$this->site],
