@@ -29,4 +29,4 @@ $classLoader = require \dirname(__DIR__, 2) . '/.Build/vendor/autoload.php';
 
 // Build service container
 Core\Core\SystemEnvironmentBuilder::run(0, Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_CLI);
-$container = Core\Core\Bootstrap::init($classLoader);
+Core\Core\Bootstrap::init($classLoader);
