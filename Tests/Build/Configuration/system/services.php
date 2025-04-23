@@ -31,54 +31,38 @@ use TYPO3\CMS\Core;
 return static function (DependencyInjection\ContainerBuilder $containerBuilder): void {
     $cachePath = Core\Core\Environment::getVarPath() . '/cache/data/di/DependencyInjectionContainer.xml';
 
+    // Configure public services by pattern
+    foreach ([
+        '/^EliasHaeussler\\\\Typo3Warming\\\\/',
+        '/^cache\\.runtime$/',
+        '/^cache\\.warming$/',
+    ] as $definitionPattern) {
+        $containerBuilder->addCompilerPass(
+            new Tests\Build\DependencyInjection\CompilerPass\PublicServicePass($definitionPattern),
+            DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_REMOVING,
+            200,
+        );
+    }
+
+    // Configure public services by class name
+    foreach ([
+        Core\Configuration\ExtensionConfiguration::class,
+        Core\Site\SiteFinder::class,
+        CacheWarmup\Crawler\CrawlerFactory::class,
+        CacheWarmup\Crawler\Strategy\CrawlingStrategyFactory::class,
+        Valinor\Mapper\TreeMapper::class,
+        Typo3SitemapLocator\Cache\SitemapsCache::class,
+    ] as $className) {
+        $containerBuilder->addCompilerPass(
+            Tests\Build\DependencyInjection\CompilerPass\PublicServicePass::fromClass($className),
+            DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_REMOVING,
+            200,
+        );
+    }
+
     $containerBuilder->addCompilerPass(
         new Tests\Build\DependencyInjection\CompilerPass\ContainerBuilderDebugDumpPass($cachePath),
         DependencyInjection\Compiler\PassConfig::TYPE_AFTER_REMOVING,
         100,
-    );
-    $containerBuilder->addCompilerPass(
-        new Tests\Build\DependencyInjection\CompilerPass\PublicServicePass('/^EliasHaeussler\\\\Typo3Warming\\\\/'),
-        DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_REMOVING,
-        200,
-    );
-    $containerBuilder->addCompilerPass(
-        new Tests\Build\DependencyInjection\CompilerPass\PublicServicePass('/^cache\\.runtime$/'),
-        DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_REMOVING,
-        200,
-    );
-    $containerBuilder->addCompilerPass(
-        new Tests\Build\DependencyInjection\CompilerPass\PublicServicePass('/^cache\\.warming$/'),
-        DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_REMOVING,
-        200,
-    );
-    $containerBuilder->addCompilerPass(
-        Tests\Build\DependencyInjection\CompilerPass\PublicServicePass::fromClass(Core\Configuration\ExtensionConfiguration::class),
-        DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_REMOVING,
-        200,
-    );
-    $containerBuilder->addCompilerPass(
-        Tests\Build\DependencyInjection\CompilerPass\PublicServicePass::fromClass(Core\Site\SiteFinder::class),
-        DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_REMOVING,
-        200,
-    );
-    $containerBuilder->addCompilerPass(
-        Tests\Build\DependencyInjection\CompilerPass\PublicServicePass::fromClass(CacheWarmup\Crawler\CrawlerFactory::class),
-        DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_REMOVING,
-        200,
-    );
-    $containerBuilder->addCompilerPass(
-        Tests\Build\DependencyInjection\CompilerPass\PublicServicePass::fromClass(CacheWarmup\Crawler\Strategy\CrawlingStrategyFactory::class),
-        DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_REMOVING,
-        200,
-    );
-    $containerBuilder->addCompilerPass(
-        Tests\Build\DependencyInjection\CompilerPass\PublicServicePass::fromClass(Valinor\Mapper\TreeMapper::class),
-        DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_REMOVING,
-        200,
-    );
-    $containerBuilder->addCompilerPass(
-        Tests\Build\DependencyInjection\CompilerPass\PublicServicePass::fromClass(Typo3SitemapLocator\Cache\SitemapsCache::class),
-        DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_REMOVING,
-        200,
     );
 };
