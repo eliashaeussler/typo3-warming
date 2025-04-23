@@ -28,6 +28,7 @@ use EliasHaeussler\Typo3Warming as Src;
 use EliasHaeussler\Typo3Warming\Tests;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\RequestOptions;
 use PHPUnit\Framework;
 use TYPO3\CMS\Core;
 use TYPO3\TestingFramework;
@@ -47,8 +48,13 @@ final class ClientBridgeTest extends TestingFramework\Core\Functional\Functional
     ];
 
     protected array $configurationToUseInTestInstance = [
+        'EXTENSIONS' => [
+            'warming' => [
+                'clientOptions' => '{"auth":["username","password"]}',
+            ],
+        ],
         'HTTP' => [
-            'verify' => false,
+            RequestOptions::VERIFY => false,
         ],
     ];
 
@@ -63,18 +69,22 @@ final class ClientBridgeTest extends TestingFramework\Core\Functional\Functional
 
         $this->eventDispatcher = new Tests\Functional\Fixtures\Classes\DummyEventDispatcher();
         $this->subject = new Src\Http\Client\ClientBridge(
+            $this->get(Src\Configuration\Configuration::class),
             $this->get(Core\Http\Client\GuzzleClientFactory::class),
             $this->eventDispatcher,
         );
     }
 
     #[Framework\Attributes\Test]
-    public function getClientFactoryReturnsClientFactoryWithTYPO3SpecificClientOptions(): void
+    public function getClientFactoryReturnsClientFactoryWithTYPO3AndExtensionSpecificClientOptions(): void
     {
         $actual = $this->subject->getClientFactory();
-        $client = $actual->get();
 
-        self::assertFalse($this->getClientConfigViaReflection($client)['verify'] ?? null);
+        $client = $actual->get();
+        $config = $this->getClientConfigViaReflection($client);
+
+        self::assertSame(['username', 'password'], $config[RequestOptions::AUTH] ?? null);
+        self::assertFalse($config[RequestOptions::VERIFY] ?? null);
     }
 
     #[Framework\Attributes\Test]
@@ -92,11 +102,12 @@ final class ClientBridgeTest extends TestingFramework\Core\Functional\Functional
     }
 
     #[Framework\Attributes\Test]
-    public function getClientConfigReturnsTYPO3SpecificClientOptions(): void
+    public function getClientConfigReturnsTYPO3AndExtensionSpecificClientOptions(): void
     {
         $actual = $this->subject->getClientConfig();
 
-        self::assertFalse($actual['verify'] ?? null);
+        self::assertSame(['username', 'password'], $actual[RequestOptions::AUTH] ?? null);
+        self::assertFalse($actual[RequestOptions::VERIFY] ?? null);
     }
 
     /**

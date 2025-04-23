@@ -44,5 +44,7 @@ services:
 
   EliasHaeussler\CacheWarmup\Config\Component\OptionsParser:
   EliasHaeussler\CacheWarmup\Crawler\CrawlerFactory:
+    # Must be public for use with GU::mI in Configuration class to avoid circular dependencies
+    public: true
   EliasHaeussler\CacheWarmup\Crawler\Strategy\CrawlingStrategyFactory:
   EliasHaeussler\CacheWarmup\DependencyInjection\ContainerFactory:

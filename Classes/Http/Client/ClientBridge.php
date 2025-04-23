@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Http\Client;
 
 use EliasHaeussler\CacheWarmup;
+use EliasHaeussler\Typo3Warming\Configuration;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use Psr\EventDispatcher;
@@ -41,6 +42,7 @@ final class ClientBridge
     private ?ClientInterface $client = null;
 
     public function __construct(
+        private readonly Configuration\Configuration $configuration,
         private readonly Core\Http\Client\GuzzleClientFactory $guzzleClientFactory,
         private readonly EventDispatcher\EventDispatcherInterface $eventDispatcher,
     ) {}
@@ -57,7 +59,12 @@ final class ClientBridge
     {
         $this->client ??= $this->guzzleClientFactory->getClient();
 
-        return $this->getClientConfigFromReflection($this->client);
+        $configFromClient = $this->getClientConfigFromReflection($this->client);
+        $configFromExtension = $this->configuration->getClientOptions();
+
+        Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($configFromClient, $configFromExtension);
+
+        return $configFromClient;
     }
 
     /**
