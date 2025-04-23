@@ -35,16 +35,6 @@ Crawler
     :php:interface:`\EliasHaeussler\CacheWarmup\Crawler\ConfigurableCrawler`
     interface. For more information read :ref:`configurable-crawlers`.
 
-    ..  tip::
-
-        If the XML sitemap is protected by HTTP authentication (basic auth), you can set the credentials as follows:
-        `{"client_config":{"auth":["<username>","<password>"]}}`
-
-        In case the XML sitemap does not have a valid SSL certificate, it is possible to disable the SSL verification:
-        `{"client_config":{"verify":false}}`
-
-        You can also combine both settings: `{"client_config":{"verify":false,"auth":["<username>","<password>"]}}`
-
 ..  _extconf-verboseCrawler:
 
 ..  confval:: verboseCrawler
@@ -68,39 +58,22 @@ Crawler
     the :php:interface:`\EliasHaeussler\CacheWarmup\Crawler\ConfigurableCrawler` interface.
     For more information read :ref:`configurable-crawlers`.
 
-    ..  tip::
+..  _extconf-parserOptions:
 
-        If the XML sitemap is protected by HTTP authentication (basic auth), you can set the credentials as follows:
-        `{"client_config":{"auth":["<username>","<password>"]}}`
-
-        In case the XML sitemap does not have a valid SSL certificate, it is possible to disable the SSL verification:
-        `{"client_config":{"verify":false}}`
-
-        You can also combine both settings: `{"client_config":{"verify":false,"auth":["<username>","<password>"]}}`
-
-..  _extconf-parserClientOptions:
-
-..  confval:: parserClientOptions
+..  confval:: parserOptions
     :type: string (JSON)
 
     ..  versionadded:: 1.2.0
 
         `Feature: #502 - Allow configuration of XML parser client options <https://github.com/eliashaeussler/typo3-warming/pull/502>`__
 
-    JSON-encoded string of options for the client used within the XML parser to parse
-    XML sitemaps. All available `Guzzle client options <https://docs.guzzlephp.org/en/stable/quickstart.html#creating-a-client>`__
-    are accepted and merged with :ref:`TYPO3's global client configuration <t3coreapi:typo3ConfVars_http>`
-    stored in `$GLOBALS['TYPO3_CONF_VARS']['HTTP']`.
+    ..  important::
 
-    ..  tip::
+        This configuration was renamed from `parserClientOptions` to `parserOptions`
+        in :ref:`version 4.0.0 <version-4.0.0>`.
 
-        If the XML sitemap is protected by HTTP authentication (basic auth), you can set the credentials as follows:
-        `{"auth":["<username>","<password>"]}`
-
-        In case the XML sitemap does not have a valid SSL certificate, it is possible to disable the SSL verification:
-        `{"verify":false}`
-
-        You can also combine both settings: `{"verify":false,"auth":["<username>","<password>"]}`
+    JSON-encoded string of parser options used within the XML parser to parse
+    XML sitemaps. For more information read :ref:`parser-configuration`.
 
 ..  _extension-configuration-options:
 

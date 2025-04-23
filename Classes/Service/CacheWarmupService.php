@@ -26,7 +26,6 @@ namespace EliasHaeussler\Typo3Warming\Service;
 use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3SitemapLocator;
 use EliasHaeussler\Typo3Warming\Configuration;
-use EliasHaeussler\Typo3Warming\Crawler;
 use EliasHaeussler\Typo3Warming\Domain;
 use EliasHaeussler\Typo3Warming\Event;
 use EliasHaeussler\Typo3Warming\Http;
@@ -44,32 +43,29 @@ use Symfony\Component\DependencyInjection;
  * @license GPL-2.0-or-later
  */
 #[DependencyInjection\Attribute\Autoconfigure(public: true)]
-final class CacheWarmupService
+final readonly class CacheWarmupService
 {
     private CacheWarmup\Crawler\Crawler $crawler;
 
     /**
      * @throws CacheWarmup\Exception\CrawlerDoesNotExist
      * @throws CacheWarmup\Exception\CrawlerIsInvalid
-     * @throws CacheWarmup\Exception\CrawlerOptionIsInvalid
+     * @throws CacheWarmup\Exception\OptionsAreInvalid
+     * @throws CacheWarmup\Exception\OptionsAreMalformed
      */
     public function __construct(
-        private readonly Http\Client\ClientFactory $clientFactory,
-        private readonly Configuration\Configuration $configuration,
-        private readonly CacheWarmup\Crawler\CrawlerFactory $crawlerFactory,
-        private readonly Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
-        private readonly EventDispatcher\EventDispatcherInterface $eventDispatcher,
-        private readonly Typo3SitemapLocator\Sitemap\SitemapLocator $sitemapLocator,
-        private readonly Http\Message\PageUriBuilder $pageUriBuilder,
+        private CacheWarmup\Http\Client\ClientFactory $clientFactory,
+        private Configuration\Configuration $configuration,
+        private EventDispatcher\EventDispatcherInterface $eventDispatcher,
+        private Typo3SitemapLocator\Sitemap\SitemapLocator $sitemapLocator,
+        private Http\Message\PageUriBuilder $pageUriBuilder,
     ) {
-        $this->setCrawler(
-            $this->configuration->getCrawler(),
-            $this->configuration->getCrawlerOptions(),
-        );
+        $this->crawler = $this->configuration->getCrawler();
     }
 
     /**
      * @param list<ValueObject\Request\SiteWarmupRequest> $sites
+     * @param non-negative-int|null $limit
      * @param list<ValueObject\Request\PageWarmupRequest> $pages
      * @throws CacheWarmup\Exception\Exception
      * @throws GuzzleException
@@ -83,14 +79,17 @@ final class CacheWarmupService
         array $sites = [],
         array $pages = [],
         ?int $limit = null,
-        ?string $strategy = null,
+        ?CacheWarmup\Crawler\Strategy\CrawlingStrategy $strategy = null,
     ): Result\CacheWarmupResult {
-        $crawlingStrategy = $this->createCrawlingStrategy($strategy);
+        $strategy ??= $this->configuration->getStrategy();
         $cacheWarmer = new CacheWarmup\CacheWarmer(
             $limit ?? $this->configuration->getLimit(),
-            $this->clientFactory->get($this->configuration->getParserClientOptions()),
             $this->crawler,
-            $crawlingStrategy,
+            $strategy,
+            new CacheWarmup\Xml\SitemapXmlParser(
+                $this->configuration->getParserOptions(),
+                $this->clientFactory->get(),
+            ),
             true,
             array_map(
                 CacheWarmup\Config\Option\ExcludePattern::create(...),
@@ -129,7 +128,7 @@ final class CacheWarmupService
         }
 
         $this->eventDispatcher->dispatch(
-            new Event\BeforeCacheWarmupEvent($sites, $pages, $crawlingStrategy, $this->crawler, $cacheWarmer),
+            new Event\BeforeCacheWarmupEvent($sites, $pages, $strategy, $this->crawler, $cacheWarmer),
         );
 
         $result = new Result\CacheWarmupResult(
@@ -148,42 +147,5 @@ final class CacheWarmupService
     public function getCrawler(): CacheWarmup\Crawler\Crawler
     {
         return $this->crawler;
-    }
-
-    /**
-     * @param class-string<CacheWarmup\Crawler\Crawler>|CacheWarmup\Crawler\Crawler $crawler
-     * @param array<string, mixed> $options
-     * @throws CacheWarmup\Exception\CrawlerDoesNotExist
-     * @throws CacheWarmup\Exception\CrawlerIsInvalid
-     * @throws CacheWarmup\Exception\CrawlerOptionIsInvalid
-     */
-    public function setCrawler(string|CacheWarmup\Crawler\Crawler $crawler, array $options = []): self
-    {
-        if ($options !== []) {
-            $options = $this->crawlerFactory->parseCrawlerOptions($options);
-        }
-
-        if ($crawler instanceof CacheWarmup\Crawler\ConfigurableCrawler && $options !== []) {
-            $crawler->setOptions($options);
-        }
-
-        if (\is_string($crawler)) {
-            $this->crawler = $this->crawlerFactory->get($crawler, $options);
-        } else {
-            $this->crawler = $crawler;
-        }
-
-        return $this;
-    }
-
-    private function createCrawlingStrategy(?string $strategy = null): ?CacheWarmup\Crawler\Strategy\CrawlingStrategy
-    {
-        $strategy ??= $this->configuration->getStrategy();
-
-        if ($strategy !== null) {
-            return $this->crawlingStrategyFactory->get($strategy);
-        }
-
-        return null;
     }
 }

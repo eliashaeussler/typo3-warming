@@ -27,7 +27,6 @@ use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3SitemapLocator;
 use EliasHaeussler\Typo3Warming as Src;
 use EliasHaeussler\Typo3Warming\Tests;
-use Generator;
 use PHPUnit\Framework;
 use TYPO3\CMS\Core;
 use TYPO3\TestingFramework;
@@ -53,12 +52,13 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
         'EXTENSIONS' => [
             'warming' => [
                 'crawler' => Tests\Functional\Fixtures\Classes\DummyCrawler::class,
-                'parserClientOptions' => '{"foo":"baz"}',
+                'parserOptions' => '{"request_options":{"auth":["username","password"]}}',
             ],
         ],
     ];
 
     private Core\Site\Entity\Site $site;
+    private Typo3SitemapLocator\Cache\SitemapsCache $cache;
     private Tests\Functional\Fixtures\Classes\DummyEventDispatcher $eventDispatcher;
     private Src\Service\CacheWarmupService $subject;
 
@@ -76,21 +76,17 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
         $backendUser = $this->setUpBackendUser(3);
         $GLOBALS['LANG'] = $this->get(Core\Localization\LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
+        $this->cache = $this->get(Typo3SitemapLocator\Cache\SitemapsCache::class);
         $this->eventDispatcher = new Tests\Functional\Fixtures\Classes\DummyEventDispatcher();
-        $this->guzzleClientFactory = new Tests\Functional\Fixtures\Classes\DummyGuzzleClientFactory();
         $this->subject = new Src\Service\CacheWarmupService(
-            new Src\Http\Client\ClientFactory($this->guzzleClientFactory),
+            new CacheWarmup\Http\Client\ClientFactory($this->eventDispatcher, $this->getClientOptions()),
             $this->get(Src\Configuration\Configuration::class),
-            $this->get(CacheWarmup\Crawler\CrawlerFactory::class),
-            $this->get(Src\Crawler\Strategy\CrawlingStrategyFactory::class),
             $this->eventDispatcher,
             new Typo3SitemapLocator\Sitemap\SitemapLocator(
                 $this->get(Core\Http\RequestFactory::class),
-                $this->get(Typo3SitemapLocator\Cache\SitemapsCache::class),
+                $this->cache,
                 $this->eventDispatcher,
-                [
-                    new Typo3SitemapLocator\Sitemap\Provider\DefaultProvider(),
-                ],
+                [new Typo3SitemapLocator\Sitemap\Provider\DefaultProvider()],
             ),
             $this->get(Src\Http\Message\PageUriBuilder::class),
         );
@@ -106,7 +102,7 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
         $actual = $this->subject->warmup();
 
         self::assertEquals($expected, $actual);
-        self::assertNull($this->guzzleClientFactory->handler->getLastRequest());
+        self::assertNull($this->handler->getLastRequest());
     }
 
     #[Framework\Attributes\Test]
@@ -211,7 +207,7 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
     }
 
     #[Framework\Attributes\Test]
-    public function warmupRespectsParserClientOptions(): void
+    public function warmupRespectsParserOptions(): void
     {
         $this->mockSitemapResponse('en');
 
@@ -219,7 +215,7 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
             new Src\ValueObject\Request\SiteWarmupRequest($this->site),
         ]);
 
-        self::assertSame('baz', $this->guzzleClientFactory->lastOptions['foo'] ?? null);
+        self::assertSame(['username', 'password'], $this->handler->getLastOptions()['auth'] ?? null);
     }
 
     #[Framework\Attributes\Test]
@@ -231,13 +227,11 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
             new Core\Http\Uri('https://typo3-testing.local/sitemap.xml'),
             $this->site,
             $this->site->getDefaultLanguage(),
-            true,
         );
         $originDE = new Src\Domain\Model\SiteAwareSitemap(
             new Core\Http\Uri('https://typo3-testing.local/de/sitemap.xml'),
             $this->site,
             $this->site->getLanguageById(1),
-            true,
         );
 
         $expected = [
@@ -261,7 +255,7 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
             [
                 new Src\ValueObject\Request\SiteWarmupRequest($this->site, [0, 1]),
             ],
-            strategy: CacheWarmup\Crawler\Strategy\SortByPriorityStrategy::getName(),
+            strategy: new CacheWarmup\Crawler\Strategy\SortByPriorityStrategy(),
         );
 
         self::assertEquals(new Src\Result\CacheWarmupResult($cacheWarmupResult), $actual);
@@ -280,12 +274,12 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
             [$site],
             [$page],
             50,
-            CacheWarmup\Crawler\Strategy\SortByPriorityStrategy::getName(),
+            new CacheWarmup\Crawler\Strategy\SortByPriorityStrategy(),
         );
 
-        self::assertCount(12, $this->eventDispatcher->dispatchedEvents);
+        self::assertCount(14, $this->eventDispatcher->dispatchedEvents);
 
-        $actual = $this->eventDispatcher->dispatchedEvents[7];
+        $actual = $this->eventDispatcher->dispatchedEvents[9];
 
         self::assertInstanceOf(Src\Event\BeforeCacheWarmupEvent::class, $actual);
         self::assertSame([$site], $actual->getSites());
@@ -304,7 +298,6 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
             new Core\Http\Uri('https://typo3-testing.local/sitemap.xml'),
             $this->site,
             $this->site->getDefaultLanguage(),
-            true,
         );
 
         $expected = [
@@ -331,12 +324,12 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
                 new Src\ValueObject\Request\PageWarmupRequest(6),
             ],
             50,
-            CacheWarmup\Crawler\Strategy\SortByPriorityStrategy::getName(),
+            new CacheWarmup\Crawler\Strategy\SortByPriorityStrategy(),
         );
 
-        self::assertCount(12, $this->eventDispatcher->dispatchedEvents);
+        self::assertCount(14, $this->eventDispatcher->dispatchedEvents);
 
-        $actual = $this->eventDispatcher->dispatchedEvents[11];
+        $actual = $this->eventDispatcher->dispatchedEvents[13];
 
         self::assertInstanceOf(Src\Event\AfterCacheWarmupEvent::class, $actual);
         self::assertEquals($cacheWarmupResult, $actual->getResult()->getResult());
@@ -353,62 +346,14 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
         );
     }
 
-    /**
-     * @param class-string<CacheWarmup\Crawler\Crawler>|CacheWarmup\Crawler\Crawler $crawler
-     * @param array<string, mixed> $options
-     */
-    #[Framework\Attributes\Test]
-    #[Framework\Attributes\DataProvider('setCrawlerSetsGivenCrawlerDataProvider')]
-    public function setCrawlerSetsGivenCrawler(
-        string|CacheWarmup\Crawler\Crawler $crawler,
-        array $options,
-        CacheWarmup\Crawler\Crawler $expected,
-    ): void {
-        $this->subject->setCrawler($crawler, $options);
-
-        self::assertEquals($expected, $this->subject->getCrawler());
-    }
-
-    /**
-     * @return Generator<string, array{
-     *     class-string<CacheWarmup\Crawler\Crawler>|CacheWarmup\Crawler\Crawler,
-     *     array<string, mixed>,
-     *     CacheWarmup\Crawler\Crawler,
-     * }>
-     */
-    public static function setCrawlerSetsGivenCrawlerDataProvider(): \Generator
-    {
-        $crawler = new Tests\Functional\Fixtures\Classes\DummyVerboseCrawler();
-
-        $crawlerWithOptions = clone $crawler;
-        $crawlerWithOptions->setOptions(['foo' => 'baz']);
-
-        yield 'crawler by class name, without options' => [
-            Tests\Functional\Fixtures\Classes\DummyVerboseCrawler::class,
-            [],
-            $crawler,
-        ];
-        yield 'crawler by class name, with options' => [
-            Tests\Functional\Fixtures\Classes\DummyVerboseCrawler::class,
-            ['foo' => 'baz'],
-            $crawlerWithOptions,
-        ];
-        yield 'crawler by object, without options' => [
-            $crawler,
-            [],
-            $crawler,
-        ];
-        yield 'crawler by object, with options' => [
-            $crawler,
-            ['foo' => 'baz'],
-            $crawlerWithOptions,
-        ];
-    }
-
     protected function tearDown(): void
     {
-        parent::tearDown();
+        $this->cache->remove($this->site, $this->site->getLanguageById(0));
+        $this->cache->remove($this->site, $this->site->getLanguageById(1));
+        $this->cache->remove($this->site, $this->site->getLanguageById(2));
 
         Tests\Functional\Fixtures\Classes\DummyCrawler::reset();
+
+        parent::tearDown();
     }
 }

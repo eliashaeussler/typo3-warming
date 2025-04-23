@@ -32,18 +32,18 @@ use EliasHaeussler\Typo3Warming\ValueObject;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class BeforeCacheWarmupEvent
+final readonly class BeforeCacheWarmupEvent
 {
     /**
      * @param list<ValueObject\Request\SiteWarmupRequest> $sites
      * @param list<ValueObject\Request\PageWarmupRequest> $pages
      */
     public function __construct(
-        private readonly array $sites,
-        private readonly array $pages,
-        private readonly ?CacheWarmup\Crawler\Strategy\CrawlingStrategy $crawlingStrategy,
-        private readonly CacheWarmup\Crawler\Crawler $crawler,
-        private readonly CacheWarmup\CacheWarmer $cacheWarmer,
+        private array $sites,
+        private array $pages,
+        private ?CacheWarmup\Crawler\Strategy\CrawlingStrategy $crawlingStrategy,
+        private CacheWarmup\Crawler\Crawler $crawler,
+        private CacheWarmup\CacheWarmer $cacheWarmer,
     ) {}
 
     /**

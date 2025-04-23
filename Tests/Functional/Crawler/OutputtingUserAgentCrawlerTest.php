@@ -65,28 +65,22 @@ final class OutputtingUserAgentCrawlerTest extends TestingFramework\Core\Functio
         $this->createSite();
         $this->setUpBackendUser(3);
 
-        $this->guzzleClientFactory = new Tests\Functional\Fixtures\Classes\DummyGuzzleClientFactory();
         $this->output = new Console\Output\BufferedOutput();
         $this->applicationMock = $this->createMock(Frontend\Http\Application::class);
-
-        Core\Utility\GeneralUtility::addInstance(
-            Src\Http\Client\ClientFactory::class,
-            new Src\Http\Client\ClientFactory($this->guzzleClientFactory),
-        );
 
         // Mock frontend application for sub request handling tests
         $container = $this->getContainer();
         self::assertInstanceOf(DependencyInjection\ContainerInterface::class, $container);
         $container->set(Frontend\Http\Application::class, $this->applicationMock);
 
-        $this->subject = new Src\Crawler\OutputtingUserAgentCrawler();
+        $this->subject = new Src\Crawler\OutputtingUserAgentCrawler(client: $this->createClient());
         $this->subject->setOutput($this->output);
     }
 
     #[Framework\Attributes\Test]
     public function crawlCrawlsGivenUrlsAndReturnsResult(): void
     {
-        $this->guzzleClientFactory->handler->append(
+        $this->handler->append(
             $response1 = new Core\Http\Response(),
             $response2 = new Core\Http\Response(),
         );
@@ -106,7 +100,7 @@ final class OutputtingUserAgentCrawlerTest extends TestingFramework\Core\Functio
     #[Framework\Attributes\Test]
     public function crawlUsesCompactProgressBarHandlerOnNonConsoleOutput(): void
     {
-        $this->guzzleClientFactory->handler->append(
+        $this->handler->append(
             new Core\Http\Response(),
             new Core\Http\Response(),
         );
@@ -120,9 +114,7 @@ final class OutputtingUserAgentCrawlerTest extends TestingFramework\Core\Functio
 
         $output = $this->output->fetch();
 
-        self::assertStringContainsString('1/2', $output);
-        self::assertStringContainsString('2/2', $output);
-        self::assertStringContainsString('-- no failures', $output);
+        self::assertStringContainsString('2 / 2', $output);
     }
 
     #[Framework\Attributes\Test]
@@ -133,7 +125,7 @@ final class OutputtingUserAgentCrawlerTest extends TestingFramework\Core\Functio
 
         $this->subject->setOutput($output);
 
-        $this->guzzleClientFactory->handler->append(
+        $this->handler->append(
             new Core\Http\Response(),
             new Core\Http\Response(),
         );
@@ -152,7 +144,7 @@ final class OutputtingUserAgentCrawlerTest extends TestingFramework\Core\Functio
     #[Framework\Attributes\Test]
     public function crawlSendsCustomUserAgentHeader(): void
     {
-        $this->guzzleClientFactory->handler->append(new Core\Http\Response());
+        $this->handler->append(new Core\Http\Response());
 
         $urls = [
             new Core\Http\Uri('https://typo3-testing.local/'),
@@ -162,7 +154,7 @@ final class OutputtingUserAgentCrawlerTest extends TestingFramework\Core\Functio
 
         self::assertSame(
             [$this->get(Src\Configuration\Configuration::class)->getUserAgent()],
-            $this->guzzleClientFactory->handler->getLastRequest()?->getHeader('User-Agent'),
+            $this->handler->getLastRequest()?->getHeader('User-Agent'),
         );
     }
 
@@ -171,7 +163,7 @@ final class OutputtingUserAgentCrawlerTest extends TestingFramework\Core\Functio
     {
         $logger = new TransientLogger\TransientLogger();
 
-        $this->guzzleClientFactory->handler->append(
+        $this->handler->append(
             new Core\Http\Response(),
             new \Exception()
         );

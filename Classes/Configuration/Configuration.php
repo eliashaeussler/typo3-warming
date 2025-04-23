@@ -37,7 +37,7 @@ use TYPO3\CMS\Extbase;
  * @license GPL-2.0-or-later
  */
 #[DependencyInjection\Attribute\Autoconfigure(public: true)]
-final class Configuration
+final readonly class Configuration
 {
     private const DEFAULT_CRAWLER = Crawler\ConcurrentUserAgentCrawler::class;
     private const DEFAULT_VERBOSE_CRAWLER = Crawler\OutputtingUserAgentCrawler::class;
@@ -46,42 +46,49 @@ final class Configuration
         Core\Domain\Repository\PageRepository::DOKTYPE_DEFAULT,
     ];
 
-    private readonly string $userAgent;
+    private string $userAgent;
 
     public function __construct(
-        private readonly Core\Configuration\ExtensionConfiguration $configuration,
-        private readonly CacheWarmup\Crawler\CrawlerFactory $crawlerFactory,
-        private readonly Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
+        private Core\Configuration\ExtensionConfiguration $configuration,
+        private CacheWarmup\Crawler\CrawlerFactory $crawlerFactory,
+        private CacheWarmup\Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
+        private CacheWarmup\Config\Component\OptionsParser $optionsParser,
     ) {
         $this->userAgent = $this->generateUserAgent();
     }
 
     /**
-     * @return class-string<CacheWarmup\Crawler\Crawler>
+     * @throws CacheWarmup\Exception\CrawlerDoesNotExist
+     * @throws CacheWarmup\Exception\CrawlerIsInvalid
+     * @throws CacheWarmup\Exception\OptionsAreInvalid
+     * @throws CacheWarmup\Exception\OptionsAreMalformed
      */
-    public function getCrawler(): string
+    public function getCrawler(): CacheWarmup\Crawler\Crawler
     {
+        $crawlerOptions = [];
+
         try {
-            /** @var class-string<CacheWarmup\Crawler\Crawler>|null $crawler */
-            $crawler = $this->configuration->get(Extension::KEY, 'crawler');
+            /** @var class-string<CacheWarmup\Crawler\Crawler>|null $crawlerClass */
+            $crawlerClass = $this->configuration->get(Extension::KEY, 'crawler');
 
-            if (!\is_string($crawler)) {
-                return self::DEFAULT_CRAWLER;
+            if (!\is_string($crawlerClass) ||
+                !\is_a($crawlerClass, CacheWarmup\Crawler\Crawler::class, true)
+            ) {
+                $crawlerClass = self::DEFAULT_CRAWLER;
+            } else {
+                $crawlerOptions = $this->getCrawlerOptions();
             }
-
-            if (!is_a($crawler, CacheWarmup\Crawler\Crawler::class, true)) {
-                return self::DEFAULT_CRAWLER;
-            }
-
-            return $crawler;
         } catch (Core\Exception) {
-            return self::DEFAULT_CRAWLER;
+            $crawlerClass = self::DEFAULT_VERBOSE_CRAWLER;
         }
+
+        return $this->crawlerFactory->get($crawlerClass, $crawlerOptions);
     }
 
     /**
      * @return array<string, mixed>
-     * @throws CacheWarmup\Exception\CrawlerOptionIsInvalid
+     * @throws CacheWarmup\Exception\OptionsAreInvalid
+     * @throws CacheWarmup\Exception\OptionsAreMalformed
      */
     public function getCrawlerOptions(): array
     {
@@ -93,38 +100,47 @@ final class Configuration
                 return [];
             }
 
-            return $this->crawlerFactory->parseCrawlerOptions($json);
+            return $this->optionsParser->parse($json);
         } catch (Core\Exception) {
             return [];
         }
     }
 
     /**
-     * @return class-string<CacheWarmup\Crawler\VerboseCrawler>
+     * @throws CacheWarmup\Exception\CrawlerDoesNotExist
+     * @throws CacheWarmup\Exception\CrawlerIsInvalid
+     * @throws CacheWarmup\Exception\OptionsAreInvalid
+     * @throws CacheWarmup\Exception\OptionsAreMalformed
      */
-    public function getVerboseCrawler(): string
+    public function getVerboseCrawler(): CacheWarmup\Crawler\VerboseCrawler
     {
+        $crawlerOptions = [];
+
         try {
-            /** @var class-string<CacheWarmup\Crawler\VerboseCrawler>|null $crawler */
-            $crawler = $this->configuration->get(Extension::KEY, 'verboseCrawler');
+            /** @var class-string<CacheWarmup\Crawler\VerboseCrawler>|null $crawlerClass */
+            $crawlerClass = $this->configuration->get(Extension::KEY, 'verboseCrawler');
 
-            if (!\is_string($crawler)) {
-                return self::DEFAULT_VERBOSE_CRAWLER;
+            if (!\is_string($crawlerClass) ||
+                !is_a($crawlerClass, CacheWarmup\Crawler\VerboseCrawler::class, true)
+            ) {
+                $crawlerClass = self::DEFAULT_VERBOSE_CRAWLER;
+            } else {
+                $crawlerOptions = $this->getVerboseCrawlerOptions();
             }
-
-            if (!is_a($crawler, CacheWarmup\Crawler\VerboseCrawler::class, true)) {
-                return self::DEFAULT_VERBOSE_CRAWLER;
-            }
-
-            return $crawler;
         } catch (Core\Exception) {
-            return self::DEFAULT_VERBOSE_CRAWLER;
+            $crawlerClass = self::DEFAULT_VERBOSE_CRAWLER;
         }
+
+        /** @var CacheWarmup\Crawler\VerboseCrawler $crawler */
+        $crawler = $this->crawlerFactory->get($crawlerClass, $crawlerOptions);
+
+        return $crawler;
     }
 
     /**
      * @return array<string, mixed>
-     * @throws CacheWarmup\Exception\CrawlerOptionIsInvalid
+     * @throws CacheWarmup\Exception\OptionsAreInvalid
+     * @throws CacheWarmup\Exception\OptionsAreMalformed
      */
     public function getVerboseCrawlerOptions(): array
     {
@@ -136,7 +152,7 @@ final class Configuration
                 return [];
             }
 
-            return $this->crawlerFactory->parseCrawlerOptions($json);
+            return $this->optionsParser->parse($json);
         } catch (Core\Exception) {
             return [];
         }
@@ -144,24 +160,28 @@ final class Configuration
 
     /**
      * @return array<string, mixed>
-     * @throws CacheWarmup\Exception\CrawlerOptionIsInvalid
+     * @throws CacheWarmup\Exception\OptionsAreInvalid
+     * @throws CacheWarmup\Exception\OptionsAreMalformed
      */
-    public function getParserClientOptions(): array
+    public function getParserOptions(): array
     {
         try {
-            $json = $this->configuration->get(Extension::KEY, 'parserClientOptions');
+            $json = $this->configuration->get(Extension::KEY, 'parserOptions');
 
             // Early return if no parser client options are configured
             if (!\is_string($json) || $json === '') {
                 return [];
             }
 
-            return $this->crawlerFactory->parseCrawlerOptions($json);
+            return $this->optionsParser->parse($json);
         } catch (Core\Exception) {
             return [];
         }
     }
 
+    /**
+     * @return non-negative-int
+     */
     public function getLimit(): int
     {
         try {
@@ -171,7 +191,7 @@ final class Configuration
                 return self::DEFAULT_LIMIT;
             }
 
-            return abs((int)$limit);
+            return max(0, (int)$limit);
         } catch (Core\Exception) {
             return self::DEFAULT_LIMIT;
         }
@@ -196,7 +216,7 @@ final class Configuration
         }
     }
 
-    public function getStrategy(): ?string
+    public function getStrategy(): ?CacheWarmup\Crawler\Strategy\CrawlingStrategy
     {
         try {
             $strategy = $this->configuration->get(Extension::KEY, 'strategy');
@@ -211,7 +231,7 @@ final class Configuration
                 return null;
             }
 
-            return $strategy;
+            return $this->crawlingStrategyFactory->get($strategy);
         } catch (Core\Exception) {
             return null;
         }

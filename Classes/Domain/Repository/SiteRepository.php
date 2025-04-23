@@ -32,11 +32,11 @@ use TYPO3\CMS\Core;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class SiteRepository
+final readonly class SiteRepository
 {
     public function __construct(
-        private readonly Core\Site\SiteFinder $siteFinder,
-        private readonly Security\WarmupPermissionGuard $permissionGuard,
+        private Core\Site\SiteFinder $siteFinder,
+        private Security\WarmupPermissionGuard $permissionGuard,
     ) {}
 
     /**

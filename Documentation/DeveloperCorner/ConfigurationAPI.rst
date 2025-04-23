@@ -18,9 +18,9 @@ an appropriate class method.
 
     ..  php:method:: getCrawler()
 
-        Get the configured :ref:`crawler class <extconf-crawler>`.
+        Get the configured :ref:`crawler <extconf-crawler>`.
 
-        :returntype: :php:`class-string<\EliasHaeussler\CacheWarmup\Crawler\Crawler>`
+        :returntype: :php:`\EliasHaeussler\CacheWarmup\Crawler\Crawler`
 
     ..  php:method:: getCrawlerOptions()
 
@@ -30,13 +30,19 @@ an appropriate class method.
 
     ..  php:method:: getVerboseCrawler()
 
-        Get the configured :ref:`verbose crawler class <extconf-verboseCrawler>`.
+        Get the configured :ref:`verbose crawler <extconf-verboseCrawler>`.
 
-        :returntype: :php:`class-string<\EliasHaeussler\CacheWarmup\Crawler\VerboseCrawler>`
+        :returntype: :php:`\EliasHaeussler\CacheWarmup\Crawler\VerboseCrawler`
 
     ..  php:method:: getVerboseCrawlerOptions()
 
         Get the configured :ref:`verbose crawler options <extconf-verboseCrawlerOptions>`.
+
+        :returntype: :php:`array`
+
+    ..  php:method:: getParserOptions()
+
+        Get the configured :ref:`parser options <extconf-parserOptions>`.
 
         :returntype: :php:`array`
 
@@ -56,7 +62,7 @@ an appropriate class method.
 
         Get the configured :ref:`crawling strategy <extconf-strategy>`.
 
-        :returntype: :php:`string|null`
+        :returntype: :php:`\EliasHaeussler\CacheWarmup\Crawler\Strategy\CrawlingStrategy|null`
 
     ..  php:method:: isEnabledInPageTree()
 

@@ -31,9 +31,9 @@ use TYPO3\CMS\Core;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class ExtensionConfiguration
+final readonly class ExtensionConfiguration
 {
-    private readonly Core\Configuration\ConfigurationManager $configurationManager;
+    private Core\Configuration\ConfigurationManager $configurationManager;
 
     public function __construct()
     {

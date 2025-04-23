@@ -23,7 +23,9 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Tests\Functional;
 
-use EliasHaeussler\Typo3Warming\Tests;
+use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Handler;
 use GuzzleHttp\Psr7;
 use TYPO3\CMS\Core;
 
@@ -35,7 +37,25 @@ use TYPO3\CMS\Core;
  */
 trait ClientMockTrait
 {
-    private Tests\Functional\Fixtures\Classes\DummyGuzzleClientFactory $guzzleClientFactory;
+    private Handler\MockHandler $handler;
+
+    private function createMockHandler(): Handler\MockHandler
+    {
+        return $this->handler ??= new Handler\MockHandler();
+    }
+
+    private function createClient(): ClientInterface
+    {
+        return new Client($this->getClientOptions());
+    }
+
+    /**
+     * @return array{handler: Handler\MockHandler}
+     */
+    private function getClientOptions(): array
+    {
+        return ['handler' => $this->createMockHandler()];
+    }
 
     private function mockSitemapResponse(string ...$languages): void
     {
@@ -45,7 +65,7 @@ trait ClientMockTrait
 
             self::assertIsResource($sitemapXml);
 
-            $this->guzzleClientFactory->handler->append(
+            $this->handler->append(
                 new Core\Http\Response(Psr7\Utils::streamFor($sitemapXml)),
             );
         }

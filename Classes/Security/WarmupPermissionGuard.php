@@ -33,11 +33,11 @@ use TYPO3\CMS\Core;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class WarmupPermissionGuard
+final readonly class WarmupPermissionGuard
 {
     public function __construct(
         #[DependencyInjection\Attribute\Autowire('@cache.runtime')]
-        private readonly Core\Cache\Frontend\FrontendInterface $cache,
+        private Core\Cache\Frontend\FrontendInterface $cache,
     ) {}
 
     public function canWarmupCacheOfPage(

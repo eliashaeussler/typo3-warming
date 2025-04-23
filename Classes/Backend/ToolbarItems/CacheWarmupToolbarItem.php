@@ -35,12 +35,12 @@ use TYPO3\CMS\Core;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class CacheWarmupToolbarItem implements Backend\Toolbar\ToolbarItemInterface
+final readonly class CacheWarmupToolbarItem implements Backend\Toolbar\ToolbarItemInterface
 {
     public function __construct(
-        private readonly Configuration\Configuration $configuration,
-        private readonly View\TemplateRenderer $renderer,
-        private readonly Domain\Repository\SiteRepository $siteRepository,
+        private Configuration\Configuration $configuration,
+        private View\TemplateRenderer $renderer,
+        private Domain\Repository\SiteRepository $siteRepository,
         Core\Page\PageRenderer $pageRenderer,
     ) {
         $pageRenderer->loadJavaScriptModule('@eliashaeussler/typo3-warming/backend/toolbar-menu.js');

@@ -32,17 +32,17 @@ use EliasHaeussler\SSE;
  * @license GPL-2.0-or-later
  * @internal
  */
-final class WarmupProgressEvent implements SSE\Event\Event
+final readonly class WarmupProgressEvent implements SSE\Event\Event
 {
     /**
      * @param list<string> $successfulUrls
      * @param list<string> $failedUrls
      */
     public function __construct(
-        private readonly string $currentUrl,
-        private readonly array $successfulUrls,
-        private readonly array $failedUrls,
-        private readonly int $numberOfUrls,
+        private string $currentUrl,
+        private array $successfulUrls,
+        private array $failedUrls,
+        private int $numberOfUrls,
     ) {}
 
     public function getName(): string

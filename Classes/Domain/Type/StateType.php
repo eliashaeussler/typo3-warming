@@ -32,9 +32,9 @@ use TYPO3\CMS\Core;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class StateType implements Core\Type\TypeInterface, \Stringable
+final readonly class StateType implements Core\Type\TypeInterface, \Stringable
 {
-    private readonly Enums\WarmupState $state;
+    private Enums\WarmupState $state;
 
     /**
      * @param Enums\WarmupState|value-of<Enums\WarmupState> $state
