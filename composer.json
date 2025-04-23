@@ -70,10 +70,7 @@
 	"autoload-dev": {
 		"psr-4": {
 			"EliasHaeussler\\Typo3Warming\\Tests\\": "Tests/"
-		},
-		"classmap": [
-			"Tests/Build/Stubs/TYPO3/PharStreamWrapper"
-		]
+		}
 	},
 	"config": {
 		"allow-plugins": {
