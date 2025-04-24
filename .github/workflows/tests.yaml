@@ -160,12 +160,12 @@ jobs:
 
       # qlty
       - name: qlty report
-        uses: qltysh/qlty-action/coverage@main
+        uses: qltysh/qlty-action/coverage@v1
         if: env.QLTY_COVERAGE_TOKEN
         env:
           QLTY_COVERAGE_TOKEN: ${{ secrets.QLTY_COVERAGE_TOKEN }}
         with:
-          coverage-token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
           files: ${{ steps.download.outputs.download-path }}/clover.xml
 
       # Coveralls
