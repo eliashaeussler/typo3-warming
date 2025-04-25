@@ -1,6 +1,7 @@
 *                            text=auto
 /.ddev                       export-ignore
 /.github                     export-ignore
+/.qlty                       export-ignore
 /Resources/Private/Frontend  export-ignore
 /Resources/Private/Libs      export-ignore
 /Tests                       export-ignore
