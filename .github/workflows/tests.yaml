@@ -61,6 +61,10 @@ jobs:
           composer-options: --with=typo3/cms-core:"^${{ matrix.typo3-version }}" ${{ matrix.composer-options }}
 
       # Run tests
+      - name: Run functional and unit tests
+        run: |
+          ddev composer test:functional
+          ddev composer test:unit
       - name: Run acceptance tests
         uses: nick-fields/retry@v3
         with:
@@ -69,10 +73,6 @@ jobs:
           timeout_minutes: 10
           command: ddev composer test:acceptance
           new_command_on_retry: ddev composer test:acceptance -- -g failed
-      - name: Run functional and unit tests
-        run: |
-          ddev composer test:functional
-          ddev composer test:unit
 
       # Save acceptance reports
       - uses: actions/upload-artifact@v4
@@ -114,13 +114,19 @@ jobs:
         uses: ramsey/composer-install@v3
 
       # Run tests
-      - name: Run tests
+      - name: Run functional and unit tests
+        run: |
+          ddev composer test:coverage:functional
+          ddev composer test:coverage:unit
+      - name: Run acceptance tests
         uses: nick-fields/retry@v3
         with:
           max_attempts: 3
           retry_on: error
           timeout_minutes: 10
-          command: ddev composer test:coverage
+          command: ddev composer test:coverage:acceptance
+      - name: Merge coverage reports
+        run: ddev composer test:coverage:merge
 
       # Upload artifact
       - name: Fix coverage path
