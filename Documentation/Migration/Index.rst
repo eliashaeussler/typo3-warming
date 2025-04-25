@@ -22,6 +22,11 @@ Version 4.0.0
 Upgrade of `eliashaeussler/cache-warmup` library
 ------------------------------------------------
 
+-   Crawler option `client_config` is removed and must be migrated to
+    extension configuration :ref:`clientOptions <confval-clientoptions>`.
+-   Extension configuration `parserClientOptions` is renamed to
+    :ref:`parserOptions <confval-parseroptions>`. Existing configuration must
+    be migrated to extension configuration :ref:`clientOptions <confval-clientoptions>`.
 -   Crawling response body is no longer attached to response objects. Enable
     crawler option `write_response_body` to restore previous behavior.
 -   Read more in the library's `release notes <https://github.com/eliashaeussler/cache-warmup/releases/tag/4.0.0>`__.

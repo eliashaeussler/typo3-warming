@@ -37,7 +37,7 @@ use TYPO3\CMS\Extbase;
  * @license GPL-2.0-or-later
  */
 #[DependencyInjection\Attribute\Autoconfigure(public: true)]
-final readonly class Configuration
+final class Configuration
 {
     private const DEFAULT_CRAWLER = Crawler\ConcurrentUserAgentCrawler::class;
     private const DEFAULT_VERBOSE_CRAWLER = Crawler\OutputtingUserAgentCrawler::class;
@@ -46,13 +46,13 @@ final readonly class Configuration
         Core\Domain\Repository\PageRepository::DOKTYPE_DEFAULT,
     ];
 
-    private string $userAgent;
+    private readonly string $userAgent;
+    private ?CacheWarmup\Crawler\CrawlerFactory $crawlerFactory = null;
 
     public function __construct(
-        private Core\Configuration\ExtensionConfiguration $configuration,
-        private CacheWarmup\Crawler\CrawlerFactory $crawlerFactory,
-        private CacheWarmup\Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
-        private CacheWarmup\Config\Component\OptionsParser $optionsParser,
+        private readonly Core\Configuration\ExtensionConfiguration $configuration,
+        private readonly CacheWarmup\Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
+        private readonly CacheWarmup\Config\Component\OptionsParser $optionsParser,
     ) {
         $this->userAgent = $this->generateUserAgent();
     }
@@ -82,7 +82,7 @@ final readonly class Configuration
             $crawlerClass = self::DEFAULT_VERBOSE_CRAWLER;
         }
 
-        return $this->crawlerFactory->get($crawlerClass, $crawlerOptions);
+        return $this->getCrawlerFactory()->get($crawlerClass, $crawlerOptions);
     }
 
     /**
@@ -132,7 +132,7 @@ final readonly class Configuration
         }
 
         /** @var CacheWarmup\Crawler\VerboseCrawler $crawler */
-        $crawler = $this->crawlerFactory->get($crawlerClass, $crawlerOptions);
+        $crawler = $this->getCrawlerFactory()->get($crawlerClass, $crawlerOptions);
 
         return $crawler;
     }
@@ -168,7 +168,28 @@ final readonly class Configuration
         try {
             $json = $this->configuration->get(Extension::KEY, 'parserOptions');
 
-            // Early return if no parser client options are configured
+            // Early return if no parser options are configured
+            if (!\is_string($json) || $json === '') {
+                return [];
+            }
+
+            return $this->optionsParser->parse($json);
+        } catch (Core\Exception) {
+            return [];
+        }
+    }
+
+    /**
+     * @return array<string, mixed>
+     * @throws CacheWarmup\Exception\OptionsAreInvalid
+     * @throws CacheWarmup\Exception\OptionsAreMalformed
+     */
+    public function getClientOptions(): array
+    {
+        try {
+            $json = $this->configuration->get(Extension::KEY, 'clientOptions');
+
+            // Early return if no client options are configured
             if (!\is_string($json) || $json === '') {
                 return [];
             }
@@ -296,6 +317,14 @@ final readonly class Configuration
         // @todo Remove once support for TYPO3 v12 is dropped
         return Core\Utility\GeneralUtility::makeInstance(Extbase\Security\Cryptography\HashService::class)->appendHmac(
             $string,
+        );
+    }
+
+    private function getCrawlerFactory(): CacheWarmup\Crawler\CrawlerFactory
+    {
+        // Cannot be instantiated with DI, would lead to circular dependencies
+        return $this->crawlerFactory ??= Core\Utility\GeneralUtility::makeInstance(
+            CacheWarmup\Crawler\CrawlerFactory::class,
         );
     }
 }

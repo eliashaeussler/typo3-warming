@@ -222,6 +222,42 @@ final class ConfigurationTest extends TestingFramework\Core\Functional\Functiona
     }
 
     #[Framework\Attributes\Test]
+    public function getClientOptionsReturnsEmptyArrayIfNoClientOptionsAreConfigured(): void
+    {
+        $this->extensionConfiguration->set(Src\Extension::KEY);
+
+        self::assertSame([], $this->subject->getClientOptions());
+    }
+
+    #[Framework\Attributes\Test]
+    public function getClientOptionsReturnsEmptyArrayIfConfiguredClientOptionsAreOfInvalidType(): void
+    {
+        $this->extensionConfiguration->set(Src\Extension::KEY, ['clientOptions' => ['foo' => 'baz']]);
+
+        self::assertSame([], $this->subject->getClientOptions());
+    }
+
+    #[Framework\Attributes\Test]
+    public function getClientOptionsThrowsExceptionIfConfiguredClientOptionsAreOfInvalidJson(): void
+    {
+        $this->extensionConfiguration->set(Src\Extension::KEY, ['clientOptions' => '"foo"']);
+
+        $this->expectExceptionObject(
+            new CacheWarmup\Exception\OptionsAreMalformed('"foo"'),
+        );
+
+        $this->subject->getClientOptions();
+    }
+
+    #[Framework\Attributes\Test]
+    public function getClientOptionsReturnsConfiguredClientOptions(): void
+    {
+        $this->extensionConfiguration->set(Src\Extension::KEY, ['clientOptions' => '{"foo":"baz"}']);
+
+        self::assertSame(['foo' => 'baz'], $this->subject->getClientOptions());
+    }
+
+    #[Framework\Attributes\Test]
     public function getLimitReturnsDefaultLimitIfNoLimitIsConfigured(): void
     {
         $this->extensionConfiguration->set(Src\Extension::KEY);

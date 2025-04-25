@@ -19,6 +19,9 @@ verboseCrawlerOptions =
 # cat=parser/options/10; type=string; label=XML parser options (JSON-encoded string):Provide options for the XML parser to parse XML sitemaps. Example: {"request_options": {"auth": ["username", "password"]}}
 parserOptions =
 
+# cat=client/options/10; type=string; label=HTTP client options (JSON-encoded string):Provide options for the HTTP client to use for crawler and parser. Example: {"auth": ["username", "password"]}
+clientOptions =
+
 # cat=options/input/10; type=int+; label=Crawl limit:Define maximum number of pages to crawl in one iteration. Set to "0" to disable the limit.
 limit = 250
 

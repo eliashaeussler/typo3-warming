@@ -35,6 +35,11 @@ Crawler
     :php:interface:`\EliasHaeussler\CacheWarmup\Crawler\ConfigurableCrawler`
     interface. For more information read :ref:`configurable-crawlers`.
 
+    ..  important::
+
+        Client-related configuration was moved to :ref:`clientOptions <extconf-clientOptions>`
+        in :ref:`version 4.0.0 <version-4.0.0>`.
+
 ..  _extconf-verboseCrawler:
 
 ..  confval:: verboseCrawler
@@ -58,6 +63,16 @@ Crawler
     the :php:interface:`\EliasHaeussler\CacheWarmup\Crawler\ConfigurableCrawler` interface.
     For more information read :ref:`configurable-crawlers`.
 
+    ..  important::
+
+        Client-related configuration was moved to :ref:`clientOptions <extconf-clientOptions>`
+        in :ref:`version 4.0.0 <version-4.0.0>`.
+
+..  _extension-configuration-parser:
+
+Parser
+======
+
 ..  _extconf-parserOptions:
 
 ..  confval:: parserOptions
@@ -70,10 +85,41 @@ Crawler
     ..  important::
 
         This configuration was renamed from `parserClientOptions` to `parserOptions`
-        in :ref:`version 4.0.0 <version-4.0.0>`.
+        in :ref:`version 4.0.0 <version-4.0.0>`. Migrate existing configuration to
+        :ref:`clientOptions <extconf-clientOptions>`
 
     JSON-encoded string of parser options used within the XML parser to parse
     XML sitemaps. For more information read :ref:`parser-configuration`.
+
+..  _extension-configuration-client:
+
+Client
+======
+
+..  _extconf-clientOptions:
+
+..  confval:: clientOptions
+    :type: string (JSON)
+
+    ..  versionadded:: 4.0.0
+
+        `Feature: #844 - Introduce client options extension configuration <https://github.com/eliashaeussler/typo3-warming/pull/844>`__
+
+    JSON-encoded string of options for the client used within the crawler and XML parser
+    to parse and crawl XML sitemaps. All available
+    `Guzzle client options <https://docs.guzzlephp.org/en/stable/quickstart.html#creating-a-client>`__
+    are accepted and merged with :ref:`TYPO3's global client configuration <t3coreapi:typo3ConfVars_http>`
+    stored in `$GLOBALS['TYPO3_CONF_VARS']['HTTP']`.
+
+    ..  tip::
+
+        If the XML sitemap is protected by HTTP authentication (basic auth), you can set the
+        credentials as follows: :json:`{"auth": ["<username>", "<password>"]}`
+
+        In case the XML sitemap does not have a valid SSL certificate, it is possible to disable
+        the SSL verification: :json:`{"verify": false}`
+
+        You can also combine both settings: :json:`{"auth": ["<username>", "<password>"], "verify": false}`
 
 ..  _extension-configuration-options:
 
