@@ -43,15 +43,15 @@ export TYPO3_SETUP_ADMIN_PASSWORD=Passw0rd!
 export TYPO3_SERVER_TYPE=other
 export TYPO3_PROJECT_NAME="EXT:warming"
 
+# Set up environment
+_progress "Setting up TYPO3 installation"
+"$typo3Binary" setup --no-interaction --force --quiet
+_done
+
 # Apply configuration
 _progress "Applying default system configuration"
 rm -rf "${rootPath}/config"
 cp -r "${rootPath}/Tests/Build/Configuration" "${rootPath}/config"
-_done
-
-# Set up environment
-_progress "Setting up TYPO3 installation"
-"$typo3Binary" setup --no-interaction --force --quiet
 _done
 
 # Import DB fixtures
