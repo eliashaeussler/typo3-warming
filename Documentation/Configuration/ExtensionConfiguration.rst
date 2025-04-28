@@ -35,7 +35,7 @@ Crawler
     :php:interface:`\EliasHaeussler\CacheWarmup\Crawler\ConfigurableCrawler`
     interface. For more information read :ref:`configurable-crawlers`.
 
-    ..  important::
+    ..  versionchanged:: 4.0.0
 
         Client-related configuration was moved to :ref:`clientOptions <extconf-clientOptions>`
         in :ref:`version 4.0.0 <version-4.0.0>`.
@@ -63,7 +63,7 @@ Crawler
     the :php:interface:`\EliasHaeussler\CacheWarmup\Crawler\ConfigurableCrawler` interface.
     For more information read :ref:`configurable-crawlers`.
 
-    ..  important::
+    ..  versionchanged:: 4.0.0
 
         Client-related configuration was moved to :ref:`clientOptions <extconf-clientOptions>`
         in :ref:`version 4.0.0 <version-4.0.0>`.
@@ -82,11 +82,11 @@ Parser
 
         `Feature: #502 - Allow configuration of XML parser client options <https://github.com/eliashaeussler/typo3-warming/pull/502>`__
 
-    ..  important::
+    ..  versionchanged:: 4.0.0
 
         This configuration was renamed from `parserClientOptions` to `parserOptions`
         in :ref:`version 4.0.0 <version-4.0.0>`. Migrate existing configuration to
-        :ref:`clientOptions <extconf-clientOptions>`
+        :ref:`clientOptions <extconf-clientOptions>`.
 
     JSON-encoded string of parser options used within the XML parser to parse
     XML sitemaps. For more information read :ref:`parser-configuration`.
