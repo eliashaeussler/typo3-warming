@@ -46,6 +46,12 @@ an appropriate class method.
 
         :returntype: :php:`array`
 
+    ..  php:method:: getClientOptions()
+
+        Get the configured :ref:`client options <extconf-clientOptions>`.
+
+        :returntype: :php:`array`
+
     ..  php:method:: getLimit()
 
         Get the configured :ref:`crawler limit <extconf-limit>`.
