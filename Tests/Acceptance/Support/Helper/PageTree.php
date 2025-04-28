@@ -148,7 +148,7 @@ final class PageTree extends TestingFramework\Core\Acceptance\Helper\AbstractPag
 
         try {
             $context->findElement(WebDriver\WebDriverBy::cssSelector('.node-toggle'))->click();
-        } catch (WebDriver\Exception\NoSuchElementException|WebDriver\Exception\ElementNotVisibleException) {
+        } catch (WebDriver\Exception\NoSuchElementException) {
             // element not found so it may be already opened...
         } catch (WebDriver\Exception\ElementNotInteractableException) {
             // another possible exception if the chevron isn't there ... depends on facebook driver version
