@@ -15,7 +15,7 @@ are dispatched. Events can be used to step in the cache warmup
 lifecycle and affect its crawling behavior in various ways.
 
 ..  note::
-    The `eliashaeussler/cache-warmup` library also dispatches some events.
+    The :composer:`eliashaeussler/cache-warmup` library also dispatches some events.
     Read more in the `official documentation <https://cache-warmup.dev/api/events.html>`__.
 
 The following events are currently dispatched:

@@ -12,15 +12,15 @@ upgrading to a new major version of this extension.
 ..  seealso::
 
     Make sure to check out the `migration guide <https://cache-warmup.dev/migration.html>`__
-    of the `eliashaeussler/cache-warmup` library as well.
+    of the :composer:`eliashaeussler/cache-warmup` library as well.
 
 ..  _version-4.0.0:
 
 Version 4.0.0
 =============
 
-Upgrade of `eliashaeussler/cache-warmup` library
-------------------------------------------------
+Upgrade of :composer:`eliashaeussler/cache-warmup` library
+----------------------------------------------------------
 
 -   Crawler option `client_config` is removed and must be migrated to
     extension configuration :ref:`clientOptions <confval-clientoptions>`.
@@ -36,8 +36,8 @@ Upgrade of `eliashaeussler/cache-warmup` library
 Version 3.0.0
 =============
 
-Upgrade of `eliashaeussler/cache-warmup` library
-------------------------------------------------
+Upgrade of :composer:`eliashaeussler/cache-warmup` library
+----------------------------------------------------------
 
 -   Custom crawlers must be rewritten to match the updated codebase.
 -   Read more in the library's `release notes <https://github.com/eliashaeussler/cache-warmup/releases/tag/3.0.0>`__.
@@ -61,17 +61,17 @@ Upgrade of `eliashaeussler/cache-warmup` library
 Version 2.0.0
 =============
 
-Integration of EXT:sitemap_locator
-----------------------------------
+Integration of :t3ext:`sitemap_locator`
+---------------------------------------
 
--   Sitemaps cache was extracted to EXT:sitemap_locator. Use
+-   Sitemaps cache was extracted to :t3ext:`sitemap_locator`. Use
     :php:`\EliasHaeussler\Typo3SitemapLocator\Cache\SitemapsCache`
     instead of :php:`\EliasHaeussler\Typo3Warming\Cache\SitemapsCache`.
--   Sitemap providers were extracted to EXT:sitemap_locator. Use
+-   Sitemap providers were extracted to :t3ext:`sitemap_locator`. Use
     :php:`\EliasHaeussler\Typo3SitemapLocator\Sitemap\Provider\Provider`
     instead of :php:`\EliasHaeussler\Typo3Warming\Sitemap\Provider\Provider`
     for custom provider implementations.
--   Sitemap locator was extracted to EXT:sitemap_locator. Use
+-   Sitemap locator was extracted to :t3ext:`sitemap_locator`. Use
     :php:`\EliasHaeussler\Typo3SitemapLocator\Sitemap\SitemapLocator`
     instead of :php:`\EliasHaeussler\Typo3Warming\Sitemap\SitemapLocator`.
 
@@ -95,7 +95,7 @@ Default crawlers
     :php:interface:`\EliasHaeussler\CacheWarmup\Crawler\Crawler`
     or :php:interface:`\EliasHaeussler\CacheWarmup\Crawler\VerboseCrawler`
     interface instead.
--   :php:`CrawlerFactory` from `eliashaeussler/cache-warmup` library
+-   :php:`CrawlerFactory` from :composer:`eliashaeussler/cache-warmup` library
     is now used to instantiate crawlers. Dependency injection is no
     longer possible.
 -   :php:`\EliasHaeussler\Typo3Warming\Crawler\ConfigurableClientTrait`

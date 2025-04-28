@@ -8,6 +8,10 @@ Extension configuration
 
 The extension currently provides the following configuration options:
 
+..  confval-menu::
+    :name: confval-extension-configuration
+    :display: list
+
 ..  _extension-configuration-crawler:
 
 Crawler

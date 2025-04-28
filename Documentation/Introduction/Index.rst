@@ -19,11 +19,9 @@ sitemaps. Cache warmup can be triggered in various ways:
 -   Directly with the :ref:`PHP API <using-the-api>`
 
 It supports multiple languages and custom crawler implementations.
-Under the hood, the extension makes use of the
-`eliashaeussler/cache-warmup <https://github.com/eliashaeussler/cache-warmup>`__
+Under the hood, the extension makes use of the :composer:`eliashaeussler/cache-warmup`
 library which provides the core cache warmup implementation. In addition,
-`EXT:sitemap_locator <https://extensions.typo3.org/extension/sitemap_locator>`__
-is used to locate XML sitemaps.
+:t3ext:`sitemap_locator` is used to locate XML sitemaps.
 
 ..  _features:
 

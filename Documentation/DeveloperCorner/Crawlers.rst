@@ -56,8 +56,7 @@ Implement a custom crawler
 Available interfaces
 --------------------
 
-The actual cache warmup is done via the library
-`eliashaeussler/cache-warmup <https://github.com/eliashaeussler/cache-warmup>`__.
+The actual cache warmup is done via the library :composer:`eliashaeussler/cache-warmup`.
 It provides the :php:interface:`\EliasHaeussler\CacheWarmup\Crawler\Crawler`
 interface, which must be implemented when developing your own crawler.
 
@@ -106,7 +105,7 @@ interface allowing users to configure warmup requests themselves.
 ..  seealso::
 
     `Feature #59 - Introduce configurable crawlers <https://github.com/eliashaeussler/cache-warmup/pull/59>`__
-    of `eliashaeussler/cache-warmup` library
+    of :composer:`eliashaeussler/cache-warmup` library
 
 ..  _logging-crawlers:
 
@@ -139,7 +138,7 @@ TYPO3's log manager. Read more about logging in the :ref:`official documentation
 ..  seealso::
 
     `Feature #271 - Introduce support for PSR-3 loggers <https://github.com/eliashaeussler/cache-warmup/pull/271>`__
-    of `eliashaeussler/cache-warmup` library
+    of :composer:`eliashaeussler/cache-warmup` library
 
 ..  _stoppable-crawlers:
 
@@ -166,7 +165,7 @@ XML sitemap is inaccessible or failing.
 ..  seealso::
 
     `Feature #302 - Introduce stoppable crawler and --stop-on-failure option <https://github.com/eliashaeussler/cache-warmup/pull/302>`__
-    of `eliashaeussler/cache-warmup` library
+    of :composer:`eliashaeussler/cache-warmup` library
 
 ..  _streamable-crawlers:
 

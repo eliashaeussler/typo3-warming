@@ -14,10 +14,10 @@ Cache warmup of pages located in XML sitemaps
 -   :ref:`Custom crawlers <implement-a-custom-crawler>`
 
 :Extension key:
-    `warming <https://extensions.typo3.org/extension/warming>`__
+    :t3ext:`warming <warming>`
 
 :Package name:
-    `eliashaeussler/typo3-warming <https://packagist.org/packages/eliashaeussler/typo3-warming>`__
+    :composer:`eliashaeussler/typo3-warming`
 
 :Version:
     |release|

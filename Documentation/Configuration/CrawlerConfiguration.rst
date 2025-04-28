@@ -15,7 +15,7 @@ shipped by this extension.
 
 Both default crawlers utilize the same crawler options that are described in the
 `option reference <https://cache-warmup.dev/config-reference/crawler-options.html#option-reference>`__
-of the underlying `eliashaeussler/cache-warmup` library.
+of the underlying :composer:`eliashaeussler/cache-warmup` library.
 
 In addition, the following crawler options are available:
 
