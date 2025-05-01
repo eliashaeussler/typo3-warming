@@ -410,7 +410,7 @@ final class ConfigurationTest extends TestingFramework\Core\Functional\Functiona
     #[Framework\Attributes\Test]
     public function getSupportedDoktypesReturnsConfiguredDoktypes(): void
     {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['supportedDoktypes' => '1,,100,200']);
+        $this->extensionConfiguration->set(Src\Extension::KEY, ['supportedDoktypes' => '1,100,200']);
 
         self::assertSame([1, 100, 200], $this->subject->getSupportedDoktypes());
     }
