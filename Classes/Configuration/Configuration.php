@@ -281,7 +281,7 @@ final class Configuration
                 return self::DEFAULT_SUPPORTED_DOKTYPES;
             }
 
-            return array_values(Core\Utility\GeneralUtility::intExplode(',', $doktypes, true));
+            return Core\Utility\GeneralUtility::intExplode(',', $doktypes, true);
         } catch (Core\Exception) {
             return self::DEFAULT_SUPPORTED_DOKTYPES;
         }
@@ -315,6 +315,7 @@ final class Configuration
         }
 
         // @todo Remove once support for TYPO3 v12 is dropped
+        /* @phpstan-ignore classConstant.deprecatedClass, method.deprecatedClass */
         return Core\Utility\GeneralUtility::makeInstance(Extbase\Security\Cryptography\HashService::class)->appendHmac(
             $string,
         );

@@ -46,21 +46,16 @@ trait SiteTrait
         $eventDispatcher = new Core\EventDispatcher\NoopEventDispatcher();
 
         if ((new Core\Information\Typo3Version())->getMajorVersion() >= 13) {
-            /* @phpstan-ignore symfonyContainer.serviceNotFound */
             $yamlFileLoader = $this->get(Core\Configuration\Loader\YamlFileLoader::class);
-            /* @phpstan-ignore arguments.count */
             $siteConfiguration = new Core\Configuration\SiteConfiguration(
                 $configPath,
-                /* @phpstan-ignore class.notFound, argument.type, symfonyContainer.serviceNotFound */
                 $this->get(Core\Site\SiteSettingsFactory::class),
-                /* @phpstan-ignore class.notFound, argument.type, symfonyContainer.serviceNotFound */
                 $this->get(Core\Site\Set\SetRegistry::class),
                 $eventDispatcher,
                 new Core\Cache\Frontend\NullFrontend('core'),
                 $yamlFileLoader,
                 new Core\Cache\Frontend\NullFrontend('runtime'),
             );
-            /* @phpstan-ignore class.notFound */
             $siteWriter = new Core\Configuration\SiteWriter(
                 $configPath,
                 $eventDispatcher,
@@ -68,10 +63,11 @@ trait SiteTrait
             );
         } else {
             // @todo Remove once support for TYPO3 v12 is dropped
+            /* @phpstan-ignore arguments.count, argument.type */
             $siteConfiguration = $siteWriter = new Core\Configuration\SiteConfiguration($configPath, $eventDispatcher);
         }
 
-        /* @phpstan-ignore class.notFound */
+        /* @phpstan-ignore method.notFound */
         $siteWriter->createNewBasicSite($identifier, $rootPageId, $baseUrl);
 
         $rawConfig = $siteConfiguration->load($identifier);
@@ -103,7 +99,7 @@ trait SiteTrait
             'warming_exclude' => in_array(2, $languagesToExcludeFromWarming, true),
         ];
 
-        /* @phpstan-ignore class.notFound */
+        /* @phpstan-ignore method.notFound */
         $siteWriter->write($identifier, $rawConfig);
 
         $site = $siteConfiguration->getAllExistingSites()[$identifier] ?? null;

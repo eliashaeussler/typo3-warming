@@ -25,8 +25,10 @@ use EliasHaeussler\RectorConfig\Config\Config;
 use Rector\Config\RectorConfig;
 use Rector\Php80\Rector\Class_\AnnotationToAttributeRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
+use Rector\Renaming\Rector\Name\RenameClassRector;
 use Rector\Symfony\DependencyInjection\Rector\Trait_\TraitGetByTypeToInjectRector;
 use Rector\ValueObject\PhpVersion;
+use Ssch\TYPO3Rector\TYPO313\v0\MigrateExtbaseHashServiceToUseCoreHashServiceRector;
 
 return static function (RectorConfig $rectorConfig): void {
     $rootPath = dirname(__DIR__, 2);
@@ -67,6 +69,14 @@ return static function (RectorConfig $rectorConfig): void {
             // We cannot use CPP for properties that are declared in abstract classes
             $rootPath . '/Tests/Acceptance/Support/Helper/ModalDialog.php',
             $rootPath . '/Tests/Acceptance/Support/Helper/PageTree.php',
+        ])
+        // @todo Remove once support for TYPO3 v12 is dropped
+        ->skip(MigrateExtbaseHashServiceToUseCoreHashServiceRector::class, [
+            $rootPath . '/Classes/Configuration/Configuration.php',
+        ])
+        // @todo Remove once support for TYPO3 v12 is dropped
+        ->skip(RenameClassRector::class, [
+            $rootPath . '/Classes/Configuration/Configuration.php',
         ])
         ->skip(TraitGetByTypeToInjectRector::class, [
             $rootPath . '/Tests/Functional/SiteTrait.php',

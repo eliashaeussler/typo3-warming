@@ -79,6 +79,7 @@ final class Extension
             return;
         }
 
+        /* @phpstan-ignore staticMethod.deprecated */
         Core\Utility\ExtensionManagementUtility::addPageTSConfig('
             @import "EXT:warming/Configuration/TSconfig/Page.tsconfig";
         ');

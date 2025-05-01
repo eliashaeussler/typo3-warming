@@ -48,6 +48,7 @@ final readonly class TemplateRenderer
     public function render(string $templatePath, array $variables = []): string
     {
         // @todo Migrate to ViewFactoryInterface::create() once support for TYPO3 v12 is dropped
+        /* @phpstan-ignore classConstant.deprecatedClass */
         $view = Core\Utility\GeneralUtility::makeInstance(Fluid\View\StandaloneView::class, $this->renderingContext);
         $view->assignMultiple($variables);
 
