@@ -36,12 +36,20 @@ services:
       - name: event.listener
         identifier: eliashaeussler/typo3-warming/logging-crawler
 
+  # @todo Remove once support for Symfony < 7.1 is dropped
+  EliasHaeussler\Typo3Warming\Http\Message\PageUriBuilder:
+    arguments:
+      $pageRepository: '@core.page_repository.lazy'
+
+  core.page_repository.lazy:
+    class: 'TYPO3\CMS\Core\Domain\Repository\PageRepository'
+    lazy: true
+
   # External services
   CuyZ\Valinor\Mapper\TreeMapper:
     factory: ['@EliasHaeussler\Typo3Warming\Mapper\MapperFactory', 'get']
   EliasHaeussler\CacheWarmup\Http\Client\ClientFactory:
     factory: ['@EliasHaeussler\Typo3Warming\Http\Client\ClientBridge', 'getClientFactory']
-
   EliasHaeussler\CacheWarmup\Config\Component\OptionsParser:
   EliasHaeussler\CacheWarmup\Crawler\CrawlerFactory:
     # Must be public for use with GU::mI in Configuration class to avoid circular dependencies

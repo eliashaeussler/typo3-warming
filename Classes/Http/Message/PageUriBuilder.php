@@ -36,6 +36,8 @@ use TYPO3\CMS\Core;
 final readonly class PageUriBuilder
 {
     public function __construct(
+        // @todo Enable once support for Symfony < 7.1 is dropped
+        // #[DependencyInjection\Attribute\Lazy]
         private Core\Domain\Repository\PageRepository $pageRepository,
         private Domain\Repository\SiteRepository $siteRepository,
         private Domain\Repository\SiteLanguageRepository $siteLanguageRepository,
