@@ -22,11 +22,15 @@ declare(strict_types=1);
  */
 
 use EliasHaeussler\PHPStanConfig;
+use TYPO3\CMS\Backend;
 
 $rootPath = dirname(__DIR__, 2);
 $symfonySet = PHPStanConfig\Set\SymfonySet::create()
     ->withConsoleApplicationLoader(__DIR__ . '/console-application.php')
     ->withContainerXmlPath($rootPath . '/var/cache/data/di/DependencyInjectionContainer.xml')
+;
+$typo3Set = PHPStanConfig\Set\TYPO3Set::create()
+    ->withCustomRequestAttribute('route', Backend\Routing\Route::class)
 ;
 
 return PHPStanConfig\Config\Config::create($rootPath)
@@ -44,15 +48,10 @@ return PHPStanConfig\Config\Config::create($rootPath)
         $rootPath . '/.Build/vendor/autoload.php'
     )
     ->withBaseline()
-    ->withBleedingEdge()
+    ->withBleedingEdge([
+        'internalTag' => false,
+    ])
     ->level(8)
-    ->withSets($symfonySet)
-    ->ignoreError(identifier: 'classConstant.internalClass')
-    ->ignoreError(identifier: 'new.internalClass')
-    ->ignoreError(identifier: 'method.internal')
-    ->ignoreError(identifier: 'method.internalClass')
-    ->ignoreError(identifier: 'parameter.internalClass')
-    ->ignoreError(identifier: 'property.internalClass')
-    ->ignoreError(identifier: 'staticMethod.internal')
+    ->withSets($symfonySet, $typo3Set)
     ->toArray()
 ;

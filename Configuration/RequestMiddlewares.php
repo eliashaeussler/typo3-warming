@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
@@ -19,20 +21,15 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-/** @noinspection PhpUndefinedVariableInspection */
-$EM_CONF[$_EXTKEY] = [
-    'title' => 'Warming',
-    'description' => 'Warms up Frontend caches based on an XML sitemap. Cache warmup can be triggered via TYPO3 backend or using a console command. Supports multiple languages and custom crawler implementations.',
-    'category' => 'be',
-    'version' => '3.3.5',
-    'state' => 'stable',
-    'author' => 'Elias Häußler',
-    'author_email' => 'elias@haeussler.dev',
-    'constraints' => [
-        'depends' => [
-            'typo3' => '12.4.25-13.4.99',
-            'php' => '8.2.0-8.4.99',
-            'sitemap_locator' => '0.1.0-0.1.99',
+use EliasHaeussler\Typo3Warming\Middleware;
+
+return [
+    'backend' => [
+        'eliashaeussler/typo3-warming/inject-extension-configuration-script' => [
+            'target' => Middleware\InjectExtensionConfigurationScriptMiddleware::class,
+            'before' => [
+                'typo3/cms-core/verify-host-header',
+            ],
         ],
     ],
 ];
