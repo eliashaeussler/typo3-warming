@@ -33,11 +33,11 @@
 		"symfony/console": "^6.4.3 || ^7.0.3",
 		"symfony/dependency-injection": "^6.4.3 || ^7.0.3",
 		"symfony/options-resolver": "^6.4.3 || ^7.0.3",
-		"typo3/cms-backend": "~12.4.21 || ~13.4.0",
-		"typo3/cms-core": "~12.4.21 || ~13.4.0",
-		"typo3/cms-extbase": "~12.4.21 || ~13.4.0",
-		"typo3/cms-fluid": "~12.4.21 || ~13.4.0",
-		"typo3/cms-frontend": "~12.4.21 || ~13.4.0"
+		"typo3/cms-backend": "~12.4.25 || ~13.4.3",
+		"typo3/cms-core": "~12.4.25 || ~13.4.3",
+		"typo3/cms-extbase": "~12.4.25 || ~13.4.3",
+		"typo3/cms-fluid": "~12.4.25 || ~13.4.3",
+		"typo3/cms-frontend": "~12.4.25 || ~13.4.3"
 	},
 	"require-dev": {
 		"codeception/codeception": "^5.2",
@@ -54,9 +54,10 @@
 		"phpunit/phpunit": "^10.5.35 || ^11.5",
 		"symfony/config": "^6.4.3 || ^7.0.3",
 		"typo3/class-alias-loader": "^1.2",
-		"typo3/cms-install": "~12.4.21 || ~13.4.0",
-		"typo3/cms-seo": "~12.4.21 || ~13.4.0",
-		"typo3/cms-tstemplate": "~12.4.21 || ~13.4.0",
+		"typo3/cms-install": "~12.4.25 || ~13.4.3",
+		"typo3/cms-seo": "~12.4.25 || ~13.4.3",
+		"typo3/cms-t3editor": "~12.4.25 || ~13.4.3",
+		"typo3/cms-tstemplate": "~12.4.25 || ~13.4.3",
 		"typo3/testing-framework": "^8.2.3 || ^9.0.1"
 	},
 	"conflict": {

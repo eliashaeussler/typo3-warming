@@ -1,0 +1,51 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"$ref": "#/definitions/verboseCrawlerOptions",
+	"definitions": {
+		"verboseCrawlerOptions": {
+			"type": "object",
+			"properties": {
+				"concurrency": {
+					"type": "integer",
+					"description": "Define how many URLs are crawled concurrently.",
+					"default": 5
+				},
+				"request_method": {
+					"type": "string",
+					"description": "The HTTP method used to perform cache warmup requests.",
+					"enum": [
+						"GET",
+						"HEAD",
+						"POST",
+						"PUT",
+						"PATCH"
+					],
+					"default": "GET"
+				},
+				"request_headers": {
+					"type": "object",
+					"description": "A list of HTTP headers to send with each cache warmup request.",
+					"additionalProperties": {
+						"type": "string"
+					}
+				},
+				"request_options": {
+					"type": "object",
+					"description": "Additional Guzzle request options used for each cache warmup request.",
+					"$ref": "#/definitions/requestOptions"
+				},
+				"write_response_body": {
+					"type": "boolean",
+					"description": "Define whether or not to write response body of crawled URLs to the corresponding response object.",
+					"default": false
+				},
+				"perform_subrequests": {
+					"type": "boolean",
+					"description": "Enable sub request handler for cache warmup requests.",
+					"default": false
+				}
+			},
+			"additionalProperties": false
+		}
+	}
+}

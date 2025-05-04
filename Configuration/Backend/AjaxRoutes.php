@@ -32,4 +32,12 @@ return [
         'path' => '/warming/fetch-sites',
         'target' => \EliasHaeussler\Typo3Warming\Controller\FetchSitesController::class,
     ],
+    'tx_warming_validate_crawler_fqcn' => [
+        'path' => '/warming/validate-crawler-fqcn',
+        'target' => \EliasHaeussler\Typo3Warming\Controller\Internal\ValidateCrawlerFqcnController::class,
+    ],
+    'tx_warming_validate_exclude_pattern' => [
+        'path' => '/warming/validate-exclude-pattern',
+        'target' => \EliasHaeussler\Typo3Warming\Controller\Internal\ValidateExcludePatternController::class,
+    ],
 ];

@@ -1,0 +1,18 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
+<f:if condition="{codeEditor}">
+    <f:then>
+        <typo3-t3editor-codemirror name="{fieldName}" mode="{codeEditor.mode}" addons="{codeEditor.addons}" nolazyload="true" lineDigits="6" autoheight="true">
+            <textarea wrap="off" rows="10" class="form-control font-monospace" id="t3editor_em-warming-{fieldName}" name="{fieldName}">{fieldValue}</textarea>
+        </typo3-t3editor-codemirror>
+        <script>
+            import('<f:format.raw>{codeEditor.jsModule}</f:format.raw>');
+        </script>
+    </f:then>
+    <f:else>
+        <textarea wrap="off" rows="10" class="form-control font-monospace" name="{fieldName}">{fieldValue}</textarea>
+    </f:else>
+</f:if>
+
+</html>

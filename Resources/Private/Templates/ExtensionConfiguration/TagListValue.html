@@ -1,0 +1,14 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
+<input class="form-control" id="em-warming-{fieldName}" name="{fieldName}" value="{fieldValue}">
+<script>
+    import('@eliashaeussler/typo3-warming/backend/extension-configuration.js').then(({default: extensionConfiguration}) => {
+        extensionConfiguration.initializeTagList(
+            <f:format.htmlentitiesDecode><f:format.json>{fieldName}</f:format.json></f:format.htmlentitiesDecode>,
+            <f:format.htmlentitiesDecode><f:format.json>{validation}</f:format.json></f:format.htmlentitiesDecode>,
+        );
+    });
+</script>
+
+</html>

@@ -1,0 +1,30 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
+<input class="form-control" id="em-warming-{fieldName}" name="{fieldName}" value="{fieldValue}">
+
+<f:if condition="{expectedInterface}">
+    <div class="is-valid badge badge-success align-items-center gap-1 mt-2 hidden">
+        <core:icon identifier="actions-check-circle-alt" size="small" />
+        Congratulations, your configuration is valid.
+    </div>
+    <div class="is-invalid badge badge-danger align-items-center gap-1 mt-2 hidden">
+        <core:icon identifier="actions-exclamation-circle-alt" size="small" />
+        The given class is invalid, it must implement {expectedInterface}.
+    </div>
+    <div class="has-error badge badge-warning align-items-center gap-1 mt-2 hidden">
+        <core:icon identifier="actions-exclamation-circle-alt" size="small" />
+        There was an error validating your configuration. Please reload the page and try again.
+    </div>
+    <script>
+        import('@eliashaeussler/typo3-warming/backend/extension-configuration.js').then(({default: extensionConfiguration}) => {
+            extensionConfiguration.initializeCrawlerFqcnListener(
+                <f:format.htmlentitiesDecode><f:format.json>{fieldName}</f:format.json></f:format.htmlentitiesDecode>,
+                <f:format.htmlentitiesDecode><f:format.json>{expectedInterface}</f:format.json></f:format.htmlentitiesDecode>,
+            );
+        });
+    </script>
+</f:if>
+
+</html>

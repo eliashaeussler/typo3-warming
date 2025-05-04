@@ -17,6 +17,7 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+import commonjs from '@rollup/plugin-commonjs';
 import del from 'rollup-plugin-delete';
 import multiInput from 'rollup-plugin-multi-input';
 import nodeResolve from '@rollup/plugin-node-resolve';
@@ -77,8 +78,41 @@ export default [
     ],
   },
   {
+    input: 'src/scripts/backend/extension-configuration.ts',
+    output: {
+      dir: '../../Public/JavaScript/backend',
+      format: 'esm',
+      sourcemap: isDev ? 'inline' : false,
+      inlineDynamicImports: true,
+    },
+    context: 'window',
+    plugins: [
+      commonjs(),
+      nodeResolve(),
+      terser({
+        format: {
+          comments: false,
+        },
+      }),
+      typescript({
+        outputToFilesystem: true,
+      }),
+    ],
+    external: [
+      /^@codemirror\//,
+      /^@typo3\//,
+    ],
+    onwarn: (warning, warn) => {
+      // Suppress warning for circular dependency in external module
+      if (warning.code !== 'CIRCULAR_DEPENDENCY') {
+        warn(warning);
+      }
+    }
+  },
+  {
     input: [
       'src/styles/modal.scss',
+      '@yaireo/tagify/dist/tagify.css',
     ],
     output: {
       dir: '../../Public/Css',
