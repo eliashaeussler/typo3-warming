@@ -4,28 +4,28 @@
 # customsubcategory=input=Input
 # customsubcategory=crawling=Crawling
 
-# cat=crawler/default/10; type=string; label=Default crawler FQCN:Provide the FQCN of the crawler to be used for Backend-related warmup requests. A crawler must implement the "EliasHaeussler\CacheWarmup\Crawler\Crawler" interface.
+# cat=crawler/default/10; type=user[EliasHaeussler\Typo3Warming\DataProcessing\ExtensionConfigurationProcessor->processCrawlerFqcn]; label=Default crawler FQCN:Provide the FQCN of the crawler to be used for Backend-related warmup requests. A crawler must implement the "EliasHaeussler\CacheWarmup\Crawler\Crawler" interface.
 crawler = EliasHaeussler\Typo3Warming\Crawler\ConcurrentUserAgentCrawler
 
-# cat=crawler/default/20; type=string; label=Default crawler options (JSON-encoded string):Provide crawler options for the default crawler. Applies only if the default crawler implements the "EliasHaeussler\CacheWarmup\Crawler\ConfigurableCrawler" interface. Example: {"request_options": {"auth": ["username", "password"]}}
+# cat=crawler/default/20; type=user[EliasHaeussler\Typo3Warming\DataProcessing\ExtensionConfigurationProcessor->processJson]; label=Default crawler options (JSON-encoded string):Provide crawler options for the default crawler. Applies only if the default crawler implements the "EliasHaeussler\CacheWarmup\Crawler\ConfigurableCrawler" interface. Example: {"request_options": {"auth": ["username", "password"]}}
 crawlerOptions =
 
-# cat=crawler/verbose/10; type=string; label=Verbose crawler FQCN:Provide the FQCN of the crawler to be used for CLI-related warmup requests. A crawler must implement the "EliasHaeussler\CacheWarmup\Crawler\Crawler" interface.
+# cat=crawler/verbose/10; type=user[EliasHaeussler\Typo3Warming\DataProcessing\ExtensionConfigurationProcessor->processCrawlerFqcn]; label=Verbose crawler FQCN:Provide the FQCN of the crawler to be used for CLI-related warmup requests. A crawler must implement the "EliasHaeussler\CacheWarmup\Crawler\VerboseCrawler" interface.
 verboseCrawler = EliasHaeussler\Typo3Warming\Crawler\OutputtingUserAgentCrawler
 
-# cat=crawler/verbose/20; type=string; label=Verbose crawler options (JSON-encoded string):Provide crawler options for the verbose crawler. Applies only if the verbose crawler implements the "EliasHaeussler\CacheWarmup\Crawler\ConfigurableCrawler" interface. Example: {"request_options": {"auth": ["username", "password"]}}
+# cat=crawler/verbose/20; type=user[EliasHaeussler\Typo3Warming\DataProcessing\ExtensionConfigurationProcessor->processJson]; label=Verbose crawler options (JSON-encoded string):Provide crawler options for the verbose crawler. Applies only if the verbose crawler implements the "EliasHaeussler\CacheWarmup\Crawler\ConfigurableCrawler" interface. Example: {"request_options": {"auth": ["username", "password"]}}
 verboseCrawlerOptions =
 
-# cat=parser/options/10; type=string; label=XML parser options (JSON-encoded string):Provide options for the XML parser to parse XML sitemaps. Example: {"request_options": {"auth": ["username", "password"]}}
+# cat=parser/options/10; type=user[EliasHaeussler\Typo3Warming\DataProcessing\ExtensionConfigurationProcessor->processJson]; label=XML parser options (JSON-encoded string):Provide options for the XML parser to parse XML sitemaps. Example: {"request_options": {"auth": ["username", "password"]}}
 parserOptions =
 
-# cat=client/options/10; type=string; label=HTTP client options (JSON-encoded string):Provide options for the HTTP client to use for crawler and parser. Example: {"auth": ["username", "password"]}
+# cat=client/options/10; type=user[EliasHaeussler\Typo3Warming\DataProcessing\ExtensionConfigurationProcessor->processJson]; label=HTTP client options (JSON-encoded string):Provide options for the HTTP client to use for crawler and parser. Example: {"auth": ["username", "password"]}
 clientOptions =
 
 # cat=options/input/10; type=int+; label=Crawl limit:Define maximum number of pages to crawl in one iteration. Set to "0" to disable the limit.
 limit = 250
 
-# cat=options/input/20; type=string; label=Exclude patterns:Define patterns for URLs to be excluded from cache warmup. Patterns can be either regular expressions with delimiter "#" (e.g. #(no_cache|no_warming)=1#) or any patterns processable by the native PHP function "fnmatch()" (e.g. *no_cache=1*). Separate multiple patterns by comma.
+# cat=options/input/20; type=user[EliasHaeussler\Typo3Warming\DataProcessing\ExtensionConfigurationProcessor->processTagList]; label=Exclude patterns:Define patterns for URLs to be excluded from cache warmup. Patterns can be either regular expressions with delimiter "#" (e.g. #(no_cache|no_warming)=1#) or any patterns processable by the native PHP function "fnmatch()" (e.g. *no_cache=1*). Separate multiple patterns by comma.
 exclude =
 
 # cat=options/crawling/10; type=options[=,Sort by change frequency=sort-by-changefreq,Sort by last modification date=sort-by-lastmod,Sort by priority=sort-by-priority]; label=Crawling strategy:Define a strategy used to crawl URLs. This can be helpful to prioritize crawling of important URLs.
@@ -34,7 +34,7 @@ strategy =
 # cat=pageTree/enable/10; type=boolean; label=Enable cache warmup from page tree
 enablePageTree = 1
 
-# cat=pageTree/options/10; type=string; label=Supported doktypes in page tree:Provide a comma-separated list of doktypes for which cache warmup should be available in the page tree context menu.
+# cat=pageTree/options/10; type=user[EliasHaeussler\Typo3Warming\DataProcessing\ExtensionConfigurationProcessor->processTagList]; label=Supported doktypes in page tree:Provide a comma-separated list of doktypes for which cache warmup should be available in the page tree context menu.
 supportedDoktypes = 1
 
 # cat=toolbar/enable/10; type=boolean; label=Enable cache warmup from backend toolbar

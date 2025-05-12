@@ -47,6 +47,11 @@ extensions:
         entrypoints:
           - web-dir: .Build/web
           - web-dir: .Build/web/typo3
+            main-entrypoint: index.php
+            app-entrypoint: app-index.php
+          - web-dir: .Build/web/typo3
+            main-entrypoint: install.php
+            app-entrypoint: app-install.php
     - EliasHaeussler\Typo3Warming\Tests\Acceptance\Support\Extension\EnvironmentExtension
 
 coverage:
