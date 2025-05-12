@@ -6,6 +6,9 @@
 		"Configuration/*.php"
 	],
 	"symbol-whitelist": [
-		"TYPO3\\CMS\\Core\\Crypto\\HashService"
+		"TYPO3\\CMS\\Core\\Crypto\\HashService",
+		"TYPO3\\CMS\\T3editor\\Registry\\AddonRegistry",
+		"TYPO3\\CMS\\T3editor\\Registry\\ModeRegistry",
+		"TYPO3\\CMS\\T3editor\\T3editor"
 	]
 }
