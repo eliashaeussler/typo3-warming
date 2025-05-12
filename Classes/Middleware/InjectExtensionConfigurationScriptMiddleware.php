@@ -43,6 +43,8 @@ final readonly class InjectExtensionConfigurationScriptMiddleware implements Ser
         $response = $handler->handle($request);
         /** @var Backend\Routing\Route|null $route */
         $route = $request->getAttribute('route');
+        /** @var Core\Authentication\BackendUserAuthentication|null $backedUser */
+        $backedUser = $GLOBALS['BE_USER'] ?? null;
 
         // Early return if we're not on main route
         if ($route?->getPath() !== '/main') {
@@ -57,6 +59,11 @@ final readonly class InjectExtensionConfigurationScriptMiddleware implements Ser
 
         // Early return if response is invalid
         if ($response->getStatusCode() !== 200) {
+            return $response;
+        }
+
+        // Early return on insufficient privileges (only system maintainers can access settings module)
+        if (!($backedUser?->isSystemMaintainer() ?? false)) {
             return $response;
         }
 
