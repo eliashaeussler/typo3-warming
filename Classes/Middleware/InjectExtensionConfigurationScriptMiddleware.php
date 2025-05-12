@@ -85,7 +85,7 @@ final readonly class InjectExtensionConfigurationScriptMiddleware implements Ser
         $nonceValue = $nonce->consume();
 
         return <<<JS
-<script async nonce="{$nonceValue}">
+<script async nonce="{$nonceValue}" id="tx-warming-script-inject">
 import('@eliashaeussler/typo3-warming/backend/extension-configuration.js').then(({default: extensionConfiguration}) => {
     extensionConfiguration.initializeModalListener('{$nonceValue}');
 });

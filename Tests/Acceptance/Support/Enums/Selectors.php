@@ -31,16 +31,20 @@ namespace EliasHaeussler\Typo3Warming\Tests\Acceptance\Support\Enums;
  */
 enum Selectors: string
 {
-    case BackendPageModule = '[data-moduleroute-identifier="web_layout"]';
     case BackendListModule = '[data-moduleroute-identifier="web_list"]';
+    case BackendPageModule = '[data-moduleroute-identifier="web_layout"]';
+    case BackendSettingsModule = '[data-moduleroute-identifier="tools_toolssettings"]';
     case CheckboxMainGroup = '#tx-warming-checkbox-main-group';
     case CheckboxMainLanguage0 = '#tx-warming-checkbox-main-0';
     case CheckboxMainLanguage1 = '#tx-warming-checkbox-main-1';
     case CheckboxRoot2 = '#tx-warming-checkbox-root-2';
+    case CodeMirrorWrapper = 'typo3-t3editor-codemirror';
+    case ConfigureExtensionsButton = '[data-import="@typo3/install/module/settings/extension-configuration.js"]';
     case ContextMenu = '.context-menu';
     case ContextMenuGroup = '.context-menu .context-menu-group';
     case ContextMenuSubmenu = '.context-menu[data-contextmenu-parent]';
     case ContextMenuSubmenuLegacy = '.context-menu[data-parent]';
+    case ExtensionConfigurationModalCollapseHeader = '#heading-warming';
     case ModalTitle = '.modal .modal-title';
     case ProgressCounterTotal = '.tx-warming-progress-modal .tx-warming-progress-modal-counter > div:nth-child(1) > strong:nth-child(2)';
     case ProgressPlaceholder = '.tx-warming-progress-modal .tx-warming-progress-placeholder';
