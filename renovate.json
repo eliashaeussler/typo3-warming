@@ -2,7 +2,8 @@
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
 	"extends": [
 		"local>eliashaeussler/renovate-config",
-		"local>eliashaeussler/renovate-config:typo3-extension"
+		"local>eliashaeussler/renovate-config:typo3-extension",
+		"local>eliashaeussler/renovate-config:ddev"
 	],
 	"constraints": {
 		"php": "8.2.*"
