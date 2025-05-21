@@ -68,7 +68,6 @@ final class Configuration
         $crawlerOptions = [];
 
         try {
-            /** @var class-string<CacheWarmup\Crawler\Crawler>|null $crawlerClass */
             $crawlerClass = $this->configuration->get(Extension::KEY, 'crawler');
 
             if (!\is_string($crawlerClass) ||
@@ -117,7 +116,6 @@ final class Configuration
         $crawlerOptions = [];
 
         try {
-            /** @var class-string<CacheWarmup\Crawler\VerboseCrawler>|null $crawlerClass */
             $crawlerClass = $this->configuration->get(Extension::KEY, 'verboseCrawler');
 
             if (!\is_string($crawlerClass) ||
