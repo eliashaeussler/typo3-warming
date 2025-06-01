@@ -55,4 +55,7 @@ services:
     # Must be public for use with GU::mI in Configuration class to avoid circular dependencies
     public: true
   EliasHaeussler\CacheWarmup\Crawler\Strategy\CrawlingStrategyFactory:
+  EliasHaeussler\CacheWarmup\Crawler\Strategy\SortByChangeFrequencyStrategy:
+  EliasHaeussler\CacheWarmup\Crawler\Strategy\SortByLastModificationDateStrategy:
+  EliasHaeussler\CacheWarmup\Crawler\Strategy\SortByPriorityStrategy:
   EliasHaeussler\CacheWarmup\DependencyInjection\ContainerFactory:

@@ -380,6 +380,23 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
     }
 
     #[Framework\Attributes\Test]
+    public function executeRespectsCustomStrategy(): void
+    {
+        $this->mockSitemapResponse('en', 'de', 'fr');
+
+        $this->commandTester->execute([
+            '--sites' => ['1'],
+            '--strategy' => Tests\Unit\Fixtures\DummyCrawlingStrategy::getName(),
+        ]);
+
+        self::assertSame(Console\Command\Command::SUCCESS, $this->commandTester->getStatusCode());
+        self::assertStringContainsString(
+            'Successfully warmed up caches for 6 URLs.',
+            $this->commandTester->getDisplay(),
+        );
+    }
+
+    #[Framework\Attributes\Test]
     public function executeRespectsConfiguredStrategy(): void
     {
         $this->mockSitemapResponse('en', 'de', 'fr');
@@ -476,7 +493,12 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
         return new Console\Tester\CommandTester(
             new Src\Command\WarmupCommand(
                 $this->get(Src\Configuration\Configuration::class),
-                $this->get(CacheWarmup\Crawler\Strategy\CrawlingStrategyFactory::class),
+                new CacheWarmup\Crawler\Strategy\CrawlingStrategyFactory([
+                    CacheWarmup\Crawler\Strategy\SortByChangeFrequencyStrategy::class,
+                    CacheWarmup\Crawler\Strategy\SortByLastModificationDateStrategy::class,
+                    CacheWarmup\Crawler\Strategy\SortByPriorityStrategy::class,
+                    Tests\Unit\Fixtures\DummyCrawlingStrategy::class,
+                ]),
                 new Typo3SitemapLocator\Sitemap\SitemapLocator(
                     $this->get(Core\Http\RequestFactory::class),
                     $this->cache,

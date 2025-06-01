@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3e667042e0b02b3cf9469d88f85c5b7f",
+    "content-hash": "c3846abe6827d635b803a6667bb06619",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -784,16 +784,16 @@
         },
         {
             "name": "eliashaeussler/cache-warmup",
-            "version": "4.1.0",
+            "version": "4.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/cache-warmup.git",
-                "reference": "b8016dc86ee510d449c3c4967765905b8a289a02"
+                "reference": "a4c39fa15c782aa030634343a2023edae3d1d281"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/cache-warmup/zipball/b8016dc86ee510d449c3c4967765905b8a289a02",
-                "reference": "b8016dc86ee510d449c3c4967765905b8a289a02",
+                "url": "https://api.github.com/repos/eliashaeussler/cache-warmup/zipball/a4c39fa15c782aa030634343a2023edae3d1d281",
+                "reference": "a4c39fa15c782aa030634343a2023edae3d1d281",
                 "shasum": ""
             },
             "require": {
@@ -860,9 +860,9 @@
             "homepage": "https://cache-warmup.dev/",
             "support": {
                 "issues": "https://github.com/eliashaeussler/cache-warmup/issues",
-                "source": "https://github.com/eliashaeussler/cache-warmup/tree/4.1.0"
+                "source": "https://github.com/eliashaeussler/cache-warmup/tree/4.2.0"
             },
-            "time": "2025-02-25T15:31:53+00:00"
+            "time": "2025-06-01T19:35:40+00:00"
         },
         {
             "name": "eliashaeussler/sse",
