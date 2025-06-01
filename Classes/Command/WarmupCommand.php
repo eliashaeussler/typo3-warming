@@ -247,7 +247,7 @@ HELP
     protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output): int
     {
         // Initialize sub command
-        $subCommand = new CacheWarmup\Command\CacheWarmupCommand($this->eventDispatcher);
+        $subCommand = new CacheWarmup\Command\CacheWarmupCommand($this->eventDispatcher, $this->crawlingStrategyFactory);
         $subCommand->setApplication($this->getApplication() ?? new Console\Application());
 
         // Initialize sub command input
