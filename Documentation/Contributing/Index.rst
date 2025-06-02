@@ -83,7 +83,20 @@ You can access the DDEV site at https://typo3-ext-warming.ddev.site/.
     :file:`Resources/Private/Libs/Build`. Run :bash:`ddev libs <command>` with
     any available Composer command, e.g. :bash:`ddev libs install`.
 
+..  _analyze-code:
+
+Analyze code
+------------
+
 ..  _check-code-quality:
+
+..  code-block:: bash
+
+    # All analyzers
+    ddev cgl analyze
+
+    # Specific analyzers
+    ddev cgl analyze:dependencies
 
 Check code quality
 ------------------
@@ -154,9 +167,6 @@ Run tests
     ddev test acceptance
     ddev test functional
     ddev test unit
-
-    # Enable Xdebug to collect code coverage
-    ddev xdebug on
 
     # All tests with code coverage
     ddev test coverage
