@@ -31,42 +31,76 @@ type ValidationState = boolean | 'error';
  * @license GPL-2.0-or-later
  */
 class ExtensionConfiguration {
-  initializeModalListener(nonce: string) {
+  initializeModalListener(nonce: string, strategies: string[]): void {
     document.addEventListener('typo3-modal-shown', (event: CustomEvent) => {
       const target: HTMLElement = event.target as HTMLElement;
-      const form: Element|null = target.querySelector('.t3js-extensionConfiguration-form[data-extension-key="warming"]');
+      let form: Element|null = target.querySelector('.t3js-extensionConfiguration-form[data-extension-key="warming"]');
+      let injectScripts: boolean = true;
+
+      // TYPO3 v12: Use different selector for outer form
+      // @todo Remove once support for TYPO3 v12 is dropped
+      if (form === null) {
+        form = target.querySelector('.t3js-extensionConfiguration-form[data-extensionkey="warming"]');
+        injectScripts = false;
+      }
 
       // Early return if extension configuration modal is *not* shown
       if (form === null) {
         return;
       }
 
-      form.querySelectorAll('script').forEach((script: HTMLScriptElement) => {
-        const clone = document.createElement('script');
+      // Replace all <script> tags in modal to enable them
+      if (injectScripts) {
+        form.querySelectorAll('script').forEach((script: HTMLScriptElement) => this.activateScript(script, nonce));
+      }
 
-        // Clone <script> node with text and all attributes
-        clone.text = script.text;
-        Array.from(script.attributes).forEach((attribute: Attr) => {
-          clone.setAttribute(attribute.name, attribute.value);
-        });
-
-        // Enforce nonce attribute
-        clone.setAttribute('nonce', nonce);
-
-        // Inject cloned <script> node
-        document.head.appendChild(clone).parentNode.removeChild(clone);
-      });
+      // Inject all available crawling strategies
+      const strategySelect: HTMLSelectElement|null = form.querySelector('[name="strategy"]');
+      if (strategySelect !== null) {
+        this.injectCrawlingStrategies(strategySelect, strategies);
+      }
     });
   }
 
-  initializeCrawlerFqcnListener(fieldName: string, expectedInterface: string) {
+  private activateScript(script: HTMLScriptElement, nonce: string): void {
+    const clone = document.createElement('script');
+
+    // Clone <script> node with text and all attributes
+    clone.text = script.text;
+    Array.from(script.attributes).forEach((attribute: Attr) => {
+      clone.setAttribute(attribute.name, attribute.value);
+    });
+
+    // Enforce nonce attribute
+    clone.setAttribute('nonce', nonce);
+
+    // Inject cloned <script> node
+    document.head.appendChild(clone).parentNode.removeChild(clone);
+  }
+
+  private injectCrawlingStrategies(select: HTMLSelectElement, strategies: string[]): void {
+    const currentValue: string = select.dataset.currentValue;
+
+    strategies.forEach((strategy: string) => {
+      if (select.querySelector(`option[value="${strategy}"]`) === null) {
+        const option: HTMLOptionElement = document.createElement('option');
+        option.value = strategy;
+        option.text = strategy;
+        option.selected = currentValue === strategy;
+
+        select.appendChild(option);
+      }
+    });
+  }
+
+  public initializeCrawlerFqcnListener(fieldName: string, expectedInterface: string): void {
     const element: HTMLInputElement = document.querySelector(`[name=${fieldName}]`);
 
     element.addEventListener('input', (event: InputEvent) => this.validateCrawlerFqcn(event, expectedInterface));
     element.dispatchEvent(new Event('input'));
   }
 
-  async validateCrawlerFqcn(event: InputEvent, expectedInterface: string) {
+  public async validateCrawlerFqcn(event: InputEvent, expectedInterface: string): Promise<void> {
     const target = event.target as HTMLInputElement;
     const actual: string = target.value;
 
@@ -112,7 +146,7 @@ class ExtensionConfiguration {
     }
   }
 
-  initializeTagList(fieldName: string, validation: string | undefined = undefined) {
+  public initializeTagList(fieldName: string, validation: string | undefined = undefined): void {
     const element: HTMLInputElement = document.querySelector(`[name=${fieldName}]`);
     const tagify = new Tagify(element, {
       originalInputValueFormat: (values) => values.map(item => item.value).join(','),
@@ -124,7 +158,7 @@ class ExtensionConfiguration {
     }
   }
 
-  async validateTag(validation: string, data: TagData, tag: HTMLElement, tagify: Tagify) {
+  public async validateTag(validation: string, data: TagData, tag: HTMLElement, tagify: Tagify): Promise<void> {
     const {value}: {value: string} = data;
 
     // Wait before adding tag until validation is done
@@ -155,7 +189,7 @@ class ExtensionConfiguration {
     }
   }
 
-  jsonSchema(json: string) {
+  public jsonSchema(json: string): import('@codemirror/state').Extension[] {
     const schema = JSON.parse(json);
 
     return codemirrorJsonSchema(schema);

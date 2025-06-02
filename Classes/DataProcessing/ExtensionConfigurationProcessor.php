@@ -38,6 +38,8 @@ use TYPO3\CMS\T3editor;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  * @internal
+ *
+ * @phpstan-type ExtensionConfiguration array{fieldName: string, fieldValue: string|null}
  */
 final class ExtensionConfigurationProcessor
 {
@@ -55,12 +57,14 @@ final class ExtensionConfigurationProcessor
     private static ?array $guzzleRequestOptionsSchema = null;
     private static bool $codeEditorLoaded = false;
 
+    private readonly CacheWarmup\Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory;
     private readonly Core\Configuration\ExtensionConfiguration $extensionConfiguration;
     private readonly View\TemplateRenderer $templateRenderer;
 
     public function __construct()
     {
         // DI is not possible here because we're in context of the failsafe container
+        $this->crawlingStrategyFactory = new CacheWarmup\Crawler\Strategy\CrawlingStrategyFactory();
         $this->extensionConfiguration = Core\Utility\GeneralUtility::makeInstance(Core\Configuration\ExtensionConfiguration::class);
         $this->templateRenderer = new View\TemplateRenderer(
             Core\Utility\GeneralUtility::makeInstance(Fluid\Core\Rendering\RenderingContextFactory::class)
@@ -68,7 +72,7 @@ final class ExtensionConfigurationProcessor
     }
 
     /**
-     * @param array{fieldName: string, fieldValue: string|null} $params
+     * @param ExtensionConfiguration $params
      */
     public function processJson(array $params): string
     {
@@ -92,7 +96,7 @@ final class ExtensionConfigurationProcessor
     }
 
     /**
-     * @param array{fieldName: string, fieldValue: string|null} $params
+     * @param ExtensionConfiguration $params
      */
     public function processCrawlerFqcn(array $params): string
     {
@@ -107,7 +111,29 @@ final class ExtensionConfigurationProcessor
     }
 
     /**
-     * @param array{fieldName: string, fieldValue: string|null} $params
+     * @param ExtensionConfiguration $params
+     */
+    public function processCrawlingStrategy(array $params): string
+    {
+        $fieldName = $params['fieldName'];
+        $fieldValue = trim((string)$this->extensionConfiguration->get(Extension::KEY, $fieldName));
+        $strategies = $this->crawlingStrategyFactory->getAll();
+
+        // Make sure at least currently selected strategy is selectable in install tool
+        // (in backend context, all available strategies are injected using JavaScript)
+        if ($fieldValue !== '' && !in_array($fieldValue, $strategies, true)) {
+            $strategies[] = $fieldValue;
+        }
+
+        return $this->templateRenderer->render('ExtensionConfiguration/CrawlingStrategyValue', [
+            'fieldName' => $fieldName,
+            'fieldValue' => $fieldValue,
+            'strategies' => $strategies,
+        ]);
+    }
+
+    /**
+     * @param ExtensionConfiguration $params
      */
     public function processTagList(array $params): string
     {

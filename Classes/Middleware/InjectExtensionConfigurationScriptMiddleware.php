@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Middleware;
 
+use EliasHaeussler\CacheWarmup;
 use Psr\Http\Message;
 use Psr\Http\Server;
 use TYPO3\CMS\Backend;
@@ -36,6 +37,10 @@ use TYPO3\CMS\Core;
  */
 final readonly class InjectExtensionConfigurationScriptMiddleware implements Server\MiddlewareInterface
 {
+    public function __construct(
+        private CacheWarmup\Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
+    ) {}
+
     public function process(
         Message\ServerRequestInterface $request,
         Server\RequestHandlerInterface $handler,
@@ -48,12 +53,6 @@ final readonly class InjectExtensionConfigurationScriptMiddleware implements Ser
 
         // Early return if we're not on main route
         if ($route?->getPath() !== '/main') {
-            return $response;
-        }
-
-        // Early return on TYPO3 v12 (uses jQuery and thus doesn't need a workaround for <script> tags in modals)
-        // @todo Remove once support for TYPO3 v12 is dropped
-        if ((new Core\Information\Typo3Version())->getMajorVersion() === 12) {
             return $response;
         }
 
@@ -83,11 +82,12 @@ final readonly class InjectExtensionConfigurationScriptMiddleware implements Ser
         /** @var Core\Security\ContentSecurityPolicy\ConsumableNonce $nonce */
         $nonce = $request->getAttribute('nonce');
         $nonceValue = $nonce->consume();
+        $strategies = json_encode($this->crawlingStrategyFactory->getAll());
 
         return <<<JS
 <script async nonce="{$nonceValue}" id="tx-warming-script-inject">
 import('@eliashaeussler/typo3-warming/backend/extension-configuration.js').then(({default: extensionConfiguration}) => {
-    extensionConfiguration.initializeModalListener('{$nonceValue}');
+    extensionConfiguration.initializeModalListener('{$nonceValue}', {$strategies});
 });
 </script>
 JS;
