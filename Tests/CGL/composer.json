@@ -10,6 +10,7 @@
 		"phpstan/phpstan-phpunit": "2.0.6",
 		"phpstan/phpstan-symfony": "2.0.6",
 		"saschaegerer/phpstan-typo3": "2.1.0",
+		"shipmonk/composer-dependency-analyser": "1.8.3",
 		"ssch/typo3-rector": "3.3.0",
 		"typo3/coding-standards": "0.8.0"
 	},
@@ -28,6 +29,10 @@
 		"sort-packages": true
 	},
 	"scripts": {
+		"analyze": [
+			"@analyze:dependencies"
+		],
+		"analyze:dependencies": "composer-dependency-analyser --composer-json ../../composer.json",
 		"fix": [
 			"@fix:composer",
 			"@fix:editorconfig",
