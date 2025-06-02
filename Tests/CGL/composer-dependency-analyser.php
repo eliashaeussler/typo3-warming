@@ -21,9 +21,15 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+use Composer\Autoload;
 use ShipMonk\ComposerDependencyAnalyser;
 
 $rootPath = dirname(__DIR__, 2);
+
+/** @var Autoload\ClassLoader $loader */
+$loader = require $rootPath . '/.Build/vendor/autoload.php';
+$loader->register();
+
 $configuration = new ComposerDependencyAnalyser\Config\Configuration();
 $configuration
     ->addPathsToExclude([
