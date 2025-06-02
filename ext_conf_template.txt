@@ -28,7 +28,7 @@ limit = 250
 # cat=options/input/20; type=user[EliasHaeussler\Typo3Warming\DataProcessing\ExtensionConfigurationProcessor->processTagList]; label=Exclude patterns:Define patterns for URLs to be excluded from cache warmup. Patterns can be either regular expressions with delimiter "#" (e.g. #(no_cache|no_warming)=1#) or any patterns processable by the native PHP function "fnmatch()" (e.g. *no_cache=1*). Separate multiple patterns by comma.
 exclude =
 
-# cat=options/crawling/10; type=options[=,Sort by change frequency=sort-by-changefreq,Sort by last modification date=sort-by-lastmod,Sort by priority=sort-by-priority]; label=Crawling strategy:Define a strategy used to crawl URLs. This can be helpful to prioritize crawling of important URLs.
+# cat=options/crawling/10; type=user[EliasHaeussler\Typo3Warming\DataProcessing\ExtensionConfigurationProcessor->processCrawlingStrategy]; label=Crawling strategy:Define a strategy used to crawl URLs. This can be helpful to prioritize crawling of important URLs.
 strategy =
 
 # cat=pageTree/enable/10; type=boolean; label=Enable cache warmup from page tree

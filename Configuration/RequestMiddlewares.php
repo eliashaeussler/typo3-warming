@@ -27,8 +27,9 @@ return [
     'backend' => [
         'eliashaeussler/typo3-warming/inject-extension-configuration-script' => [
             'target' => Middleware\InjectExtensionConfigurationScriptMiddleware::class,
-            'before' => [
-                'typo3/cms-core/verify-host-header',
+            'after' => [
+                'typo3/cms-backend/backend-routing',
+                'typo3/cms-backend/csp-headers',
             ],
         ],
     ],

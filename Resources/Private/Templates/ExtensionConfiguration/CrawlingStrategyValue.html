@@ -1,0 +1,14 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
+<select class="form-select" id="em-warming-{fieldName}" name="{fieldName}" data-current-value="{fieldValue}">
+    <option value=""></option>
+
+    <f:for each="{strategies}" as="strategy">
+        <option value="{strategy}" {f:if(condition: '{fieldValue} == {strategy}', then: 'selected')}>
+            {strategy}
+        </option>
+    </f:for>
+</select>
+
+</html>

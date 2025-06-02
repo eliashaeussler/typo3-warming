@@ -28,7 +28,10 @@ use EliasHaeussler\Typo3Warming\Tests;
 use Symfony\Component\DependencyInjection;
 use TYPO3\CMS\Core;
 
-return static function (DependencyInjection\ContainerBuilder $containerBuilder): void {
+return static function (
+    DependencyInjection\Loader\Configurator\ContainerConfigurator $containerConfigurator,
+    DependencyInjection\ContainerBuilder $containerBuilder,
+): void {
     $cachePath = Core\Core\Environment::getVarPath() . '/cache/data/di/DependencyInjectionContainer.xml';
 
     // Configure public services by pattern
@@ -65,4 +68,10 @@ return static function (DependencyInjection\ContainerBuilder $containerBuilder):
         DependencyInjection\Compiler\PassConfig::TYPE_AFTER_REMOVING,
         100,
     );
+
+    // Additional services
+    $containerConfigurator->services()
+        ->set(Tests\Unit\Fixtures\DummyCrawlingStrategy::class)
+        ->autoconfigure()
+    ;
 };

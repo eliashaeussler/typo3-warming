@@ -79,6 +79,12 @@ final class ExtensionConfigurationProcessorCest
         $I->see('The given class is invalid, it must implement EliasHaeussler\CacheWarmup\Crawler\Crawler.');
     }
 
+    public function canSeeAllCrawlingStrategiesInExtensionConfigurationModal(Tests\Acceptance\Support\AcceptanceTester $I): void
+    {
+        $I->click('[aria-controls="category-warming-options"]');
+        $I->selectOption('#em-warming-strategy', 'dummy');
+    }
+
     public function canSeeProcessedTagListInExtensionConfigurationModal(Tests\Acceptance\Support\AcceptanceTester $I): void
     {
         $I->click('[aria-controls="category-warming-options"]');
