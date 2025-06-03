@@ -90,7 +90,7 @@ rulesets:
           strict_required_status_checks_policy: true
           do_not_enforce_on_create: false
           required_status_checks:
-            - context: 'cgl'
+            - context: 'CGL'
               integration_id: 15368
             - context: 'Tests (PHP 8.2, TYPO3 12.4 & highest dependencies)'
               integration_id: 15368
