@@ -29,7 +29,6 @@ use EliasHaeussler\Typo3Warming\Configuration;
 use EliasHaeussler\Typo3Warming\Http;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\HandlerStack;
 use Psr\EventDispatcher;
 use Psr\Log;
 use Symfony\Component\OptionsResolver;
@@ -59,6 +58,7 @@ final class ConcurrentUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfi
     use LoggingCrawlerTrait;
 
     private readonly Configuration\Configuration $configuration;
+    private readonly Http\Client\Handler\HandlerStackBuilder $handlerStackBuilder;
     private readonly Http\Client\Handler\SubRequestHandler $subRequestHandler;
     private ?SSE\Stream\EventStream $stream = null;
 
@@ -69,6 +69,7 @@ final class ConcurrentUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfi
         private readonly ?EventDispatcher\EventDispatcherInterface $eventDispatcher = null,
     ) {
         $this->configuration = Core\Utility\GeneralUtility::makeInstance(Configuration\Configuration::class);
+        $this->handlerStackBuilder = new Http\Client\Handler\HandlerStackBuilder();
         $this->subRequestHandler = Core\Utility\GeneralUtility::makeInstance(Http\Client\Handler\SubRequestHandler::class);
         $this->logger = $logger;
 
@@ -91,10 +92,16 @@ final class ConcurrentUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfi
             $handlers[] = $streamHandler;
         }
 
-        // Inject sub request handler
-        if ($this->options['perform_subrequests'] && !isset($this->options['request_options']['handler'])) {
-            $this->options['request_options']['handler'] = HandlerStack::create($this->subRequestHandler);
-        }
+        // Build handler stack
+        $this->options['request_options']['handler'] = $this->handlerStackBuilder->buildFromClientOrRequestOptions(
+            $this->client,
+            $this->options['request_options'],
+            $this->options['perform_subrequests'] ? $this->subRequestHandler : null,
+        );
+        $this->options['request_options']['handler']->unshift(
+            Http\Client\Handler\UrlMetadataPreparation::create(),
+            'url_metadata_preparation',
+        );
 
         // Start crawling
         $pool = $this->createPool($urls, $this->client, $handlers);
