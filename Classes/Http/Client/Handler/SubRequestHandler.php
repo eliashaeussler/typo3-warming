@@ -80,6 +80,7 @@ final class SubRequestHandler
 
     private function sendSubRequest(Message\RequestInterface $request): Promise\PromiseInterface
     {
+        $response = null;
         $subRequest = new Core\Http\ServerRequest(
             $request->getUri(),
             $request->getMethod(),
@@ -88,14 +89,22 @@ final class SubRequestHandler
         );
 
         try {
-            $response = $this->application->handle($subRequest);
-        } catch (\Exception $exception) {
-            return Promise\Create::rejectionFor(
-                new Exception\RequestException($exception->getMessage(), $request),
+            return Promise\Create::promiseFor(
+                $this->application->handle($subRequest),
             );
+        } catch (Core\Http\ImmediateResponseException $exception) {
+            $response = $exception->getResponse();
+        } catch (Core\Error\Http\StatusException $exception) {
+            $response = new Core\Http\Response(
+                statusCode: 500,
+                headers: $this->parseHeaderLines($exception->getStatusHeaders()),
+            );
+        } catch (\Exception $exception) {
         }
 
-        return Promise\Create::promiseFor($response);
+        return Promise\Create::rejectionFor(
+            new Exception\RequestException($exception->getMessage(), $request, $response),
+        );
     }
 
     private function isSupportedRequestUrl(Message\UriInterface $uri): bool
@@ -124,5 +133,24 @@ final class SubRequestHandler
         }
 
         return $baseUrls;
+    }
+
+    /**
+     * @param array<string> $statusHeaders
+     * @return array<string, list<string>>
+     */
+    private function parseHeaderLines(array $statusHeaders): array
+    {
+        $headers = [];
+
+        foreach ($statusHeaders as $headerLine) {
+            if (str_contains($headerLine, ':')) {
+                [$headerName, $headerValue] = explode(':', $headerLine, 2);
+                $headers[$headerName] ??= [];
+                $headers[$headerName][] = trim($headerValue);
+            }
+        }
+
+        return $headers;
     }
 }
