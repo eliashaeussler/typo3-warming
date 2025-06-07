@@ -77,10 +77,12 @@ return static function (RectorConfig $rectorConfig): void {
         // @todo Remove once support for TYPO3 v12 is dropped
         ->skip(MigrateExtbaseHashServiceToUseCoreHashServiceRector::class, [
             $rootPath . '/Classes/Configuration/Configuration.php',
+            $rootPath . '/Classes/Http/Message/UrlMetadataFactory.php',
         ])
         // @todo Remove once support for TYPO3 v12 is dropped
         ->skip(RenameClassRector::class, [
             $rootPath . '/Classes/Configuration/Configuration.php',
+            $rootPath . '/Classes/Http/Message/UrlMetadataFactory.php',
         ])
         ->skip(TraitGetByTypeToInjectRector::class, [
             $rootPath . '/Tests/Functional/SiteTrait.php',
