@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Http\Client\Handler;
 
 use EliasHaeussler\Typo3Warming\Domain;
+use EliasHaeussler\Typo3Warming\Http;
 use GuzzleHttp\Exception;
 use GuzzleHttp\Promise;
 use GuzzleHttp\Utils;
@@ -53,6 +54,7 @@ final class SubRequestHandler
 
     public function __construct(
         private readonly Frontend\Http\Application $application,
+        private readonly Http\Message\UrlMetadataFactory $urlMetadataFactory,
         Domain\Repository\SiteRepository $siteRepository,
     ) {
         $this->supportedBaseUrls = $this->resolveBaseUrls($siteRepository);
@@ -80,6 +82,7 @@ final class SubRequestHandler
 
     private function sendSubRequest(Message\RequestInterface $request): Promise\PromiseInterface
     {
+        $response = null;
         $subRequest = new Core\Http\ServerRequest(
             $request->getUri(),
             $request->getMethod(),
@@ -88,14 +91,24 @@ final class SubRequestHandler
         );
 
         try {
-            $response = $this->application->handle($subRequest);
-        } catch (\Exception $exception) {
-            return Promise\Create::rejectionFor(
-                new Exception\RequestException($exception->getMessage(), $request),
+            return Promise\Create::promiseFor(
+                $this->application->handle($subRequest),
             );
+        } catch (Core\Http\ImmediateResponseException $exception) {
+            $response = $exception->getResponse();
+        } catch (Core\Error\Http\StatusException $exception) {
+            $response = new Core\Http\Response(statusCode: 500);
+            $metadata = $this->urlMetadataFactory->createFromResponseHeaders($exception->getStatusHeaders());
+
+            if ($metadata !== null) {
+                $response = $this->urlMetadataFactory->enrichResponse($response, $metadata);
+            }
+        } catch (\Exception $exception) {
         }
 
-        return Promise\Create::promiseFor($response);
+        return Promise\Create::rejectionFor(
+            new Exception\RequestException($exception->getMessage(), $request, $response),
+        );
     }
 
     private function isSupportedRequestUrl(Message\UriInterface $uri): bool

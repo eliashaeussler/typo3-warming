@@ -26,6 +26,7 @@ namespace EliasHaeussler\Typo3Warming\Tests\Functional\Http\Client\Handler;
 use EliasHaeussler\Typo3Warming as Src;
 use EliasHaeussler\Typo3Warming\Tests;
 use GuzzleHttp\Exception;
+use GuzzleHttp\Promise;
 use PHPUnit\Framework;
 use TYPO3\CMS\Core;
 use TYPO3\CMS\Frontend;
@@ -48,6 +49,7 @@ final class SubRequestHandlerTest extends TestingFramework\Core\Functional\Funct
     ];
 
     private Frontend\Http\Application&Framework\MockObject\MockObject $applicationMock;
+    private Src\Http\Message\UrlMetadataFactory $urlMetadataFactory;
     private Src\Http\Client\Handler\SubRequestHandler $subject;
 
     public function setUp(): void
@@ -61,8 +63,10 @@ final class SubRequestHandlerTest extends TestingFramework\Core\Functional\Funct
         $this->setUpBackendUser(3);
 
         $this->applicationMock = $this->createMock(Frontend\Http\Application::class);
+        $this->urlMetadataFactory = new Src\Http\Message\UrlMetadataFactory();
         $this->subject = new Src\Http\Client\Handler\SubRequestHandler(
             $this->applicationMock,
+            $this->urlMetadataFactory,
             $this->get(Src\Domain\Repository\SiteRepository::class),
         );
     }
@@ -98,14 +102,54 @@ final class SubRequestHandlerTest extends TestingFramework\Core\Functional\Funct
 
         $this->applicationMock->method('handle')->willThrowException($exception);
 
-        $expected = new Exception\RequestException('something went wrong', $request);
+        $expected = Promise\Create::rejectionFor(
+            new Exception\RequestException('something went wrong', $request),
+        );
+
+        self::assertEquals($expected, ($this->subject)($request, []));
+    }
+
+    #[Framework\Attributes\Test]
+    public function invokeReturnsRejectedPromiseWithEnrichedImmediateResponseExceptionFromApplication(): void
+    {
+        $request = new Core\Http\Request('https://typo3-testing.local/', body: 'php://temp');
+        $response = new Core\Http\Response();
+        $exception = new Core\Http\ImmediateResponseException($response);
+
+        $this->applicationMock->method('handle')->willThrowException($exception);
+
+        $expected = Promise\Create::rejectionFor(
+            new Exception\RequestException('', $request, $response),
+        );
+
+        self::assertEquals($expected, ($this->subject)($request, []));
+    }
+
+    #[Framework\Attributes\Test]
+    public function invokeReturnsRejectedPromiseWithEnrichedStatusExceptionFromApplication(): void
+    {
+        $request = new Core\Http\Request('https://typo3-testing.local/', body: 'php://temp');
+        $urlMetadata = new Src\Http\Message\UrlMetadata(1, '0', 1);
+        $exception = new Core\Error\Http\StatusException([], 'Something went wrong');
         $actual = null;
+
+        $this->urlMetadataFactory->enrichException($exception, $urlMetadata);
+
+        $this->applicationMock->method('handle')->willThrowException($exception);
 
         try {
             ($this->subject)($request, [])->wait();
-        } catch (\Exception $actual) {
-            // Intentionally left blank.
+        } catch (Exception\RequestException $actual) {
         }
+
+        self::assertInstanceOf(Exception\RequestException::class, $actual);
+        self::assertNotNull($actual->getResponse());
+
+        $response = $this->urlMetadataFactory->enrichResponse(
+            new Core\Http\Response($actual->getResponse()->getBody(), 500),
+            $urlMetadata,
+        );
+        $expected = new Exception\RequestException('Something went wrong', $request, $response);
 
         self::assertEquals($expected, $actual);
     }

@@ -21,27 +21,38 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-use EliasHaeussler\Typo3Warming\Middleware;
+namespace EliasHaeussler\Typo3Warming\Http\Message;
 
-return [
-    'backend' => [
-        'eliashaeussler/typo3-warming/inject-extension-configuration-script' => [
-            'target' => Middleware\InjectExtensionConfigurationScriptMiddleware::class,
-            'after' => [
-                'typo3/cms-backend/backend-routing',
-                'typo3/cms-backend/csp-headers',
-            ],
-        ],
-    ],
-    'frontend' => [
-        'eliashaeussler/typo3-warming/sub-request-state-logger' => [
-            'target' => Middleware\UrlMetadataEnricherMiddleware::class,
-            'after' => [
-                'typo3/cms-frontend/page-resolver',
-            ],
-            'before' => [
-                'typo3/cms-frontend/prepare-tsfe-rendering',
-            ],
-        ],
-    ],
-];
+use Symfony\Component\DependencyInjection;
+
+/**
+ * UrlMetadata
+ *
+ * @author Elias Häußler <elias@haeussler.dev>
+ * @license GPL-2.0-or-later
+ */
+#[DependencyInjection\Attribute\Exclude]
+final class UrlMetadata implements \JsonSerializable
+{
+    public function __construct(
+        public ?int $pageId = null,
+        public ?string $pageType = null,
+        public ?int $languageId = null,
+    ) {}
+
+    /**
+     * @return array{
+     *     pageId: int|null,
+     *     pageType: string|null,
+     *     languageId: int|null
+     * }
+     */
+    public function jsonSerialize(): array
+    {
+        return [
+            'pageId' => $this->pageId,
+            'pageType' => $this->pageType,
+            'languageId' => $this->languageId,
+        ];
+    }
+}
