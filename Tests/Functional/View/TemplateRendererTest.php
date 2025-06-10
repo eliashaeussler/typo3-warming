@@ -41,6 +41,8 @@ final class TemplateRendererTest extends TestingFramework\Core\Functional\Functi
         'warming',
     ];
 
+    protected bool $initializeDatabase = false;
+
     private Src\View\TemplateRenderer $subject;
 
     protected function setUp(): void
