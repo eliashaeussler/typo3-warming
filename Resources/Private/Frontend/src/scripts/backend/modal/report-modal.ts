@@ -98,7 +98,7 @@ export class ReportModal extends LitElement {
           <warming-report-panel
             title="${TYPO3.lang[LanguageKeys.modalReportPanelFailed]}"
             state="danger"
-            urls="${JSON.stringify(this.progress.urls.failed)}"
+            urls="${JSON.stringify(this.progress.results.failed)}"
           />
         ` : ''}
 
@@ -106,7 +106,7 @@ export class ReportModal extends LitElement {
           <warming-report-panel
             title="${TYPO3.lang[LanguageKeys.modalReportPanelSuccessful]}"
             state="success"
-            urls="${JSON.stringify(this.progress.urls.successful)}"
+            urls="${JSON.stringify(this.progress.results.successful)}"
           />
         ` : ''}
 

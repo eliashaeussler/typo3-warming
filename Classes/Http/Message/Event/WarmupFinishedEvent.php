@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Http\Message\Event;
 
+use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\SSE;
 use EliasHaeussler\Typo3Warming\Configuration;
 use EliasHaeussler\Typo3Warming\Enums;
@@ -58,9 +59,9 @@ final readonly class WarmupFinishedEvent implements SSE\Event\Event
      *         current: int,
      *         total: int,
      *     },
-     *     urls: array{
-     *         failed: list<string>,
-     *         successful: list<string>,
+     *     results: array{
+     *         failed: list<array{url: string, data: array<string, mixed>}>,
+     *         successful: list<array{url: string, data: array<string, mixed>}>,
      *     },
      *     excluded: array{
      *         sitemaps: list<string>,
@@ -84,9 +85,9 @@ final readonly class WarmupFinishedEvent implements SSE\Event\Event
                 'current' => \count($failedUrls) + \count($successfulUrls),
                 'total' => \count($failedUrls) + \count($successfulUrls),
             ],
-            'urls' => [
-                'failed' => array_map(strval(...), $failedUrls),
-                'successful' => array_map(strval(...), $successfulUrls),
+            'results' => [
+                'failed' => array_map($this->decorateResult(...), $failedUrls),
+                'successful' => array_map($this->decorateResult(...), $successfulUrls),
             ],
             'excluded' => [
                 'sitemaps' => array_map(strval(...), $this->result->getExcludedSitemaps()),
@@ -123,6 +124,17 @@ final readonly class WarmupFinishedEvent implements SSE\Event\Event
         }
 
         return Enums\WarmupState::Unknown;
+    }
+
+    /**
+     * @return array{url: string, data: array<string, mixed>}
+     */
+    private function decorateResult(CacheWarmup\Result\CrawlingResult $result): array
+    {
+        return [
+            'url' => (string)$result->getUri(),
+            'data' => $result->getData(),
+        ];
     }
 
     /**

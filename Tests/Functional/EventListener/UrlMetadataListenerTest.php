@@ -40,7 +40,14 @@ use TYPO3\TestingFramework;
 #[Framework\Attributes\CoversClass(Src\EventListener\UrlMetadataListener::class)]
 final class UrlMetadataListenerTest extends TestingFramework\Core\Functional\FunctionalTestCase
 {
-    protected bool $initializeDatabase = false;
+    protected array $coreExtensionsToLoad = [
+        'belog',
+    ];
+
+    protected array $testExtensionsToLoad = [
+        'sitemap_locator',
+        'warming',
+    ];
 
     private Src\Http\Message\UrlMetadataFactory $urlMetadataFactory;
     private Src\EventListener\UrlMetadataListener $subject;
@@ -49,8 +56,16 @@ final class UrlMetadataListenerTest extends TestingFramework\Core\Functional\Fun
     {
         parent::setUp();
 
+        $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/be_users.csv');
+        $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/pages.csv');
+
         $this->urlMetadataFactory = new Src\Http\Message\UrlMetadataFactory();
-        $this->subject = new Src\EventListener\UrlMetadataListener($this->urlMetadataFactory);
+        $this->subject = $this->get(Src\EventListener\UrlMetadataListener::class);
+
+        $serverRequest = new Core\Http\ServerRequest('https://typo3-testing.local');
+        $serverRequest = $serverRequest->withAttribute('applicationType', Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_BE);
+
+        $GLOBALS['TYPO3_REQUEST'] = $serverRequest;
     }
 
     #[Framework\Attributes\Test]
@@ -74,12 +89,95 @@ final class UrlMetadataListenerTest extends TestingFramework\Core\Functional\Fun
             $event->result()->getUri(),
             [
                 'urlMetadata' => new Src\Http\Message\UrlMetadata(1, '0', 1),
+                'pageActions' => [],
             ],
         );
 
         $this->subject->onSuccess($event);
 
         self::assertEquals($expected, $event->result());
+    }
+
+    #[Framework\Attributes\Test]
+    public function onSuccessDoesNotAddPageActionsIfNoPageIdIsAvailableInUrlMetadata(): void
+    {
+        $response = $this->createEnrichedResponse(null);
+        $event = $this->createSucceededEvent($response);
+
+        $expected = CacheWarmup\Result\CrawlingResult::createSuccessful(
+            $event->result()->getUri(),
+            [
+                'urlMetadata' => new Src\Http\Message\UrlMetadata(null, '0', 1),
+                'pageActions' => [],
+            ],
+        );
+
+        $this->subject->onSuccess($event);
+
+        self::assertEquals($expected, $event->result());
+    }
+
+    #[Framework\Attributes\Test]
+    public function onSuccessDoesNotAddPageActionsIfNoRequestIsAvailable(): void
+    {
+        unset($GLOBALS['TYPO3_REQUEST']);
+
+        $response = $this->createEnrichedResponse();
+        $event = $this->createSucceededEvent($response);
+
+        $expected = CacheWarmup\Result\CrawlingResult::createSuccessful(
+            $event->result()->getUri(),
+            [
+                'urlMetadata' => new Src\Http\Message\UrlMetadata(1, '0', 1),
+                'pageActions' => [],
+            ],
+        );
+
+        $this->subject->onSuccess($event);
+
+        self::assertEquals($expected, $event->result());
+    }
+
+    #[Framework\Attributes\Test]
+    public function onSuccessDoesNotAddPageActionsIfRequestIsNotInBackendContext(): void
+    {
+        $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withAttribute(
+            'applicationType',
+            Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_FE,
+        );
+
+        $response = $this->createEnrichedResponse();
+        $event = $this->createSucceededEvent($response);
+
+        $expected = CacheWarmup\Result\CrawlingResult::createSuccessful(
+            $event->result()->getUri(),
+            [
+                'urlMetadata' => new Src\Http\Message\UrlMetadata(1, '0', 1),
+                'pageActions' => [],
+            ],
+        );
+
+        $this->subject->onSuccess($event);
+
+        self::assertEquals($expected, $event->result());
+    }
+
+    /**
+     * @param list<string> $expected
+     */
+    #[Framework\Attributes\Test]
+    #[Framework\Attributes\DataProvider('onSuccessAddsPageActionsToResultDataDataProvider')]
+    public function onSuccessAddsPageActionsToResultData(int $backendUser, array $expected): void
+    {
+        $this->setUpBackendUser($backendUser);
+
+        $event = $this->createSucceededEvent();
+
+        $this->subject->onSuccess($event);
+
+        $actual = array_keys($event->result()->getData()['pageActions'] ?? []);
+
+        self::assertEqualsCanonicalizing($expected, $actual);
     }
 
     #[Framework\Attributes\Test]
@@ -131,12 +229,115 @@ final class UrlMetadataListenerTest extends TestingFramework\Core\Functional\Fun
             $event->result()->getUri(),
             [
                 'urlMetadata' => new Src\Http\Message\UrlMetadata(1, '0', 1),
+                'pageActions' => [],
             ],
         );
 
         $this->subject->onFailure($event);
 
         self::assertEquals($expected, $event->result());
+    }
+
+    #[Framework\Attributes\Test]
+    public function onFailureDoesNotAddPageActionsIfNoPageIdIsAvailableInUrlMetadata(): void
+    {
+        $exception = $this->createRequestException(null);
+        $event = $this->createFailedEvent($exception);
+
+        $expected = CacheWarmup\Result\CrawlingResult::createFailed(
+            $event->result()->getUri(),
+            [
+                'urlMetadata' => new Src\Http\Message\UrlMetadata(null, '0', 1),
+                'pageActions' => [],
+            ],
+        );
+
+        $this->subject->onFailure($event);
+
+        self::assertEquals($expected, $event->result());
+    }
+
+    #[Framework\Attributes\Test]
+    public function onFailureDoesNotAddPageActionsIfNoRequestIsAvailable(): void
+    {
+        unset($GLOBALS['TYPO3_REQUEST']);
+
+        $response = $this->createRequestException();
+        $event = $this->createFailedEvent($response);
+
+        $expected = CacheWarmup\Result\CrawlingResult::createFailed(
+            $event->result()->getUri(),
+            [
+                'urlMetadata' => new Src\Http\Message\UrlMetadata(1, '0', 1),
+                'pageActions' => [],
+            ],
+        );
+
+        $this->subject->onFailure($event);
+
+        self::assertEquals($expected, $event->result());
+    }
+
+    #[Framework\Attributes\Test]
+    public function onFailureDoesNotAddPageActionsIfRequestIsNotInBackendContext(): void
+    {
+        $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']->withAttribute(
+            'applicationType',
+            Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_FE,
+        );
+
+        $response = $this->createRequestException();
+        $event = $this->createFailedEvent($response);
+
+        $expected = CacheWarmup\Result\CrawlingResult::createFailed(
+            $event->result()->getUri(),
+            [
+                'urlMetadata' => new Src\Http\Message\UrlMetadata(1, '0', 1),
+                'pageActions' => [],
+            ],
+        );
+
+        $this->subject->onFailure($event);
+
+        self::assertEquals($expected, $event->result());
+    }
+
+    /**
+     * @param list<string> $expected
+     */
+    #[Framework\Attributes\Test]
+    #[Framework\Attributes\DataProvider('onFailureAddsPageActionsToResultDataDataProvider')]
+    public function onFailureAddsPageActionsToResultData(int $backendUser, array $expected): void
+    {
+        $this->setUpBackendUser($backendUser);
+
+        $event = $this->createFailedEvent();
+
+        $this->subject->onFailure($event);
+
+        $actual = array_keys($event->result()->getData()['pageActions'] ?? []);
+
+        self::assertEqualsCanonicalizing($expected, $actual);
+    }
+
+    /**
+     * @return \Generator<string, array{int, list<string>}>
+     */
+    public static function onSuccessAddsPageActionsToResultDataDataProvider(): \Generator
+    {
+        yield 'admin user' => [3, ['editRecord', 'viewLog']];
+        yield 'user with web_layout access' => [2, ['editRecord']];
+        yield 'user with system_log access' => [1, ['viewLog']];
+    }
+
+    /**
+     * @return \Generator<string, array{int, list<string>}>
+     */
+    public static function onFailureAddsPageActionsToResultDataDataProvider(): \Generator
+    {
+        yield 'admin user' => [3, ['editRecord', 'viewLog']];
+        yield 'user with web_layout access' => [2, ['editRecord']];
+        yield 'user with system_log access' => [1, ['viewLog']];
     }
 
     private function createSucceededEvent(
@@ -152,21 +353,26 @@ final class UrlMetadataListenerTest extends TestingFramework\Core\Functional\Fun
     private function createFailedEvent(?\Throwable $exception = null): CacheWarmup\Event\Crawler\UrlCrawlingFailed
     {
         $uri = new Core\Http\Uri('https://typo3-testing.local/');
-        $exception ??= new Exception\RequestException(
-            'Something went wrong',
-            new Core\Http\Request(),
-            $this->createEnrichedResponse(),
-        );
+        $exception ??= $this->createRequestException();
         $result = CacheWarmup\Result\CrawlingResult::createFailed($uri);
 
         return new CacheWarmup\Event\Crawler\UrlCrawlingFailed($uri, $exception, $result);
     }
 
-    private function createEnrichedResponse(): Core\Http\Response
+    private function createEnrichedResponse(?int $pageId = 1): Core\Http\Response
     {
         return $this->urlMetadataFactory->enrichResponse(
             new Core\Http\Response(),
-            new Src\Http\Message\UrlMetadata(1, '0', 1),
+            new Src\Http\Message\UrlMetadata($pageId, '0', 1),
+        );
+    }
+
+    private function createRequestException(?int $pageId = 1): Exception\RequestException
+    {
+        return new Exception\RequestException(
+            'Something went wrong',
+            new Core\Http\Request(),
+            $this->createEnrichedResponse($pageId),
         );
     }
 }

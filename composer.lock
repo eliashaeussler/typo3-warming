@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5f3e984240ee35777d59d13fb99ac7e0",
+    "content-hash": "e1579f713fb3b89f9c37a2c9ab4ecc65",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -9297,6 +9297,64 @@
                 }
             ],
             "time": "2024-03-03T12:36:25+00:00"
+        },
+        {
+            "name": "typo3/cms-belog",
+            "version": "v13.4.14",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/TYPO3-CMS/belog.git",
+                "reference": "a897dfbad8ae9acbc69b6e02ba73721537a9fb70"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/TYPO3-CMS/belog/zipball/a897dfbad8ae9acbc69b6e02ba73721537a9fb70",
+                "reference": "a897dfbad8ae9acbc69b6e02ba73721537a9fb70",
+                "shasum": ""
+            },
+            "require": {
+                "typo3/cms-core": "13.4.14"
+            },
+            "conflict": {
+                "typo3/cms": "*"
+            },
+            "type": "typo3-cms-framework",
+            "extra": {
+                "typo3/cms": {
+                    "Package": {
+                        "partOfFactoryDefault": true
+                    },
+                    "extension-key": "belog"
+                },
+                "branch-alias": {
+                    "dev-main": "13.4.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TYPO3\\CMS\\Belog\\": "Classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "TYPO3 Core Team",
+                    "email": "typo3cms@typo3.org",
+                    "role": "Developer"
+                }
+            ],
+            "description": "TYPO3 CMS Log - View logs from the sys_log table in the TYPO3 backend modules System>Log",
+            "homepage": "https://typo3.org",
+            "support": {
+                "chat": "https://typo3.org/help",
+                "docs": "https://docs.typo3.org",
+                "issues": "https://forge.typo3.org",
+                "source": "https://github.com/typo3/typo3"
+            },
+            "time": "2025-06-10T11:50:07+00:00"
         },
         {
             "name": "typo3/cms-install",

@@ -20,6 +20,14 @@
 import {WarmupState} from '@eliashaeussler/typo3-warming/enums/warmup-state';
 
 /**
+ * Result object holding information about all crawls.
+ */
+export type CacheWarmupResult = {
+  failed: CrawlingResult[],
+  successful: CrawlingResult[],
+};
+
+/**
  * Crawling state for excluded sitemaps and URLs.
  */
 export type CrawlingExclusionsState = {
@@ -44,6 +52,24 @@ export type CrawlingResponse = {
 };
 
 /**
+ * Result of a failed or successful crawl.
+ */
+export type CrawlingResult = {
+  url: string;
+  data: {
+    pageActions?: {
+      editRecord?: string,
+      viewLog?: string,
+    },
+    urlMetadata?: {
+      pageId: number|null,
+      pageType: string|null,
+      languageId: number|null,
+    },
+  };
+};
+
+/**
  * Crawling state, containing all processed URLs.
  */
 export type CrawlingState = {
@@ -61,6 +87,7 @@ export type WarmupProgressDataObject = {
   messages?: string[];
   progress?: CrawlingProgress;
   urls?: CrawlingState;
+  results?: CacheWarmupResult;
   excluded?: CrawlingExclusionsState;
 };
 
@@ -80,11 +107,12 @@ export class WarmupProgress {
   public state: WarmupState = WarmupState.Unknown;
   public progress: CrawlingProgress = {current: 0, total: 0};
   public urls: CrawlingState = {current: '', failed: [], successful: []};
+  public results: CacheWarmupResult = {failed: [], successful: []};
   public excluded: CrawlingExclusionsState = {sitemaps: [], urls: []};
   public response: CrawlingResponse = {title: '', message: ''};
 
   constructor(
-      public requestId: string,
+    public requestId: string,
   ) {
   }
 
@@ -103,6 +131,9 @@ export class WarmupProgress {
     }
     if (data.urls) {
       this.urls = data.urls;
+    }
+    if (data.results) {
+      this.results = data.results;
     }
     if (data.excluded) {
       this.excluded = data.excluded;
@@ -130,7 +161,7 @@ export class WarmupProgress {
    * @returns {number} Number of URLs that failed to be warmed up
    */
   public getNumberOfFailedUrls(): number {
-    return this.urls.failed.length;
+    return this.results.failed.length;
   }
 
   /**
@@ -139,7 +170,7 @@ export class WarmupProgress {
    * @returns {number} Number of successfully warmed up URLs.
    */
   public getNumberOfSuccessfulUrls(): number {
-    return this.urls.successful.length;
+    return this.results.successful.length;
   }
 
   /**

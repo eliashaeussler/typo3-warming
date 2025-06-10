@@ -127,10 +127,24 @@ final class WarmupFinishedEventTest extends TestingFramework\Core\Functional\Fun
         $this->cacheWarmupResult->getResult()->addResult($successful);
         $this->cacheWarmupResult->getResult()->addResult($failed);
 
+        $expected = [
+            'failed' => [
+                [
+                    'url' => (string)$failed->getUri(),
+                    'data' => $failed->getData(),
+                ],
+            ],
+            'successful' => [
+                [
+                    'url' => (string)$successful->getUri(),
+                    'data' => $successful->getData(),
+                ],
+            ],
+        ];
+
         $actual = $this->subject->getData();
 
-        self::assertSame([(string)$failed], $actual['urls']['failed']);
-        self::assertSame([(string)$successful], $actual['urls']['successful']);
+        self::assertSame($expected, $actual['results']);
     }
 
     #[Framework\Attributes\Test]

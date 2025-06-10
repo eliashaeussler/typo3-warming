@@ -45,9 +45,14 @@ enum Selectors: string
     case ContextMenuSubmenu = '.context-menu[data-contextmenu-parent]';
     case ContextMenuSubmenuLegacy = '.context-menu[data-parent]';
     case ExtensionConfigurationModalCollapseHeader = '#heading-warming';
+    case InformationModal = 'typo3-backend-modal[content^="/typo3/record/info"]';
     case ModalTitle = '.modal .modal-title';
     case ProgressCounterTotal = '.tx-warming-progress-modal .tx-warming-progress-modal-counter > div:nth-child(1) > strong:nth-child(2)';
     case ProgressPlaceholder = '.tx-warming-progress-modal .tx-warming-progress-placeholder';
+    case ReportPanelHeader = 'warming-report-panel .panel-title a';
+    case ReportPanelActionButtonViewLogs = 'warming-report-panel .panel-collapse a[href*="/BackendLog/"]';
+    case ReportPanelActionButtonEditRecord = 'warming-report-panel .panel-collapse a[href*="/record/edit"]';
+    case ReportPanelActionButtonShowInfo = 'warming-report-panel .panel-collapse button[title*="information"]';
     case SelectAllCheckbox = '#tx-warming-sites-select-all';
     case SettingsLimit = '#tx-warming-settings-limit';
     case SettingsStrategy = '#tx-warming-settings-strategy';
