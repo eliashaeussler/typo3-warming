@@ -134,6 +134,23 @@ jobs:
           mkdir -p .Build/docs
           composer docs:build -- --no-progress --fail-on-log
 
+  crowdin:
+    name: Synchronize with Crowdin
+    runs-on: ubuntu-latest
+    if: ${{ needs.assets.outputs.modified == 'false' && github.ref_name == 'main' }}
+    needs: assets
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Upload sources
+        uses: crowdin/github-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+        with:
+          config: '.crowdin.yaml'
+
   tests:
     name: Tests (PHP ${{ matrix.php-version }}, TYPO3 ${{ matrix.typo3-version }} & ${{ matrix.dependencies }} dependencies)
     if: ${{ needs.assets.outputs.modified == 'false' }}
