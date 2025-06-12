@@ -31,7 +31,6 @@ use EliasHaeussler\Typo3Warming\Event;
 use EliasHaeussler\Typo3Warming\Http;
 use EliasHaeussler\Typo3Warming\Result;
 use EliasHaeussler\Typo3Warming\ValueObject;
-use EliasHaeussler\ValinorXml;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\EventDispatcher;
 use Symfony\Component\DependencyInjection;
@@ -71,9 +70,6 @@ final readonly class CacheWarmupService
      * @throws GuzzleException
      * @throws Typo3SitemapLocator\Exception\BaseUrlIsNotSupported
      * @throws Typo3SitemapLocator\Exception\SitemapIsMissing
-     * @throws ValinorXml\Exception\ArrayPathHasUnexpectedType
-     * @throws ValinorXml\Exception\ArrayPathIsInvalid
-     * @throws ValinorXml\Exception\XmlIsMalformed
      */
     public function warmup(
         array $sites = [],
