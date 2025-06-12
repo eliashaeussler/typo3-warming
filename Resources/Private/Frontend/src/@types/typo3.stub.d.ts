@@ -37,6 +37,13 @@ declare module '@typo3/backend/icons.js' {
 }
 
 /**
+ * @see https://github.com/TYPO3/typo3/blob/v12.4.0/Build/Sources/TypeScript/backend/info-window.ts
+ */
+declare module '@typo3/backend/info-window.js' {
+  export default nothing;
+}
+
+/**
  * @see https://github.com/TYPO3/typo3/blob/v12.4.0/Build/Sources/TypeScript/backend/modal.ts
  */
 declare module '@typo3/backend/modal.js' {

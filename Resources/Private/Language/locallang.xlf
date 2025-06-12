@@ -92,8 +92,17 @@
 			<trans-unit id="modal.report.panel.excluded.urls" resname="modal.report.panel.excluded.urls">
 				<source>Excluded URLs</source>
 			</trans-unit>
+			<trans-unit id="modal.report.action.edit" resname="modal.report.action.edit">
+				<source>Edit page record</source>
+			</trans-unit>
+			<trans-unit id="modal.report.action.info" resname="modal.report.action.info">
+				<source>Show page information</source>
+			</trans-unit>
+			<trans-unit id="modal.report.action.log" resname="modal.report.action.log">
+				<source>Show logs</source>
+			</trans-unit>
 			<trans-unit id="modal.report.action.view" resname="modal.report.action.view">
-				<source>View</source>
+				<source>View page</source>
 			</trans-unit>
 			<trans-unit id="modal.report.message.requestId" resname="modal.report.message.requestId">
 				<source>Request ID:</source>

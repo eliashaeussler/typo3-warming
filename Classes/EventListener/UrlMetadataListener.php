@@ -26,6 +26,9 @@ namespace EliasHaeussler\Typo3Warming\EventListener;
 use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3Warming\Http;
 use GuzzleHttp\Exception;
+use Psr\Http\Message;
+use TYPO3\CMS\Backend;
+use TYPO3\CMS\Core;
 
 /**
  * UrlMetadataListener
@@ -36,6 +39,8 @@ use GuzzleHttp\Exception;
 final readonly class UrlMetadataListener
 {
     public function __construct(
+        private Backend\Module\ModuleProvider $moduleProvider,
+        private Backend\Routing\UriBuilder $uriBuilder,
         private Http\Message\UrlMetadataFactory $urlMetadataFactory,
     ) {}
 
@@ -85,7 +90,133 @@ final readonly class UrlMetadataListener
     ): array {
         $data = $result->getData();
         $data['urlMetadata'] = $metadata;
+        $data['pageActions'] = $this->buildPageActions($metadata);
 
         return $data;
+    }
+
+    /**
+     * @return array{
+     *     editRecord?: string,
+     *     viewLog?: string,
+     * }
+     */
+    private function buildPageActions(Http\Message\UrlMetadata $metadata): array
+    {
+        // Early return if page id is missing
+        if ($metadata->pageId === null) {
+            return [];
+        }
+
+        // Early return if we're not in backend context
+        if (!$this->isRunningInBackendContext()) {
+            return [];
+        }
+
+        $backendUser = $this->getBackendUser();
+
+        // Early return if backend user is not available (should never happen, but who knows)
+        if ($backendUser === null) {
+            return [];
+        }
+
+        $pageTranslationId = $metadata->pageId;
+        $actions = [];
+
+        // Fetch page translation
+        if ($metadata->languageId > 0) {
+            $pageTranslations = Backend\Utility\BackendUtility::getRecordLocalization(
+                'pages',
+                $metadata->pageId,
+                $metadata->languageId,
+            );
+
+            if ($pageTranslations !== false && $pageTranslations !== []) {
+                $pageTranslationId = (int)$pageTranslations[0]['uid'];
+            }
+        }
+
+        // Add uri to edit current page record
+        if ($this->moduleProvider->accessGranted('web_layout', $backendUser)) {
+            $actions['editRecord'] = (string)$this->uriBuilder->buildUriFromRoute(
+                'record_edit',
+                [
+                    'edit' => [
+                        'pages' => [
+                            $pageTranslationId => 'edit',
+                        ],
+                    ],
+                    'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute(
+                        'web_layout',
+                        [
+                            'id' => $metadata->pageId,
+                        ],
+                    ),
+                    'overrideVals' => [
+                        'pages' => [
+                            'sys_language_uid' => $metadata->languageId ?? 0,
+                        ],
+                    ],
+                ],
+                Backend\Routing\UriBuilder::SHAREABLE_URL,
+            );
+        }
+
+        if ((new Core\Information\Typo3Version())->getMajorVersion() >= 13) {
+            $systemLogModuleIdentifier = 'system_log';
+        } else {
+            // @todo Remove once support for TYPO3 v12 is dropped
+            $systemLogModuleIdentifier = 'system_BelogLog';
+        }
+
+        // Add uri to view logs for current page
+        if (Core\Utility\ExtensionManagementUtility::isLoaded('belog') &&
+            $this->moduleProvider->accessGranted($systemLogModuleIdentifier, $backendUser)
+        ) {
+            $actions['viewLog'] = (string)$this->uriBuilder->buildUriFromRoute(
+                $systemLogModuleIdentifier . '.BackendLog_list',
+                [
+                    'constraint' => [
+                        'pageId' => $pageTranslationId,
+                    ],
+                ],
+                Backend\Routing\UriBuilder::SHAREABLE_URL,
+            );
+        }
+
+        return $actions;
+    }
+
+    private function isRunningInBackendContext(): bool
+    {
+        $serverRequest = $this->getServerRequest();
+
+        if ($serverRequest === null) {
+            return false;
+        }
+
+        return Core\Http\ApplicationType::fromRequest($serverRequest)->isBackend();
+    }
+
+    private function getBackendUser(): ?Core\Authentication\BackendUserAuthentication
+    {
+        $backendUser = $GLOBALS['BE_USER'] ?? null;
+
+        if ($backendUser instanceof Core\Authentication\BackendUserAuthentication) {
+            return $backendUser;
+        }
+
+        return null;
+    }
+
+    private function getServerRequest(): ?Message\ServerRequestInterface
+    {
+        $serverRequest = $GLOBALS['TYPO3_REQUEST'] ?? null;
+
+        if ($serverRequest instanceof Message\ServerRequestInterface) {
+            return $serverRequest;
+        }
+
+        return null;
     }
 }

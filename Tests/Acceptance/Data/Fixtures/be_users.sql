@@ -10,4 +10,5 @@ VALUES ('admin', @password, 1, NULL, 0, '', NULL),
 			 ('editor.2', @password, 0, 1, 3, '0', 'options.cacheWarmup.allowedSites = main
 options.cacheWarmup.allowedPages = 1+'),
 			 ('editor.3', @password, 0, 1, 3, '2', 'options.cacheWarmup.allowedSites = main
-options.cacheWarmup.allowedPages = 1+');
+options.cacheWarmup.allowedPages = 1+'),
+			 ('editor.4', @password, 0, 2, 3, '', 'options.cacheWarmup.allowedSites = main');

@@ -19,7 +19,9 @@
 
 import {html, LitElement, TemplateResult} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
+import InfoWindow from '@typo3/backend/info-window.js';
 
+import {CrawlingResult} from '@eliashaeussler/typo3-warming/request/warmup-progress';
 import {LanguageKeys} from '@eliashaeussler/typo3-warming/enums/language-keys';
 import {StringHelper} from '@eliashaeussler/typo3-warming/helper/string-helper';
 
@@ -33,7 +35,7 @@ import {StringHelper} from '@eliashaeussler/typo3-warming/helper/string-helper';
 export class ReportPanel extends LitElement {
   @property({ type: String }) title: string;
   @property({ type: String }) state: string;
-  @property({ type: Array }) urls: string[];
+  @property({ type: Array }) urls: CrawlingResult[];
   @property({ attribute: false }) id: string;
 
   constructor() {
@@ -66,12 +68,52 @@ export class ReportPanel extends LitElement {
           <div class="table-fit">
             <table class="table table-striped table-hover">
               <tbody>
-                ${this.urls.map((url: string) => html`
+                ${this.urls.map((result: CrawlingResult) => html`
                   <tr>
-                    <td>${url}</td>
+                    <td>
+                      <a href="${result.url}" target="_blank">${result.url}</a>
+                    </td>
                     <td class="col-control nowrap">
                       <div class="btn-group">
-                        <a href="${url}" target="_blank" class="btn btn-default btn-sm nowrap">
+                        ${result.data.pageActions?.viewLog ? html`
+                          <a href="${result.data.pageActions.viewLog}"
+                             class="btn btn-default btn-sm nowrap"
+                             title="${TYPO3.lang[LanguageKeys.modalReportActionLog]}"
+                             target="_blank"
+                          >
+                            <typo3-backend-icon identifier="actions-list-alternative" size="small" />
+                            ${TYPO3.lang[LanguageKeys.modalReportActionLog]}
+                          </a>
+                        ` : ''}
+
+                        ${result.data.pageActions?.editRecord ? html`
+                          <a href="${result.data.pageActions.editRecord}"
+                             class="btn btn-default btn-sm nowrap"
+                             title="${TYPO3.lang[LanguageKeys.modalReportActionEdit]}"
+                             target="_blank"
+                          >
+                            <typo3-backend-icon identifier="actions-file-edit" size="small" />
+                            ${TYPO3.lang[LanguageKeys.modalReportActionEdit]}
+                          </a>
+                        ` : ''}
+
+                        <button class="btn btn-default btn-sm nowrap"
+                           title="${TYPO3.lang[LanguageKeys.modalReportActionInfo]}"
+                           @click="${(event: MouseEvent) => {
+                             event.preventDefault();
+
+                             InfoWindow.showItem('pages', result.data.urlMetadata.pageId);
+                           }}"
+                        >
+                          <typo3-backend-icon identifier="actions-info" size="small" />
+                          ${TYPO3.lang[LanguageKeys.modalReportActionInfo]}
+                        </button>
+
+                        <a href="${result.url}"
+                           target="_blank"
+                           class="btn btn-default btn-sm nowrap"
+                           title="${TYPO3.lang[LanguageKeys.modalReportActionView]}"
+                        >
                           <typo3-backend-icon identifier="actions-view-page" size="small" />
                           ${TYPO3.lang[LanguageKeys.modalReportActionView]}
                         </a>
