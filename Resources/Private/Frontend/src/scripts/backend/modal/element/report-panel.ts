@@ -36,6 +36,7 @@ export class ReportPanel extends LitElement {
   @property({ type: String }) title: string;
   @property({ type: String }) state: string;
   @property({ type: Array }) urls: CrawlingResult[];
+  @property({ type: Boolean }) show: boolean = false;
   @property({ attribute: false }) id: string;
 
   constructor() {
@@ -53,18 +54,15 @@ export class ReportPanel extends LitElement {
       <div class="panel panel-${this.state}">
         <div class="panel-heading">
           <h3 class="panel-title">
-            <a class="collapsed"
+            <a class="${this.show ? '' : 'collapsed'}"
                href="#${this.id}"
                data-bs-toggle="collapse"
                aria-controls="${this.id}"
-               aria-expanded="false"
-            >
-              <span class="caret"></span>
-              <strong> ${this.title} (${this.urls.length})</strong>
-            </a>
+               aria-expanded="${this.show ? 'true' : 'false'}"
+            ><span class="caret"></span><strong>${this.title} (${this.urls.length})</strong></a>
           </h3>
         </div>
-        <div id="${this.id}" class="panel-collapse collapse">
+        <div id="${this.id}" class="panel-collapse collapse ${this.show ? 'show' : ''}">
           <div class="table-fit">
             <table class="table table-striped table-hover">
               <tbody>

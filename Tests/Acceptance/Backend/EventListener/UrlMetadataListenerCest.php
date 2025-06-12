@@ -127,7 +127,5 @@ final class UrlMetadataListenerCest
 
         $I->waitForElementNotVisible(Tests\Acceptance\Support\Enums\Selectors::ProgressPlaceholder->value);
         $I->click('Show report', Tests\Acceptance\Support\Helper\ModalDialog::$openedModalButtonContainerSelector);
-        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ReportPanelHeader->value);
-        $I->click(Tests\Acceptance\Support\Enums\Selectors::ReportPanelHeader->value);
     }
 }

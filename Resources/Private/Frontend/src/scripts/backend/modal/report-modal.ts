@@ -99,6 +99,7 @@ export class ReportModal extends LitElement {
             title="${TYPO3.lang[LanguageKeys.modalReportPanelFailed]}"
             state="danger"
             urls="${JSON.stringify(this.progress.results.failed)}"
+            show="true"
           />
         ` : ''}
 
