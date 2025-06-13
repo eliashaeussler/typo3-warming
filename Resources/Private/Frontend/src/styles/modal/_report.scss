@@ -24,6 +24,11 @@ warming-report-modal {
 
     > .panel-container {
         flex-grow: 1;
+
+        .panel-heading:has(+ .panel-collapse.show, + .panel-collapse.collapsing) {
+            border-bottom-left-radius: 0 !important;
+            border-bottom-right-radius: 0 !important;
+        }
     }
 
     > .tx-warming-request-id {
