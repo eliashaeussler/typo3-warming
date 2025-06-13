@@ -49,7 +49,6 @@ enum Selectors: string
     case ModalTitle = '.modal .modal-title';
     case ProgressCounterTotal = '.tx-warming-progress-modal .tx-warming-progress-modal-counter > div:nth-child(1) > strong:nth-child(2)';
     case ProgressPlaceholder = '.tx-warming-progress-modal .tx-warming-progress-placeholder';
-    case ReportPanelHeader = 'warming-report-panel .panel-title a';
     case ReportPanelActionButtonViewLogs = 'warming-report-panel .panel-collapse a[href*="/BackendLog/"]';
     case ReportPanelActionButtonEditRecord = 'warming-report-panel .panel-collapse a[href*="/record/edit"]';
     case ReportPanelActionButtonShowInfo = 'warming-report-panel .panel-collapse button[title*="information"]';
