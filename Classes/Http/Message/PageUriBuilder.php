@@ -55,6 +55,11 @@ final readonly class PageUriBuilder
             return null;
         }
 
+        // Fetch page in default language, if necessary
+        if (($page['sys_language_uid'] ?? 0) > 0) {
+            return $this->build($page['l10n_parent'], $languageId);
+        }
+
         // Resolve site
         $site = $this->siteRepository->findOneByPageId($pageId);
 

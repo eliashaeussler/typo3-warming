@@ -277,9 +277,9 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
             new CacheWarmup\Crawler\Strategy\SortByPriorityStrategy(),
         );
 
-        self::assertCount(14, $this->eventDispatcher->dispatchedEvents);
+        self::assertCount(13, $this->eventDispatcher->dispatchedEvents);
 
-        $actual = $this->eventDispatcher->dispatchedEvents[9];
+        $actual = $this->eventDispatcher->dispatchedEvents[8];
 
         self::assertInstanceOf(Src\Event\BeforeCacheWarmupEvent::class, $actual);
         self::assertSame([$site], $actual->getSites());
@@ -305,7 +305,6 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-2', 0.7, origin: $origin),
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-1', 0.5, origin: $origin),
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-2/subsite-2-1', 0.5, origin: $origin),
-            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-1-l-1'),
         ];
 
         $cacheWarmupResult = new CacheWarmup\Result\CacheWarmupResult();
@@ -327,9 +326,9 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
             new CacheWarmup\Crawler\Strategy\SortByPriorityStrategy(),
         );
 
-        self::assertCount(14, $this->eventDispatcher->dispatchedEvents);
+        self::assertCount(13, $this->eventDispatcher->dispatchedEvents);
 
-        $actual = $this->eventDispatcher->dispatchedEvents[13];
+        $actual = $this->eventDispatcher->dispatchedEvents[12];
 
         self::assertInstanceOf(Src\Event\AfterCacheWarmupEvent::class, $actual);
         self::assertEquals($cacheWarmupResult, $actual->getResult()->getResult());
