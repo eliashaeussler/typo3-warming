@@ -70,13 +70,14 @@ final class SubRequestHandler
             return ($this->fallbackHandler)($request, $options);
         }
 
-        $initialTsfe = $GLOBALS['TSFE'] ?? null;
-        $GLOBALS['TSFE'] = null;
+        $globalsBackup = $GLOBALS;
 
         try {
             return $this->sendSubRequest($request);
         } finally {
-            $GLOBALS['TSFE'] = $initialTsfe;
+            foreach ($globalsBackup as $key => $value) {
+                $GLOBALS[$key] = $value;
+            }
         }
     }
 
