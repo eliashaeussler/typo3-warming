@@ -95,17 +95,18 @@ export class ReportPanel extends LitElement {
                           </a>
                         ` : ''}
 
-                        <button class="btn btn-default btn-sm nowrap"
-                           title="${TYPO3.lang[LanguageKeys.modalReportActionInfo]}"
-                           @click="${(event: MouseEvent) => {
-                             event.preventDefault();
+                        ${result.data.urlMetadata?.pageId ? html`<button class="btn btn-default btn-sm nowrap"
+                             title="${TYPO3.lang[LanguageKeys.modalReportActionInfo]}"
+                             @click="${(event: MouseEvent) => {
+                               event.preventDefault();
 
-                             InfoWindow.showItem('pages', result.data.urlMetadata.pageId);
-                           }}"
-                        >
-                          <typo3-backend-icon identifier="actions-info" size="small" />
-                          ${TYPO3.lang[LanguageKeys.modalReportActionInfo]}
-                        </button>
+                               InfoWindow.showItem('pages', result.data.urlMetadata.pageId);
+                             }}"
+                          >
+                            <typo3-backend-icon identifier="actions-info" size="small" />
+                            ${TYPO3.lang[LanguageKeys.modalReportActionInfo]}
+                          </button>
+                        ` : ''}
 
                         <a href="${result.url}"
                            target="_blank"
