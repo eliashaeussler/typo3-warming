@@ -62,13 +62,13 @@ final class PageUriBuilderTest extends TestingFramework\Core\Functional\Function
     }
 
     #[Framework\Attributes\Test]
-    public function generateUriReturnsNullIfPageDoesNotExist(): void
+    public function buildReturnsNullIfPageDoesNotExist(): void
     {
         self::assertNull($this->subject->build(99));
     }
 
     #[Framework\Attributes\Test]
-    public function generateUriReturnsNullIfRelatedSiteIsNotAccessible(): void
+    public function buildReturnsNullIfRelatedSiteIsNotAccessible(): void
     {
         $this->setUpBackendUser(2);
 
@@ -76,7 +76,16 @@ final class PageUriBuilderTest extends TestingFramework\Core\Functional\Function
     }
 
     #[Framework\Attributes\Test]
-    public function generateUriReturnsUriForGivenPage(): void
+    public function buildReturnsUriForGivenTranslatedPage(): void
+    {
+        self::assertEquals(
+            new Core\Http\Uri('https://typo3-testing.local/subsite-1'),
+            $this->subject->build(6),
+        );
+    }
+
+    #[Framework\Attributes\Test]
+    public function buildReturnsUriForGivenPage(): void
     {
         self::assertEquals(
             new Core\Http\Uri('https://typo3-testing.local/subsite-1'),
@@ -85,13 +94,13 @@ final class PageUriBuilderTest extends TestingFramework\Core\Functional\Function
     }
 
     #[Framework\Attributes\Test]
-    public function generateUriReturnsNullIfPageIsNotAvailableWithinGivenLanguage(): void
+    public function buildReturnsNullIfPageIsNotAvailableWithinGivenLanguage(): void
     {
         self::assertNull($this->subject->build(3, 1));
     }
 
     #[Framework\Attributes\Test]
-    public function generateUriReturnsNullIfGivenSiteLanguageIsNotAccessible(): void
+    public function buildReturnsNullIfGivenSiteLanguageIsNotAccessible(): void
     {
         $this->setUpBackendUser(1);
 
@@ -99,7 +108,7 @@ final class PageUriBuilderTest extends TestingFramework\Core\Functional\Function
     }
 
     #[Framework\Attributes\Test]
-    public function generateUriReturnsUriForGivenPageAndGivenLanguage(): void
+    public function buildReturnsUriForGivenPageAndGivenLanguage(): void
     {
         self::assertEquals(
             new Core\Http\Uri('https://typo3-testing.local/de/subsite-1-l-1'),
