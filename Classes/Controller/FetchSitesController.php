@@ -58,12 +58,25 @@ final readonly class FetchSitesController
      * @throws Typo3SitemapLocator\Exception\BaseUrlIsNotSupported
      * @throws Typo3SitemapLocator\Exception\SitemapIsMissing
      */
-    public function __invoke(): Message\ResponseInterface
+    public function __invoke(Message\ServerRequestInterface $request): Message\ResponseInterface
     {
+        $limitToSite = $request->getQueryParams()['limitToSite'] ?? null;
         $crawlingStrategy = $this->configuration->getStrategy();
         $siteGroups = [];
 
-        foreach ($this->siteRepository->findAll() as $site) {
+        if (\is_string($limitToSite) && $limitToSite !== '') {
+            $site = $this->siteRepository->findOneByIdentifier($limitToSite);
+
+            if ($site !== null) {
+                $sites = [$site];
+            } else {
+                $sites = [];
+            }
+        } else {
+            $sites = $this->siteRepository->findAll();
+        }
+
+        foreach ($sites as $site) {
             $row = Backend\Utility\BackendUtility::getRecord('pages', $site->getRootPageId(), '*', ' AND hidden = 0');
 
             if (!\is_array($row)) {
@@ -86,6 +99,7 @@ final readonly class FetchSitesController
             ],
             'availableStrategies' => $this->crawlingStrategyFactory->getAll(),
             'isAdmin' => Utility\BackendUtility::getBackendUser()->isAdmin(),
+            'isFiltered' => $limitToSite !== null,
         ]);
     }
 

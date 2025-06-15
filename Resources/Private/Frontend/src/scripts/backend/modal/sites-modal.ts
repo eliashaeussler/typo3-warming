@@ -32,6 +32,7 @@ import {SiteSelection} from '@eliashaeussler/typo3-warming/backend/modal/dto/sit
 
 enum SitesModalSelectors {
   form = '.tx-warming-sites-modal',
+  showAllButton = '.tx-warming-sites-show-all',
   siteCheckbox = '.tx-warming-sites-group-selector > input',
   siteCheckboxAll = '.tx-warming-sites-group-selector > input[data-select-all]',
   useragentCopy = 'button.tx-warming-user-agent-copy-action',
@@ -59,8 +60,11 @@ export class SitesModal extends LitElement {
   @query(SitesModalSelectors.form)
   private _form: HTMLFormElement;
 
+  @query(SitesModalSelectors.showAllButton)
+  private _showAllButton: HTMLButtonElement | null;
+
   @query(SitesModalSelectors.siteCheckboxAll)
-  private _selectAllCheckbox: HTMLInputElement;
+  private _selectAllCheckbox: HTMLInputElement | null;
 
   @queryAll(SitesModalSelectors.siteCheckbox)
   private _checkboxes: NodeListOf<HTMLInputElement>
@@ -97,7 +101,9 @@ export class SitesModal extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
+
     this.initializeSites();
+    this.initializeFilteredList();
   }
 
   /**
@@ -138,6 +144,21 @@ export class SitesModal extends LitElement {
         this.copyUserAgentToClipboard(userAgent);
       }
     }).bindTo(this._useragentCopyButton);
+  }
+
+  /**
+   * Initialize actions regarding filtered sites list within modal.
+   *
+   * @private
+   */
+  private initializeFilteredList(): void {
+    if (this._showAllButton !== null) {
+      new RegularEvent('click', (event: Event): void => {
+        event.preventDefault();
+
+        SitesModal.createModal();
+      }).bindTo(this._showAllButton);
+    }
   }
 
   /**
@@ -317,7 +338,9 @@ export class SitesModal extends LitElement {
       })
     }
 
-    this._selectAllCheckbox.checked = checked;
+    if (this._selectAllCheckbox !== null) {
+      this._selectAllCheckbox.checked = checked;
+    }
   }
 
   /**
@@ -400,8 +423,12 @@ export class SitesModal extends LitElement {
    * Next to the modal content, a footer with a "start" button is added. The footer
    * is hidden as long as no site is actively selected.
    */
-  public static createModal(): void {
+  public static createModal(limitToSite: string | null = null): void {
     const url: URL = new URL(TYPO3.settings.ajaxUrls.tx_warming_fetch_sites, window.location.origin);
+
+    if (limitToSite !== null) {
+      url.searchParams.set('limitToSite', limitToSite);
+    }
 
     // Ensure all other modals are closed
     Modal.dismiss();

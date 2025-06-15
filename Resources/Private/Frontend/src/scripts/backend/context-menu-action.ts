@@ -19,6 +19,7 @@
 
 import {CacheWarmer, PageWarmupRequest, SiteWarmupRequest} from '@eliashaeussler/typo3-warming/cache-warmer';
 import {MissingSiteIdentifierException} from '@eliashaeussler/typo3-warming/exception/missing-site-identifier-exception';
+import {SitesModal} from '@eliashaeussler/typo3-warming/backend/modal/sites-modal';
 
 /**
  * Run cache warmup from the SVG tree context menu.
@@ -36,10 +37,10 @@ export class ContextMenuAction {
    */
   public warmupPageCache(table: string, uid: number, data: object): void {
     if ('pages' === table) {
-      const languageId: number = ContextMenuAction.determineLanguage(data);
+      const actionIdentifier: number | null = ContextMenuAction.determineActionIdentifier(data) as number | null;
 
       const pages: PageWarmupRequest = {};
-      pages[uid] = [languageId];
+      pages[uid] = [actionIdentifier];
 
       (new CacheWarmer()).warmupCache({}, pages);
     }
@@ -54,33 +55,46 @@ export class ContextMenuAction {
    */
   public warmupSiteCache(table: string, uid: number, data: object): void {
     if ('pages' === table) {
-      const languageId: number = ContextMenuAction.determineLanguage(data);
+      const actionIdentifier: string | number = ContextMenuAction.determineActionIdentifier(data);
       const siteIdentifier: string = ContextMenuAction.determineSiteIdentifier(data);
 
-      const sites: SiteWarmupRequest = {};
-      sites[siteIdentifier] = [languageId];
+      if (typeof actionIdentifier === 'number') {
+        // Run cache warmup if action identifier is a specific language id
+        const sites: SiteWarmupRequest = {};
+        sites[siteIdentifier] = [actionIdentifier];
 
-      (new CacheWarmer()).warmupCache(sites, {});
+        (new CacheWarmer()).warmupCache(sites, {});
+      } else {
+        // Show sites modal to select language(s) for given site
+        SitesModal.createModal(siteIdentifier);
+      }
     }
   }
 
   /**
-   * Determine requested language ID from context menu action.
+   * Determine requested action from context menu action.
    *
-   * Tests whether a language ID is defined in the current context menu
-   * action and returns it, otherwise `NULL` is returned. The language ID
-   * is defined as `data-language-id` attribute in the context menu action.
+   * Tests whether an action identifier is defined in the current context menu
+   * action and returns it, otherwise `NULL` is returned. The action identifier
+   * is defined as `data-action-identifier` attribute in the context menu action.
    *
    * @param data {object} Additional data attributes from the original context menu item
-   * @returns {number|null} The resolved language ID or `NULL`
+   * @returns {string|null} The resolved action identifier or `NULL`
    * @private
    */
-  private static determineLanguage(data: object): number | null {
-    if (!('languageId' in data) || typeof data.languageId !== 'string') {
+  private static determineActionIdentifier(data: object): string | number | null {
+    if (!('actionIdentifier' in data) || typeof data.actionIdentifier !== 'string') {
       return null;
     }
 
-    return parseInt(data.languageId);
+    const actionIdentifier: string = data.actionIdentifier;
+
+    // Return integer if action identifier is a language ID
+    if (!isNaN(parseInt(actionIdentifier))) {
+      return parseInt(actionIdentifier);
+    }
+
+    return actionIdentifier;
   }
 
   /**

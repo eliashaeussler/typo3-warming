@@ -185,6 +185,63 @@ final class CacheWarmupProviderCest
         $I->dontSee('German', $this->contextMenuSubmenuSelector);
     }
 
+    public function canSeeLanguageSelectionForSite(
+        Tests\Acceptance\Support\AcceptanceTester $I,
+        Tests\Acceptance\Support\Helper\PageTree $pageTree,
+    ): void {
+        $I->loginAs('admin');
+
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule->value);
+        $I->switchToIFrame();
+
+        $pageTree->openContextMenu(['Main']);
+        $pageTree->selectInContextMenu(['Warmup all caches']);
+
+        $I->see('Select…', $this->contextMenuSubmenuSelector);
+    }
+
+    public function canSelectLanguagesForSite(
+        Tests\Acceptance\Support\AcceptanceTester $I,
+        Tests\Acceptance\Support\Helper\ModalDialog $modalDialog,
+        Tests\Acceptance\Support\Helper\PageTree $pageTree,
+    ): void {
+        $I->loginAs('admin');
+
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule->value);
+        $I->switchToIFrame();
+
+        $pageTree->openContextMenu(['Main']);
+        $pageTree->selectInContextMenu(['Warmup all caches', 'Select…']);
+
+        $modalDialog->canSeeDialog();
+
+        $I->canSee('Cache warmup', Tests\Acceptance\Support\Enums\Selectors::ModalTitle->value);
+        $I->canSee('Sites (filtered)', Tests\Acceptance\Support\Enums\Selectors::ModalHeader->value);
+    }
+
+    public function canSwitchToAllSitesInFilteredSitesModal(
+        Tests\Acceptance\Support\AcceptanceTester $I,
+        Tests\Acceptance\Support\Helper\ModalDialog $modalDialog,
+        Tests\Acceptance\Support\Helper\PageTree $pageTree,
+    ): void {
+        $I->loginAs('admin');
+
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule->value);
+        $I->switchToIFrame();
+
+        $pageTree->openContextMenu(['Main']);
+        $pageTree->selectInContextMenu(['Warmup all caches', 'Select…']);
+
+        $modalDialog->canSeeDialog();
+
+        $I->click(Tests\Acceptance\Support\Enums\Selectors::ShowAllButton->value);
+
+        $modalDialog->canSeeDialog();
+
+        $I->seeElement(Tests\Acceptance\Support\Enums\Selectors::SelectAllCheckbox->value);
+        $I->dontSee('Sites (filtered)', Tests\Acceptance\Support\Enums\Selectors::ModalHeader->value);
+    }
+
     public function canRunCacheWarmupForSite(
         Tests\Acceptance\Support\AcceptanceTester $I,
         Tests\Acceptance\Support\Helper\ModalDialog $modalDialog,
