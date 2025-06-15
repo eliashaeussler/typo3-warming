@@ -6,6 +6,15 @@
 <div class="tx-warming-sites">
     <h6 class="tx-warming-modal-header">
         <f:translate key="LLL:EXT:warming/Resources/Private/Language/locallang.xlf:modal.sites.sites.header" />
+
+        <f:if condition="{isFiltered}">
+            (<f:translate key="LLL:EXT:warming/Resources/Private/Language/locallang.xlf:modal.sites.sites.header.filtered" />)
+
+            <button class="btn btn-sm btn-link tx-warming-sites-show-all">
+                <c:icon identifier="actions-list" size="small" />
+                <f:translate key="LLL:EXT:warming/Resources/Private/Language/locallang.xlf:modal.sites.sites.header.showAll" />
+            </button>
+        </f:if>
     </h6>
 
     <p>
@@ -13,7 +22,9 @@
     </p>
 
     <ul>
-        <f:render partial="Modal/Sites/SelectAllGroup" />
+        <f:if condition="!{isFiltered}">
+            <f:render partial="Modal/Sites/SelectAllGroup" />
+        </f:if>
 
         <f:for each="{siteGroups}" as="siteGroup">
             <f:if condition="{siteGroup.items}">

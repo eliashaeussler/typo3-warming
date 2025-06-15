@@ -102,6 +102,11 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
             return false;
         }
 
+        // Special items in sub-menus are already filtered
+        if (str_contains($itemName, '_special_')) {
+            return true;
+        }
+
         // Language items in sub-menus are already filtered
         if (str_contains($itemName, '_lang_')) {
             return true;
@@ -116,12 +121,18 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
             return false;
         }
 
+        $pageId = $this->getPreviewPid();
+        $languageId = $this->getCurrentLanguageId();
+
         // Running cache warmup in "site" mode (= using XML sitemap) is only valid for root pages
         if ($itemName === self::ITEM_MODE_SITE) {
-            return $this->canWarmupCachesOfSite();
+            return $this->canWarmupCachesOfSite($languageId);
         }
 
-        return $this->permissionGuard->canWarmupCacheOfPage((int)$this->identifier);
+        // Set permission context for context menus on localized pages
+        $context = new Security\Context\PermissionContext($languageId);
+
+        return $this->permissionGuard->canWarmupCacheOfPage($pageId, $context);
     }
 
     /**
@@ -178,7 +189,7 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
                 $languages = array_filter(
                     $languages,
                     fn(Core\Site\Entity\SiteLanguage $siteLanguage): bool => $this->permissionGuard->canWarmupCacheOfPage(
-                        (int)$this->identifier,
+                        $this->getPreviewPid(),
                         new Security\Context\PermissionContext($siteLanguage->getLanguageId()),
                     ),
                 );
@@ -193,6 +204,15 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
             // Treat current item as submenu
             $configuration['type'] = 'submenu';
             $configuration['childItems'] = [];
+
+            // Add "select language" as child element of the current item
+            if ($itemName === self::ITEM_MODE_SITE && count($languages) > 1) {
+                $configuration['childItems'][$itemName . '_special_select'] = [
+                    'label' => Configuration\Localization::translate('contextMenu.item.cacheWarmupAll.select'),
+                    'iconIdentifier' => 'flags-multiple',
+                    'callbackAction' => $configuration['callbackAction'] ?? null,
+                ];
+            }
 
             // Add each site language as child element of the current item
             foreach ($languages as $language) {
@@ -217,32 +237,39 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
             'data-callback-module' => '@eliashaeussler/typo3-warming/backend/context-menu-action',
         ];
 
+        $itemConfiguration = preg_split('/_(lang|special)_/', $itemName, 2);
+
         // Early return if current item is not part of a submenu
         // within the configured context menu items
-        if (!str_contains($itemName, '_lang_')) {
+        if (!is_array($itemConfiguration) || count($itemConfiguration) !== 2) {
             return $attributes;
         }
 
-        [$parentItem, $languageId] = explode('_lang_', $itemName);
+        [$parentItem, $actionIdentifier] = $itemConfiguration;
 
         // Add site identifier as data attribute
         if ($parentItem === self::ITEM_MODE_SITE) {
             $attributes['data-site-identifier'] = $this->getCurrentSite()?->getIdentifier();
         }
 
-        // Add language ID as data attribute
-        $attributes['data-language-id'] = (int)$languageId;
+        // Add action identifier (language ID or special item) as data attribute
+        $attributes['data-action-identifier'] = $actionIdentifier;
 
         return $attributes;
     }
 
-    private function canWarmupCachesOfSite(?Core\Site\Entity\SiteLanguage $siteLanguage = null): bool
+    private function canWarmupCachesOfSite(Core\Site\Entity\SiteLanguage|int|null $siteLanguage = null): bool
     {
         $site = $this->getCurrentSite();
+        $pageId = $this->getPreviewPid();
 
         // Skip item if we're not in site context or resolved site is unexpected
-        if ($site === null || $site->getRootPageId() !== (int)$this->identifier) {
+        if ($site === null || $site->getRootPageId() !== $pageId) {
             return false;
+        }
+
+        if (is_int($siteLanguage)) {
+            $siteLanguage = $site->getLanguageById($siteLanguage);
         }
 
         // Check if any sitemap exists
@@ -261,9 +288,20 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
 
     private function getCurrentSite(): ?Core\Site\Entity\Site
     {
-        /** @var positive-int $pageId */
-        $pageId = (int)$this->identifier;
+        /** @var non-negative-int $pageId */
+        $pageId = $this->getPreviewPid();
 
         return $this->siteRepository->findOneByPageId($pageId);
+    }
+
+    /**
+     * @return non-negative-int
+     */
+    private function getCurrentLanguageId(): int
+    {
+        /** @var non-negative-int $languageId */
+        $languageId = (int)($this->record[$this->getLanguageField()] ?? 0);
+
+        return $languageId;
     }
 }

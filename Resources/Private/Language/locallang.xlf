@@ -13,6 +13,9 @@
 			<trans-unit id="contextMenu.item.cacheWarmupAll" resname="contextMenu.item.cacheWarmupAll">
 				<source>Warmup all caches</source>
 			</trans-unit>
+			<trans-unit id="contextMenu.item.cacheWarmupAll.select" resname="contextMenu.item.cacheWarmupAll.select">
+				<source>Select…</source>
+			</trans-unit>
 
 			<trans-unit id="label.limit" resname="label.limit">
 				<source>Limit</source>
@@ -122,6 +125,12 @@
 			</trans-unit>
 			<trans-unit id="modal.sites.sites.header" resname="modal.sites.sites.header">
 				<source>Sites</source>
+			</trans-unit>
+			<trans-unit id="modal.sites.sites.header.filtered" resname="modal.sites.sites.header.filtered">
+				<source>filtered</source>
+			</trans-unit>
+			<trans-unit id="modal.sites.sites.header.showAll" resname="modal.sites.sites.header.showAll">
+				<source>Show all</source>
 			</trans-unit>
 			<trans-unit id="modal.sites.sites.description" resname="modal.sites.sites.description">
 				<source>Select all sites whose caches should be warmed up.</source>

@@ -46,6 +46,7 @@ enum Selectors: string
     case ContextMenuSubmenuLegacy = '.context-menu[data-parent]';
     case ExtensionConfigurationModalCollapseHeader = '#heading-warming';
     case InformationModal = 'typo3-backend-modal[content^="/typo3/record/info"]';
+    case ModalHeader = '.tx-warming-modal-header';
     case ModalTitle = '.modal .modal-title';
     case ProgressCounterTotal = '.tx-warming-progress-modal .tx-warming-progress-modal-counter > div:nth-child(1) > strong:nth-child(2)';
     case ProgressPlaceholder = '.tx-warming-progress-modal .tx-warming-progress-placeholder';
@@ -55,6 +56,7 @@ enum Selectors: string
     case SelectAllCheckbox = '#tx-warming-sites-select-all';
     case SettingsLimit = '#tx-warming-settings-limit';
     case SettingsStrategy = '#tx-warming-settings-strategy';
+    case ShowAllButton = '.tx-warming-sites-show-all';
     case SiteGroupSelector = '.tx-warming-sites-group-selector';
     case ToolbarItem = '#eliashaeussler-typo3warming-backend-toolbaritems-cachewarmuptoolbaritem';
     case UserAgentCopyButton = '.tx-warming-sites-modal .tx-warming-user-agent-copy-action';
