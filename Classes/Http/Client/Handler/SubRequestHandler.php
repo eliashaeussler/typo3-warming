@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Http\Client\Handler;
 
-use EliasHaeussler\Typo3Warming\Domain;
 use EliasHaeussler\Typo3Warming\Http;
 use GuzzleHttp\Exception;
 use GuzzleHttp\Promise;
@@ -43,11 +42,6 @@ use TYPO3\CMS\Frontend;
 final class SubRequestHandler
 {
     /**
-     * @var list<string>
-     */
-    private readonly array $supportedBaseUrls;
-
-    /**
      * @var callable(Message\RequestInterface, array<string, mixed>): Promise\PromiseInterface
      */
     private $fallbackHandler;
@@ -55,9 +49,8 @@ final class SubRequestHandler
     public function __construct(
         private readonly Frontend\Http\Application $application,
         private readonly Http\Message\UrlMetadataFactory $urlMetadataFactory,
-        Domain\Repository\SiteRepository $siteRepository,
+        private readonly Core\Routing\SiteMatcher $siteMatcher,
     ) {
-        $this->supportedBaseUrls = $this->resolveBaseUrls($siteRepository);
         $this->fallbackHandler = Utils::chooseHandler();
     }
 
@@ -66,14 +59,21 @@ final class SubRequestHandler
      */
     public function __invoke(Message\RequestInterface $request, array $options): Promise\PromiseInterface
     {
-        if (!$this->isSupportedRequestUrl($request->getUri())) {
+        $subRequest = new Core\Http\ServerRequest(
+            $request->getUri(),
+            $request->getMethod(),
+            $request->getBody(),
+            $request->getHeaders(),
+        );
+
+        if (!$this->isSupportedRequest($subRequest)) {
             return ($this->fallbackHandler)($request, $options);
         }
 
         $globalsBackup = $GLOBALS;
 
         try {
-            return $this->sendSubRequest($request);
+            return $this->sendSubRequest($request, $subRequest);
         } finally {
             foreach ($globalsBackup as $key => $value) {
                 $GLOBALS[$key] = $value;
@@ -81,15 +81,11 @@ final class SubRequestHandler
         }
     }
 
-    private function sendSubRequest(Message\RequestInterface $request): Promise\PromiseInterface
-    {
+    private function sendSubRequest(
+        Message\RequestInterface $request,
+        Message\ServerRequestInterface $subRequest,
+    ): Promise\PromiseInterface {
         $response = null;
-        $subRequest = new Core\Http\ServerRequest(
-            $request->getUri(),
-            $request->getMethod(),
-            $request->getBody(),
-            $request->getHeaders(),
-        );
 
         try {
             return Promise\Create::promiseFor(
@@ -112,31 +108,15 @@ final class SubRequestHandler
         );
     }
 
-    private function isSupportedRequestUrl(Message\UriInterface $uri): bool
+    private function isSupportedRequest(Message\ServerRequestInterface $subRequest): bool
     {
-        $requestUrl = (string)$uri;
-
-        foreach ($this->supportedBaseUrls as $baseUrl) {
-            if (str_starts_with($requestUrl, $baseUrl)) {
-                return true;
-            }
+        try {
+            $routeResult = $this->siteMatcher->matchRequest($subRequest);
+        } catch (\Exception) {
+            return false;
         }
 
-        return false;
-    }
-
-    /**
-     * @return list<string>
-     */
-    private function resolveBaseUrls(Domain\Repository\SiteRepository $siteRepository): array
-    {
-        $sites = $siteRepository->findAll();
-        $baseUrls = [];
-
-        foreach ($sites as $site) {
-            $baseUrls[] = (string)$site->getBase();
-        }
-
-        return $baseUrls;
+        return $routeResult instanceof Core\Routing\SiteRouteResult
+            && $routeResult->getSite() instanceof Core\Site\Entity\Site;
     }
 }

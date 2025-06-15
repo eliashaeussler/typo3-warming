@@ -67,7 +67,7 @@ final class SubRequestHandlerTest extends TestingFramework\Core\Functional\Funct
         $this->subject = new Src\Http\Client\Handler\SubRequestHandler(
             $this->applicationMock,
             $this->urlMetadataFactory,
-            $this->get(Src\Domain\Repository\SiteRepository::class),
+            $this->get(Core\Routing\SiteMatcher::class),
         );
     }
 
