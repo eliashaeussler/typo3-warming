@@ -263,23 +263,27 @@ export class SitesModal extends LitElement {
    * @private
    */
   private toggleGroup(siteSelection: SiteSelection, element: HTMLInputElement): void {
-    let checked = element.checked;
+    const checkboxes = this.getCheckboxesByGroup(siteSelection.getGroupName());
 
     if (siteSelection.getLanguageId() === null) {
-      this.getCheckboxesByGroup(siteSelection.getGroupName()).forEach((checkbox: HTMLInputElement): void => {
-        checkbox.checked = checked;
+      checkboxes.forEach((checkbox: HTMLInputElement): void => {
+        checkbox.checked = element.checked;
       });
     } else {
-      if (checked) {
-        this.getCheckboxesByGroup(siteSelection.getGroupName()).forEach((checkbox: HTMLInputElement): false|void => {
-          if (checkbox.id !== element.id && !checkbox.checked) {
-            checked = false;
-            return false;
-          }
-        });
-      }
+      const checkboxGroupRoot = this.getCheckboxGroupRoot(siteSelection.getGroupName());
+      let hasChecked = false;
+      let hasUnchecked = false;
 
-      this.getCheckboxGroupRoot(siteSelection.getGroupName()).checked = checked;
+      checkboxes.forEach((checkbox: HTMLInputElement): void => {
+        if (checkbox.checked) {
+          hasChecked = true;
+        } else {
+          hasUnchecked = true;
+        }
+      });
+
+      checkboxGroupRoot.checked = hasChecked && !hasUnchecked;
+      checkboxGroupRoot.indeterminate = hasChecked && hasUnchecked;
     }
   }
 
