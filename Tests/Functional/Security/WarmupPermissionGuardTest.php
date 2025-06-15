@@ -56,7 +56,10 @@ final class WarmupPermissionGuardTest extends TestingFramework\Core\Functional\F
 
         $this->site = $this->createSite();
         $this->cache = $this->get('cache.runtime');
-        $this->subject = new Src\Security\WarmupPermissionGuard($this->cache);
+        $this->subject = new Src\Security\WarmupPermissionGuard(
+            $this->cache,
+            $this->get(Core\Site\SiteFinder::class),
+        );
     }
 
     #[Framework\Attributes\Test]
@@ -82,6 +85,14 @@ final class WarmupPermissionGuardTest extends TestingFramework\Core\Functional\F
         $this->cache->set($identifier, false);
 
         self::assertFalse($this->subject->canWarmupCacheOfPage($pageId, $context));
+    }
+
+    #[Framework\Attributes\Test]
+    public function canWarmupCacheOfPageReturnsFalseIfNoAssociatedSiteCanBeFound(): void
+    {
+        $context = new Src\Security\Context\PermissionContext();
+
+        self::assertFalse($this->subject->canWarmupCacheOfPage(5, $context));
     }
 
     #[Framework\Attributes\Test]

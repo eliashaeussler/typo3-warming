@@ -38,6 +38,7 @@ final readonly class WarmupPermissionGuard
     public function __construct(
         #[DependencyInjection\Attribute\Autowire('@cache.runtime')]
         private Core\Cache\Frontend\FrontendInterface $cache,
+        private Core\Site\SiteFinder $siteFinder,
     ) {}
 
     public function canWarmupCacheOfPage(
@@ -46,9 +47,18 @@ final readonly class WarmupPermissionGuard
     ): bool {
         return $this->getFromCache(
             ['canWarmupCacheOfPage', $pageId, $context],
-            fn() => $this->hasPageAccess($pageId, $context)
-                && $this->isAllowedPage($pageId, $context)
-                && $this->hasLanguageAccess($context),
+            function () use ($context, $pageId) {
+                try {
+                    $this->siteFinder->getSiteByPageId($pageId);
+                } catch (Core\Exception\SiteNotFoundException) {
+                    return false;
+                }
+
+                return $this->hasPageAccess($pageId, $context)
+                    && $this->isAllowedPage($pageId, $context)
+                    && $this->hasLanguageAccess($context)
+                ;
+            }
         );
     }
 

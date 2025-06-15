@@ -134,8 +134,7 @@ final class CacheWarmupProviderCest
 
         $pageTree->openContextMenu(['Root 3']);
 
-        $I->see('Warmup cache for this page', Tests\Acceptance\Support\Enums\Selectors::ContextMenu->value);
-        $I->dontSee('Warmup all caches', Tests\Acceptance\Support\Enums\Selectors::ContextMenu->value);
+        $I->dontSee('Warmup cache for this page', Tests\Acceptance\Support\Enums\Selectors::ContextMenu->value);
     }
 
     public function cannotSeeContextMenuItemsIfNoLanguagesAreAllowed(
