@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Tests\Acceptance\Support\Helper;
 
+use EliasHaeussler\Typo3Warming\Tests;
 use TYPO3\CMS\Core;
 
 /**
@@ -35,8 +36,9 @@ final readonly class ExtensionConfiguration
 {
     private Core\Configuration\ConfigurationManager $configurationManager;
 
-    public function __construct()
-    {
+    public function __construct(
+        private Tests\Acceptance\Support\AcceptanceTester $tester,
+    ) {
         $this->configurationManager = Core\Utility\GeneralUtility::makeInstance(Core\Configuration\ConfigurationManager::class);
     }
 
@@ -51,5 +53,8 @@ final readonly class ExtensionConfiguration
     public function write(string $path, mixed $value): void
     {
         $this->configurationManager->setLocalConfigurationValueByPath('EXTENSIONS/warming/' . $path, $value);
+
+        $I = $this->tester;
+        $I->runShellCommand('typo3 cache:flush');
     }
 }
