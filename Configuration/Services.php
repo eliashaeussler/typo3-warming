@@ -25,16 +25,8 @@ namespace EliasHaeussler\Typo3Warming\DependencyInjection;
 
 use EliasHaeussler\CacheWarmup;
 use Symfony\Component\DependencyInjection;
-use TYPO3\CMS\Core;
 
 return static function (DependencyInjection\ContainerBuilder $container): void {
-    $vendorPharFile = dirname(__DIR__) . '/Resources/Private/Libs/vendors.phar';
-
-    // Load additional libraries provided by PHAR file (only to be used in non-Composer-mode)
-    if (!Core\Core\Environment::isComposerMode() && file_exists($vendorPharFile)) {
-        require 'phar://' . $vendorPharFile . '/vendor/autoload.php';
-    }
-
     $container->addCompilerPass(new CrawlingStrategyCompilerPass());
     $container->registerForAutoconfiguration(CacheWarmup\Crawler\Strategy\CrawlingStrategy::class)
         ->addTag(CrawlingStrategyCompilerPass::TAG_NAME)

@@ -42,7 +42,7 @@
 		"fix:composer": [
 			"@composer normalize",
 			"@composer normalize ../../composer.json",
-			"@composer normalize ../../Resources/Private/Libs/Build/composer.json"
+			"@composer normalize ../../Resources/Private/Libs/composer.json"
 		],
 		"fix:editorconfig": "@lint:editorconfig --fix",
 		"fix:php": "php-cs-fixer fix",
