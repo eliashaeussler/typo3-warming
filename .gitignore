@@ -1,6 +1,6 @@
 /.Build
 /config
-/Resources/Private/Libs/Build/vendor
+/Resources/Private/Libs/vendor
 /Resources/Private/Libs/vendors.phar
 /Tests/Acceptance/Support/_generated
 /var/

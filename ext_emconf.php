@@ -19,6 +19,19 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+$classmap = [];
+$vendorClassmap = __DIR__ . '/Resources/Private/Libs/vendor/composer/autoload_classmap.php';
+
+// Load additional vendor libraries (only to be used in non-Composer-mode)
+if (file_exists($vendorClassmap)) {
+    $classmap = require $vendorClassmap;
+
+    foreach ($classmap as $className => $file) {
+        // TYPO3's autoloader expects relative paths in classmap
+        $classmap[$className] = str_replace(__DIR__, '', $file);
+    }
+}
+
 /** @noinspection PhpUndefinedVariableInspection */
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Warming',
@@ -33,6 +46,12 @@ $EM_CONF[$_EXTKEY] = [
             'typo3' => '12.4.25-13.4.99',
             'php' => '8.2.0-8.4.99',
             'sitemap_locator' => '0.1.0-0.1.99',
+        ],
+    ],
+    'autoload' => [
+        'classmap' => $classmap,
+        'psr-4' => [
+            'EliasHaeussler\\Typo3Warming\\' => 'Classes',
         ],
     ],
 ];

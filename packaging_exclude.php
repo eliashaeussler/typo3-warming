@@ -32,7 +32,6 @@ return [
         'build',
         'public',
         'resources\\/private\\/frontend',
-        'resources\\/private\\/libs\\/build',
         'tailor-version-upload',
         'tests',
         'var',
