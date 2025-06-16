@@ -131,23 +131,4 @@ module.tx_warming {
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['stylesheets'][self::KEY] = 'EXT:warming/Resources/Public/Css';
     }
-
-    /**
-     * Load additional libraries provided by PHAR file (only to be used in non-Composer-mode).
-     *
-     * FOR USE IN ext_localconf.php AND NON-COMPOSER-MODE ONLY.
-     */
-    public static function loadVendorLibraries(): void
-    {
-        // Vendor libraries are already available in Composer mode
-        if (Core\Core\Environment::isComposerMode()) {
-            return;
-        }
-
-        $vendorPharFile = Core\Utility\GeneralUtility::getFileAbsFileName('EXT:warming/Resources/Private/Libs/vendors.phar');
-
-        if (file_exists($vendorPharFile)) {
-            require 'phar://' . $vendorPharFile . '/vendor/autoload.php';
-        }
-    }
 }
