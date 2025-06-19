@@ -54,6 +54,7 @@ return [
         'phpunit.unit.xml',
         'renovate.json',
         'SECURITY.md',
+        'typo3-vendor-bundler.yaml',
         'version-bumper.yaml',
     ],
 ];

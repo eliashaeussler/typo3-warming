@@ -63,16 +63,14 @@ jobs:
         with:
           php-version: 8.2
           extensions: intl, mbstring, json, zip, curl
-          tools: composer:v2, typo3/tailor
+          tools: composer:v2, eliashaeussler/typo3-vendor-bundler, typo3/tailor
 
       - name: Reset files
         run: git reset --hard HEAD && git clean -dfx
 
-      # Prepare vendor libraries
-      - name: Install dependencies
-        run: composer install -d Resources/Private/Libs --classmap-authoritative
-      - name: Remove "autoload" section
-        run: jq 'del(.autoload)' composer.json > composer.tmp && mv composer.tmp composer.json
+      # Bundle
+      - name: Bundle vendor libraries
+        run: php ~/.composer/vendor/bin/typo3-vendor-bundler bundle
 
       # Release
       - name: Publish to TER
