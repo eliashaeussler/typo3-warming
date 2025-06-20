@@ -70,7 +70,7 @@ jobs:
 
       # Bundle
       - name: Bundle vendor libraries
-        run: php ~/.composer/vendor/bin/typo3-vendor-bundler bundle
+        run: composer bundle -v
 
       # Release
       - name: Publish to TER
