@@ -7,6 +7,7 @@ on:
 env:
   TYPO3_EXTENSION_KEY: warming
   TYPO3_EXCLUDE_FROM_PACKAGING: packaging_exclude.php
+  EXTENSION_ARTEFACT: ${{ env.TYPO3_EXTENSION_KEY }}_${{ github.ref_name }}.zip
 
 jobs:
   build:
@@ -44,7 +45,7 @@ jobs:
       - name: Upload extension artefact
         uses: actions/upload-artifact@v4
         with:
-          path: warming_${{ github.ref_name }}.zip
+          path: tailor-version-artefact/${{ env.EXTENSION_ARTEFACT }}
 
   release:
     name: Create release
@@ -63,7 +64,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
-          files: warming_${{ github.ref_name }}.zip
+          files: ${{ env.EXTENSION_ARTEFACT }}
 
   ter-publish:
     name: Publish on TER
@@ -93,5 +94,5 @@ jobs:
         run: |
           php ~/.composer/vendor/bin/tailor ter:publish \
             --comment "${{ steps.get-comment.outputs.comment }}" \
-            --artefact "warming_${{ github.ref_name }}.zip" \
+            --artefact "${{ env.EXTENSION_ARTEFACT }}" \
             "${{ github.ref_name }}"
