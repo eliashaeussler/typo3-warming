@@ -45,6 +45,7 @@ jobs:
       - name: Upload extension artefact
         uses: actions/upload-artifact@v4
         with:
+          name: extension-artefact
           path: tailor-version-artefact/${{ env.EXTENSION_ARTEFACT }}
 
   release:
@@ -59,6 +60,8 @@ jobs:
       - name: Download extension artefact
         id: download
         uses: actions/download-artifact@v4
+        with:
+          name: extension-artefact
 
       - name: Create release
         id: create-release
@@ -79,6 +82,8 @@ jobs:
       - name: Download extension artefact
         id: download
         uses: actions/download-artifact@v4
+        with:
+          name: extension-artefact
 
       - name: Set release comment
         id: get-comment
