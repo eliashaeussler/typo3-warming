@@ -7,7 +7,7 @@ on:
 env:
   TYPO3_EXTENSION_KEY: warming
   TYPO3_EXCLUDE_FROM_PACKAGING: packaging_exclude.php
-  EXTENSION_ARTEFACT: ${{ env.TYPO3_EXTENSION_KEY }}_${{ github.ref_name }}.zip
+  EXTENSION_ARTEFACT: warming_${{ github.ref_name }}.zip
 
 jobs:
   build:
