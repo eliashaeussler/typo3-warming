@@ -5321,23 +5321,23 @@
         },
         {
             "name": "typo3/cms-backend",
-            "version": "v13.4.14",
+            "version": "v13.4.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3-CMS/backend.git",
-                "reference": "9c715ebe90a88f59d4f69f5fbd35e4d6ecfc9934"
+                "reference": "12f8f73b629ab6b8c1f97c7b9bb7d82f0ed61758"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3-CMS/backend/zipball/9c715ebe90a88f59d4f69f5fbd35e4d6ecfc9934",
-                "reference": "9c715ebe90a88f59d4f69f5fbd35e4d6ecfc9934",
+                "url": "https://api.github.com/repos/TYPO3-CMS/backend/zipball/12f8f73b629ab6b8c1f97c7b9bb7d82f0ed61758",
+                "reference": "12f8f73b629ab6b8c1f97c7b9bb7d82f0ed61758",
                 "shasum": ""
             },
             "require": {
                 "ext-intl": "*",
                 "ext-libxml": "*",
                 "psr/event-dispatcher": "^1.0",
-                "typo3/cms-core": "13.4.14"
+                "typo3/cms-core": "13.4.15"
             },
             "conflict": {
                 "typo3/cms": "*"
@@ -5399,7 +5399,7 @@
                 "issues": "https://forge.typo3.org",
                 "source": "https://github.com/typo3/typo3"
             },
-            "time": "2025-06-10T11:50:07+00:00"
+            "time": "2025-07-08T09:23:09+00:00"
         },
         {
             "name": "typo3/cms-cli",
@@ -5511,16 +5511,16 @@
         },
         {
             "name": "typo3/cms-core",
-            "version": "v13.4.14",
+            "version": "v13.4.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3-CMS/core.git",
-                "reference": "cf0d0186d707cab64bc5e20eaab844944668fbd3"
+                "reference": "d70a508b2d696b1706cc485f8a31c2bfd88265a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3-CMS/core/zipball/cf0d0186d707cab64bc5e20eaab844944668fbd3",
-                "reference": "cf0d0186d707cab64bc5e20eaab844944668fbd3",
+                "url": "https://api.github.com/repos/TYPO3-CMS/core/zipball/d70a508b2d696b1706cc485f8a31c2bfd88265a9",
+                "reference": "d70a508b2d696b1706cc485f8a31c2bfd88265a9",
                 "shasum": ""
             },
             "require": {
@@ -5580,7 +5580,7 @@
                 "typo3/cms-cli": "^3.1.1",
                 "typo3/cms-composer-installers": "^5.0.1",
                 "typo3/html-sanitizer": "^2.2.0",
-                "typo3fluid/fluid": "^4.2.0"
+                "typo3fluid/fluid": "^4.3.0"
             },
             "conflict": {
                 "hoa/core": "*",
@@ -5652,20 +5652,20 @@
                 "issues": "https://forge.typo3.org",
                 "source": "https://github.com/typo3/typo3"
             },
-            "time": "2025-06-10T11:50:07+00:00"
+            "time": "2025-07-08T09:23:09+00:00"
         },
         {
             "name": "typo3/cms-extbase",
-            "version": "v13.4.14",
+            "version": "v13.4.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3-CMS/extbase.git",
-                "reference": "d4baaafde3540a44998c78b3185d81c41c9f2efd"
+                "reference": "212fcb0dd6f23bdb41de38ec6e932c905a4a8e5e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3-CMS/extbase/zipball/d4baaafde3540a44998c78b3185d81c41c9f2efd",
-                "reference": "d4baaafde3540a44998c78b3185d81c41c9f2efd",
+                "url": "https://api.github.com/repos/TYPO3-CMS/extbase/zipball/212fcb0dd6f23bdb41de38ec6e932c905a4a8e5e",
+                "reference": "212fcb0dd6f23bdb41de38ec6e932c905a4a8e5e",
                 "shasum": ""
             },
             "require": {
@@ -5675,7 +5675,7 @@
                 "symfony/dependency-injection": "^7.2",
                 "symfony/property-access": "^7.2",
                 "symfony/property-info": "^7.2",
-                "typo3/cms-core": "13.4.14"
+                "typo3/cms-core": "13.4.15"
             },
             "conflict": {
                 "typo3/cms": "*"
@@ -5722,27 +5722,27 @@
                 "issues": "https://forge.typo3.org",
                 "source": "https://github.com/typo3/typo3"
             },
-            "time": "2025-06-10T11:50:07+00:00"
+            "time": "2025-07-08T09:23:09+00:00"
         },
         {
             "name": "typo3/cms-fluid",
-            "version": "v13.4.14",
+            "version": "v13.4.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3-CMS/fluid.git",
-                "reference": "2ec5b368ff49446d522bc0e639e88f5968d63eb0"
+                "reference": "181b1cf10570402c51e675b49124ade8af95d66e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3-CMS/fluid/zipball/2ec5b368ff49446d522bc0e639e88f5968d63eb0",
-                "reference": "2ec5b368ff49446d522bc0e639e88f5968d63eb0",
+                "url": "https://api.github.com/repos/TYPO3-CMS/fluid/zipball/181b1cf10570402c51e675b49124ade8af95d66e",
+                "reference": "181b1cf10570402c51e675b49124ade8af95d66e",
                 "shasum": ""
             },
             "require": {
                 "symfony/dependency-injection": "^7.2",
-                "typo3/cms-core": "13.4.14",
-                "typo3/cms-extbase": "13.4.14",
-                "typo3fluid/fluid": "^4.2.0"
+                "typo3/cms-core": "13.4.15",
+                "typo3/cms-extbase": "13.4.15",
+                "typo3fluid/fluid": "^4.3.0"
             },
             "conflict": {
                 "typo3/cms": "*"
@@ -5786,25 +5786,25 @@
                 "issues": "https://forge.typo3.org",
                 "source": "https://github.com/typo3/typo3"
             },
-            "time": "2025-06-10T11:50:07+00:00"
+            "time": "2025-07-08T09:23:09+00:00"
         },
         {
             "name": "typo3/cms-frontend",
-            "version": "v13.4.14",
+            "version": "v13.4.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3-CMS/frontend.git",
-                "reference": "a7d3d6206350de2c5c44a1f8c2322461c1d5f1e2"
+                "reference": "e716e5620831ec16b93691b1df35036800de9b89"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3-CMS/frontend/zipball/a7d3d6206350de2c5c44a1f8c2322461c1d5f1e2",
-                "reference": "a7d3d6206350de2c5c44a1f8c2322461c1d5f1e2",
+                "url": "https://api.github.com/repos/TYPO3-CMS/frontend/zipball/e716e5620831ec16b93691b1df35036800de9b89",
+                "reference": "e716e5620831ec16b93691b1df35036800de9b89",
                 "shasum": ""
             },
             "require": {
                 "ext-libxml": "*",
-                "typo3/cms-core": "13.4.14"
+                "typo3/cms-core": "13.4.15"
             },
             "conflict": {
                 "typo3/cms": "*"
@@ -5856,7 +5856,7 @@
                 "issues": "https://forge.typo3.org",
                 "source": "https://github.com/typo3/typo3"
             },
-            "time": "2025-06-10T11:50:07+00:00"
+            "time": "2025-07-08T09:23:09+00:00"
         },
         {
             "name": "typo3/html-sanitizer",
@@ -9311,20 +9311,20 @@
         },
         {
             "name": "typo3/cms-belog",
-            "version": "v13.4.14",
+            "version": "v13.4.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3-CMS/belog.git",
-                "reference": "a897dfbad8ae9acbc69b6e02ba73721537a9fb70"
+                "reference": "f8de2a1a4f45d8c901f2ffe96624413838333abe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3-CMS/belog/zipball/a897dfbad8ae9acbc69b6e02ba73721537a9fb70",
-                "reference": "a897dfbad8ae9acbc69b6e02ba73721537a9fb70",
+                "url": "https://api.github.com/repos/TYPO3-CMS/belog/zipball/f8de2a1a4f45d8c901f2ffe96624413838333abe",
+                "reference": "f8de2a1a4f45d8c901f2ffe96624413838333abe",
                 "shasum": ""
             },
             "require": {
-                "typo3/cms-core": "13.4.14"
+                "typo3/cms-core": "13.4.15"
             },
             "conflict": {
                 "typo3/cms": "*"
@@ -9365,20 +9365,20 @@
                 "issues": "https://forge.typo3.org",
                 "source": "https://github.com/typo3/typo3"
             },
-            "time": "2025-06-10T11:50:07+00:00"
+            "time": "2025-07-08T09:23:09+00:00"
         },
         {
             "name": "typo3/cms-install",
-            "version": "v13.4.14",
+            "version": "v13.4.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3-CMS/install.git",
-                "reference": "853e860169cfc7ff31025608a25e4a925ba5d14a"
+                "reference": "f13fc1232a6810ebc4b8270589b557ad0927847b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3-CMS/install/zipball/853e860169cfc7ff31025608a25e4a925ba5d14a",
-                "reference": "853e860169cfc7ff31025608a25e4a925ba5d14a",
+                "url": "https://api.github.com/repos/TYPO3-CMS/install/zipball/f13fc1232a6810ebc4b8270589b557ad0927847b",
+                "reference": "f13fc1232a6810ebc4b8270589b557ad0927847b",
                 "shasum": ""
             },
             "require": {
@@ -9387,9 +9387,9 @@
                 "nikic/php-parser": "^5.4.0",
                 "symfony/finder": "^7.2",
                 "symfony/http-foundation": "^7.2",
-                "typo3/cms-core": "13.4.14",
-                "typo3/cms-extbase": "13.4.14",
-                "typo3/cms-fluid": "13.4.14"
+                "typo3/cms-core": "13.4.15",
+                "typo3/cms-extbase": "13.4.15",
+                "typo3/cms-fluid": "13.4.15"
             },
             "conflict": {
                 "typo3/cms": "*"
@@ -9433,26 +9433,26 @@
                 "issues": "https://forge.typo3.org",
                 "source": "https://github.com/typo3/typo3"
             },
-            "time": "2025-06-10T11:50:07+00:00"
+            "time": "2025-07-08T09:23:09+00:00"
         },
         {
             "name": "typo3/cms-seo",
-            "version": "v13.4.14",
+            "version": "v13.4.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3-CMS/seo.git",
-                "reference": "747387d38540c7d954fe382d1d388e1016572559"
+                "reference": "e7e56b89385c24e4c649176ceae0272176f73395"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3-CMS/seo/zipball/747387d38540c7d954fe382d1d388e1016572559",
-                "reference": "747387d38540c7d954fe382d1d388e1016572559",
+                "url": "https://api.github.com/repos/TYPO3-CMS/seo/zipball/e7e56b89385c24e4c649176ceae0272176f73395",
+                "reference": "e7e56b89385c24e4c649176ceae0272176f73395",
                 "shasum": ""
             },
             "require": {
-                "typo3/cms-core": "13.4.14",
-                "typo3/cms-extbase": "13.4.14",
-                "typo3/cms-frontend": "13.4.14"
+                "typo3/cms-core": "13.4.15",
+                "typo3/cms-extbase": "13.4.15",
+                "typo3/cms-frontend": "13.4.15"
             },
             "conflict": {
                 "typo3/cms": "*"
@@ -9496,24 +9496,24 @@
                 "issues": "https://forge.typo3.org",
                 "source": "https://github.com/typo3/typo3"
             },
-            "time": "2025-06-10T11:50:07+00:00"
+            "time": "2025-07-08T09:23:09+00:00"
         },
         {
             "name": "typo3/cms-tstemplate",
-            "version": "v13.4.14",
+            "version": "v13.4.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3-CMS/tstemplate.git",
-                "reference": "27c1476d7febfe7c1ce7eee912d8cf83fcb0de3c"
+                "reference": "78a94c5c123ca088c920b36f358cf00fdd8e1257"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3-CMS/tstemplate/zipball/27c1476d7febfe7c1ce7eee912d8cf83fcb0de3c",
-                "reference": "27c1476d7febfe7c1ce7eee912d8cf83fcb0de3c",
+                "url": "https://api.github.com/repos/TYPO3-CMS/tstemplate/zipball/78a94c5c123ca088c920b36f358cf00fdd8e1257",
+                "reference": "78a94c5c123ca088c920b36f358cf00fdd8e1257",
                 "shasum": ""
             },
             "require": {
-                "typo3/cms-core": "13.4.14"
+                "typo3/cms-core": "13.4.15"
             },
             "conflict": {
                 "typo3/cms": "*"
@@ -9554,7 +9554,7 @@
                 "issues": "https://forge.typo3.org",
                 "source": "https://github.com/typo3/typo3"
             },
-            "time": "2025-06-10T11:50:07+00:00"
+            "time": "2025-07-08T09:23:09+00:00"
         },
         {
             "name": "typo3/testing-framework",
