@@ -12,7 +12,7 @@ database:
     type: mariadb
     version: "10.4"
 omit_containers: [ddev-ssh-agent]
-webimage_extra_packages: [php8.3-pcov]
+webimage_extra_packages: [php8.4-pcov]
 use_dns_when_possible: true
 composer_version: "2"
 disable_settings_management: true
