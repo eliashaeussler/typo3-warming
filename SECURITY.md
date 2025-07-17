@@ -11,7 +11,7 @@ Instead, please send an email to [security@haeussler.dev](mailto:security@haeuss
 Your report should include the following details:
 
 * The exact version or version range that you analysed.
-* The TYPO3 version that you used for your analyse.
+* The TYPO3 version that you used for your analysis.
 * A step-by-step explanation of how to exploit the potential vulnerability.
 
 You can use the following GPG/PGP key ID to optionally encrypt your messages to
