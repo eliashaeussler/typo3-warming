@@ -56,7 +56,7 @@ final class BufferedConsoleOutput extends Console\Output\StreamOutput implements
     {
         fseek($this->stream, 0);
 
-        return (string)stream_get_contents($this->stream);
+        return stream_get_contents($this->stream);
     }
 
     public function getErrorOutput(): Console\Output\OutputInterface
