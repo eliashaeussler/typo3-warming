@@ -51,6 +51,7 @@ return PHPStanConfig\Config\Config::create($rootPath)
     ->withBleedingEdge([
         'internalTag' => false,
     ])
+    ->with($rootPath . '/.Build/vendor/cuyz/valinor/qa/PHPStan/valinor-phpstan-suppress-pure-errors.php')
     ->level(8)
     ->withSets($symfonySet, $typo3Set)
     ->toArray()
