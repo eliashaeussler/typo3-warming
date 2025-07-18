@@ -21,7 +21,7 @@
 	"require": {
 		"php": "~8.2.0 || ~8.3.0 || ~8.4.0",
 		"ext-json": "*",
-		"cuyz/valinor": "^1.14.1",
+		"cuyz/valinor": "^1.14.1 || ^2.0.0",
 		"eliashaeussler/cache-warmup": "^4.2",
 		"eliashaeussler/sse": "^1.0.1",
 		"eliashaeussler/typo3-sitemap-locator": "^0.1.0",
