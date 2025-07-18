@@ -21,7 +21,7 @@
 	"require": {
 		"php": "~8.2.0 || ~8.3.0 || ~8.4.0",
 		"ext-json": "*",
-		"cuyz/valinor": "^1.14.1 || ^2.0.0",
+		"cuyz/valinor": "^2.0",
 		"eliashaeussler/cache-warmup": "^4.2",
 		"eliashaeussler/sse": "^1.0.1",
 		"eliashaeussler/typo3-sitemap-locator": "^0.1.0",
@@ -51,7 +51,7 @@
 		"eliashaeussler/transient-logger": "^1.0",
 		"eliashaeussler/typo3-codeception-helper": "^1.2.1",
 		"eliashaeussler/valinor-xml": "^1.0.3",
-		"eliashaeussler/version-bumper": "^2.4",
+		"eliashaeussler/version-bumper": "^3.0",
 		"guzzlehttp/psr7": "^2.7",
 		"php-webdriver/webdriver": "^1.15",
 		"phpunit/phpcov": "^9.0 || ^10.0",

@@ -51,7 +51,8 @@ final readonly class MapperFactory
                 $this->mapSites(...),
             )
             ->allowSuperfluousKeys()
-            ->enableFlexibleCasting()
+            ->allowScalarValueCasting()
+            ->allowUndefinedValues()
             ->mapper()
         ;
     }
