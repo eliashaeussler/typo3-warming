@@ -1,7 +1,7 @@
 {
 	"name": "@eliashaeussler/typo3-warming",
 	"description": "Frontend for EXT:warming, an extension for TYPO3 CMS that warms up Frontend caches based on an XML sitemap",
-	"version": "4.1.4",
+	"version": "4.1.5",
 	"type": "module",
 	"private": true,
 	"license": "GPL-2.0-or-later",
