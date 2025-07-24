@@ -11,7 +11,7 @@
 		}
 	],
 	"require": {
-		"cuyz/valinor": "2.1.0",
+		"cuyz/valinor": "2.1.1",
 		"eliashaeussler/cache-warmup": "4.3.0",
 		"eliashaeussler/sse": "1.1.1"
 	},
