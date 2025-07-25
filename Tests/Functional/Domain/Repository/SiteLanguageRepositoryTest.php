@@ -42,6 +42,7 @@ final class SiteLanguageRepositoryTest extends TestingFramework\Core\Functional\
 
     protected array $testExtensionsToLoad = [
         'sitemap_locator',
+        'typed_extconf',
         'warming',
     ];
 

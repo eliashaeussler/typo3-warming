@@ -68,7 +68,7 @@ final class WarmupCommand extends Console\Command\Command
             $this->crawlingStrategyFactory->getAll(),
         ));
 
-        $crawlingStrategy = $this->configuration->getStrategy();
+        $crawlingStrategy = $this->configuration->crawlingStrategy;
         if ($crawlingStrategy !== null) {
             $crawlingStrategy = $crawlingStrategy::getName();
         }
@@ -140,7 +140,7 @@ Examples:
   ├─ The maximum number of pages to be warmed up can be defined via the extension configuration <info>limit</info>.
   │  It can be overridden by using the <info>--limit</info> option.
   │  The value <info>0</info> deactivates the crawl limit.
-  ├─ Default: <info>{$v($this->configuration->getLimit())}</info>
+  ├─ Default: <info>{$v($this->configuration->limit)}</info>
   ├─ Example: <comment>warming:cachewarmup -s 1 --limit 100</comment> (limits crawling to 100 pages)
   └─ Example: <comment>warming:cachewarmup -s 1 --limit 0</comment> (no limit)
 
@@ -166,8 +166,8 @@ Examples:
   ├─ Use the extension configuration <info>verboseCrawler</info> to use an alternative crawler for
   │  command-line requests. For warmup requests triggered via the TYPO3 backend, you can use the
   │  extension configuration <info>crawler</info>.
-  ├─ Currently used default crawler: <info>{$v($this->configuration->getCrawler()::class)}</info>
-  └─ Currently used verbose crawler: <info>{$v($this->configuration->getVerboseCrawler()::class)}</info>
+  ├─ Currently used default crawler: <info>{$v($this->configuration->crawlerClass)}</info>
+  └─ Currently used verbose crawler: <info>{$v($this->configuration->verboseCrawlerClass)}</info>
 
 * <comment>Custom User-Agent header</comment>
   ├─ When the default crawler is used, each warmup request is executed with a special User-Agent header.
@@ -206,7 +206,7 @@ HELP
             null,
             Console\Input\InputOption::VALUE_REQUIRED,
             'Maximum number of pages to be crawled. Set to <info>0</info> to disable the limit.',
-            $this->configuration->getLimit(),
+            $this->configuration->limit,
         );
         $this->addOption(
             'strategy',
@@ -289,17 +289,16 @@ HELP
         $format = $input->getOption('format');
 
         // Fetch input options from extension configuration
-        $excludePatterns = $this->configuration->getExcludePatterns();
-        $crawler = $this->configuration->getVerboseCrawler();
-        $crawlerOptions = $this->configuration->getVerboseCrawlerOptions();
-        $parserOptions = $this->configuration->getParserOptions();
+        $excludePatterns = $this->configuration->excludePatterns;
+        $crawlerOptions = $this->configuration->verboseCrawlerOptions;
+        $parserOptions = $this->configuration->parserOptions;
 
         // Initialize sub-command parameters
         $subCommandParameters = [
             'sitemaps' => $sitemaps,
             '--urls' => $urls,
             '--limit' => $limit,
-            '--crawler' => $crawler::class,
+            '--crawler' => $this->configuration->verboseCrawlerClass,
             '--format' => $format,
         ];
 

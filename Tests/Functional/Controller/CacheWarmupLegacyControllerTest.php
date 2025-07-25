@@ -47,6 +47,7 @@ final class CacheWarmupLegacyControllerTest extends TestingFramework\Core\Functi
 
     protected array $testExtensionsToLoad = [
         'sitemap_locator',
+        'typed_extconf',
         'warming',
     ];
 

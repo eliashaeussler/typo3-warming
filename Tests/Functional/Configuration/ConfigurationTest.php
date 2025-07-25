@@ -25,6 +25,7 @@ namespace EliasHaeussler\Typo3Warming\Tests\Functional\Configuration;
 
 use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3Warming as Src;
+use EliasHaeussler\Typo3Warming\Tests;
 use PHPUnit\Framework;
 use TYPO3\CMS\Core;
 use TYPO3\TestingFramework;
@@ -41,6 +42,7 @@ final class ConfigurationTest extends TestingFramework\Core\Functional\Functiona
 {
     protected array $testExtensionsToLoad = [
         'sitemap_locator',
+        'typed_extconf',
         'warming',
     ];
 
@@ -52,384 +54,56 @@ final class ConfigurationTest extends TestingFramework\Core\Functional\Functiona
 
     protected bool $initializeDatabase = false;
 
-    private Core\Configuration\ExtensionConfiguration $extensionConfiguration;
     private Src\Configuration\Configuration $subject;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->extensionConfiguration = $this->get(Core\Configuration\ExtensionConfiguration::class);
-        $this->subject = $this->get(Src\Configuration\Configuration::class);
-    }
-
-    #[Framework\Attributes\Test]
-    public function getCrawlerReturnsDefaultCrawlerIfNoCrawlerIsConfigured(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY);
-
-        self::assertInstanceOf(Src\Crawler\ConcurrentUserAgentCrawler::class, $this->subject->getCrawler());
-    }
-
-    #[Framework\Attributes\Test]
-    #[Framework\Attributes\DataProvider('getCrawlerReturnsDefaultCrawlerIfConfiguredCrawlerIsInvalidDataProvider')]
-    public function getCrawlerReturnsDefaultCrawlerIfConfiguredCrawlerIsInvalid(string|bool $crawler): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['crawler' => $crawler]);
-
-        self::assertInstanceOf(Src\Crawler\ConcurrentUserAgentCrawler::class, $this->subject->getCrawler());
+        $this->subject = new Src\Configuration\Configuration(
+            Tests\Functional\Fixtures\Classes\DummyCrawler::class,
+            [
+                'foo' => 'baz',
+            ],
+            Tests\Functional\Fixtures\Classes\DummyVerboseCrawler::class,
+            [
+                'another' => 'foo',
+            ],
+            [
+                'parser' => 'options',
+            ],
+            [
+                'client' => 'options',
+            ],
+            100,
+            [
+                'foo',
+            ],
+            new CacheWarmup\Crawler\Strategy\SortByPriorityStrategy(),
+            false,
+            [
+                Core\Domain\Repository\PageRepository::DOKTYPE_LINK,
+            ],
+            false,
+        );
     }
 
     #[Framework\Attributes\Test]
     public function getCrawlerReturnsConfiguredCrawler(): void
     {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['crawler' => CacheWarmup\Crawler\ConcurrentCrawler::class]);
+        $actual = $this->subject->getCrawler();
 
-        self::assertInstanceOf(CacheWarmup\Crawler\ConcurrentCrawler::class, $this->subject->getCrawler());
-    }
-
-    #[Framework\Attributes\Test]
-    public function getCrawlerOptionsReturnsEmptyArrayIfNoCrawlerOptionsAreConfigured(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY);
-
-        self::assertSame([], $this->subject->getCrawlerOptions());
-    }
-
-    #[Framework\Attributes\Test]
-    public function getCrawlerOptionsReturnsEmptyArrayIfConfiguredCrawlerOptionsAreOfInvalidType(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['crawlerOptions' => ['foo' => 'baz']]);
-
-        self::assertSame([], $this->subject->getCrawlerOptions());
-    }
-
-    #[Framework\Attributes\Test]
-    public function getCrawlerOptionsThrowsExceptionIfConfiguredCrawlerOptionsAreOfInvalidJson(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['crawlerOptions' => '"foo"']);
-
-        $this->expectExceptionObject(
-            new CacheWarmup\Exception\OptionsAreMalformed('"foo"'),
-        );
-
-        $this->subject->getCrawlerOptions();
-    }
-
-    #[Framework\Attributes\Test]
-    public function getCrawlerOptionsReturnsConfiguredCrawlerOptions(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['crawlerOptions' => '{"foo":"baz"}']);
-
-        self::assertSame(['foo' => 'baz'], $this->subject->getCrawlerOptions());
-    }
-
-    #[Framework\Attributes\Test]
-    public function getVerboseCrawlerReturnsDefaultVerboseCrawlerIfNoVerboseCrawlerIsConfigured(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY);
-
-        self::assertInstanceOf(Src\Crawler\OutputtingUserAgentCrawler::class, $this->subject->getVerboseCrawler());
-    }
-
-    #[Framework\Attributes\Test]
-    #[Framework\Attributes\DataProvider('getVerboseCrawlerReturnsDefaultVerboseCrawlerIfConfiguredVerboseCrawlerIsInvalidDataProvider')]
-    public function getVerboseCrawlerReturnsDefaultVerboseCrawlerIfConfiguredVerboseCrawlerIsInvalid(string|bool $verboseCrawler): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['verboseCrawler' => $verboseCrawler]);
-
-        self::assertInstanceOf(Src\Crawler\OutputtingUserAgentCrawler::class, $this->subject->getVerboseCrawler());
+        self::assertInstanceOf(Tests\Functional\Fixtures\Classes\DummyCrawler::class, $actual);
+        self::assertSame(['foo' => 'baz'], $actual::$options);
     }
 
     #[Framework\Attributes\Test]
     public function getVerboseCrawlerReturnsConfiguredVerboseCrawler(): void
     {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['verboseCrawler' => CacheWarmup\Crawler\OutputtingCrawler::class]);
+        $actual = $this->subject->getVerboseCrawler();
 
-        self::assertInstanceOf(CacheWarmup\Crawler\OutputtingCrawler::class, $this->subject->getVerboseCrawler());
-    }
-
-    #[Framework\Attributes\Test]
-    public function getVerboseCrawlerOptionsReturnsEmptyArrayIfNoVerboseCrawlerOptionsAreConfigured(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY);
-
-        self::assertSame([], $this->subject->getVerboseCrawlerOptions());
-    }
-
-    #[Framework\Attributes\Test]
-    public function getVerboseCrawlerOptionsReturnsEmptyArrayIfConfiguredVerboseCrawlerOptionsAreOfInvalidType(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['verboseCrawlerOptions' => ['foo' => 'baz']]);
-
-        self::assertSame([], $this->subject->getVerboseCrawlerOptions());
-    }
-
-    #[Framework\Attributes\Test]
-    public function getVerboseCrawlerOptionsThrowsExceptionIfConfiguredVerboseCrawlerOptionsAreOfInvalidJson(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['verboseCrawlerOptions' => '"foo"']);
-
-        $this->expectExceptionObject(
-            new CacheWarmup\Exception\OptionsAreMalformed('"foo"'),
-        );
-
-        $this->subject->getVerboseCrawlerOptions();
-    }
-
-    #[Framework\Attributes\Test]
-    public function getVerboseCrawlerOptionsReturnsConfiguredVerboseCrawlerOptions(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['verboseCrawlerOptions' => '{"foo":"baz"}']);
-
-        self::assertSame(['foo' => 'baz'], $this->subject->getVerboseCrawlerOptions());
-    }
-
-    #[Framework\Attributes\Test]
-    public function getParserOptionsReturnsEmptyArrayIfNoParserOptionsAreConfigured(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY);
-
-        self::assertSame([], $this->subject->getParserOptions());
-    }
-
-    #[Framework\Attributes\Test]
-    public function getParserOptionsReturnsEmptyArrayIfConfiguredParserOptionsAreOfInvalidType(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['parserOptions' => ['foo' => 'baz']]);
-
-        self::assertSame([], $this->subject->getParserOptions());
-    }
-
-    #[Framework\Attributes\Test]
-    public function getParserOptionsThrowsExceptionIfConfiguredParserOptionsAreOfInvalidJson(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['parserOptions' => '"foo"']);
-
-        $this->expectExceptionObject(
-            new CacheWarmup\Exception\OptionsAreMalformed('"foo"'),
-        );
-
-        $this->subject->getParserOptions();
-    }
-
-    #[Framework\Attributes\Test]
-    public function getParserOptionsReturnsConfiguredParserOptions(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['parserOptions' => '{"foo":"baz"}']);
-
-        self::assertSame(['foo' => 'baz'], $this->subject->getParserOptions());
-    }
-
-    #[Framework\Attributes\Test]
-    public function getClientOptionsReturnsEmptyArrayIfNoClientOptionsAreConfigured(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY);
-
-        self::assertSame([], $this->subject->getClientOptions());
-    }
-
-    #[Framework\Attributes\Test]
-    public function getClientOptionsReturnsEmptyArrayIfConfiguredClientOptionsAreOfInvalidType(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['clientOptions' => ['foo' => 'baz']]);
-
-        self::assertSame([], $this->subject->getClientOptions());
-    }
-
-    #[Framework\Attributes\Test]
-    public function getClientOptionsThrowsExceptionIfConfiguredClientOptionsAreOfInvalidJson(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['clientOptions' => '"foo"']);
-
-        $this->expectExceptionObject(
-            new CacheWarmup\Exception\OptionsAreMalformed('"foo"'),
-        );
-
-        $this->subject->getClientOptions();
-    }
-
-    #[Framework\Attributes\Test]
-    public function getClientOptionsReturnsConfiguredClientOptions(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['clientOptions' => '{"foo":"baz"}']);
-
-        self::assertSame(['foo' => 'baz'], $this->subject->getClientOptions());
-    }
-
-    #[Framework\Attributes\Test]
-    public function getLimitReturnsDefaultLimitIfNoLimitIsConfigured(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY);
-
-        self::assertSame(250, $this->subject->getLimit());
-    }
-
-    #[Framework\Attributes\Test]
-    public function getLimitReturnsDefaultLimitIfConfiguredLimitIsNotNumeric(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['limit' => 'foo']);
-
-        self::assertSame(250, $this->subject->getLimit());
-    }
-
-    #[Framework\Attributes\Test]
-    public function getLimitReturnsNonNegativeIntegerValue(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['limit' => -1]);
-
-        self::assertSame(0, $this->subject->getLimit());
-    }
-
-    #[Framework\Attributes\Test]
-    public function getLimitReturnsConfiguredLimit(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['limit' => 350]);
-
-        self::assertSame(350, $this->subject->getLimit());
-    }
-
-    #[Framework\Attributes\Test]
-    public function getExcludePatternsReturnsEmptyArrayIfNoExcludePatternsAreConfigured(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY);
-
-        self::assertSame([], $this->subject->getExcludePatterns());
-    }
-
-    #[Framework\Attributes\Test]
-    public function getExcludePatternsReturnsEmptyArrayIfConfiguredExcludePatternsAreOfInvalidType(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['exclude' => false]);
-
-        self::assertSame([], $this->subject->getExcludePatterns());
-    }
-
-    #[Framework\Attributes\Test]
-    public function getExcludePatternsReturnsEmptyArrayIfConfiguredExcludePatternsAreEmpty(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['exclude' => '']);
-
-        self::assertSame([], $this->subject->getExcludePatterns());
-    }
-
-    #[Framework\Attributes\Test]
-    public function getExcludePatternsReturnsConfiguredExcludePatternsAsArray(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['exclude' => 'foo,,baz']);
-
-        self::assertSame(['foo', 'baz'], $this->subject->getExcludePatterns());
-    }
-
-    #[Framework\Attributes\Test]
-    public function getStrategyReturnsNullIfNoStrategyIsConfigured(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY);
-
-        self::assertNull($this->subject->getStrategy());
-    }
-
-    #[Framework\Attributes\Test]
-    public function getStrategyReturnsNullIfConfiguredStrategyIsOfInvalidType(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['strategy' => false]);
-
-        self::assertNull($this->subject->getStrategy());
-    }
-
-    #[Framework\Attributes\Test]
-    public function getStrategyReturnsNullIfConfiguredStrategyIsEmpty(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['strategy' => '']);
-
-        self::assertNull($this->subject->getStrategy());
-    }
-
-    #[Framework\Attributes\Test]
-    public function getStrategyReturnsNullIfConfiguredStrategyIsNotSupported(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['strategy' => 'foo']);
-
-        self::assertNull($this->subject->getStrategy());
-    }
-
-    #[Framework\Attributes\Test]
-    public function getStrategyReturnsConfiguredStrategy(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY, [
-            'strategy' => CacheWarmup\Crawler\Strategy\SortByPriorityStrategy::getName(),
-        ]);
-
-        self::assertInstanceOf(
-            CacheWarmup\Crawler\Strategy\SortByPriorityStrategy::class,
-            $this->subject->getStrategy(),
-        );
-    }
-
-    #[Framework\Attributes\Test]
-    public function isEnabledInPageTreeReturnsTrueIfNoValueIsConfigured(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY);
-
-        self::assertTrue($this->subject->isEnabledInPageTree());
-    }
-
-    #[Framework\Attributes\Test]
-    #[Framework\Attributes\DataProvider('isEnabledInPageTreeReturnsConfiguredValueDataProvider')]
-    public function isEnabledInPageTreeReturnsConfiguredValue(bool $enabled): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['enablePageTree' => $enabled]);
-
-        self::assertSame($enabled, $this->subject->isEnabledInPageTree());
-    }
-
-    #[Framework\Attributes\Test]
-    public function getSupportedDoktypesReturnsDefaultDoktypesIfNoDoktypesAreConfigured(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY);
-
-        $expected = [
-            Core\Domain\Repository\PageRepository::DOKTYPE_DEFAULT,
-        ];
-
-        self::assertSame($expected, $this->subject->getSupportedDoktypes());
-    }
-
-    #[Framework\Attributes\Test]
-    public function getSupportedDoktypesReturnsDefaultDoktypesIfConfiguredDoktypesAreInvalid(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['supportedDoktypes' => false]);
-
-        $expected = [
-            Core\Domain\Repository\PageRepository::DOKTYPE_DEFAULT,
-        ];
-
-        self::assertSame($expected, $this->subject->getSupportedDoktypes());
-    }
-
-    #[Framework\Attributes\Test]
-    public function getSupportedDoktypesReturnsConfiguredDoktypes(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['supportedDoktypes' => '1,100,200']);
-
-        self::assertSame([1, 100, 200], $this->subject->getSupportedDoktypes());
-    }
-
-    #[Framework\Attributes\Test]
-    public function isEnabledInToolbarReturnsTrueIfNoValueIsConfigured(): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY);
-
-        self::assertTrue($this->subject->isEnabledInToolbar());
-    }
-
-    #[Framework\Attributes\Test]
-    #[Framework\Attributes\DataProvider('isEnabledInToolbarReturnsConfiguredValueDataProvider')]
-    public function isEnabledInToolbarReturnsConfiguredValue(bool $enabled): void
-    {
-        $this->extensionConfiguration->set(Src\Extension::KEY, ['enableToolbar' => $enabled]);
-
-        self::assertSame($enabled, $this->subject->isEnabledInToolbar());
+        self::assertInstanceOf(Tests\Functional\Fixtures\Classes\DummyVerboseCrawler::class, $actual);
+        self::assertSame(['another' => 'foo'], $actual::$options);
     }
 
     #[Framework\Attributes\Test]
@@ -446,40 +120,188 @@ final class ConfigurationTest extends TestingFramework\Core\Functional\Functiona
     }
 
     /**
-     * @return \Generator<string, array{string|bool}>
+     * @todo Remove with v5.0
      */
-    public static function getCrawlerReturnsDefaultCrawlerIfConfiguredCrawlerIsInvalidDataProvider(): \Generator
+    #[Framework\Attributes\Test]
+    #[Framework\Attributes\DataProvider('deprecatedMethodCallTriggersDeprecationNoticeDataProvider')]
+    public function deprecatedMethodCallTriggersDeprecationNotice(string $methodName, string $expected): void
     {
-        yield 'empty string' => [''];
-        yield 'invalid type' => [false];
-        yield 'invalid class name' => ['foo'];
+        $deprecationMessage = null;
+
+        set_error_handler(
+            static function (int $severity, string $message) use (&$deprecationMessage) {
+                $deprecationMessage = $message;
+
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        try {
+            /* @phpstan-ignore argument.type */
+            call_user_func([$this->subject, $methodName]);
+        } finally {
+            restore_error_handler();
+        }
+
+        self::assertSame($expected, $deprecationMessage);
     }
 
     /**
-     * @return \Generator<string, array{string|bool}>
+     * @todo Remove with v5.0
      */
-    public static function getVerboseCrawlerReturnsDefaultVerboseCrawlerIfConfiguredVerboseCrawlerIsInvalidDataProvider(): \Generator
+    #[Framework\Attributes\Test]
+    #[Framework\Attributes\DataProvider('deprecatedMethodCallReturnsPropertyValueDataProvider')]
+    public function deprecatedMethodCallReturnsPropertyValue(string $methodName, mixed $expected): void
     {
-        yield 'empty string' => [''];
-        yield 'invalid type' => [false];
-        yield 'invalid class name' => ['foo'];
+        // Silence deprecations
+        set_error_handler(
+            static fn(int $severity, string $message) => true,
+            E_USER_DEPRECATED,
+        );
+
+        try {
+            /* @phpstan-ignore argument.type */
+            $actual = call_user_func([$this->subject, $methodName]);
+        } finally {
+            restore_error_handler();
+        }
+
+        self::assertEquals($expected, $actual);
     }
 
     /**
-     * @return \Generator<string, array{bool}>
+     * @todo Remove with v5.0
      */
-    public static function isEnabledInPageTreeReturnsConfiguredValueDataProvider(): \Generator
+    #[Framework\Attributes\Test]
+    public function unsupportedMethodCallThrowsException(): void
     {
-        yield 'enabled' => [true];
-        yield 'disabled' => [false];
+        $this->expectExceptionObject(
+            new \BadMethodCallException('Unknown method "foo".', 1753475960),
+        );
+
+        /* @phpstan-ignore method.notFound */
+        $this->subject->foo();
     }
 
     /**
-     * @return \Generator<string, array{bool}>
+     * @return \Generator<string, array{string, string}>
      */
-    public static function isEnabledInToolbarReturnsConfiguredValueDataProvider(): \Generator
+    public static function deprecatedMethodCallTriggersDeprecationNoticeDataProvider(): \Generator
     {
-        yield 'enabled' => [true];
-        yield 'disabled' => [false];
+        $message = static fn(string $method, string $property) => sprintf(
+            'Method "%s::%s()" is deprecated and will be removed in v5.0. Access class property "$%s" directly.',
+            Src\Configuration\Configuration::class,
+            $method,
+            $property,
+        );
+
+        yield 'crawler options' => [
+            'getCrawlerOptions',
+            $message('getCrawlerOptions', 'crawlerOptions'),
+        ];
+        yield 'verbose crawler options' => [
+            'getVerboseCrawlerOptions',
+            $message('getVerboseCrawlerOptions', 'verboseCrawlerOptions'),
+        ];
+        yield 'parser options' => [
+            'getParserOptions',
+            $message('getParserOptions', 'parserOptions'),
+        ];
+        yield 'client options' => [
+            'getClientOptions',
+            $message('getClientOptions', 'clientOptions'),
+        ];
+        yield 'limit' => [
+            'getLimit',
+            $message('getLimit', 'limit'),
+        ];
+        yield 'exclude patterns' => [
+            'getExcludePatterns',
+            $message('getExcludePatterns', 'excludePatterns'),
+        ];
+        yield 'strategy' => [
+            'getStrategy',
+            $message('getStrategy', 'crawlingStrategy'),
+        ];
+        yield 'enabled in page tree' => [
+            'isEnabledInPageTree',
+            $message('isEnabledInPageTree', 'enabledInPageTree'),
+        ];
+        yield 'supported doktypes' => [
+            'getSupportedDoktypes',
+            $message('getSupportedDoktypes', 'supportedDoktypes'),
+        ];
+        yield 'enabled in toolbar' => [
+            'isEnabledInToolbar',
+            $message('isEnabledInToolbar', 'enabledInToolbar'),
+        ];
+    }
+
+    /**
+     * @return \Generator<string, array{string, mixed}>
+     */
+    public static function deprecatedMethodCallReturnsPropertyValueDataProvider(): \Generator
+    {
+        yield 'crawler options' => [
+            'getCrawlerOptions',
+            [
+                'foo' => 'baz',
+            ],
+        ];
+        yield 'verbose crawler options' => [
+            'getVerboseCrawlerOptions',
+            [
+                'another' => 'foo',
+            ],
+        ];
+        yield 'parser options' => [
+            'getParserOptions',
+            [
+                'parser' => 'options',
+            ],
+        ];
+        yield 'client options' => [
+            'getClientOptions',
+            [
+                'client' => 'options',
+            ],
+        ];
+        yield 'limit' => [
+            'getLimit',
+            100,
+        ];
+        yield 'exclude patterns' => [
+            'getExcludePatterns',
+            [
+                'foo',
+            ],
+        ];
+        yield 'strategy' => [
+            'getStrategy',
+            new CacheWarmup\Crawler\Strategy\SortByPriorityStrategy(),
+        ];
+        yield 'enabled in page tree' => [
+            'isEnabledInPageTree',
+            false,
+        ];
+        yield 'supported doktypes' => [
+            'getSupportedDoktypes',
+            [
+                Core\Domain\Repository\PageRepository::DOKTYPE_LINK,
+            ],
+        ];
+        yield 'enabled in toolbar' => [
+            'isEnabledInToolbar',
+            false,
+        ];
+    }
+
+    protected function tearDown(): void
+    {
+        Tests\Functional\Fixtures\Classes\DummyCrawler::$options = [];
+        Tests\Functional\Fixtures\Classes\DummyVerboseCrawler::$options = [];
+
+        parent::tearDown();
     }
 }

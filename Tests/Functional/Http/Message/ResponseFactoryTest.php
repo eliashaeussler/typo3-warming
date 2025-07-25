@@ -39,6 +39,7 @@ final class ResponseFactoryTest extends TestingFramework\Core\Functional\Functio
 {
     protected array $testExtensionsToLoad = [
         'sitemap_locator',
+        'typed_extconf',
         'warming',
     ];
 

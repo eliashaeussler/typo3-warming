@@ -92,7 +92,7 @@ final readonly class CacheWarmupToolbarItem implements Backend\Toolbar\ToolbarIt
     public function checkAccess(): bool
     {
         // Early return if cache warmup from backend toolbar is disabled globally
-        if (!$this->configuration->isEnabledInToolbar()) {
+        if (!$this->configuration->enabledInToolbar) {
             return false;
         }
 

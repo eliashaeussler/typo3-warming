@@ -39,6 +39,7 @@ final class ShowUserAgentCommandTest extends TestingFramework\Core\Functional\Fu
 {
     protected array $testExtensionsToLoad = [
         'sitemap_locator',
+        'typed_extconf',
         'warming',
     ];
 

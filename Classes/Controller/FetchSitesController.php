@@ -61,7 +61,7 @@ final readonly class FetchSitesController
     public function __invoke(Message\ServerRequestInterface $request): Message\ResponseInterface
     {
         $limitToSite = $request->getQueryParams()['limitToSite'] ?? null;
-        $crawlingStrategy = $this->configuration->getStrategy();
+        $crawlingStrategy = $this->configuration->crawlingStrategy;
         $siteGroups = [];
 
         if (\is_string($limitToSite) && $limitToSite !== '') {
@@ -94,7 +94,7 @@ final readonly class FetchSitesController
             'siteGroups' => $siteGroups,
             'userAgent' => $this->configuration->getUserAgent(),
             'configuration' => [
-                'limit' => $this->configuration->getLimit(),
+                'limit' => $this->configuration->limit,
                 'strategy' => $crawlingStrategy !== null ? $crawlingStrategy::getName() : null,
             ],
             'availableStrategies' => $this->crawlingStrategyFactory->getAll(),

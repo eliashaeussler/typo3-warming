@@ -26,7 +26,7 @@ namespace EliasHaeussler\Typo3Warming\Configuration;
 use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3Warming\Crawler;
 use EliasHaeussler\Typo3Warming\Extension;
-use Symfony\Component\DependencyInjection;
+use mteu\TypedExtConf;
 use TYPO3\CMS\Core;
 use TYPO3\CMS\Extbase;
 
@@ -36,264 +36,106 @@ use TYPO3\CMS\Extbase;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-#[DependencyInjection\Attribute\Autoconfigure(public: true)]
+#[TypedExtConf\Attribute\ExtensionConfig(extensionKey: Extension::KEY)]
 final class Configuration
 {
-    private const DEFAULT_CRAWLER = Crawler\ConcurrentUserAgentCrawler::class;
-    private const DEFAULT_VERBOSE_CRAWLER = Crawler\OutputtingUserAgentCrawler::class;
-    private const DEFAULT_LIMIT = 250;
-    private const DEFAULT_SUPPORTED_DOKTYPES = [
-        Core\Domain\Repository\PageRepository::DOKTYPE_DEFAULT,
-    ];
-
-    private readonly string $userAgent;
     private ?CacheWarmup\Crawler\CrawlerFactory $crawlerFactory = null;
+    private readonly string $userAgent;
 
+    /**
+     * @param class-string<CacheWarmup\Crawler\Crawler> $crawlerClass
+     * @param array<string, mixed> $crawlerOptions
+     * @param class-string<CacheWarmup\Crawler\VerboseCrawler> $verboseCrawlerClass
+     * @param array<string, mixed> $verboseCrawlerOptions
+     * @param array<string, mixed> $parserOptions
+     * @param array<string, mixed> $clientOptions
+     * @param non-negative-int $limit
+     * @param list<non-empty-string> $excludePatterns
+     * @param list<int> $supportedDoktypes
+     */
     public function __construct(
-        private readonly Core\Configuration\ExtensionConfiguration $configuration,
-        private readonly CacheWarmup\Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
-        private readonly CacheWarmup\Config\Component\OptionsParser $optionsParser,
+        #[TypedExtConf\Attribute\ExtConfProperty(path: 'crawler')]
+        public readonly string $crawlerClass = Crawler\ConcurrentUserAgentCrawler::class,
+        #[TypedExtConf\Attribute\ExtConfProperty]
+        public readonly array $crawlerOptions = [],
+        #[TypedExtConf\Attribute\ExtConfProperty(path: 'verboseCrawler')]
+        public readonly string $verboseCrawlerClass = Crawler\OutputtingUserAgentCrawler::class,
+        #[TypedExtConf\Attribute\ExtConfProperty]
+        public readonly array $verboseCrawlerOptions = [],
+        #[TypedExtConf\Attribute\ExtConfProperty]
+        public readonly array $parserOptions = [],
+        #[TypedExtConf\Attribute\ExtConfProperty]
+        public readonly array $clientOptions = [],
+        #[TypedExtConf\Attribute\ExtConfProperty]
+        public readonly int $limit = 250,
+        #[TypedExtConf\Attribute\ExtConfProperty(path: 'exclude')]
+        public readonly array $excludePatterns = [],
+        #[TypedExtConf\Attribute\ExtConfProperty(path: 'strategy')]
+        public readonly ?CacheWarmup\Crawler\Strategy\CrawlingStrategy $crawlingStrategy = null,
+        #[TypedExtConf\Attribute\ExtConfProperty(path: 'enablePageTree')]
+        public readonly bool $enabledInPageTree = true,
+        #[TypedExtConf\Attribute\ExtConfProperty]
+        public readonly array $supportedDoktypes = [Core\Domain\Repository\PageRepository::DOKTYPE_DEFAULT],
+        #[TypedExtConf\Attribute\ExtConfProperty(path: 'enableToolbar')]
+        public readonly bool $enabledInToolbar = true,
     ) {
         $this->userAgent = $this->generateUserAgent();
     }
 
     /**
+     * @param array{} $arguments
+     *
+     * @todo Remove with v5.0
+     */
+    public function __call(string $name, array $arguments): mixed
+    {
+        $propertyName = match ($name) {
+            'getCrawlerOptions' => 'crawlerOptions',
+            'getVerboseCrawlerOptions' => 'verboseCrawlerOptions',
+            'getParserOptions' => 'parserOptions',
+            'getClientOptions' => 'clientOptions',
+            'getLimit' => 'limit',
+            'getExcludePatterns' => 'excludePatterns',
+            'getStrategy' => 'crawlingStrategy',
+            'isEnabledInPageTree' => 'enabledInPageTree',
+            'getSupportedDoktypes' => 'supportedDoktypes',
+            'isEnabledInToolbar' => 'enabledInToolbar',
+            default => throw new \BadMethodCallException(
+                \sprintf('Unknown method "%s".', $name),
+                1753475960,
+            ),
+        };
+
+        trigger_error(
+            \sprintf(
+                'Method "%s::%s()" is deprecated and will be removed in v5.0. Access class property "$%s" directly.',
+                self::class,
+                $name,
+                $propertyName,
+            ),
+            E_USER_DEPRECATED,
+        );
+
+        /* @phpstan-ignore property.dynamicName */
+        return $this->{$propertyName};
+    }
+
+    /**
      * @throws CacheWarmup\Exception\CrawlerDoesNotExist
      * @throws CacheWarmup\Exception\CrawlerIsInvalid
-     * @throws CacheWarmup\Exception\OptionsAreInvalid
-     * @throws CacheWarmup\Exception\OptionsAreMalformed
      */
     public function getCrawler(): CacheWarmup\Crawler\Crawler
     {
-        $crawlerOptions = [];
-
-        try {
-            $crawlerClass = $this->configuration->get(Extension::KEY, 'crawler');
-
-            if (!\is_string($crawlerClass) ||
-                !\is_a($crawlerClass, CacheWarmup\Crawler\Crawler::class, true)
-            ) {
-                $crawlerClass = self::DEFAULT_CRAWLER;
-            } else {
-                $crawlerOptions = $this->getCrawlerOptions();
-            }
-        } catch (Core\Exception) {
-            $crawlerClass = self::DEFAULT_VERBOSE_CRAWLER;
-        }
-
-        return $this->getCrawlerFactory()->get($crawlerClass, $crawlerOptions);
-    }
-
-    /**
-     * @return array<string, mixed>
-     * @throws CacheWarmup\Exception\OptionsAreInvalid
-     * @throws CacheWarmup\Exception\OptionsAreMalformed
-     */
-    public function getCrawlerOptions(): array
-    {
-        try {
-            $json = $this->configuration->get(Extension::KEY, 'crawlerOptions');
-
-            // Early return if no crawler options are configured
-            if (!\is_string($json) || $json === '') {
-                return [];
-            }
-
-            return $this->optionsParser->parse($json);
-        } catch (Core\Exception) {
-            return [];
-        }
+        return $this->getCrawlerFactory()->get($this->crawlerClass, $this->crawlerOptions);
     }
 
     /**
      * @throws CacheWarmup\Exception\CrawlerDoesNotExist
      * @throws CacheWarmup\Exception\CrawlerIsInvalid
-     * @throws CacheWarmup\Exception\OptionsAreInvalid
-     * @throws CacheWarmup\Exception\OptionsAreMalformed
      */
     public function getVerboseCrawler(): CacheWarmup\Crawler\VerboseCrawler
     {
-        $crawlerOptions = [];
-
-        try {
-            $crawlerClass = $this->configuration->get(Extension::KEY, 'verboseCrawler');
-
-            if (!\is_string($crawlerClass) ||
-                !is_a($crawlerClass, CacheWarmup\Crawler\VerboseCrawler::class, true)
-            ) {
-                $crawlerClass = self::DEFAULT_VERBOSE_CRAWLER;
-            } else {
-                $crawlerOptions = $this->getVerboseCrawlerOptions();
-            }
-        } catch (Core\Exception) {
-            $crawlerClass = self::DEFAULT_VERBOSE_CRAWLER;
-        }
-
-        /** @var CacheWarmup\Crawler\VerboseCrawler $crawler */
-        $crawler = $this->getCrawlerFactory()->get($crawlerClass, $crawlerOptions);
-
-        return $crawler;
-    }
-
-    /**
-     * @return array<string, mixed>
-     * @throws CacheWarmup\Exception\OptionsAreInvalid
-     * @throws CacheWarmup\Exception\OptionsAreMalformed
-     */
-    public function getVerboseCrawlerOptions(): array
-    {
-        try {
-            $json = $this->configuration->get(Extension::KEY, 'verboseCrawlerOptions');
-
-            // Early return if no crawler options are configured
-            if (!\is_string($json) || $json === '') {
-                return [];
-            }
-
-            return $this->optionsParser->parse($json);
-        } catch (Core\Exception) {
-            return [];
-        }
-    }
-
-    /**
-     * @return array<string, mixed>
-     * @throws CacheWarmup\Exception\OptionsAreInvalid
-     * @throws CacheWarmup\Exception\OptionsAreMalformed
-     */
-    public function getParserOptions(): array
-    {
-        try {
-            $json = $this->configuration->get(Extension::KEY, 'parserOptions');
-
-            // Early return if no parser options are configured
-            if (!\is_string($json) || $json === '') {
-                return [];
-            }
-
-            return $this->optionsParser->parse($json);
-        } catch (Core\Exception) {
-            return [];
-        }
-    }
-
-    /**
-     * @return array<string, mixed>
-     * @throws CacheWarmup\Exception\OptionsAreInvalid
-     * @throws CacheWarmup\Exception\OptionsAreMalformed
-     */
-    public function getClientOptions(): array
-    {
-        try {
-            $json = $this->configuration->get(Extension::KEY, 'clientOptions');
-
-            // Early return if no client options are configured
-            if (!\is_string($json) || $json === '') {
-                return [];
-            }
-
-            return $this->optionsParser->parse($json);
-        } catch (Core\Exception) {
-            return [];
-        }
-    }
-
-    /**
-     * @return non-negative-int
-     */
-    public function getLimit(): int
-    {
-        try {
-            $limit = $this->configuration->get(Extension::KEY, 'limit');
-
-            if (!is_numeric($limit)) {
-                return self::DEFAULT_LIMIT;
-            }
-
-            return max(0, (int)$limit);
-        } catch (Core\Exception) {
-            return self::DEFAULT_LIMIT;
-        }
-    }
-
-    /**
-     * @return list<string>
-     */
-    public function getExcludePatterns(): array
-    {
-        try {
-            $exclude = $this->configuration->get(Extension::KEY, 'exclude');
-
-            // Early return if no exclude patterns are configured
-            if (!\is_string($exclude) || $exclude === '') {
-                return [];
-            }
-
-            return Core\Utility\GeneralUtility::trimExplode(',', $exclude, true);
-        } catch (Core\Exception) {
-            return [];
-        }
-    }
-
-    public function getStrategy(): ?CacheWarmup\Crawler\Strategy\CrawlingStrategy
-    {
-        try {
-            $strategy = $this->configuration->get(Extension::KEY, 'strategy');
-
-            // Early return if no crawling strategy is configured
-            if (!\is_string($strategy) || $strategy === '') {
-                return null;
-            }
-
-            // Early return if configured crawling strategy is invalid
-            if (!$this->crawlingStrategyFactory->has($strategy)) {
-                return null;
-            }
-
-            return $this->crawlingStrategyFactory->get($strategy);
-        } catch (Core\Exception) {
-            return null;
-        }
-    }
-
-    public function isEnabledInPageTree(): bool
-    {
-        try {
-            $enablePageTree = $this->configuration->get(Extension::KEY, 'enablePageTree');
-
-            return (bool)$enablePageTree;
-        } catch (Core\Exception) {
-            return true;
-        }
-    }
-
-    /**
-     * @return list<int>
-     */
-    public function getSupportedDoktypes(): array
-    {
-        try {
-            $doktypes = $this->configuration->get(Extension::KEY, 'supportedDoktypes');
-
-            if (!\is_string($doktypes)) {
-                return self::DEFAULT_SUPPORTED_DOKTYPES;
-            }
-
-            return Core\Utility\GeneralUtility::intExplode(',', $doktypes, true);
-        } catch (Core\Exception) {
-            return self::DEFAULT_SUPPORTED_DOKTYPES;
-        }
-    }
-
-    public function isEnabledInToolbar(): bool
-    {
-        try {
-            $enableToolbar = $this->configuration->get(Extension::KEY, 'enableToolbar');
-
-            return (bool)$enableToolbar;
-        } catch (Core\Exception) {
-            return true;
-        }
+        return $this->getCrawlerFactory()->get($this->verboseCrawlerClass, $this->verboseCrawlerOptions);
     }
 
     public function getUserAgent(): string

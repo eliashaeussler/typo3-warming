@@ -44,6 +44,7 @@ final class ClientBridgeTest extends TestingFramework\Core\Functional\Functional
 {
     protected array $testExtensionsToLoad = [
         'sitemap_locator',
+        'typed_extconf',
         'warming',
     ];
 

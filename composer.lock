@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e0f4a97a451067ad0ea77e36d9582ca7",
+    "content-hash": "4e7a9f69cbc13da38794feef996c10db",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -783,16 +783,16 @@
         },
         {
             "name": "eliashaeussler/cache-warmup",
-            "version": "4.3.0",
+            "version": "4.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/cache-warmup.git",
-                "reference": "c77802408b57c7814246a704aebebe280c19ce1c"
+                "reference": "d7f822264967d9b508df402b9939d57b8ecb6fea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/cache-warmup/zipball/c77802408b57c7814246a704aebebe280c19ce1c",
-                "reference": "c77802408b57c7814246a704aebebe280c19ce1c",
+                "url": "https://api.github.com/repos/eliashaeussler/cache-warmup/zipball/d7f822264967d9b508df402b9939d57b8ecb6fea",
+                "reference": "d7f822264967d9b508df402b9939d57b8ecb6fea",
                 "shasum": ""
             },
             "require": {
@@ -860,9 +860,9 @@
             "homepage": "https://cache-warmup.dev/",
             "support": {
                 "issues": "https://github.com/eliashaeussler/cache-warmup/issues",
-                "source": "https://github.com/eliashaeussler/cache-warmup/tree/4.3.0"
+                "source": "https://github.com/eliashaeussler/cache-warmup/tree/4.3.1"
             },
-            "time": "2025-07-14T18:33:51+00:00"
+            "time": "2025-07-25T21:21:47+00:00"
         },
         {
             "name": "eliashaeussler/sse",
@@ -1549,6 +1549,227 @@
                 "source": "https://github.com/Masterminds/html5-php/tree/2.9.0"
             },
             "time": "2024-03-31T07:05:07+00:00"
+        },
+        {
+            "name": "mteu/typo3-typed-extconf",
+            "version": "0.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mteu/typo3-typed-extconf.git",
+                "reference": "1f34a0d64c76f8eb90ecd3ffd75978309b2762dd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mteu/typo3-typed-extconf/zipball/1f34a0d64c76f8eb90ecd3ffd75978309b2762dd",
+                "reference": "1f34a0d64c76f8eb90ecd3ffd75978309b2762dd",
+                "shasum": ""
+            },
+            "require": {
+                "cuyz/valinor": "^2.0",
+                "ext-filter": "*",
+                "nette/php-generator": "^4.1.6",
+                "php": "~8.2.0 || ~8.3.0 || ~8.4.0",
+                "symfony/console": "^7.3",
+                "typo3/cms-core": "~12.4.31 || ~13.4.12"
+            },
+            "require-dev": {
+                "eliashaeussler/phpunit-attributes": "^1.7",
+                "eliashaeussler/version-bumper": "^3.0",
+                "phpunit/phpcov": "^10.0 || ^11.0.0",
+                "phpunit/phpunit": "^11.5 || ^12.1",
+                "roave/security-advisories": "dev-latest",
+                "symfony/dependency-injection": "^7.3",
+                "typo3/testing-framework": "^8.2 || ^9.2"
+            },
+            "type": "typo3-cms-extension",
+            "extra": {
+                "typo3/cms": {
+                    "web-dir": ".build/web",
+                    "extension-key": "typed_extconf",
+                    "skip-ter-packagist-import": true
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "mteu\\TypedExtConf\\": "Classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Martin Adler",
+                    "email": "mteu@mailbox.org",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Elias Häußler",
+                    "email": "elias@haeussler.dev"
+                }
+            ],
+            "description": "Aims to provide a type-safe extension configuration management for TYPO3, ensuring proper types instead of string-only values from backend configuration or mixed types from config/system/settings.php",
+            "support": {
+                "issues": "https://github.com/mteu/typo3-typed-extconf/issues",
+                "source": "https://github.com/mteu/typo3-typed-extconf/tree/0.2.0"
+            },
+            "time": "2025-07-25T10:36:43+00:00"
+        },
+        {
+            "name": "nette/php-generator",
+            "version": "v4.1.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nette/php-generator.git",
+                "reference": "42806049a7774a2bd316c958f5dcf01c6b5c56fa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nette/php-generator/zipball/42806049a7774a2bd316c958f5dcf01c6b5c56fa",
+                "reference": "42806049a7774a2bd316c958f5dcf01c6b5c56fa",
+                "shasum": ""
+            },
+            "require": {
+                "nette/utils": "^3.2.9 || ^4.0",
+                "php": "8.0 - 8.4"
+            },
+            "require-dev": {
+                "jetbrains/phpstorm-attributes": "dev-master",
+                "nette/tester": "^2.4",
+                "nikic/php-parser": "^4.18 || ^5.0",
+                "phpstan/phpstan": "^1.0",
+                "tracy/tracy": "^2.8"
+            },
+            "suggest": {
+                "nikic/php-parser": "to use ClassType::from(withBodies: true) & ClassType::fromCode()"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.1-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0-only",
+                "GPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "David Grudl",
+                    "homepage": "https://davidgrudl.com"
+                },
+                {
+                    "name": "Nette Community",
+                    "homepage": "https://nette.org/contributors"
+                }
+            ],
+            "description": "🐘 Nette PHP Generator: generates neat PHP code for you. Supports new PHP 8.4 features.",
+            "homepage": "https://nette.org",
+            "keywords": [
+                "code",
+                "nette",
+                "php",
+                "scaffolding"
+            ],
+            "support": {
+                "issues": "https://github.com/nette/php-generator/issues",
+                "source": "https://github.com/nette/php-generator/tree/v4.1.8"
+            },
+            "time": "2025-03-31T00:29:29+00:00"
+        },
+        {
+            "name": "nette/utils",
+            "version": "v4.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nette/utils.git",
+                "reference": "e67c4061eb40b9c113b218214e42cb5a0dda28f2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nette/utils/zipball/e67c4061eb40b9c113b218214e42cb5a0dda28f2",
+                "reference": "e67c4061eb40b9c113b218214e42cb5a0dda28f2",
+                "shasum": ""
+            },
+            "require": {
+                "php": "8.0 - 8.4"
+            },
+            "conflict": {
+                "nette/finder": "<3",
+                "nette/schema": "<1.2.2"
+            },
+            "require-dev": {
+                "jetbrains/phpstorm-attributes": "dev-master",
+                "nette/tester": "^2.5",
+                "phpstan/phpstan": "^1.0",
+                "tracy/tracy": "^2.9"
+            },
+            "suggest": {
+                "ext-gd": "to use Image",
+                "ext-iconv": "to use Strings::webalize(), toAscii(), chr() and reverse()",
+                "ext-intl": "to use Strings::webalize(), toAscii(), normalize() and compare()",
+                "ext-json": "to use Nette\\Utils\\Json",
+                "ext-mbstring": "to use Strings::lower() etc...",
+                "ext-tokenizer": "to use Nette\\Utils\\Reflection::getUseStatements()"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0-only",
+                "GPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "David Grudl",
+                    "homepage": "https://davidgrudl.com"
+                },
+                {
+                    "name": "Nette Community",
+                    "homepage": "https://nette.org/contributors"
+                }
+            ],
+            "description": "🛠  Nette Utils: lightweight utilities for string & array manipulation, image handling, safe JSON encoding/decoding, validation, slug or strong password generating etc.",
+            "homepage": "https://nette.org",
+            "keywords": [
+                "array",
+                "core",
+                "datetime",
+                "images",
+                "json",
+                "nette",
+                "paginator",
+                "password",
+                "slugify",
+                "string",
+                "unicode",
+                "utf-8",
+                "utility",
+                "validation"
+            ],
+            "support": {
+                "issues": "https://github.com/nette/utils/issues",
+                "source": "https://github.com/nette/utils/tree/v4.0.7"
+            },
+            "time": "2025-06-03T04:55:08+00:00"
         },
         {
             "name": "php-http/discovery",

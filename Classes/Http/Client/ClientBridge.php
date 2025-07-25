@@ -60,7 +60,7 @@ final class ClientBridge
         $this->client ??= $this->guzzleClientFactory->getClient();
 
         $configFromClient = $this->getClientConfigFromReflection($this->client);
-        $configFromExtension = $this->configuration->getClientOptions();
+        $configFromExtension = $this->configuration->clientOptions;
 
         Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($configFromClient, $configFromExtension);
 

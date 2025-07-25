@@ -87,7 +87,7 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
     protected function canRender(string $itemName, string $type): bool
     {
         // Early return if cache warmup from page tree is disabled globally
-        if (!$this->configuration->isEnabledInPageTree()) {
+        if (!$this->configuration->enabledInPageTree) {
             return false;
         }
 
@@ -98,7 +98,7 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
 
         // Non-supported doktypes are never renderable
         $doktype = (int)($this->record['doktype'] ?? null);
-        if ($doktype <= 0 || !\in_array($doktype, $this->configuration->getSupportedDoktypes(), true)) {
+        if ($doktype <= 0 || !\in_array($doktype, $this->configuration->supportedDoktypes, true)) {
             return false;
         }
 
