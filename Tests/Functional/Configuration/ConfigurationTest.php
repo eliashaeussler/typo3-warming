@@ -106,17 +106,64 @@ final class ConfigurationTest extends TestingFramework\Core\Functional\Functiona
         self::assertSame(['another' => 'foo'], $actual::$options);
     }
 
+    /**
+     * @todo Remove with v5.0
+     */
+    #[Framework\Attributes\Test]
+    public function getUserAgentTriggersDeprecationNotice(): void
+    {
+        $deprecationMessage = null;
+
+        set_error_handler(
+            static function (int $severity, string $message) use (&$deprecationMessage) {
+                $deprecationMessage = $message;
+
+                return true;
+            },
+            E_USER_DEPRECATED,
+        );
+
+        try {
+            /* @phpstan-ignore method.deprecated */
+            $this->subject->getUserAgent();
+        } finally {
+            restore_error_handler();
+        }
+
+        self::assertSame(
+            \sprintf(
+                'Method "%s::getUserAgent()" is deprecated and will be removed in v5.0. Access User-Agent header via "%s::getUserAgent()" method instead.',
+                Src\Configuration\Configuration::class,
+                Src\Http\Message\Request\RequestOptions::class,
+            ),
+            $deprecationMessage,
+        );
+    }
+
+    /**
+     * @todo Remove with v5.0
+     */
     #[Framework\Attributes\Test]
     public function getUserAgentReturnsCorrectlyGeneratedUserAgent(): void
     {
+        // Silence deprecations
+        set_error_handler(
+            static fn(int $severity, string $message) => true,
+            E_USER_DEPRECATED,
+        );
+
         if ((new Core\Information\Typo3Version())->getMajorVersion() >= 13) {
             $expected = 'TYPO3/tx_warming_crawleref503f61d0e736e783384fd63c5ea03da19f23a4';
         } else {
-            // @todo Remove once support for TYPO3 v12 is dropped
             $expected = 'TYPO3/tx_warming_crawler2cdfe0c134f3796954daf9395c034c39b542ca57';
         }
 
-        self::assertSame($expected, $this->subject->getUserAgent());
+        try {
+            /* @phpstan-ignore method.deprecated */
+            self::assertSame($expected, $this->subject->getUserAgent());
+        } finally {
+            restore_error_handler();
+        }
     }
 
     /**
@@ -189,7 +236,7 @@ final class ConfigurationTest extends TestingFramework\Core\Functional\Functiona
      */
     public static function deprecatedMethodCallTriggersDeprecationNoticeDataProvider(): \Generator
     {
-        $message = static fn(string $method, string $property) => sprintf(
+        $message = static fn(string $method, string $property) => \sprintf(
             'Method "%s::%s()" is deprecated and will be removed in v5.0. Access class property "$%s" directly.',
             Src\Configuration\Configuration::class,
             $method,

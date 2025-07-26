@@ -8,7 +8,7 @@ Configuration API
 
 In order to access the :ref:`extension configuration <extension-configuration>`,
 a slim PHP API exists. Each configuration option is accessible by
-an appropriate class method.
+an appropriate class property.
 
 ..  versionchanged:: 4.2.0
 
@@ -88,6 +88,11 @@ an appropriate class method.
     ..  php:method:: getUserAgent()
 
         Get the calculated user-agent.
+
+        ..  deprecated:: 4.2.0
+
+            Call :php:`\EliasHaeussler\Typo3Warming\Http\Message\Request\RequestOptions::getUserAgent`
+            instead. See :ref:`migration guide <version-4.2.0>` for more information.
 
         :returntype: :php:`string`
 

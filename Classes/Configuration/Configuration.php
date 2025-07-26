@@ -26,9 +26,9 @@ namespace EliasHaeussler\Typo3Warming\Configuration;
 use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3Warming\Crawler;
 use EliasHaeussler\Typo3Warming\Extension;
+use EliasHaeussler\Typo3Warming\Http;
 use mteu\TypedExtConf;
 use TYPO3\CMS\Core;
-use TYPO3\CMS\Extbase;
 
 /**
  * Configuration
@@ -40,7 +40,6 @@ use TYPO3\CMS\Extbase;
 final class Configuration
 {
     private ?CacheWarmup\Crawler\CrawlerFactory $crawlerFactory = null;
-    private readonly string $userAgent;
 
     /**
      * @param class-string<CacheWarmup\Crawler\Crawler> $crawlerClass
@@ -78,9 +77,7 @@ final class Configuration
         public readonly array $supportedDoktypes = [Core\Domain\Repository\PageRepository::DOKTYPE_DEFAULT],
         #[TypedExtConf\Attribute\ExtConfProperty(path: 'enableToolbar')]
         public readonly bool $enabledInToolbar = true,
-    ) {
-        $this->userAgent = $this->generateUserAgent();
-    }
+    ) {}
 
     /**
      * @param array{} $arguments
@@ -138,32 +135,26 @@ final class Configuration
         return $this->getCrawlerFactory()->get($this->verboseCrawlerClass, $this->verboseCrawlerOptions);
     }
 
+    /**
+     * @deprecated Use {@see RequestOptions::getUserAgent()} instead. Will be removed in v5.0.
+     */
     public function getUserAgent(): string
     {
-        return $this->userAgent;
-    }
-
-    private function generateUserAgent(): string
-    {
-        $string = 'TYPO3/tx_warming_crawler';
-
-        if (class_exists(Core\Crypto\HashService::class)) {
-            return Core\Utility\GeneralUtility::makeInstance(Core\Crypto\HashService::class)->appendHmac(
-                $string,
-                self::class,
-            );
-        }
-
-        // @todo Remove once support for TYPO3 v12 is dropped
-        /* @phpstan-ignore classConstant.deprecatedClass, method.deprecatedClass */
-        return Core\Utility\GeneralUtility::makeInstance(Extbase\Security\Cryptography\HashService::class)->appendHmac(
-            $string,
+        trigger_error(
+            \sprintf(
+                'Method "%s()" is deprecated and will be removed in v5.0. ' .
+                'Access User-Agent header via "%s::getUserAgent()" method instead.',
+                __METHOD__,
+                Http\Message\Request\RequestOptions::class,
+            ),
+            E_USER_DEPRECATED,
         );
+
+        return (new Http\Message\Request\RequestOptions())->getUserAgent();
     }
 
     private function getCrawlerFactory(): CacheWarmup\Crawler\CrawlerFactory
     {
-        // Cannot be instantiated with DI, would lead to circular dependencies
         return $this->crawlerFactory ??= Core\Utility\GeneralUtility::makeInstance(
             CacheWarmup\Crawler\CrawlerFactory::class,
         );

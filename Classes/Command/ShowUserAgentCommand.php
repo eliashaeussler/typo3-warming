@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Command;
 
-use EliasHaeussler\Typo3Warming\Configuration;
+use EliasHaeussler\Typo3Warming\Http;
 use Symfony\Component\Console;
 
 /**
@@ -34,10 +34,13 @@ use Symfony\Component\Console;
  */
 final class ShowUserAgentCommand extends Console\Command\Command
 {
-    public function __construct(
-        private readonly Configuration\Configuration $configuration,
-    ) {
+    private readonly string $userAgent;
+
+    public function __construct(Http\Message\Request\RequestOptions $requestOptions)
+    {
         parent::__construct();
+
+        $this->userAgent = $requestOptions->getUserAgent();
     }
 
     protected function configure(): void
@@ -47,7 +50,7 @@ final class ShowUserAgentCommand extends Console\Command\Command
 
     protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output): int
     {
-        $output->write($this->configuration->getUserAgent());
+        $output->write($this->userAgent);
 
         return self::SUCCESS;
     }

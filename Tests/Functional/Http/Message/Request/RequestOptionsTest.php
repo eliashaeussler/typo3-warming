@@ -21,21 +21,22 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3Warming\Tests\Functional\Command;
+namespace EliasHaeussler\Typo3Warming\Tests\Functional\Http\Message\Request;
 
 use EliasHaeussler\Typo3Warming as Src;
 use PHPUnit\Framework;
-use Symfony\Component\Console;
+use TYPO3\CMS\Core;
 use TYPO3\TestingFramework;
 
 /**
- * ShowUserAgentCommandTest
+ * RequestOptionsTest
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-#[Framework\Attributes\CoversClass(Src\Command\ShowUserAgentCommand::class)]
-final class ShowUserAgentCommandTest extends TestingFramework\Core\Functional\FunctionalTestCase
+#[Framework\Attributes\BackupGlobals(true)]
+#[Framework\Attributes\CoversClass(Src\Http\Message\Request\RequestOptions::class)]
+final class RequestOptionsTest extends TestingFramework\Core\Functional\FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
         'sitemap_locator',
@@ -43,25 +44,33 @@ final class ShowUserAgentCommandTest extends TestingFramework\Core\Functional\Fu
         'warming',
     ];
 
+    protected array $configurationToUseInTestInstance = [
+        'SYS' => [
+            'encryptionKey' => '0b84531802b4bff53a8cc152b8c5b9965fb33deb897a60130349109fbcb6f7d39e5d125d6d27a89b6e16b66a811fca42',
+        ],
+    ];
+
     protected bool $initializeDatabase = false;
 
-    private Src\Http\Message\Request\RequestOptions $requestOptions;
-    private Console\Tester\CommandTester $commandTester;
+    private Src\Http\Message\Request\RequestOptions $subject;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->requestOptions = $this->get(Src\Http\Message\Request\RequestOptions::class);
-        $this->commandTester = new Console\Tester\CommandTester($this->get(Src\Command\ShowUserAgentCommand::class));
+        $this->subject = $this->get(Src\Http\Message\Request\RequestOptions::class);
     }
 
     #[Framework\Attributes\Test]
-    public function executePrintsUserAgent(): void
+    public function getUserAgentReturnsCorrectlyGeneratedUserAgent(): void
     {
-        $this->commandTester->execute([]);
+        if ((new Core\Information\Typo3Version())->getMajorVersion() >= 13) {
+            $expected = 'TYPO3/tx_warming_crawleref503f61d0e736e783384fd63c5ea03da19f23a4';
+        } else {
+            // @todo Remove once support for TYPO3 v12 is dropped
+            $expected = 'TYPO3/tx_warming_crawler2cdfe0c134f3796954daf9395c034c39b542ca57';
+        }
 
-        self::assertSame(0, $this->commandTester->getStatusCode());
-        self::assertSame($this->requestOptions->getUserAgent(), $this->commandTester->getDisplay());
+        self::assertSame($expected, $this->subject->getUserAgent());
     }
 }

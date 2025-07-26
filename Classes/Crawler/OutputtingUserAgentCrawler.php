@@ -24,7 +24,6 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Crawler;
 
 use EliasHaeussler\CacheWarmup;
-use EliasHaeussler\Typo3Warming\Configuration;
 use EliasHaeussler\Typo3Warming\Http;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
@@ -57,8 +56,8 @@ final class OutputtingUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfi
     }
     use LoggingCrawlerTrait;
 
-    private readonly Configuration\Configuration $configuration;
     private Http\Client\Handler\HandlerStackBuilder $handlerStackBuilder;
+    private readonly Http\Message\Request\RequestOptions $requestOptions;
     private readonly Http\Client\Handler\SubRequestHandler $subRequestHandler;
     private Console\Output\OutputInterface $output;
 
@@ -68,8 +67,8 @@ final class OutputtingUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfi
         private readonly ClientInterface $client = new Client(),
         private readonly ?EventDispatcher\EventDispatcherInterface $eventDispatcher = null,
     ) {
-        $this->configuration = Core\Utility\GeneralUtility::makeInstance(Configuration\Configuration::class);
         $this->handlerStackBuilder = new Http\Client\Handler\HandlerStackBuilder();
+        $this->requestOptions = Core\Utility\GeneralUtility::makeInstance(Http\Message\Request\RequestOptions::class);
         $this->subRequestHandler = Core\Utility\GeneralUtility::makeInstance(Http\Client\Handler\SubRequestHandler::class);
         $this->logger = $logger;
 
@@ -133,7 +132,7 @@ final class OutputtingUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfi
     protected function createRequestFactory(): CacheWarmup\Http\Message\RequestFactory
     {
         $headers = $this->options['request_headers'];
-        $headers['User-Agent'] = $this->configuration->getUserAgent();
+        $headers['User-Agent'] = $this->requestOptions->getUserAgent();
 
         return $this->createBaseRequestFactory()->withHeaders($headers);
     }

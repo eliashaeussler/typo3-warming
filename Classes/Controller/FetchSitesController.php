@@ -48,6 +48,7 @@ final readonly class FetchSitesController
         private Configuration\Configuration $configuration,
         private CacheWarmup\Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
         private Core\Imaging\IconFactory $iconFactory,
+        private Http\Message\Request\RequestOptions $requestOptions,
         private Http\Message\ResponseFactory $responseFactory,
         private Domain\Repository\SiteRepository $siteRepository,
         private Domain\Repository\SiteLanguageRepository $siteLanguageRepository,
@@ -92,7 +93,7 @@ final readonly class FetchSitesController
 
         return $this->responseFactory->htmlTemplate('Modal/SitesModal', [
             'siteGroups' => $siteGroups,
-            'userAgent' => $this->configuration->getUserAgent(),
+            'userAgent' => $this->requestOptions->getUserAgent(),
             'configuration' => [
                 'limit' => $this->configuration->limit,
                 'strategy' => $crawlingStrategy !== null ? $crawlingStrategy::getName() : null,
