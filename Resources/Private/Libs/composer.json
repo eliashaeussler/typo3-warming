@@ -15,9 +15,6 @@
 		"eliashaeussler/cache-warmup": "4.3.1",
 		"eliashaeussler/sse": "1.1.1"
 	},
-	"conflict": {
-		"cuyz/valinor": "1.14.0 || 1.14.3 || 1.14.4"
-	},
 	"provide": {
 		"guzzlehttp/guzzle": "*",
 		"guzzlehttp/promises": "*",
