@@ -29,6 +29,16 @@ Use of properties in :ref:`Configuration API <configuration-api>`
 -   Calling the legacy class methods is deprecated and won't be possible anymore with version
     5.0 of the extension.
 
+Deprecation of :php:`getUserAgent()` method in :ref:`Configuration API <configuration-api>`
+-------------------------------------------------------------------------------------------
+
+-   Access to the generated `User-Agent` header is moved from the :ref:`Configuration API <configuration-api>`
+    to a dedicated :php:`\EliasHaeussler\Typo3Warming\Http\Message\Request\RequestOptions` class.
+-   Migrate calls from :php:`\EliasHaeussler\Typo3Warming\Configuration\Configuration::getUserAgent`
+    to :php:`\EliasHaeussler\Typo3Warming\Http\Message\Request\RequestOptions::getUserAgent`.
+-   Calling the legacy method is deprecated and won't be possible anymore with version 5.0
+    of the extension.
+
 ..  _version-4.0.0:
 
 Version 4.0.0

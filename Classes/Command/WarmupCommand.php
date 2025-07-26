@@ -56,6 +56,7 @@ final class WarmupCommand extends Console\Command\Command
         private readonly EventDispatcher\EventDispatcherInterface $eventDispatcher,
         private readonly Core\Package\PackageManager $packageManager,
         private readonly Http\Message\PageUriBuilder $pageUriBuilder,
+        private readonly Http\Message\Request\RequestOptions $requestOptions,
     ) {
         parent::__construct();
     }
@@ -173,7 +174,7 @@ Examples:
   ├─ When the default crawler is used, each warmup request is executed with a special User-Agent header.
   │  This header is generated from the encryption key of the TYPO3 installation.
   │  It can be used, for example, to exclude warmup requests from your search statistics.
-  └─ Current User-Agent: <info>{$v($this->configuration->getUserAgent())}</info>
+  └─ Current User-Agent: <info>{$v($this->requestOptions->getUserAgent())}</info>
 HELP
         );
 

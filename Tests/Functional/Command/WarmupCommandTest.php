@@ -520,6 +520,7 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
                 $this->eventDispatcher,
                 $this->get(Core\Package\PackageManager::class),
                 $this->get(Src\Http\Message\PageUriBuilder::class),
+                $this->get(Src\Http\Message\Request\RequestOptions::class),
             ),
         );
     }

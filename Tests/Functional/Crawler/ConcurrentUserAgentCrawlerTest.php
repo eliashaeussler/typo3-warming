@@ -106,7 +106,7 @@ final class ConcurrentUserAgentCrawlerTest extends TestingFramework\Core\Functio
         $this->subject->crawl($urls);
 
         self::assertSame(
-            [$this->get(Src\Configuration\Configuration::class)->getUserAgent()],
+            [$this->get(Src\Http\Message\Request\RequestOptions::class)->getUserAgent()],
             $this->handler->getLastRequest()?->getHeader('User-Agent'),
         );
     }
