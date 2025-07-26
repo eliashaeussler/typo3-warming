@@ -46,6 +46,7 @@ final class UrlMetadataListenerTest extends TestingFramework\Core\Functional\Fun
 
     protected array $testExtensionsToLoad = [
         'sitemap_locator',
+        'typed_extconf',
         'warming',
     ];
 

@@ -45,6 +45,7 @@ final class SubRequestHandlerTest extends TestingFramework\Core\Functional\Funct
 
     protected array $testExtensionsToLoad = [
         'sitemap_locator',
+        'typed_extconf',
         'warming',
     ];
 

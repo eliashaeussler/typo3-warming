@@ -39,6 +39,7 @@ final class CacheWarmupControllerTest extends TestingFramework\Core\Functional\F
 {
     protected array $testExtensionsToLoad = [
         'sitemap_locator',
+        'typed_extconf',
         'warming',
     ];
 

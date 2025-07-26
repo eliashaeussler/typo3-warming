@@ -27,6 +27,7 @@ use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3SitemapLocator;
 use EliasHaeussler\Typo3Warming as Src;
 use EliasHaeussler\Typo3Warming\Tests;
+use mteu\TypedExtConf\Provider\TypedExtensionConfigurationProvider;
 use PHPUnit\Framework;
 use Symfony\Component\Console;
 use TYPO3\CMS\Core;
@@ -46,6 +47,7 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
 
     protected array $testExtensionsToLoad = [
         'sitemap_locator',
+        'typed_extconf',
         'warming',
     ];
 
@@ -295,11 +297,12 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-2'),
         ];
 
-        $this->commandTester->execute([
+        $commandTester = $this->createCommandTester();
+        $commandTester->execute([
             '--pages' => ['1', '2', '3', '4'],
         ]);
 
-        self::assertSame(Console\Command\Command::SUCCESS, $this->commandTester->getStatusCode());
+        self::assertSame(Console\Command\Command::SUCCESS, $commandTester->getStatusCode());
         self::assertEquals($expected, Tests\Functional\Fixtures\Classes\DummyVerboseCrawler::$crawledUrls);
 
         $this->extensionConfiguration->set(Src\Extension::KEY, $originalConfiguration);
@@ -314,11 +317,12 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
 
         $this->extensionConfiguration->set(Src\Extension::KEY, $newConfiguration);
 
-        $this->commandTester->execute([
+        $commandTester = $this->createCommandTester();
+        $commandTester->execute([
             '--pages' => ['1'],
         ]);
 
-        self::assertSame(Console\Command\Command::SUCCESS, $this->commandTester->getStatusCode());
+        self::assertSame(Console\Command\Command::SUCCESS, $commandTester->getStatusCode());
         self::assertSame(['foo' => 'baz'], Tests\Functional\Fixtures\Classes\DummyVerboseCrawler::$options);
 
         $this->extensionConfiguration->set(Src\Extension::KEY, $originalConfiguration);
@@ -335,12 +339,13 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
 
         $this->extensionConfiguration->set(Src\Extension::KEY, $newConfiguration);
 
-        $this->commandTester->execute([
+        $commandTester = $this->createCommandTester();
+        $commandTester->execute([
             '--sites' => ['1'],
             '--languages' => ['0'],
         ]);
 
-        self::assertSame(Console\Command\Command::SUCCESS, $this->commandTester->getStatusCode());
+        self::assertSame(Console\Command\Command::SUCCESS, $commandTester->getStatusCode());
         self::assertSame(['username', 'password'], $this->handler->getLastOptions()['auth'] ?? null);
 
         $this->extensionConfiguration->set(Src\Extension::KEY, $originalConfiguration);
@@ -490,9 +495,14 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
 
     private function createCommandTester(): Console\Tester\CommandTester
     {
+        $extensionConfigurationProvider = new TypedExtensionConfigurationProvider(
+            $this->extensionConfiguration,
+            $this->get(Src\Mapper\ConfigurationMapperFactory::class),
+        );
+
         return new Console\Tester\CommandTester(
             new Src\Command\WarmupCommand(
-                $this->get(Src\Configuration\Configuration::class),
+                $extensionConfigurationProvider->get(Src\Configuration\Configuration::class),
                 new CacheWarmup\Crawler\Strategy\CrawlingStrategyFactory([
                     CacheWarmup\Crawler\Strategy\SortByChangeFrequencyStrategy::class,
                     CacheWarmup\Crawler\Strategy\SortByLastModificationDateStrategy::class,

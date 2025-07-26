@@ -49,8 +49,6 @@ final readonly class CacheWarmupService
     /**
      * @throws CacheWarmup\Exception\CrawlerDoesNotExist
      * @throws CacheWarmup\Exception\CrawlerIsInvalid
-     * @throws CacheWarmup\Exception\OptionsAreInvalid
-     * @throws CacheWarmup\Exception\OptionsAreMalformed
      */
     public function __construct(
         private CacheWarmup\Http\Client\ClientFactory $clientFactory,
@@ -77,19 +75,19 @@ final readonly class CacheWarmupService
         ?int $limit = null,
         ?CacheWarmup\Crawler\Strategy\CrawlingStrategy $strategy = null,
     ): Result\CacheWarmupResult {
-        $strategy ??= $this->configuration->getStrategy();
+        $strategy ??= $this->configuration->crawlingStrategy;
         $cacheWarmer = new CacheWarmup\CacheWarmer(
-            $limit ?? $this->configuration->getLimit(),
+            $limit ?? $this->configuration->limit,
             $this->crawler,
             $strategy,
             new CacheWarmup\Xml\SitemapXmlParser(
-                $this->configuration->getParserOptions(),
+                $this->configuration->parserOptions,
                 $this->clientFactory->get(),
             ),
             true,
             array_map(
                 CacheWarmup\Config\Option\ExcludePattern::create(...),
-                $this->configuration->getExcludePatterns(),
+                $this->configuration->excludePatterns,
             ),
             $this->eventDispatcher,
         );

@@ -41,6 +41,7 @@ final class ClientOptionsListenerTest extends TestingFramework\Core\Functional\F
 {
     protected array $testExtensionsToLoad = [
         'sitemap_locator',
+        'typed_extconf',
         'warming',
     ];
 

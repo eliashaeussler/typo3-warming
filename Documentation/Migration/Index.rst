@@ -14,6 +14,21 @@ upgrading to a new major version of this extension.
     Make sure to check out the `migration guide <https://cache-warmup.dev/migration.html>`__
     of the :composer:`eliashaeussler/cache-warmup` library as well.
 
+..  _version-4.2.0:
+
+Version 4.2.0
+=============
+
+Use of properties in :ref:`Configuration API <configuration-api>`
+-----------------------------------------------------------------
+
+-   Several class methods in :php:`\EliasHaeussler\Typo3Warming\Configuration\Configuration`
+    are converted to class properties.
+-   Make sure to access the appropriate properties directly instead of calling the
+    class methods.
+-   Calling the legacy class methods is deprecated and won't be possible anymore with version
+    5.0 of the extension.
+
 ..  _version-4.0.0:
 
 Version 4.0.0

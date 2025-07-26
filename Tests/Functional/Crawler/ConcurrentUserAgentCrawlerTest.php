@@ -47,6 +47,7 @@ final class ConcurrentUserAgentCrawlerTest extends TestingFramework\Core\Functio
 
     protected array $testExtensionsToLoad = [
         'sitemap_locator',
+        'typed_extconf',
         'warming',
     ];
 

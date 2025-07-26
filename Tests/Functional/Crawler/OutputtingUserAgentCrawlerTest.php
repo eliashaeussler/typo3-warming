@@ -48,6 +48,7 @@ final class OutputtingUserAgentCrawlerTest extends TestingFramework\Core\Functio
 
     protected array $testExtensionsToLoad = [
         'sitemap_locator',
+        'typed_extconf',
         'warming',
     ];
 

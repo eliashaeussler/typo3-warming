@@ -38,6 +38,7 @@ final class TemplateRendererTest extends TestingFramework\Core\Functional\Functi
 {
     protected array $testExtensionsToLoad = [
         'sitemap_locator',
+        'typed_extconf',
         'warming',
     ];
 

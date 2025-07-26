@@ -42,6 +42,7 @@ final class MapperFactoryTest extends TestingFramework\Core\Functional\Functiona
 
     protected array $testExtensionsToLoad = [
         'sitemap_locator',
+        'typed_extconf',
         'warming',
     ];
 
