@@ -51,7 +51,6 @@
 		"codeception/module-webdriver": "^4.0.3",
 		"eliashaeussler/transient-logger": "^1.0",
 		"eliashaeussler/typo3-codeception-helper": "^1.2.1",
-		"eliashaeussler/valinor-xml": "^1.0.3",
 		"eliashaeussler/version-bumper": "^3.0",
 		"guzzlehttp/psr7": "^2.7",
 		"php-webdriver/webdriver": "^1.15",
