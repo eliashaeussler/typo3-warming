@@ -56,6 +56,11 @@ final readonly class InjectExtensionConfigurationScriptMiddleware implements Ser
             return $response;
         }
 
+        // Early return if EXT:install is not loaded and extension settings module is not available
+        if (!Core\Utility\ExtensionManagementUtility::isLoaded('install')) {
+            return $response;
+        }
+
         // Early return if response is invalid
         if ($response->getStatusCode() !== 200) {
             return $response;
