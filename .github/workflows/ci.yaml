@@ -22,7 +22,7 @@ jobs:
     outputs:
       modified: ${{ steps.commit.outputs.changes_detected || 'false' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           token: ${{ secrets.REBUILD_ASSETS_TOKEN }}
           fetch-depth: 0
@@ -78,7 +78,7 @@ jobs:
     if: ${{ needs.assets.outputs.modified == 'false' }}
     needs: assets
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -148,7 +148,7 @@ jobs:
     if: ${{ needs.assets.outputs.modified == 'false' && github.ref_name == 'main' }}
     needs: assets
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Upload sources
         uses: crowdin/github-action@v2
@@ -188,7 +188,7 @@ jobs:
             dependencies: "lowest"
             composer-options: "--with=phpunit/phpunit:^11.5"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -247,7 +247,7 @@ jobs:
     needs: assets
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -314,7 +314,7 @@ jobs:
     needs: test-coverage
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
