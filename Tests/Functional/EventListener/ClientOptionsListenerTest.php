@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Tests\Functional\EventListener;
 
 use EliasHaeussler\CacheWarmup;
+use EliasHaeussler\DeepClosureComparator;
 use EliasHaeussler\Typo3Warming as Src;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\RequestOptions;
@@ -83,7 +84,7 @@ final class ClientOptionsListenerTest extends TestingFramework\Core\Functional\F
         /* @phpstan-ignore argument.type */
         $handlerStack->push('trim', 'foo');
 
-        self::assertEquals($handlerStack, $clientOptions['handler'] ?? null);
+        DeepClosureComparator\DeepClosureAssert::assertEquals($handlerStack, $clientOptions['handler'] ?? null);
         self::assertSame(['username', 'password'], $clientOptions[RequestOptions::AUTH] ?? null);
         self::assertFalse($clientOptions[RequestOptions::VERIFY] ?? null);
     }
