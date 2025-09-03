@@ -69,6 +69,9 @@
 		"typo3/testing-framework": "^8.2.3 || ^9.0.1",
 		"webmozart/assert": "^1.11"
 	},
+	"conflict": {
+		"cuyz/valinor": "2.1.2"
+	},
 	"autoload": {
 		"psr-4": {
 			"EliasHaeussler\\Typo3Warming\\": "Classes/"
