@@ -44,7 +44,7 @@
 	},
 	"require-dev": {
 		"codeception/codeception": "^5.2",
-		"codeception/lib-web": "^1.0.7",
+		"codeception/lib-web": "^1.0.7 || ^2.0.0",
 		"codeception/module-asserts": "^3.0",
 		"codeception/module-cli": "^2.0",
 		"codeception/module-db": "^3.2",
