@@ -62,7 +62,10 @@ export default [
       multiInput({
         relative: 'src/scripts',
       }),
-      nodeResolve(),
+      nodeResolve({
+        browser: true,
+        preferBuiltins: false,
+      }),
       terser({
         format: {
           comments: false,
