@@ -1,3 +1,8 @@
 mod.web_list {
   deniedNewTables := addToList(tx_warming_domain_model_log)
 }
+
+TCEMAIN.preview.tx_warming_domain_model_log {
+  # Dummy configuration, only needed to enable preview URLs
+  useDefaultLanguageRecord = 1
+}
