@@ -70,7 +70,7 @@ final class LocalizationTest extends TestingFramework\Core\Functional\Functional
     #[Framework\Attributes\Test]
     public function translateReturnsTranslationForGivenLocalizationKeyAndArguments(): void
     {
-        $actual = Src\Configuration\Localization::translate('notification.message.page.error', ['foo', 'baz']);
+        $actual = Src\Configuration\Localization::translate('notification.message.page.failed', ['foo', 'baz']);
 
         self::assertNotEmpty($actual);
         self::assertStringNotContainsString('%', $actual);
