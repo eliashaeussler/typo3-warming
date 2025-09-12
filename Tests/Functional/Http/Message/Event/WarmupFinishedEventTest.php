@@ -87,20 +87,19 @@ final class WarmupFinishedEventTest extends TestingFramework\Core\Functional\Fun
         );
     }
 
-    /**
-     * @param list<CacheWarmup\Result\CrawlingResult> $crawlingResults
-     */
     #[Framework\Attributes\Test]
-    #[Framework\Attributes\DataProvider('getDataIncludesWarmupStateDataProvider')]
-    public function getDataIncludesWarmupState(array $crawlingResults, Src\Enums\WarmupState $expected): void
+    public function getDataIncludesWarmupState(): void
     {
-        foreach ($crawlingResults as $crawlingResult) {
-            $this->cacheWarmupResult->getResult()->addResult($crawlingResult);
-        }
+        $this->cacheWarmupResult->getResult()->addResult(
+            CacheWarmup\Result\CrawlingResult::createSuccessful(new Core\Http\Uri('https://typo3-testing.local/')),
+        );
+        $this->cacheWarmupResult->getResult()->addResult(
+            CacheWarmup\Result\CrawlingResult::createFailed(new Core\Http\Uri('https://typo3-testing.local/')),
+        );
 
         $actual = $this->subject->getData();
 
-        self::assertSame($expected->value, $actual['state']);
+        self::assertSame(Src\Enums\WarmupState::Warning->value, $actual['state']);
     }
 
     #[Framework\Attributes\Test]
@@ -122,8 +121,9 @@ final class WarmupFinishedEventTest extends TestingFramework\Core\Functional\Fun
     #[Framework\Attributes\Test]
     public function getDataIncludesUrls(): void
     {
-        $successful = self::getSuccessfulCrawlingResult();
-        $failed = self::getFailedCrawlingResult();
+        $uri = new Core\Http\Uri('https://typo3-testing.local/');
+        $successful = CacheWarmup\Result\CrawlingResult::createSuccessful($uri);
+        $failed = CacheWarmup\Result\CrawlingResult::createFailed($uri);
 
         $this->cacheWarmupResult->getResult()->addResult($successful);
         $this->cacheWarmupResult->getResult()->addResult($failed);
@@ -205,45 +205,5 @@ final class WarmupFinishedEventTest extends TestingFramework\Core\Functional\Fun
     public function subjectIsJsonSerializable(): void
     {
         self::assertJson(json_encode($this->subject, JSON_THROW_ON_ERROR));
-    }
-
-    /**
-     * @return \Generator<string, array{list<CacheWarmup\Result\CrawlingResult>, Src\Enums\WarmupState}>
-     */
-    public static function getDataIncludesWarmupStateDataProvider(): \Generator
-    {
-        $successful = self::getSuccessfulCrawlingResult();
-        $failed = self::getFailedCrawlingResult();
-
-        yield 'no results' => [
-            [],
-            Src\Enums\WarmupState::Success,
-        ];
-        yield 'successful results only' => [
-            [$successful],
-            Src\Enums\WarmupState::Success,
-        ];
-        yield 'failed results only' => [
-            [$failed],
-            Src\Enums\WarmupState::Failed,
-        ];
-        yield 'successful and failed results' => [
-            [$successful, $failed],
-            Src\Enums\WarmupState::Warning,
-        ];
-    }
-
-    private static function getSuccessfulCrawlingResult(): CacheWarmup\Result\CrawlingResult
-    {
-        $uri = new Core\Http\Uri('https://typo3-testing.local/');
-
-        return CacheWarmup\Result\CrawlingResult::createSuccessful($uri);
-    }
-
-    private static function getFailedCrawlingResult(): CacheWarmup\Result\CrawlingResult
-    {
-        $uri = new Core\Http\Uri('https://typo3-testing.local/');
-
-        return CacheWarmup\Result\CrawlingResult::createFailed($uri);
     }
 }

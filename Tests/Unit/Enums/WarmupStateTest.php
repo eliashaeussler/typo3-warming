@@ -23,9 +23,11 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Tests\Unit\Enums;
 
+use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3Warming as Src;
 use PHPUnit\Framework;
 use Psr\Log;
+use TYPO3\CMS\Core;
 use TYPO3\TestingFramework;
 
 /**
@@ -50,6 +52,26 @@ final class WarmupStateTest extends TestingFramework\Core\Unit\UnitTestCase
     }
 
     /**
+     * @param list<CacheWarmup\Result\CrawlingResult> $crawlingResults
+     */
+    #[Framework\Attributes\Test]
+    #[Framework\Attributes\DataProvider('fromCacheWarmupResultReturnsStateDeterminedFromGivenResultDataProvider')]
+    public function fromCacheWarmupResultReturnsStateDeterminedFromGivenResult(
+        array $crawlingResults,
+        Src\Enums\WarmupState $expected,
+    ): void {
+        $cacheWarmupResult = new CacheWarmup\Result\CacheWarmupResult();
+
+        foreach ($crawlingResults as $crawlingResult) {
+            $cacheWarmupResult->addResult($crawlingResult);
+        }
+
+        $actual = Src\Enums\WarmupState::fromCacheWarmupResult(new Src\Result\CacheWarmupResult($cacheWarmupResult));
+
+        self::assertSame($expected, $actual);
+    }
+
+    /**
      * @return \Generator<string, array{Log\LogLevel::*, Src\Enums\WarmupState}>
      */
     public static function fromLogLevelReturnsWarmupStateFromGivenPsrLogLevelDataProvider(): \Generator
@@ -62,5 +84,45 @@ final class WarmupStateTest extends TestingFramework\Core\Unit\UnitTestCase
         yield 'notice' => [Log\LogLevel::NOTICE, Src\Enums\WarmupState::Success];
         yield 'info' => [Log\LogLevel::INFO, Src\Enums\WarmupState::Success];
         yield 'debug' => [Log\LogLevel::DEBUG, Src\Enums\WarmupState::Unknown];
+    }
+
+    /**
+     * @return \Generator<string, array{list<CacheWarmup\Result\CrawlingResult>, Src\Enums\WarmupState}>
+     */
+    public static function fromCacheWarmupResultReturnsStateDeterminedFromGivenResultDataProvider(): \Generator
+    {
+        $successful = self::getSuccessfulCrawlingResult();
+        $failed = self::getFailedCrawlingResult();
+
+        yield 'no results' => [
+            [],
+            Src\Enums\WarmupState::Success,
+        ];
+        yield 'successful results only' => [
+            [$successful],
+            Src\Enums\WarmupState::Success,
+        ];
+        yield 'failed results only' => [
+            [$failed],
+            Src\Enums\WarmupState::Failed,
+        ];
+        yield 'successful and failed results' => [
+            [$successful, $failed],
+            Src\Enums\WarmupState::Warning,
+        ];
+    }
+
+    private static function getSuccessfulCrawlingResult(): CacheWarmup\Result\CrawlingResult
+    {
+        $uri = new Core\Http\Uri('https://typo3-testing.local/');
+
+        return CacheWarmup\Result\CrawlingResult::createSuccessful($uri);
+    }
+
+    private static function getFailedCrawlingResult(): CacheWarmup\Result\CrawlingResult
+    {
+        $uri = new Core\Http\Uri('https://typo3-testing.local/');
+
+        return CacheWarmup\Result\CrawlingResult::createFailed($uri);
     }
 }
