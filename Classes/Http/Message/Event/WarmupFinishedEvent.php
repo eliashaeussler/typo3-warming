@@ -157,7 +157,7 @@ final readonly class WarmupFinishedEvent implements SSE\Event\Event
                 );
 
                 $messages[] = Configuration\Localization::translate('notification.message.site', [
-                    $this->getPageTitle($site->getRootPageId()),
+                    $this->getPageTitle($site->getRootPageId(), $siteLanguage->getLanguageId()),
                     $site->getRootPageId(),
                     $siteLanguage->getTitle(),
                     $languageId,
@@ -168,10 +168,18 @@ final readonly class WarmupFinishedEvent implements SSE\Event\Event
         }
 
         foreach ($this->request->getPages() as $pageWarmupRequest) {
-            $messages[] = Configuration\Localization::translate('notification.message.page.' . $state->value, [
-                $this->getPageTitle($pageWarmupRequest->getPage()),
-                $pageWarmupRequest->getPage(),
-            ]);
+            $languageIds = $pageWarmupRequest->getLanguageIds();
+
+            if ($languageIds === []) {
+                $languageIds = [null];
+            }
+
+            foreach ($languageIds as $languageId) {
+                $messages[] = Configuration\Localization::translate('notification.message.page.' . $state->value, [
+                    $this->getPageTitle($pageWarmupRequest->getPage(), $languageId),
+                    $pageWarmupRequest->getPage(),
+                ]);
+            }
         }
 
         // Remove invalid messages
@@ -188,12 +196,20 @@ final readonly class WarmupFinishedEvent implements SSE\Event\Event
     /**
      * @throws Exception\MissingPageIdException
      */
-    private function getPageTitle(int $pageId): string
+    private function getPageTitle(int $pageId, ?int $languageId): string
     {
-        $record = Backend\Utility\BackendUtility::getRecord('pages', $pageId);
+        if ($languageId > 0) {
+            $record = Backend\Utility\BackendUtility::getRecordLocalization('pages', $pageId, $languageId);
+        } else {
+            $record = Backend\Utility\BackendUtility::getRecord('pages', $pageId);
+        }
 
-        if ($record === null) {
+        if (!is_array($record) || $record === []) {
             throw Exception\MissingPageIdException::create();
+        }
+
+        if (\array_is_list($record)) {
+            $record = \reset($record);
         }
 
         return Backend\Utility\BackendUtility::getRecordTitle('pages', $record);
