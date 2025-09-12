@@ -73,7 +73,7 @@ final readonly class WarmupFinishedEvent implements SSE\Event\Event
      */
     public function getData(): array
     {
-        $state = $this->determineWarmupState();
+        $state = Enums\WarmupState::fromCacheWarmupResult($this->result);
 
         $failedUrls = $this->result->getResult()->getFailed();
         $successfulUrls = $this->result->getResult()->getSuccessful();
@@ -104,26 +104,6 @@ final readonly class WarmupFinishedEvent implements SSE\Event\Event
     public function jsonSerialize(): array
     {
         return $this->getData();
-    }
-
-    private function determineWarmupState(): Enums\WarmupState
-    {
-        $failed = \count($this->result->getResult()->getFailed());
-        $successful = \count($this->result->getResult()->getSuccessful());
-
-        if ($failed > 0 && $successful === 0) {
-            return Enums\WarmupState::Failed;
-        }
-
-        if ($failed > 0 && $successful > 0) {
-            return Enums\WarmupState::Warning;
-        }
-
-        if ($failed === 0) {
-            return Enums\WarmupState::Success;
-        }
-
-        return Enums\WarmupState::Unknown;
     }
 
     /**

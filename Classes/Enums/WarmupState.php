@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Enums;
 
 use EliasHaeussler\CacheWarmup;
+use EliasHaeussler\Typo3Warming\Result;
 use Psr\Log;
 
 /**
@@ -53,6 +54,26 @@ enum WarmupState: string
         }
 
         if (CacheWarmup\Log\LogLevel::satisfies(Log\LogLevel::INFO, $level)) {
+            return self::Success;
+        }
+
+        return self::Unknown;
+    }
+
+    public static function fromCacheWarmupResult(Result\CacheWarmupResult $result): self
+    {
+        $failed = \count($result->getResult()->getFailed());
+        $successful = \count($result->getResult()->getSuccessful());
+
+        if ($failed > 0 && $successful === 0) {
+            return self::Failed;
+        }
+
+        if ($failed > 0 && $successful > 0) {
+            return self::Warning;
+        }
+
+        if ($failed === 0) {
             return self::Success;
         }
 
