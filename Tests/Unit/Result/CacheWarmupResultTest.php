@@ -147,6 +147,96 @@ final class CacheWarmupResultTest extends TestingFramework\Core\Unit\UnitTestCas
     }
 
     #[Framework\Attributes\Test]
+    public function getCrawlingResultsByPageReturnsEmptyArrayIfNoCrawlingResultsExist(): void
+    {
+        self::assertSame(
+            [
+                'successful' => [],
+                'failed' => [],
+            ],
+            $this->subject->getCrawlingResultsByPage(1),
+        );
+    }
+
+    #[Framework\Attributes\Test]
+    public function getCrawlingResultsByPageReturnsEmptyArrayIfNoMatchingCrawlingResultsExist(): void
+    {
+        $this->originalResult
+            ->addResult(
+                CacheWarmup\Result\CrawlingResult::createSuccessful(
+                    new CacheWarmup\Sitemap\Url('https://typo3-testing.local/'),
+                    [
+                        'urlMetadata' => new Src\Http\Message\UrlMetadata(1),
+                    ],
+                ),
+            )
+            ->addResult(
+                CacheWarmup\Result\CrawlingResult::createFailed(
+                    new Core\Http\Uri('https://typo3-testing.local/subsite-1'),
+                    [
+                        'urlMetadata' => new Src\Http\Message\UrlMetadata(2),
+                    ],
+                ),
+            )
+        ;
+
+        self::assertSame(
+            [
+                'successful' => [],
+                'failed' => [],
+            ],
+            $this->subject->getCrawlingResultsByPage(3),
+        );
+    }
+
+    #[Framework\Attributes\Test]
+    public function getCrawlingResultsByPageReturnsMatchingCrawlingResults(): void
+    {
+        $this->originalResult
+            ->addResult(
+                $result1 = CacheWarmup\Result\CrawlingResult::createSuccessful(
+                    new CacheWarmup\Sitemap\Url('https://typo3-testing.local/'),
+                    [
+                        'urlMetadata' => new Src\Http\Message\UrlMetadata(1),
+                    ],
+                ),
+            )
+            ->addResult(
+                $result2 = CacheWarmup\Result\CrawlingResult::createSuccessful(
+                    new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/'),
+                    [
+                        'urlMetadata' => new Src\Http\Message\UrlMetadata(1, languageId: 1),
+                    ],
+                ),
+            )
+            ->addResult(
+                CacheWarmup\Result\CrawlingResult::createFailed(
+                    new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-1/'),
+                    [
+                        'urlMetadata' => new Src\Http\Message\UrlMetadata(2),
+                    ],
+                ),
+            )
+            ->addResult(
+                $result3 = CacheWarmup\Result\CrawlingResult::createFailed(
+                    new CacheWarmup\Sitemap\Url('https://typo3-testing.local/fr/'),
+                    [
+                        'urlMetadata' => new Src\Http\Message\UrlMetadata(1, languageId: 2),
+                    ],
+                ),
+            )
+        ;
+
+        self::assertSame(
+            [
+                'successful' => [$result1, $result2],
+                'failed' => [$result3],
+            ],
+            $this->subject->getCrawlingResultsByPage(1),
+        );
+    }
+
+    #[Framework\Attributes\Test]
     public function getExcludedSitemapsReturnsExcludedSitemaps(): void
     {
         self::assertEquals(
