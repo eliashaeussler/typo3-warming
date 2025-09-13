@@ -25,6 +25,7 @@ namespace EliasHaeussler\Typo3Warming\Result;
 
 use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3Warming\Domain;
+use EliasHaeussler\Typo3Warming\Http;
 use TYPO3\CMS\Core;
 
 /**
@@ -85,6 +86,40 @@ final readonly class CacheWarmupResult
     }
 
     /**
+     * @return array{
+     *     successful: list<CacheWarmup\Result\CrawlingResult>,
+     *     failed: list<CacheWarmup\Result\CrawlingResult>,
+     * }
+     */
+    public function getCrawlingResultsByPage(int $pageId, ?string $pageType = null, ?int $languageId = null): array
+    {
+        return [
+            'successful' => array_values(
+                array_filter(
+                    $this->result->getSuccessful(),
+                    fn(CacheWarmup\Result\CrawlingResult $crawlingResult) => $this->filterByPage(
+                        $crawlingResult,
+                        $pageId,
+                        $pageType,
+                        $languageId,
+                    ),
+                ),
+            ),
+            'failed' => array_values(
+                array_filter(
+                    $this->result->getFailed(),
+                    fn(CacheWarmup\Result\CrawlingResult $crawlingResult) => $this->filterByPage(
+                        $crawlingResult,
+                        $pageId,
+                        $pageType,
+                        $languageId,
+                    ),
+                ),
+            ),
+        ];
+    }
+
+    /**
      * @return list<CacheWarmup\Sitemap\Sitemap>
      */
     public function getExcludedSitemaps(): array
@@ -116,6 +151,24 @@ final readonly class CacheWarmupResult
         return $rootOrigin instanceof Domain\Model\SiteAwareSitemap
             && $rootOrigin->getSite() === $site
             && $rootOrigin->getSiteLanguage() === $siteLanguage
+        ;
+    }
+
+    private function filterByPage(
+        CacheWarmup\Result\CrawlingResult $crawlingResult,
+        int $pageId,
+        ?string $pageType = null,
+        ?int $languageId = null,
+    ): bool {
+        $urlMetadata = $crawlingResult->getData()['urlMetadata'] ?? null;
+
+        if (!($urlMetadata instanceof Http\Message\UrlMetadata)) {
+            return false;
+        }
+
+        return $urlMetadata->pageId === $pageId
+            && ($pageType === null || $urlMetadata->pageType === $pageType)
+            && ($languageId === null || $urlMetadata->languageId === $languageId)
         ;
     }
 }
