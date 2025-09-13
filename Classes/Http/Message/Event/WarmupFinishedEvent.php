@@ -93,7 +93,7 @@ final readonly class WarmupFinishedEvent implements SSE\Event\Event
                 'sitemaps' => array_map(strval(...), $this->result->getExcludedSitemaps()),
                 'urls' => array_map(strval(...), $this->result->getExcludedUrls()),
             ],
-            'messages' => $this->buildMessages($state),
+            'messages' => $this->buildMessages(),
         ];
     }
 
@@ -121,7 +121,7 @@ final readonly class WarmupFinishedEvent implements SSE\Event\Event
      * @return array<string>
      * @throws Exception\MissingPageIdException
      */
-    private function buildMessages(Enums\WarmupState $state): array
+    private function buildMessages(): array
     {
         $messages = [];
         $emptyMessage = Configuration\Localization::translate('notification.message.empty');
@@ -155,6 +155,13 @@ final readonly class WarmupFinishedEvent implements SSE\Event\Event
             }
 
             foreach ($languageIds as $languageId) {
+                ['successful' => $successful, 'failed' => $failed] = $this->result->getCrawlingResultsByPage(
+                    pageId: $pageWarmupRequest->getPage(),
+                    languageId: $languageId,
+                );
+
+                $state = Enums\WarmupState::fromCrawlingResults($successful, $failed);
+
                 $messages[] = Configuration\Localization::translate('notification.message.page.' . $state->value, [
                     $this->getPageTitle($pageWarmupRequest->getPage(), $languageId),
                     $pageWarmupRequest->getPage(),
