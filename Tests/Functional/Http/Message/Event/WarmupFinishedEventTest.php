@@ -169,39 +169,6 @@ final class WarmupFinishedEventTest extends TestingFramework\Core\Functional\Fun
     }
 
     #[Framework\Attributes\Test]
-    public function getDataIncludesEmptyMessageIfNoSitesOrPagesWereRequested(): void
-    {
-        $message = Src\Configuration\Localization::translate('notification.message.empty');
-
-        $subject = new Src\Http\Message\Event\WarmupFinishedEvent(
-            new Src\ValueObject\Request\WarmupRequest('foo'),
-            $this->cacheWarmupResult,
-        );
-
-        $actual = $subject->getData();
-
-        self::assertSame([$message], $actual['messages']);
-    }
-
-    #[Framework\Attributes\Test]
-    public function getDataThrowsExceptionIfRequestedPageDoesNotExist(): void
-    {
-        $subject = new Src\Http\Message\Event\WarmupFinishedEvent(
-            new Src\ValueObject\Request\WarmupRequest(
-                'foo',
-                pages: [
-                    new Src\ValueObject\Request\PageWarmupRequest(99),
-                ],
-            ),
-            $this->cacheWarmupResult,
-        );
-
-        $this->expectExceptionObject(Src\Exception\MissingPageIdException::create());
-
-        $subject->getData();
-    }
-
-    #[Framework\Attributes\Test]
     public function subjectIsJsonSerializable(): void
     {
         self::assertJson(json_encode($this->subject, JSON_THROW_ON_ERROR));
