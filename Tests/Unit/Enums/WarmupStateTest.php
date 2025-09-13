@@ -72,6 +72,22 @@ final class WarmupStateTest extends TestingFramework\Core\Unit\UnitTestCase
     }
 
     /**
+     * @param list<CacheWarmup\Result\CrawlingResult> $successful
+     * @param list<CacheWarmup\Result\CrawlingResult> $failed
+     */
+    #[Framework\Attributes\Test]
+    #[Framework\Attributes\DataProvider('fromCrawlingResultsReturnsStateDeterminedFromGivenCrawlingResultsDataProvider')]
+    public function fromCrawlingResultsReturnsStateDeterminedFromGivenCrawlingResults(
+        array $successful,
+        array $failed,
+        Src\Enums\WarmupState $expected,
+    ): void {
+        $actual = Src\Enums\WarmupState::fromCrawlingResults($successful, $failed);
+
+        self::assertSame($expected, $actual);
+    }
+
+    /**
      * @return \Generator<string, array{Log\LogLevel::*, Src\Enums\WarmupState}>
      */
     public static function fromLogLevelReturnsWarmupStateFromGivenPsrLogLevelDataProvider(): \Generator
@@ -108,6 +124,36 @@ final class WarmupStateTest extends TestingFramework\Core\Unit\UnitTestCase
         ];
         yield 'successful and failed results' => [
             [$successful, $failed],
+            Src\Enums\WarmupState::Warning,
+        ];
+    }
+
+    /**
+     * @return \Generator<string, array{list<CacheWarmup\Result\CrawlingResult>, list<CacheWarmup\Result\CrawlingResult>, Src\Enums\WarmupState}>
+     */
+    public static function fromCrawlingResultsReturnsStateDeterminedFromGivenCrawlingResultsDataProvider(): \Generator
+    {
+        $successful = self::getSuccessfulCrawlingResult();
+        $failed = self::getFailedCrawlingResult();
+
+        yield 'no results' => [
+            [],
+            [],
+            Src\Enums\WarmupState::Success,
+        ];
+        yield 'successful results only' => [
+            [$successful],
+            [],
+            Src\Enums\WarmupState::Success,
+        ];
+        yield 'failed results only' => [
+            [],
+            [$failed],
+            Src\Enums\WarmupState::Failed,
+        ];
+        yield 'successful and failed results' => [
+            [$successful],
+            [$failed],
             Src\Enums\WarmupState::Warning,
         ];
     }

@@ -62,18 +62,30 @@ enum WarmupState: string
 
     public static function fromCacheWarmupResult(Result\CacheWarmupResult $result): self
     {
-        $failed = \count($result->getResult()->getFailed());
-        $successful = \count($result->getResult()->getSuccessful());
+        return self::fromCrawlingResults(
+            $result->getResult()->getSuccessful(),
+            $result->getResult()->getFailed(),
+        );
+    }
 
-        if ($failed > 0 && $successful === 0) {
+    /**
+     * @param list<CacheWarmup\Result\CrawlingResult> $successful
+     * @param list<CacheWarmup\Result\CrawlingResult> $failed
+     */
+    public static function fromCrawlingResults(array $successful, array $failed): self
+    {
+        $successfulCount = \count($successful);
+        $failedCount = \count($failed);
+
+        if ($failedCount > 0 && $successfulCount === 0) {
             return self::Failed;
         }
 
-        if ($failed > 0 && $successful > 0) {
+        if ($failedCount > 0 && $successfulCount > 0) {
             return self::Warning;
         }
 
-        if ($failed === 0) {
+        if ($failedCount === 0) {
             return self::Success;
         }
 
