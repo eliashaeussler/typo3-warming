@@ -66,6 +66,7 @@ return [
             'exclude' => '',
             'limit' => '250',
             'parserOptions' => '',
+            'runAfterCacheClear' => '1',
             'strategy' => '',
             'supportedDoktypes' => '1',
             'verboseCrawler' => 'EliasHaeussler\\Typo3Warming\\Crawler\\OutputtingUserAgentCrawler',

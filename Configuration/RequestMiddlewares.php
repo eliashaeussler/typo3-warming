@@ -32,6 +32,12 @@ return [
                 'typo3/cms-backend/csp-headers',
             ],
         ],
+        'eliashaeussler/typo3-warming/process-cache-warmup-queue' => [
+            'target' => Middleware\ProcessCacheWarmupQueueMiddleware::class,
+            'before' => [
+                'typo3/cms-core/normalized-params-attribute',
+            ],
+        ],
     ],
     'frontend' => [
         'eliashaeussler/typo3-warming/sub-request-state-logger' => [
