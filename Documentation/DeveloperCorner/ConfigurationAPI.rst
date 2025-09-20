@@ -73,6 +73,11 @@ an appropriate class property.
 
         Check whether cache warmup from :ref:`toolbar <extconf-enableToolbar>` is enabled.
 
+    ..  php:attr:: runAfterCacheClear
+
+        Check whether cache warmup should be executed after a
+        :ref:`page cache gets cleared <extconf-runAfterCacheClear>` by DataHandler.
+
     ..  php:method:: getCrawler()
 
         Get the configured :ref:`crawler <extconf-crawler>`.

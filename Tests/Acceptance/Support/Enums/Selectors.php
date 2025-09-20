@@ -48,8 +48,10 @@ enum Selectors: string
     case InformationModal = 'typo3-backend-modal[content^="/typo3/record/info"]';
     case ModalHeader = '.tx-warming-modal-header';
     case ModalTitle = '.modal .modal-title';
+    case Notification = 'typo3-notification-message';
     case ProgressCounterTotal = '.tx-warming-progress-modal .tx-warming-progress-modal-counter > div:nth-child(1) > strong:nth-child(2)';
     case ProgressPlaceholder = '.tx-warming-progress-modal .tx-warming-progress-placeholder';
+    case RecordLanguageSelector = '#_langSelector';
     case ReportPanelActionButtonViewLogs = 'warming-report-panel .panel-collapse a[href*="/BackendLog/"]';
     case ReportPanelActionButtonEditRecord = 'warming-report-panel .panel-collapse a[href*="/record/edit"]';
     case ReportPanelActionButtonShowInfo = 'warming-report-panel .panel-collapse button[title*="information"]';
