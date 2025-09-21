@@ -1552,16 +1552,16 @@
         },
         {
             "name": "mteu/typo3-typed-extconf",
-            "version": "0.2.3",
+            "version": "0.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mteu/typo3-typed-extconf.git",
-                "reference": "db5ad734b9a5900fc23fc656893152a42dde4089"
+                "reference": "9db7a906503a0d0cdd09f5cc57446a8b093b60e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mteu/typo3-typed-extconf/zipball/db5ad734b9a5900fc23fc656893152a42dde4089",
-                "reference": "db5ad734b9a5900fc23fc656893152a42dde4089",
+                "url": "https://api.github.com/repos/mteu/typo3-typed-extconf/zipball/9db7a906503a0d0cdd09f5cc57446a8b093b60e5",
+                "reference": "9db7a906503a0d0cdd09f5cc57446a8b093b60e5",
                 "shasum": ""
             },
             "require": {
@@ -1613,9 +1613,9 @@
             "description": "Aims to provide a type-safe extension configuration management for TYPO3, ensuring proper types instead of string-only values from backend configuration or mixed types from config/system/settings.php",
             "support": {
                 "issues": "https://github.com/mteu/typo3-typed-extconf/issues",
-                "source": "https://github.com/mteu/typo3-typed-extconf/tree/0.2.3"
+                "source": "https://github.com/mteu/typo3-typed-extconf/tree/0.2.4"
             },
-            "time": "2025-09-11T20:15:34+00:00"
+            "time": "2025-09-18T14:21:39+00:00"
         },
         {
             "name": "nette/php-generator",
@@ -8344,16 +8344,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.12.10",
+            "version": "v0.12.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "6e80abe6f2257121f1eb9a4c55bf29d921025b22"
+                "reference": "d8fcbe0ee3abb15213e7f72eb0aaa4d928aea2be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/6e80abe6f2257121f1eb9a4c55bf29d921025b22",
-                "reference": "6e80abe6f2257121f1eb9a4c55bf29d921025b22",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/d8fcbe0ee3abb15213e7f72eb0aaa4d928aea2be",
+                "reference": "d8fcbe0ee3abb15213e7f72eb0aaa4d928aea2be",
                 "shasum": ""
             },
             "require": {
@@ -8416,9 +8416,9 @@
             ],
             "support": {
                 "issues": "https://github.com/bobthecow/psysh/issues",
-                "source": "https://github.com/bobthecow/psysh/tree/v0.12.10"
+                "source": "https://github.com/bobthecow/psysh/tree/v0.12.11"
             },
-            "time": "2025-08-04T12:39:37+00:00"
+            "time": "2025-09-20T11:55:11+00:00"
         },
         {
             "name": "sebastian/cli-parser",
