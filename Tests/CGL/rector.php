@@ -25,6 +25,7 @@ use EliasHaeussler\RectorConfig\Config\Config;
 use Rector\Config\RectorConfig;
 use Rector\Php80\Rector\Class_\AnnotationToAttributeRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
+use Rector\PHPUnit\CodeQuality\Rector\MethodCall\ScalarArgumentToExpectedParamTypeRector;
 use Rector\Renaming\Rector\Name\RenameClassRector;
 use Rector\Symfony\DependencyInjection\Rector\Trait_\TraitGetByTypeToInjectRector;
 use Rector\Symfony\Symfony73\Rector\Class_\CommandHelpToAttributeRector;
@@ -85,6 +86,10 @@ return static function (RectorConfig $rectorConfig): void {
             $rootPath . '/Classes/Http/Message/Request/RequestOptions.php',
             $rootPath . '/Classes/Http/Message/UrlMetadataFactory.php',
             $rootPath . '/Tests/Functional/Http/Message/UrlMetadataFactoryTest.php',
+        ])
+        // @todo Remove once bug is fixed within Rector
+        ->skip(ScalarArgumentToExpectedParamTypeRector::class, [
+            $rootPath . '/Tests/Functional/Domain/Repository/SiteRepositoryTest.php',
         ])
         ->skip(TraitGetByTypeToInjectRector::class, [
             $rootPath . '/Tests/Functional/SiteTrait.php',
