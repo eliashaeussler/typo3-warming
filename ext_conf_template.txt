@@ -39,3 +39,6 @@ supportedDoktypes = 1
 
 # cat=toolbar/enable/10; type=boolean; label=Enable cache warmup from backend toolbar
 enableToolbar = 1
+
+# cat=lifecycle/enable/10; type=boolean; label=Run cache warmup after cache was cleared by DataHandler
+runAfterCacheClear = 1

@@ -77,6 +77,8 @@ final class Configuration
         public readonly array $supportedDoktypes = [Core\Domain\Repository\PageRepository::DOKTYPE_DEFAULT],
         #[TypedExtConf\Attribute\ExtConfProperty(path: 'enableToolbar')]
         public readonly bool $enabledInToolbar = true,
+        #[TypedExtConf\Attribute\ExtConfProperty]
+        public readonly bool $runAfterCacheClear = true,
     ) {}
 
     /**
