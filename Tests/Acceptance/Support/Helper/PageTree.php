@@ -106,7 +106,7 @@ final class PageTree extends TestingFramework\Core\Acceptance\Helper\AbstractPag
                                 $button = $item->findElement(WebDriver\WebDriverBy::tagName('button'));
                                 $contextMenuIdentifier = \sprintf(
                                     '[data-contextmenu-parent="%s"]',
-                                    $button->getAttribute('data-contextmenu-id'),
+                                    (string)$button->getAttribute('data-contextmenu-id'),
                                 );
                             }
 
