@@ -43,6 +43,21 @@ final class CacheWarmupProviderCest
         ;
     }
 
+    public function cannotSeeContextMenuOnSystemRootPage(
+        Tests\Acceptance\Support\AcceptanceTester $I,
+        Tests\Acceptance\Support\Helper\PageTree $pageTree,
+    ): void {
+        $I->loginAs('admin');
+
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule->value);
+        $I->switchToIFrame();
+
+        $pageTree->openContextMenu(['EXT:warming']);
+
+        $I->dontSee('Warmup cache for this page', Tests\Acceptance\Support\Enums\Selectors::ContextMenu->value);
+        $I->dontSee('Warmup all caches', Tests\Acceptance\Support\Enums\Selectors::ContextMenu->value);
+    }
+
     public function canSeeContextMenuItemsAsAdmin(
         Tests\Acceptance\Support\AcceptanceTester $I,
         Tests\Acceptance\Support\Helper\PageTree $pageTree,
