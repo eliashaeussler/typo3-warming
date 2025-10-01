@@ -59,16 +59,15 @@ final class PageTree extends TestingFramework\Core\Acceptance\Helper\AbstractPag
         $I->waitForElementVisible(self::$pageTreeFrameSelector);
 
         $context = $this->getPageTreeElement();
+        $contextMenu = $context;
 
         foreach ($path as $pageName) {
-            $context = $this->ensureTreeNodeIsOpen($pageName, $context);
+            $contextMenu = $this->ensureTreeNodeIsOpen($pageName, $context);
         }
 
-        if ($this->typo3Version->getMajorVersion() >= 13) {
-            $contextMenu = $context;
-        } else {
-            // @todo Remove once support for TYPO3 v12 is dropped
-            $contextMenu = $context->findElement(WebDriver\WebDriverBy::cssSelector(self::$treeItemAnchorSelector));
+        // @todo Remove once support for TYPO3 v12 is dropped
+        if ($this->typo3Version->getMajorVersion() < 13) {
+            $contextMenu = $contextMenu->findElement(WebDriver\WebDriverBy::cssSelector(self::$treeItemAnchorSelector));
         }
 
         $I->executeInSelenium(function (WebDriver\Remote\RemoteWebDriver $webDriver) use ($contextMenu): void {
@@ -126,23 +125,23 @@ final class PageTree extends TestingFramework\Core\Acceptance\Helper\AbstractPag
         string $nodeText,
         WebDriver\Remote\RemoteWebElement $context,
     ): WebDriver\Remote\RemoteWebElement {
-        // @todo Remove once support for TYPO3 v12 is dropped
-        if ($this->typo3Version->getMajorVersion() < 13) {
-            return parent::ensureTreeNodeIsOpen($nodeText, $context);
-        }
-
-        // @todo Remove once TF properly handles new page tree rendering
         $I = $this->tester;
-        $I->see($nodeText, 'div.nodes-list > .node');
+        // @todo Remove fallback once support for TYPO3 v12 is dropped
+        $I->see($nodeText, $this->typo3Version->getMajorVersion() >= 13 ? 'div.nodes-list > .node' : self::$treeItemAnchorSelector);
+
+        // @todo Simplify once support for TYPO3 v12 is dropped
+        $xpath = './/*[text()=\'' . $nodeText . '\']/..';
+        if ($this->typo3Version->getMajorVersion() >= 13) {
+            $xpath .= '/../..';
+        }
 
         /** @var WebDriver\Remote\RemoteWebElement $context */
         $context = $I->executeInSelenium(
-            static fn() => $context->findElement(
-                WebDriver\WebDriverBy::xpath('//*[text()=\'' . $nodeText . '\']/../../..'),
-            ),
+            static fn() => $context->findElement(WebDriver\WebDriverBy::xpath($xpath)),
         );
 
-        if ($context->getAttribute('aria-expanded') === '1') {
+        // @todo Remove "true" once support for TYPO3 v12 is dropped
+        if (\in_array($context->getAttribute('aria-expanded'), ['1', 'true'], true)) {
             return $context;
         }
 

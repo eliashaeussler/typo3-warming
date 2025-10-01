@@ -288,6 +288,10 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
 
     private function getCurrentSite(): ?Core\Site\Entity\Site
     {
+        if ($this->record === null) {
+            return null;
+        }
+
         /** @var non-negative-int $pageId */
         $pageId = $this->getPreviewPid();
 
@@ -299,6 +303,10 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
      */
     private function getCurrentLanguageId(): int
     {
+        if ($this->record === null) {
+            return 0;
+        }
+
         /** @var non-negative-int $languageId */
         $languageId = (int)($this->record[$this->getLanguageField()] ?? 0);
 
