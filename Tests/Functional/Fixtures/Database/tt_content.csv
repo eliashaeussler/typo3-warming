@@ -1,0 +1,5 @@
+"tt_content",,,,,
+,"uid","pid","header","sys_language_uid","l18n_parent","l10n_source","CType"
+,1,1,"Example 1",0,0,0,"textmedia"
+,2,1,"Example 1 [L=1]",1,1,1,"textmedia"
+,3,8,"Example 2",0,0,0,"textmedia"

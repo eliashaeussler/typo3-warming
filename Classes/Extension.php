@@ -67,6 +67,17 @@ final class Extension
     }
 
     /**
+     * Register custom hooks.
+     *
+     * FOR USE IN ext_localconf.php ONLY.
+     */
+    public static function registerHooks(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][1757531145]
+            = Hook\DataHandlerClearCacheHook::class . '->warmupPageCache';
+    }
+
+    /**
      * Register custom PageTsConfig.
      *
      * FOR USE IN ext_localconf.php ONLY.

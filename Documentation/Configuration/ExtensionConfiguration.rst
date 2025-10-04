@@ -207,3 +207,22 @@ Toolbar
 
     Enable cache warmup in the :ref:`backend toolbar <backend-toolbar>`. This setting
     affects all users, including administrators.
+
+
+..  _extension-configuration-lifecycle:
+
+Lifecycle
+=========
+
+..  _extconf-runAfterCacheClear:
+
+..  confval:: runAfterCacheClear
+    :type: boolean
+    :Default: 1
+
+    ..  versionadded:: 4.3.0
+
+        `Feature: #959 - Run cache warmup after DataHandler cache clear <https://github.com/eliashaeussler/typo3-warming/pull/959>`__
+
+    Run cache warmup once a page cache gets cleared by DataHandler. This will effectively execute
+    cache warmup for a specific page once it gets changed (or other records related to this page).
