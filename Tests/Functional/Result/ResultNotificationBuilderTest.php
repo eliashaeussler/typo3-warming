@@ -108,6 +108,14 @@ final class ResultNotificationBuilderTest extends TestingFramework\Core\Function
                 ],
             ),
         );
+        $this->cacheWarmupResult->getResult()->addResult(
+            CacheWarmup\Result\CrawlingResult::createFailed(
+                new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-1'),
+                [
+                    'urlMetadata' => new Src\Http\Message\UrlMetadata(2),
+                ],
+            ),
+        );
 
         $expected = [
             $this->createSiteNotification(
@@ -136,6 +144,7 @@ final class ResultNotificationBuilderTest extends TestingFramework\Core\Function
                 ],
                 [
                     new Src\ValueObject\Request\PageWarmupRequest(1),
+                    new Src\ValueObject\Request\PageWarmupRequest(2),
                     new Src\ValueObject\Request\PageWarmupRequest(2),
                 ],
             ),

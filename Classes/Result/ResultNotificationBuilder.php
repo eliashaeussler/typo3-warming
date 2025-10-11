@@ -51,7 +51,10 @@ final class ResultNotificationBuilder
         $messages = [];
         $emptyMessage = Configuration\Localization::translate('notification.message.empty');
 
-        foreach ($request->getSites() as $siteWarmupRequest) {
+        $sites = \array_unique($request->getSites(), SORT_REGULAR);
+        $pages = \array_unique($request->getPages(), SORT_REGULAR);
+
+        foreach ($sites as $siteWarmupRequest) {
             foreach ($siteWarmupRequest->getLanguageIds() as $languageId) {
                 $site = $siteWarmupRequest->getSite();
                 $siteLanguage = $site->getLanguageById($languageId);
@@ -72,7 +75,7 @@ final class ResultNotificationBuilder
             }
         }
 
-        foreach ($request->getPages() as $pageWarmupRequest) {
+        foreach ($pages as $pageWarmupRequest) {
             $languageIds = $pageWarmupRequest->getLanguageIds();
 
             if ($languageIds === []) {
