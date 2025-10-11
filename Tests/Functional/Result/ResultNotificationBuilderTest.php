@@ -116,6 +116,22 @@ final class ResultNotificationBuilderTest extends TestingFramework\Core\Function
                 ],
             ),
         );
+        $this->cacheWarmupResult->getResult()->addResult(
+            CacheWarmup\Result\CrawlingResult::createSuccessful(
+                new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-2'),
+                [
+                    'urlMetadata' => new Src\Http\Message\UrlMetadata(3),
+                ],
+            ),
+        );
+        $this->cacheWarmupResult->getResult()->addResult(
+            CacheWarmup\Result\CrawlingResult::createFailed(
+                new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-2'),
+                [
+                    'urlMetadata' => new Src\Http\Message\UrlMetadata(3),
+                ],
+            ),
+        );
 
         $expected = [
             $this->createSiteNotification(
@@ -134,6 +150,7 @@ final class ResultNotificationBuilderTest extends TestingFramework\Core\Function
             ),
             'Cache of page "Root [1]" was successfully warmed up.',
             'Cache could not be warmed up for "Subsite 1 [2]".',
+            'Cache warmup for page "Subsite 2 [3]" finished with warnings.',
         ];
 
         $actual = $this->subject->buildMessages(
@@ -146,6 +163,8 @@ final class ResultNotificationBuilderTest extends TestingFramework\Core\Function
                     new Src\ValueObject\Request\PageWarmupRequest(1),
                     new Src\ValueObject\Request\PageWarmupRequest(2),
                     new Src\ValueObject\Request\PageWarmupRequest(2),
+                    new Src\ValueObject\Request\PageWarmupRequest(3),
+                    new Src\ValueObject\Request\PageWarmupRequest(3),
                 ],
             ),
             $this->cacheWarmupResult,
