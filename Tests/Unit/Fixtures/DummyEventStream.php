@@ -40,21 +40,33 @@ final class DummyEventStream implements SSE\Stream\EventStream
      */
     public array $receivedEvents = [];
 
+    /**
+     * @throws void
+     */
     public function open(): void
     {
         // Intentionally left blank.
     }
 
+    /**
+     * @throws void
+     */
     public function close(string $eventName = 'done'): void
     {
         // Intentionally left blank.
     }
 
+    /**
+     * @throws void
+     */
     public function sendEvent(SSE\Event\Event $event): void
     {
         $this->receivedEvents[] = $event;
     }
 
+    /**
+     * @throws void
+     */
     public function sendMessage(string $name = 'message', float|bool|int|string|null $data = null): void
     {
         // Intentionally left blank.
