@@ -145,6 +145,7 @@ export class ProgressModal extends LitElement {
    */
   public finishProgress(progress: WarmupProgress, retryFunction: () => Promise<WarmupProgress>): void {
     const reportButton = this.getReportButton();
+    let modalTitle: string;
 
     reportButton.classList.remove('hidden');
 
@@ -160,6 +161,27 @@ export class ProgressModal extends LitElement {
 
       new RegularEvent('click', retryFunction).bindTo(retryButton);
     }
+
+    // Update modal title
+    switch (progress.state) {
+      case WarmupState.Failed:
+        modalTitle = TYPO3.lang[LanguageKeys.modalProgressFailedTitle];
+        break;
+      case WarmupState.Warning:
+        modalTitle = TYPO3.lang[LanguageKeys.modalProgressWarningTitle];
+        break;
+      case WarmupState.Success:
+        modalTitle = TYPO3.lang[LanguageKeys.modalProgressSuccessTitle];
+        break;
+      case WarmupState.Aborted:
+        modalTitle = TYPO3.lang[LanguageKeys.modalProgressAbortedTitle];
+        break;
+      case WarmupState.Unknown:
+        modalTitle = TYPO3.lang[LanguageKeys.modalProgressUnknownTitle];
+        break;
+    }
+
+    this.getTitle().innerHTML = modalTitle;
   }
 
   /**
@@ -169,6 +191,15 @@ export class ProgressModal extends LitElement {
    */
   public getModal(): typeof Modal {
     return this.modal;
+  }
+
+  /**
+   * Get title of current modal.
+   *
+   * @returns {HTMLElement} Title of current modal
+   */
+  private getTitle(): HTMLElement {
+    return this.modal.querySelector('.modal-title');
   }
 
   /**
