@@ -55,6 +55,10 @@ export type WarmingConfiguration = {
   strategy?: string;
 };
 
+type NotificationOpenEvent = CustomEvent<void> & {
+  target: HTMLElement,
+};
+
 /**
  * Perform cache warmup from TYPO3 backend.
  *
@@ -212,6 +216,8 @@ export class CacheWarmer {
       actions.push(additionalAction);
     }
 
+    document.addEventListener('typo3-notification-open', CacheWarmer.manipulateNextNotification);
+
     // Show notification
     switch (progress.state) {
       case WarmupState.Failed:
@@ -247,5 +253,19 @@ export class CacheWarmer {
       TYPO3.lang[LanguageKeys.notificationErrorTitle],
       TYPO3.lang[LanguageKeys.notificationErrorMessage],
     );
+  }
+
+  /**
+   * Manipulate a single notification by applying custom styles.
+   *
+   * @param event {NotificationOpenEvent} Event triggered once a notification message is rendered
+   * @private
+   */
+  private static manipulateNextNotification(event: NotificationOpenEvent): void {
+    // Apply custom styling to notification message
+    event.target.classList.add('tx-warming-notification')
+
+    // Make sure event listener is only triggered once
+    document.removeEventListener('typo3-notification-open', CacheWarmer.manipulateNextNotification);
   }
 }

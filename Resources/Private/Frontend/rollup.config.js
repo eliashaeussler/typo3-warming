@@ -115,6 +115,7 @@ export default [
   {
     input: [
       'src/styles/modal.scss',
+      'src/styles/notification.scss',
       '@yaireo/tagify/dist/tagify.css',
     ],
     output: {
