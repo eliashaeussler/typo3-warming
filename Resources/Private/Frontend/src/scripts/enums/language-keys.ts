@@ -36,6 +36,11 @@ export enum LanguageKeys {
 
   // Progress Modal
   modalProgressTitle = 'warming.modal.progress.title',
+  modalProgressFailedTitle = 'warming.modal.progress.title.failed',
+  modalProgressWarningTitle = 'warming.modal.progress.title.warning',
+  modalProgressSuccessTitle = 'warming.modal.progress.title.success',
+  modalProgressAbortedTitle = 'warming.modal.progress.title.aborted',
+  modalProgressUnknownTitle = 'warming.modal.progress.title.unknown',
   modalProgressButtonReport = 'warming.modal.progress.button.report',
   modalProgressButtonRetry = 'warming.modal.progress.button.retry',
   modalProgressButtonClose = 'warming.modal.progress.button.close',

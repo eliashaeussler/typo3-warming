@@ -271,7 +271,7 @@ final class CacheWarmupProviderCest
 
         $modalDialog->canSeeDialog();
 
-        $I->canSee('Cache warmup is in progress', Tests\Acceptance\Support\Enums\Selectors::ModalTitle->value);
+        $I->canSee('Cache warmup failed', Tests\Acceptance\Support\Enums\Selectors::ModalTitle->value);
         $I->waitForElementNotVisible(Tests\Acceptance\Support\Enums\Selectors::ProgressPlaceholder->value);
 
         $modalDialog->clickButtonInDialog('Close');
@@ -292,7 +292,7 @@ final class CacheWarmupProviderCest
 
         $modalDialog->canSeeDialog();
 
-        $I->canSee('Cache warmup is in progress', Tests\Acceptance\Support\Enums\Selectors::ModalTitle->value);
+        $I->canSee('Cache warmup failed', Tests\Acceptance\Support\Enums\Selectors::ModalTitle->value);
         $I->waitForElementNotVisible(Tests\Acceptance\Support\Enums\Selectors::ProgressPlaceholder->value);
 
         $modalDialog->clickButtonInDialog('Close');

@@ -57,6 +57,11 @@ final readonly class CacheWarmupToolbarItem implements Backend\Toolbar\ToolbarIt
 
             // Progress Modal
             'warming.modal.progress.title' => Configuration\Localization::translate('modal.progress.title'),
+            'warming.modal.progress.title.failed' => Configuration\Localization::translate('modal.progress.title.failed'),
+            'warming.modal.progress.title.warning' => Configuration\Localization::translate('modal.progress.title.warning'),
+            'warming.modal.progress.title.success' => Configuration\Localization::translate('modal.progress.title.success'),
+            'warming.modal.progress.title.aborted' => Configuration\Localization::translate('modal.progress.title.aborted'),
+            'warming.modal.progress.title.unknown' => Configuration\Localization::translate('modal.progress.title.unknown'),
             'warming.modal.progress.button.report' => Configuration\Localization::translate('modal.progress.button.report'),
             'warming.modal.progress.button.retry' => Configuration\Localization::translate('modal.progress.button.retry'),
             'warming.modal.progress.button.close' => Configuration\Localization::translate('modal.progress.button.close'),

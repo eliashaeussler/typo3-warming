@@ -49,6 +49,21 @@
 			<trans-unit id="modal.progress.title" resname="modal.progress.title">
 				<source>Cache warmup is in progress</source>
 			</trans-unit>
+			<trans-unit id="modal.progress.title.failed" resname="modal.progress.title.failed">
+				<source>Cache warmup failed</source>
+			</trans-unit>
+			<trans-unit id="modal.progress.title.warning" resname="modal.progress.title.warning">
+				<source>Cache warmup finished with errors</source>
+			</trans-unit>
+			<trans-unit id="modal.progress.title.success" resname="modal.progress.title.success">
+				<source>Cache warmup successful</source>
+			</trans-unit>
+			<trans-unit id="modal.progress.title.aborted" resname="modal.progress.title.aborted">
+				<source>Cache warmup aborted</source>
+			</trans-unit>
+			<trans-unit id="modal.progress.title.unknown" resname="modal.progress.title.unknown">
+				<source>Cache warmup finished</source>
+			</trans-unit>
 			<trans-unit id="modal.progress.button.report" resname="modal.progress.button.report">
 				<source>Show report</source>
 			</trans-unit>
