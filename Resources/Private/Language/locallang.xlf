@@ -204,6 +204,9 @@
 			<trans-unit id="notification.message.page.unknown" resname="notification.message.page.unknown">
 				<source>Warming up the cache for page "%1$s [%2$d]" ended unexpectedly.</source>
 			</trans-unit>
+			<trans-unit id="notification.message.page.warning" resname="notification.message.page.warning">
+				<source>Cache warmup for page "%1$s [%2$d]" finished with warnings.</source>
+			</trans-unit>
 			<trans-unit id="notification.message.empty" resname="notification.message.empty">
 				<source>No caches were warmed up.</source>
 			</trans-unit>
