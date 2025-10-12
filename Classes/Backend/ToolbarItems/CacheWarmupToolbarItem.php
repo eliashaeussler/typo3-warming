@@ -44,54 +44,6 @@ final readonly class CacheWarmupToolbarItem implements Backend\Toolbar\ToolbarIt
         Core\Page\PageRenderer $pageRenderer,
     ) {
         $pageRenderer->loadJavaScriptModule('@eliashaeussler/typo3-warming/backend/toolbar-menu.js');
-        $pageRenderer->addInlineLanguageLabelArray([
-            // Notification
-            'warming.notification.aborted.title' => Configuration\Localization::translate('notification.aborted.title'),
-            'warming.notification.aborted.message' => Configuration\Localization::translate('notification.aborted.message'),
-            'warming.notification.error.title' => Configuration\Localization::translate('notification.error.title'),
-            'warming.notification.error.message' => Configuration\Localization::translate('notification.error.message'),
-            'warming.notification.action.showReport' => Configuration\Localization::translate('notification.action.showReport'),
-            'warming.notification.action.retry' => Configuration\Localization::translate('notification.action.retry'),
-            'warming.notification.noSitesSelected.title' => Configuration\Localization::translate('notification.noSitesSelected.title'),
-            'warming.notification.noSitesSelected.message' => Configuration\Localization::translate('notification.noSitesSelected.message'),
-
-            // Progress Modal
-            'warming.modal.progress.title' => Configuration\Localization::translate('modal.progress.title'),
-            'warming.modal.progress.title.failed' => Configuration\Localization::translate('modal.progress.title.failed'),
-            'warming.modal.progress.title.warning' => Configuration\Localization::translate('modal.progress.title.warning'),
-            'warming.modal.progress.title.success' => Configuration\Localization::translate('modal.progress.title.success'),
-            'warming.modal.progress.title.aborted' => Configuration\Localization::translate('modal.progress.title.aborted'),
-            'warming.modal.progress.title.unknown' => Configuration\Localization::translate('modal.progress.title.unknown'),
-            'warming.modal.progress.button.report' => Configuration\Localization::translate('modal.progress.button.report'),
-            'warming.modal.progress.button.retry' => Configuration\Localization::translate('modal.progress.button.retry'),
-            'warming.modal.progress.button.close' => Configuration\Localization::translate('modal.progress.button.close'),
-            'warming.modal.progress.failedCounter' => Configuration\Localization::translate('modal.progress.failedCounter'),
-            'warming.modal.progress.allCounter' => Configuration\Localization::translate('modal.progress.allCounter'),
-            'warming.modal.progress.placeholder' => Configuration\Localization::translate('modal.progress.placeholder'),
-
-            // Report Modal
-            'warming.modal.report.title' => Configuration\Localization::translate('modal.report.title'),
-            'warming.modal.report.panel.failed' => Configuration\Localization::translate('modal.report.panel.failed'),
-            'warming.modal.report.panel.failed.summary' => Configuration\Localization::translate('modal.report.panel.failed.summary'),
-            'warming.modal.report.panel.successful' => Configuration\Localization::translate('modal.report.panel.successful'),
-            'warming.modal.report.panel.successful.summary' => Configuration\Localization::translate('modal.report.panel.successful.summary'),
-            'warming.modal.report.panel.excluded' => Configuration\Localization::translate('modal.report.panel.excluded'),
-            'warming.modal.report.panel.excluded.summary' => Configuration\Localization::translate('modal.report.panel.excluded.summary'),
-            'warming.modal.report.panel.excluded.sitemaps' => Configuration\Localization::translate('modal.report.panel.excluded.sitemaps'),
-            'warming.modal.report.panel.excluded.urls' => Configuration\Localization::translate('modal.report.panel.excluded.urls'),
-            'warming.modal.report.action.edit' => Configuration\Localization::translate('modal.report.action.edit'),
-            'warming.modal.report.action.info' => Configuration\Localization::translate('modal.report.action.info'),
-            'warming.modal.report.action.log' => Configuration\Localization::translate('modal.report.action.log'),
-            'warming.modal.report.action.view' => Configuration\Localization::translate('modal.report.action.view'),
-            'warming.modal.report.message.requestId' => Configuration\Localization::translate('modal.report.message.requestId'),
-            'warming.modal.report.message.total' => Configuration\Localization::translate('modal.report.message.total'),
-            'warming.modal.report.message.noUrlsCrawled' => Configuration\Localization::translate('modal.report.message.noUrlsCrawled'),
-
-            // Sites Modal
-            'warming.modal.sites.title' => Configuration\Localization::translate('modal.sites.title'),
-            'warming.modal.sites.userAgent.action.successful' => Configuration\Localization::translate('modal.sites.userAgent.action.successful'),
-            'warming.modal.sites.button.start' => Configuration\Localization::translate('modal.sites.button.start'),
-        ]);
     }
 
     public function checkAccess(): bool
