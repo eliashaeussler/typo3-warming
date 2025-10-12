@@ -47,14 +47,27 @@ final class DummyCrawler implements CacheWarmup\Crawler\ConfigurableCrawler
 
     public static bool $failOnNextIteration = false;
 
+    /**
+     * @var list<non-negative-int>
+     */
+    public static array $failOnIterations = [];
+
+    public static bool $throwExceptionOnNextIteration = false;
+
     public function crawl(array $urls): CacheWarmup\Result\CacheWarmupResult
     {
         self::$crawledUrls = $urls;
 
         $result = new CacheWarmup\Result\CacheWarmupResult();
 
-        foreach ($urls as $url) {
-            if (self::$failOnNextIteration) {
+        if (self::$throwExceptionOnNextIteration) {
+            self::$throwExceptionOnNextIteration = false;
+
+            throw new \Exception('Something went wrong.');
+        }
+
+        foreach ($urls as $i => $url) {
+            if (\in_array($i, self::$failOnIterations, true)) {
                 $crawlingResult = CacheWarmup\Result\CrawlingResult::createFailed($url);
             } else {
                 $crawlingResult = CacheWarmup\Result\CrawlingResult::createSuccessful($url);
@@ -63,7 +76,7 @@ final class DummyCrawler implements CacheWarmup\Crawler\ConfigurableCrawler
             $result->addResult($crawlingResult);
         }
 
-        self::$failOnNextIteration = false;
+        self::$failOnIterations = [];
 
         return $result;
     }
@@ -76,7 +89,8 @@ final class DummyCrawler implements CacheWarmup\Crawler\ConfigurableCrawler
     public static function reset(): void
     {
         self::$crawledUrls = [];
-        self::$failOnNextIteration = false;
         self::$options = [];
+        self::$failOnIterations = [];
+        self::$throwExceptionOnNextIteration = false;
     }
 }
