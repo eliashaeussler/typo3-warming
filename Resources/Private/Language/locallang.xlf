@@ -7,13 +7,13 @@
 				<source>Warmup cache</source>
 			</trans-unit>
 
-			<trans-unit id="contextMenu.item.cacheWarmup" resname="contextMenu.item.cacheWarmup">
+			<trans-unit id="cacheWarmupAction.context.page" resname="cacheWarmupAction.context.page">
 				<source>Warmup cache for this page</source>
 			</trans-unit>
-			<trans-unit id="contextMenu.item.cacheWarmupAll" resname="contextMenu.item.cacheWarmupAll">
+			<trans-unit id="cacheWarmupAction.context.site" resname="cacheWarmupAction.context.site">
 				<source>Warmup all caches</source>
 			</trans-unit>
-			<trans-unit id="contextMenu.item.cacheWarmupAll.select" resname="contextMenu.item.cacheWarmupAll.select">
+			<trans-unit id="cacheWarmupAction.context.site.select" resname="cacheWarmupAction.context.site.select">
 				<source>Select…</source>
 			</trans-unit>
 

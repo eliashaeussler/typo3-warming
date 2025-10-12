@@ -7,6 +7,7 @@ services:
   EliasHaeussler\Typo3Warming\:
     resource: '../Classes/*'
     exclude:
+      - '../Classes/Backend/Action/*{Action,Actions}.php'
       - '../Classes/Domain/{Model,Type}/*'
       - '../Classes/Enums/*'
       - '../Classes/Event/*'
