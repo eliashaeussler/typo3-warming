@@ -25,8 +25,8 @@ use EliasHaeussler\Typo3Warming\Middleware;
 
 return [
     'backend' => [
-        'eliashaeussler/typo3-warming/inject-extension-configuration-script' => [
-            'target' => Middleware\InjectExtensionConfigurationScriptMiddleware::class,
+        'eliashaeussler/typo3-warming/script-injection' => [
+            'target' => Middleware\ScriptInjectionMiddleware::class,
             'after' => [
                 'typo3/cms-backend/backend-routing',
                 'typo3/cms-backend/csp-headers',
