@@ -784,16 +784,16 @@
         },
         {
             "name": "eliashaeussler/cache-warmup",
-            "version": "4.3.1",
+            "version": "4.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/cache-warmup.git",
-                "reference": "d7f822264967d9b508df402b9939d57b8ecb6fea"
+                "reference": "ea4bfb18167d850865a98ab0a7fcd114ab538d84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/cache-warmup/zipball/d7f822264967d9b508df402b9939d57b8ecb6fea",
-                "reference": "d7f822264967d9b508df402b9939d57b8ecb6fea",
+                "url": "https://api.github.com/repos/eliashaeussler/cache-warmup/zipball/ea4bfb18167d850865a98ab0a7fcd114ab538d84",
+                "reference": "ea4bfb18167d850865a98ab0a7fcd114ab538d84",
                 "shasum": ""
             },
             "require": {
@@ -818,11 +818,11 @@
                 "symfony/yaml": "^5.4.35 || ^6.4.3 || ^7.0.3"
             },
             "conflict": {
-                "cuyz/valinor": "1.14.0 || 1.14.3 || 1.14.4",
-                "sebastian/comparator": "7.1.0"
+                "cuyz/valinor": "2.2.1"
             },
             "require-dev": {
                 "armin/editorconfig-cli": "^2.0",
+                "eliashaeussler/deep-closure-comparator": "^1.0",
                 "eliashaeussler/php-cs-fixer-config": "^2.0",
                 "eliashaeussler/phpstan-config": "^2.0",
                 "eliashaeussler/rector-config": "^3.0",
@@ -861,9 +861,9 @@
             "homepage": "https://cache-warmup.dev/",
             "support": {
                 "issues": "https://github.com/eliashaeussler/cache-warmup/issues",
-                "source": "https://github.com/eliashaeussler/cache-warmup/tree/4.3.1"
+                "source": "https://github.com/eliashaeussler/cache-warmup/tree/4.3.2"
             },
-            "time": "2025-07-25T21:21:47+00:00"
+            "time": "2025-10-13T04:58:10+00:00"
         },
         {
             "name": "eliashaeussler/sse",
@@ -7336,16 +7336,16 @@
         },
         {
             "name": "eliashaeussler/version-bumper",
-            "version": "3.0.1",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/version-bumper.git",
-                "reference": "06caa19bdb3948dcf98e4f59d90baf290e0d2a27"
+                "reference": "2a2905a63015548d6ee961428bf11a980c5afe94"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/version-bumper/zipball/06caa19bdb3948dcf98e4f59d90baf290e0d2a27",
-                "reference": "06caa19bdb3948dcf98e4f59d90baf290e0d2a27",
+                "url": "https://api.github.com/repos/eliashaeussler/version-bumper/zipball/2a2905a63015548d6ee961428bf11a980c5afe94",
+                "reference": "2a2905a63015548d6ee961428bf11a980c5afe94",
                 "shasum": ""
             },
             "require": {
@@ -7357,6 +7357,9 @@
                 "symfony/filesystem": "^5.4 || ^6.4 || ^7.0",
                 "symfony/options-resolver": "^5.4 || ^6.4 || ^7.0",
                 "symfony/yaml": "^5.4 || ^6.4 || ^7.0"
+            },
+            "conflict": {
+                "cuyz/valinor": "2.2.1"
             },
             "require-dev": {
                 "armin/editorconfig-cli": "^2.0",
@@ -7395,9 +7398,9 @@
             "description": "Composer plugin to bump project versions during release preparations",
             "support": {
                 "issues": "https://github.com/eliashaeussler/version-bumper/issues",
-                "source": "https://github.com/eliashaeussler/version-bumper/tree/3.0.1"
+                "source": "https://github.com/eliashaeussler/version-bumper/tree/3.0.2"
             },
-            "time": "2025-07-15T08:32:17+00:00"
+            "time": "2025-10-13T05:10:37+00:00"
         },
         {
             "name": "myclabs/deep-copy",
