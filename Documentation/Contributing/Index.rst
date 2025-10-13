@@ -110,6 +110,7 @@ TYPO3
 
     # Specific linters
     ddev cgl lint:composer
+    ddev cgl lint:composer-conflicts
     ddev cgl lint:editorconfig
     ddev cgl lint:php
     ddev cgl lint:typoscript
@@ -119,6 +120,7 @@ TYPO3
 
     # Fix specific CGL issues
     ddev cgl fix:composer
+    ddev cgl fix:composer-conflicts
     ddev cgl fix:editorconfig
     ddev cgl fix:php
     ddev cgl fix:typoscript
