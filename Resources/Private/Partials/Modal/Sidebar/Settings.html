@@ -35,7 +35,12 @@
 
             <f:for each="{availableStrategies}" as="strategy">
                 <option value="{strategy}" {f:if(condition: '{strategy} == {configuration.strategy}', then: 'selected')}>
-                    <f:translate key="LLL:EXT:warming/Resources/Private/Language/locallang.xlf:label.strategy.{strategy}" />
+                    {f:translate(key: 'LLL:EXT:warming/Resources/Private/Language/locallang.xlf:label.strategy.{strategy}') -> f:variable(name: 'strategyLabel')}
+
+                    <f:if condition="{strategyLabel}">
+                        <f:then>{strategyLabel}</f:then>
+                        <f:else>{strategy}</f:else>
+                    </f:if>
                 </option>
             </f:for>
         </select>
