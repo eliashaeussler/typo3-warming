@@ -20,6 +20,7 @@
 import {html, LitElement, TemplateResult} from 'lit';
 import {customElement} from 'lit/decorators.js';
 import Modal from '@typo3/backend/modal.js';
+import {lll} from '@typo3/core/lit-helper.js';
 
 import '@eliashaeussler/typo3-warming/backend/modal/element/report-panel'
 import '@eliashaeussler/typo3-warming/backend/modal/element/report-summary-card'
@@ -60,8 +61,8 @@ export class ReportModal extends LitElement {
         ${this.progress.getNumberOfFailedUrls() > 0 ? html`
           <warming-report-summary-card
             class="col-4"
-            title="${TYPO3.lang[LanguageKeys.modalReportPanelFailed]}"
-            body="${TYPO3.lang[LanguageKeys.modalReportPanelFailedSummary]}"
+            title="${lll(LanguageKeys.modalReportPanelFailed)}"
+            body="${lll(LanguageKeys.modalReportPanelFailedSummary)}"
             state="danger"
             icon="overlay-readonly"
             currentNumber="${this.progress.getNumberOfFailedUrls()}"
@@ -72,8 +73,8 @@ export class ReportModal extends LitElement {
         ${this.progress.getNumberOfSuccessfulUrls() > 0 ? html`
           <warming-report-summary-card
             class="col-4"
-            title="${TYPO3.lang[LanguageKeys.modalReportPanelSuccessful]}"
-            body="${TYPO3.lang[LanguageKeys.modalReportPanelSuccessfulSummary]}"
+            title="${lll(LanguageKeys.modalReportPanelSuccessful)}"
+            body="${lll(LanguageKeys.modalReportPanelSuccessfulSummary)}"
             state="success"
             icon="overlay-approved"
             currentNumber="${this.progress.getNumberOfSuccessfulUrls()}"
@@ -84,8 +85,8 @@ export class ReportModal extends LitElement {
         ${excluded > 0 ? html`
           <warming-report-summary-card
             class="col-4"
-            title="${TYPO3.lang[LanguageKeys.modalReportPanelExcluded]}"
-            body="${TYPO3.lang[LanguageKeys.modalReportPanelExcludedSummary]}"
+            title="${lll(LanguageKeys.modalReportPanelExcluded)}"
+            body="${lll(LanguageKeys.modalReportPanelExcludedSummary)}"
             state="warning"
             icon="overlay-warning"
             currentNumber="${this.progress.getNumberOfSuccessfulUrls()}"
@@ -96,7 +97,7 @@ export class ReportModal extends LitElement {
       <div class="panel-container">
         ${this.progress.getNumberOfFailedUrls() > 0 ? html`
           <warming-report-panel
-            title="${TYPO3.lang[LanguageKeys.modalReportPanelFailed]}"
+            title="${lll(LanguageKeys.modalReportPanelFailed)}"
             state="danger"
             urls="${JSON.stringify(this.progress.results.failed)}"
             show="true"
@@ -105,7 +106,7 @@ export class ReportModal extends LitElement {
 
         ${this.progress.getNumberOfSuccessfulUrls() > 0 ? html`
           <warming-report-panel
-            title="${TYPO3.lang[LanguageKeys.modalReportPanelSuccessful]}"
+            title="${lll(LanguageKeys.modalReportPanelSuccessful)}"
             state="success"
             urls="${JSON.stringify(this.progress.results.successful)}"
           />
@@ -113,7 +114,7 @@ export class ReportModal extends LitElement {
 
         ${this.progress.getNumberOfExcludedSitemaps() > 0 ? html`
           <warming-report-panel
-            title="${TYPO3.lang[LanguageKeys.modalReportPanelExcludedSitemaps]}"
+            title="${lll(LanguageKeys.modalReportPanelExcludedSitemaps)}"
             state="warning"
             urls="${JSON.stringify(this.progress.excluded.sitemaps)}"
           />
@@ -121,7 +122,7 @@ export class ReportModal extends LitElement {
 
         ${this.progress.getNumberOfExcludedUrls() > 0 ? html`
           <warming-report-panel
-            title="${TYPO3.lang[LanguageKeys.modalReportPanelExcludedUrls]}"
+            title="${lll(LanguageKeys.modalReportPanelExcludedUrls)}"
             state="warning"
             urls="${JSON.stringify(this.progress.excluded.urls)}"
           />
@@ -129,7 +130,7 @@ export class ReportModal extends LitElement {
       </div>
 
       <small class="tx-warming-request-id">
-        ${TYPO3.lang[LanguageKeys.modalReportRequestId]} <code>${this.progress.requestId}</code
+        ${lll(LanguageKeys.modalReportRequestId)} <code>${this.progress.requestId}</code
       ></small>
     `;
   }
@@ -144,7 +145,7 @@ export class ReportModal extends LitElement {
               </span>
           </div>
           <div class="media-body">
-            ${TYPO3.lang[LanguageKeys.modalReportNoUrlsCrawled]}
+            ${lll(LanguageKeys.modalReportNoUrlsCrawled)}
           </div>
         </div>
       </div>
@@ -170,13 +171,13 @@ export class ReportModal extends LitElement {
     // Open modal with crawling report
     const buttons: {text: string, icon?: string, btnClass: string, trigger?: () => void}[] = [
       {
-        text: TYPO3.lang[LanguageKeys.modalProgressButtonRetry],
+        text: lll(LanguageKeys.modalProgressButtonRetry),
         icon: IconIdentifiers.refresh,
         btnClass: 'btn-default',
         trigger: retryFunction,
       },
       {
-        text: TYPO3.lang[LanguageKeys.modalProgressButtonClose],
+        text: lll(LanguageKeys.modalProgressButtonClose),
         btnClass: 'btn-default',
         trigger: (): void => Modal.dismiss(),
       },
@@ -186,7 +187,7 @@ export class ReportModal extends LitElement {
     if (progress.progress.current > 0) {
       buttons.unshift(
         {
-          text: `${TYPO3.lang[LanguageKeys.modalReportTotal]} ${progress.progress.current}`,
+          text: `${lll(LanguageKeys.modalReportTotal)} ${progress.progress.current}`,
           icon: IconIdentifiers.exclamationCircle,
           btnClass: 'disabled border-0',
         },
@@ -195,7 +196,7 @@ export class ReportModal extends LitElement {
 
     // Create modal
     Modal.advanced({
-      title: TYPO3.lang[LanguageKeys.modalReportTitle],
+      title: lll(LanguageKeys.modalReportTitle),
       content: new ReportModal(progress),
       size: Modal.sizes.large,
       buttons: buttons,

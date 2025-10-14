@@ -24,6 +24,7 @@ import Icons from '@typo3/backend/icons.js';
 import Modal from '@typo3/backend/modal.js';
 import Notification from '@typo3/backend/notification.js';
 import RegularEvent from '@typo3/core/event/regular-event.js';
+import {lll} from '@typo3/core/lit-helper.js';
 
 import {CacheWarmer, SiteWarmupRequest, WarmingConfiguration} from '@eliashaeussler/typo3-warming/cache-warmer';
 import {IconIdentifiers} from '@eliashaeussler/typo3-warming/enums/icon-identifiers';
@@ -170,8 +171,8 @@ export class SitesModal extends LitElement {
     // Early return if no sites are selected
     if (!this.areSitesSelected()) {
       Notification.warning(
-        TYPO3.lang[LanguageKeys.notificationNoSitesSelectedTitle],
-        TYPO3.lang[LanguageKeys.notificationNoSitesSelectedMessage],
+        lll(LanguageKeys.notificationNoSitesSelectedTitle),
+        lll(LanguageKeys.notificationNoSitesSelectedMessage),
         15,
       );
 
@@ -397,7 +398,7 @@ export class SitesModal extends LitElement {
       .then(
         async ([, icon]): Promise<void> => {
           const existingText = this._useragentCopyText.innerText;
-          this._useragentCopyText.innerText = TYPO3.lang[LanguageKeys.modalSitesUserAgentActionSuccessful];
+          this._useragentCopyText.innerText = lll(LanguageKeys.modalSitesUserAgentActionSuccessful);
           this._useragentCopyIcon.innerHTML = icon;
 
           // Restore copy button after 3 seconds
@@ -437,11 +438,11 @@ export class SitesModal extends LitElement {
     Modal.advanced({
       type: Modal.types.ajax,
       content: url.toString(),
-      title: TYPO3.lang[LanguageKeys.modalSitesTitle],
+      title: lll(LanguageKeys.modalSitesTitle),
       size: Modal.sizes.medium,
       buttons: [
         {
-          text: TYPO3.lang[LanguageKeys.modalSitesButtonStart],
+          text: lll(LanguageKeys.modalSitesButtonStart),
           icon: IconIdentifiers.rocket,
           btnClass: 'btn-primary disabled',
           name: SitesModalButtonNames.startButton,

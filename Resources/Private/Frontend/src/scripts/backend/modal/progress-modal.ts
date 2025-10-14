@@ -24,6 +24,7 @@ import {styleMap, StyleInfo} from 'lit/directives/style-map.js';
 import {unsafeHTML} from 'lit/directives/unsafe-html.js';
 import Modal from '@typo3/backend/modal.js';
 import RegularEvent from '@typo3/core/event/regular-event.js';
+import {lll} from '@typo3/core/lit-helper.js';
 
 import {IconIdentifiers} from '@eliashaeussler/typo3-warming/enums/icon-identifiers';
 import {LanguageKeys} from '@eliashaeussler/typo3-warming/enums/language-keys';
@@ -107,13 +108,13 @@ export class ProgressModal extends LitElement {
         <div class="tx-warming-progress-modal-counter">
           ${isActive ? '' : html`
             <div class="tx-warming-progress-placeholder">
-              ${TYPO3.lang[LanguageKeys.modalProgressPlaceholder]}
+              ${lll(LanguageKeys.modalProgressPlaceholder)}
             </div>
           `}
           <div>
             ${unsafeHTML(
               StringHelper.formatString(
-                TYPO3.lang[LanguageKeys.modalProgressAllCounter],
+                lll(LanguageKeys.modalProgressAllCounter),
                 this.progress.progress.current.toString(),
                 this.progress.progress.total.toString(),
               ),
@@ -122,7 +123,7 @@ export class ProgressModal extends LitElement {
           ${failedCount > 0 ? html`
             <div class="badge badge-danger">
               ${StringHelper.formatString(
-                TYPO3.lang[LanguageKeys.modalProgressFailedCounter],
+                lll(LanguageKeys.modalProgressFailedCounter),
                 failedCount.toString(),
               )}
             </div>
@@ -165,19 +166,19 @@ export class ProgressModal extends LitElement {
     // Update modal title
     switch (progress.state) {
       case WarmupState.Failed:
-        modalTitle = TYPO3.lang[LanguageKeys.modalProgressFailedTitle];
+        modalTitle = lll(LanguageKeys.modalProgressFailedTitle);
         break;
       case WarmupState.Warning:
-        modalTitle = TYPO3.lang[LanguageKeys.modalProgressWarningTitle];
+        modalTitle = lll(LanguageKeys.modalProgressWarningTitle);
         break;
       case WarmupState.Success:
-        modalTitle = TYPO3.lang[LanguageKeys.modalProgressSuccessTitle];
+        modalTitle = lll(LanguageKeys.modalProgressSuccessTitle);
         break;
       case WarmupState.Aborted:
-        modalTitle = TYPO3.lang[LanguageKeys.modalProgressAbortedTitle];
+        modalTitle = lll(LanguageKeys.modalProgressAbortedTitle);
         break;
       case WarmupState.Unknown:
-        modalTitle = TYPO3.lang[LanguageKeys.modalProgressUnknownTitle];
+        modalTitle = lll(LanguageKeys.modalProgressUnknownTitle);
         break;
     }
 
@@ -251,27 +252,27 @@ export class ProgressModal extends LitElement {
 
     // Create modal element
     modal.modal = Modal.advanced({
-      title: TYPO3.lang[LanguageKeys.modalProgressTitle],
+      title: lll(LanguageKeys.modalProgressTitle),
       content: modal,
       size: Modal.sizes.small,
       staticBackdrop: true,
       buttons: [
         {
-          text: TYPO3.lang[LanguageKeys.modalProgressButtonReport],
+          text: lll(LanguageKeys.modalProgressButtonReport),
           icon: IconIdentifiers.listAlternative,
           // Trigger is defined by external module, button is hidden in the meantime
           btnClass: 'btn-primary hidden',
           name: CacheWarmupProgressModalButtonNames.reportButton,
         },
         {
-          text: TYPO3.lang[LanguageKeys.modalProgressButtonRetry],
+          text: lll(LanguageKeys.modalProgressButtonRetry),
           icon: IconIdentifiers.refresh,
           // Trigger is defined by external module, button is hidden in the meantime
           btnClass: 'btn-default hidden',
           name: CacheWarmupProgressModalButtonNames.retryButton,
         },
         {
-          text: TYPO3.lang[LanguageKeys.modalProgressButtonClose],
+          text: lll(LanguageKeys.modalProgressButtonClose),
           btnClass: 'btn-default',
           trigger: (): void => Modal.dismiss(),
         },

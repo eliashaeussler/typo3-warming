@@ -20,6 +20,7 @@
 import {html, LitElement, TemplateResult} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import InfoWindow from '@typo3/backend/info-window.js';
+import {lll} from '@typo3/core/lit-helper.js';
 
 import {CrawlingResult} from '@eliashaeussler/typo3-warming/request/warmup-progress';
 import {LanguageKeys} from '@eliashaeussler/typo3-warming/enums/language-keys';
@@ -76,27 +77,27 @@ export class ReportPanel extends LitElement {
                         ${result.data.pageActions?.viewLog ? html`
                           <a href="${result.data.pageActions.viewLog}"
                              class="btn btn-default btn-sm nowrap"
-                             title="${TYPO3.lang[LanguageKeys.modalReportActionLog]}"
+                             title="${lll(LanguageKeys.modalReportActionLog)}"
                              target="_blank"
                           >
                             <typo3-backend-icon identifier="actions-list-alternative" size="small" />
-                            ${TYPO3.lang[LanguageKeys.modalReportActionLog]}
+                            ${lll(LanguageKeys.modalReportActionLog)}
                           </a>
                         ` : ''}
 
                         ${result.data.pageActions?.editRecord ? html`
                           <a href="${result.data.pageActions.editRecord}"
                              class="btn btn-default btn-sm nowrap"
-                             title="${TYPO3.lang[LanguageKeys.modalReportActionEdit]}"
+                             title="${lll(LanguageKeys.modalReportActionEdit)}"
                              target="_blank"
                           >
                             <typo3-backend-icon identifier="actions-file-edit" size="small" />
-                            ${TYPO3.lang[LanguageKeys.modalReportActionEdit]}
+                            ${lll(LanguageKeys.modalReportActionEdit)}
                           </a>
                         ` : ''}
 
                         ${result.data.urlMetadata?.pageId ? html`<button class="btn btn-default btn-sm nowrap"
-                             title="${TYPO3.lang[LanguageKeys.modalReportActionInfo]}"
+                             title="${lll(LanguageKeys.modalReportActionInfo)}"
                              @click="${(event: MouseEvent) => {
                                event.preventDefault();
 
@@ -104,17 +105,17 @@ export class ReportPanel extends LitElement {
                              }}"
                           >
                             <typo3-backend-icon identifier="actions-info" size="small" />
-                            ${TYPO3.lang[LanguageKeys.modalReportActionInfo]}
+                            ${lll(LanguageKeys.modalReportActionInfo)}
                           </button>
                         ` : ''}
 
                         <a href="${result.url}"
                            target="_blank"
                            class="btn btn-default btn-sm nowrap"
-                           title="${TYPO3.lang[LanguageKeys.modalReportActionView]}"
+                           title="${lll(LanguageKeys.modalReportActionView)}"
                         >
                           <typo3-backend-icon identifier="actions-view-page" size="small" />
-                          ${TYPO3.lang[LanguageKeys.modalReportActionView]}
+                          ${lll(LanguageKeys.modalReportActionView)}
                         </a>
                       </div>
                     </td>

@@ -19,6 +19,7 @@
 
 import ImmediateAction from '@typo3/backend/action-button/immediate-action.js';
 import Notification from '@typo3/backend/notification.js';
+import {lll} from '@typo3/core/lit-helper.js';
 
 import {AjaxRequestHandler} from '@eliashaeussler/typo3-warming/request/handler/ajax-request-handler';
 import {EventSourceRequestHandler} from '@eliashaeussler/typo3-warming/request/handler/event-source-request-handler';
@@ -100,7 +101,7 @@ export class CacheWarmer {
           // Add option to restart cache warmup if it has been aborted
           if (progress.state === WarmupState.Aborted) {
             action = {
-              label: TYPO3.lang[LanguageKeys.notificationActionRetry],
+              label: lll(LanguageKeys.notificationActionRetry),
               action: new ImmediateAction(retryFunction),
             };
           }
@@ -204,7 +205,7 @@ export class CacheWarmer {
 
     // Create action to open full report as modal
     const reportAction: NotificationAction = {
-      label: TYPO3.lang[LanguageKeys.notificationShowReport],
+      label: lll(LanguageKeys.notificationShowReport),
       action: new ImmediateAction((): void => {
         ReportModal.createModal(progress, retryFunction);
       }),
@@ -230,8 +231,8 @@ export class CacheWarmer {
         Notification.success(title, message, 15, actions);
         break;
       case WarmupState.Aborted:
-        title = TYPO3.lang[LanguageKeys.notificationAbortedTitle];
-        message = TYPO3.lang[LanguageKeys.notificationAbortedMessage];
+        title = lll(LanguageKeys.notificationAbortedTitle);
+        message = lll(LanguageKeys.notificationAbortedMessage);
         Notification.info(title, message, 15, actions);
         break;
       case WarmupState.Unknown:
@@ -250,8 +251,8 @@ export class CacheWarmer {
    */
   private static errorNotification(): void {
     Notification.error(
-      TYPO3.lang[LanguageKeys.notificationErrorTitle],
-      TYPO3.lang[LanguageKeys.notificationErrorMessage],
+      lll(LanguageKeys.notificationErrorTitle),
+      lll(LanguageKeys.notificationErrorMessage),
     );
   }
 
