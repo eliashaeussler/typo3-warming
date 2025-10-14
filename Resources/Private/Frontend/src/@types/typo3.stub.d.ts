@@ -84,3 +84,11 @@ declare module '@typo3/core/document-service.js' {
 declare module '@typo3/core/event/regular-event.js' {
   export default nothing;
 }
+
+/**
+ * @see https://github.com/TYPO3/typo3/blob/v12.4.0/Build/Sources/TypeScript/core/lit-helper.ts
+ */
+declare module '@typo3/core/lit-helper.js' {
+  const lll: any;
+  export {lll};
+}
