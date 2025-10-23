@@ -98,7 +98,7 @@ final readonly class CacheWarmupService
                 $sitemaps = $this->sitemapLocator->locateBySite($siteWarmupRequest->getSite(), $siteLanguage);
                 $cacheWarmer->addSitemaps(
                     array_map(
-                        static fn(Typo3SitemapLocator\Domain\Model\Sitemap $sitemap) => Domain\Model\SiteAwareSitemap::fromLocatedSitemap($sitemap),
+                        Domain\Model\SiteAwareSitemap::fromLocatedSitemap(...),
                         $sitemaps,
                     ),
                 );

@@ -71,8 +71,8 @@ final readonly class StreamResponseHandler implements CacheWarmup\Http\Message\H
     {
         $event = new Http\Message\Event\WarmupProgressEvent(
             (string)$currentUrl,
-            array_map('strval', $this->result->getSuccessful()),
-            array_map('strval', $this->result->getFailed()),
+            array_map(strval(...), $this->result->getSuccessful()),
+            array_map(strval(...), $this->result->getFailed()),
             $this->numberOfUrls,
         );
 
