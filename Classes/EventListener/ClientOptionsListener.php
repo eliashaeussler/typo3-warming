@@ -26,6 +26,8 @@ namespace EliasHaeussler\Typo3Warming\EventListener;
 use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3SitemapLocator;
 use EliasHaeussler\Typo3Warming\Configuration;
+use EliasHaeussler\Typo3Warming\Http;
+use GuzzleHttp\RequestOptions;
 use TYPO3\CMS\Core;
 
 /**
@@ -40,6 +42,7 @@ final readonly class ClientOptionsListener
     public function __construct(
         private Typo3SitemapLocator\Http\Client\ClientFactory $clientFactory,
         private Configuration\Configuration $configuration,
+        private Http\Message\Request\RequestOptions $requestOptions,
     ) {}
 
     // @todo Enable attribute once support for TYPO3 v12 is dropped
@@ -67,6 +70,11 @@ final readonly class ClientOptionsListener
         $options = $event->getOptions();
 
         Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($options, $this->configuration->clientOptions);
+        Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($options, [
+            RequestOptions::HEADERS => [
+                'User-Agent' => $this->requestOptions->getUserAgent(),
+            ],
+        ]);
 
         $event->setOptions($options);
     }
