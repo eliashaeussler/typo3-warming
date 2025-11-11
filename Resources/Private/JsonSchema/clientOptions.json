@@ -4,20 +4,20 @@
 	"definitions": {
 		"clientOptions": {
 			"type": "object",
-			"allOf": [
+			"anyOf": [
 				{
 					"properties": {
 						"handler": {
 							"type": "string",
 							"description": "Callable function that transfers HTTP requests over the wire."
 						}
-					}
+					},
+					"additionalProperties": false
 				},
 				{
 					"$ref": "#/definitions/requestOptions"
 				}
-			],
-			"additionalProperties": false
+			]
 		}
 	}
 }
