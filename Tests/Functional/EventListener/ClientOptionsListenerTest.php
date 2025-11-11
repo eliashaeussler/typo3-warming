@@ -25,6 +25,7 @@ namespace EliasHaeussler\Typo3Warming\Tests\Functional\EventListener;
 
 use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\DeepClosureComparator;
+use EliasHaeussler\Typo3SitemapLocator;
 use EliasHaeussler\Typo3Warming as Src;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\RequestOptions;
@@ -47,6 +48,11 @@ final class ClientOptionsListenerTest extends TestingFramework\Core\Functional\F
     ];
 
     protected array $configurationToUseInTestInstance = [
+        'EXTENSIONS' => [
+            'warming' => [
+                'clientOptions' => '{"auth":["username","password"]}',
+            ],
+        ],
         'HTTP' => [
             'handler' => [
                 // Must be a callable
@@ -59,26 +65,26 @@ final class ClientOptionsListenerTest extends TestingFramework\Core\Functional\F
     protected bool $initializeDatabase = false;
 
     private Src\EventListener\ClientOptionsListener $subject;
-    private CacheWarmup\Event\Config\ConfigResolved $event;
 
     public function setUp(): void
     {
         parent::setUp();
 
         $this->subject = $this->get(Src\EventListener\ClientOptionsListener::class);
-        $this->event = new CacheWarmup\Event\Config\ConfigResolved(
+    }
+
+    #[Framework\Attributes\Test]
+    public function processConfigMergesClientConfigWithTYPO3SpecificClientConfig(): void
+    {
+        $event = new CacheWarmup\Event\Config\ConfigResolved(
             new CacheWarmup\Config\CacheWarmupConfig(clientOptions: [
                 RequestOptions::AUTH => ['username', 'password'],
             ]),
         );
-    }
 
-    #[Framework\Attributes\Test]
-    public function invokeMergesClientConfigWithTYPO3SpecificClientConfig(): void
-    {
-        ($this->subject)($this->event);
+        $this->subject->processConfig($event);
 
-        $clientOptions = $this->event->config()->getClientOptions();
+        $clientOptions = $event->config()->getClientOptions();
 
         $handlerStack = HandlerStack::create();
         /* @phpstan-ignore argument.type */
@@ -87,5 +93,22 @@ final class ClientOptionsListenerTest extends TestingFramework\Core\Functional\F
         DeepClosureComparator\DeepClosureAssert::assertEquals($handlerStack, $clientOptions['handler'] ?? null);
         self::assertSame(['username', 'password'], $clientOptions[RequestOptions::AUTH] ?? null);
         self::assertFalse($clientOptions[RequestOptions::VERIFY] ?? null);
+    }
+
+    #[Framework\Attributes\Test]
+    public function processClientMergesGlobalConfigWithExtensionConfig(): void
+    {
+        $event = new Typo3SitemapLocator\Event\BeforeClientConfiguredEvent([
+            RequestOptions::VERIFY => false,
+        ]);
+
+        $expected = [
+            RequestOptions::VERIFY => false,
+            RequestOptions::AUTH => ['username', 'password'],
+        ];
+
+        $this->subject->processClient($event);
+
+        self::assertSame($expected, $event->getOptions());
     }
 }

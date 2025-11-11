@@ -29,7 +29,11 @@ services:
   EliasHaeussler\Typo3Warming\EventListener\ClientOptionsListener:
     tags:
       - name: event.listener
-        identifier: eliashaeussler/typo3-warming/client-options
+        identifier: eliashaeussler/typo3-warming/client-options/process-config
+        method: processConfig
+      - name: event.listener
+        identifier: eliashaeussler/typo3-warming/client-options/process-client
+        method: processClient
 
   # @todo Remove once support for TYPO3 v12 is dropped
   EliasHaeussler\Typo3Warming\EventListener\LoggingCrawlerListener:
@@ -59,8 +63,6 @@ services:
   # External services
   CuyZ\Valinor\Mapper\TreeMapper:
     factory: ['@EliasHaeussler\Typo3Warming\Mapper\MapperFactory', 'get']
-  EliasHaeussler\CacheWarmup\Http\Client\ClientFactory:
-    factory: ['@EliasHaeussler\Typo3Warming\Http\Client\ClientBridge', 'getClientFactory']
   EliasHaeussler\CacheWarmup\Config\Component\OptionsParser:
   EliasHaeussler\CacheWarmup\Crawler\CrawlerFactory:
     # Must be public for use with GU::mI in Configuration class to avoid circular dependencies

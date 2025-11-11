@@ -81,7 +81,10 @@ final class WarmupActionsProviderTest extends TestingFramework\Core\Functional\F
             $this->get(Src\Domain\Repository\SiteLanguageRepository::class),
             $this->get(Src\Domain\Repository\SiteRepository::class),
             new Typo3SitemapLocator\Sitemap\SitemapLocator(
-                new Core\Http\RequestFactory($clientFactoryMock),
+                new Typo3SitemapLocator\Http\Client\ClientFactory(
+                    $clientFactoryMock,
+                    new Core\EventDispatcher\NoopEventDispatcher(),
+                ),
                 $this->get(Typo3SitemapLocator\Cache\SitemapsCache::class),
                 new Core\EventDispatcher\NoopEventDispatcher(),
                 [new Typo3SitemapLocator\Sitemap\Provider\DefaultProvider()],

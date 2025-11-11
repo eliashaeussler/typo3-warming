@@ -25,10 +25,25 @@ namespace EliasHaeussler\Typo3Warming\DependencyInjection;
 
 use EliasHaeussler\CacheWarmup;
 use Symfony\Component\DependencyInjection;
+use Symfony\Component\ExpressionLanguage;
 
-return static function (DependencyInjection\ContainerBuilder $container): void {
+return static function (
+    DependencyInjection\ContainerBuilder $container,
+    DependencyInjection\Loader\Configurator\ContainerConfigurator $configurator,
+): void {
     $container->addCompilerPass(new CrawlingStrategyCompilerPass());
     $container->registerForAutoconfiguration(CacheWarmup\Crawler\Strategy\CrawlingStrategy::class)
         ->addTag(CrawlingStrategyCompilerPass::TAG_NAME)
+    ;
+
+    $configurator->services()
+        ->set(CacheWarmup\Http\Client\ClientFactory::class)
+        ->autowire()
+        ->arg(
+            '$defaults',
+            new ExpressionLanguage\Expression(
+                'service("EliasHaeussler\\\\Typo3SitemapLocator\\\\Http\\\\Client\\\\ClientFactory").getClientConfig()',
+            ),
+        )
     ;
 };
