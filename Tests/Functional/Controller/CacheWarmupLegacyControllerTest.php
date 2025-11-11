@@ -89,7 +89,7 @@ final class CacheWarmupLegacyControllerTest extends TestingFramework\Core\Functi
                 $this->get(Src\Configuration\Configuration::class),
                 $eventDispatcher,
                 new Typo3SitemapLocator\Sitemap\SitemapLocator(
-                    $this->get(Core\Http\RequestFactory::class),
+                    $this->get(Typo3SitemapLocator\Http\Client\ClientFactory::class),
                     $this->get(Typo3SitemapLocator\Cache\SitemapsCache::class),
                     $eventDispatcher,
                     [new Typo3SitemapLocator\Sitemap\Provider\DefaultProvider()],

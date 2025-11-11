@@ -32,6 +32,7 @@ $loader->register();
 
 $configuration = new ComposerDependencyAnalyser\Config\Configuration();
 $configuration
+    ->addPathToScan($rootPath . '/Configuration', false)
     ->addPathsToExclude([
         $rootPath . '/Tests/Build',
         $rootPath . '/Tests/CGL',

@@ -55,6 +55,7 @@ return static function (
         CacheWarmup\Crawler\Strategy\CrawlingStrategyFactory::class,
         Valinor\Mapper\TreeMapper::class,
         Typo3SitemapLocator\Cache\SitemapsCache::class,
+        Typo3SitemapLocator\Http\Client\ClientFactory::class,
     ] as $className) {
         $containerBuilder->addCompilerPass(
             Tests\Build\DependencyInjection\CompilerPass\PublicServicePass::fromClass($className),

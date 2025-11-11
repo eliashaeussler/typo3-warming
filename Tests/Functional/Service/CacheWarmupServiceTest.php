@@ -84,7 +84,7 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
             $this->get(Src\Configuration\Configuration::class),
             $this->eventDispatcher,
             new Typo3SitemapLocator\Sitemap\SitemapLocator(
-                $this->get(Core\Http\RequestFactory::class),
+                $this->get(Typo3SitemapLocator\Http\Client\ClientFactory::class),
                 $this->cache,
                 $this->eventDispatcher,
                 [new Typo3SitemapLocator\Sitemap\Provider\DefaultProvider()],
