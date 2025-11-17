@@ -109,7 +109,7 @@ final class ClientOptionsListenerTest extends TestingFramework\Core\Functional\F
             RequestOptions::VERIFY => false,
             RequestOptions::AUTH => ['username', 'password'],
             RequestOptions::HEADERS => [
-                'User-Agent' => 'TYPO3/tx_warming_crawleref503f61d0e736e783384fd63c5ea03da19f23a4',
+                'User-Agent' => 'TYPO3/tx_warming_crawlercbca109427154aa0b126274755477f4337ecd56d',
             ],
         ];
 

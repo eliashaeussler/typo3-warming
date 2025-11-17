@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Http\Message\Request;
 
-use EliasHaeussler\Typo3Warming\Configuration;
 use Symfony\Component\DependencyInjection;
 use TYPO3\CMS\Core;
 
@@ -44,7 +43,6 @@ final readonly class RequestOptions
     {
         $string = 'TYPO3/tx_warming_crawler';
 
-        // @todo Change secret to self::class in v5.0
-        return $this->hashService->appendHmac($string, Configuration\Configuration::class);
+        return $this->hashService->appendHmac($string, self::class);
     }
 }
