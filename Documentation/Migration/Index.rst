@@ -14,6 +14,17 @@ upgrading to a new major version of this extension.
     Make sure to check out the `migration guide <https://cache-warmup.dev/migration.html>`__
     of the :composer:`eliashaeussler/cache-warmup` library as well.
 
+..  _version-5.0.0:
+
+Version 5.0.0
+=============
+
+Removal of deprecated functionality
+-----------------------------------
+
+-   Several getter methods in :php:`\EliasHaeussler\Typo3Warming\Configuration\Configuration`
+    are now finally removed (see :ref:`deprecation notices <version-4.2.0>`).
+
 ..  _version-4.2.0:
 
 Version 4.2.0

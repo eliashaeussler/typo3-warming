@@ -26,7 +26,6 @@ namespace EliasHaeussler\Typo3Warming\Configuration;
 use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3Warming\Crawler;
 use EliasHaeussler\Typo3Warming\Extension;
-use EliasHaeussler\Typo3Warming\Http;
 use mteu\TypedExtConf;
 use TYPO3\CMS\Core;
 
@@ -39,7 +38,6 @@ use TYPO3\CMS\Core;
 #[TypedExtConf\Attribute\ExtensionConfig(extensionKey: Extension::KEY)]
 final class Configuration
 {
-    private Http\Message\Request\RequestOptions $requestOptions;
     private ?CacheWarmup\Crawler\CrawlerFactory $crawlerFactory = null;
 
     /**
@@ -80,49 +78,6 @@ final class Configuration
         public readonly bool $enabledInToolbar = true,
     ) {}
 
-    public function injectRequestOptions(Http\Message\Request\RequestOptions $requestOptions): void
-    {
-        $this->requestOptions = $requestOptions;
-    }
-
-    /**
-     * @param array{} $arguments
-     *
-     * @todo Remove with v5.0
-     */
-    public function __call(string $name, array $arguments): mixed
-    {
-        $propertyName = match ($name) {
-            'getCrawlerOptions' => 'crawlerOptions',
-            'getVerboseCrawlerOptions' => 'verboseCrawlerOptions',
-            'getParserOptions' => 'parserOptions',
-            'getClientOptions' => 'clientOptions',
-            'getLimit' => 'limit',
-            'getExcludePatterns' => 'excludePatterns',
-            'getStrategy' => 'crawlingStrategy',
-            'isEnabledInPageTree' => 'enabledInPageTree',
-            'getSupportedDoktypes' => 'supportedDoktypes',
-            'isEnabledInToolbar' => 'enabledInToolbar',
-            default => throw new \BadMethodCallException(
-                \sprintf('Unknown method "%s".', $name),
-                1753475960,
-            ),
-        };
-
-        trigger_error(
-            \sprintf(
-                'Method "%s::%s()" is deprecated and will be removed in v5.0. Access class property "$%s" directly.',
-                self::class,
-                $name,
-                $propertyName,
-            ),
-            E_USER_DEPRECATED,
-        );
-
-        /* @phpstan-ignore property.dynamicName */
-        return $this->{$propertyName};
-    }
-
     /**
      * @throws CacheWarmup\Exception\CrawlerDoesNotExist
      * @throws CacheWarmup\Exception\CrawlerIsInvalid
@@ -139,24 +94,6 @@ final class Configuration
     public function getVerboseCrawler(): CacheWarmup\Crawler\VerboseCrawler
     {
         return $this->getCrawlerFactory()->get($this->verboseCrawlerClass, $this->verboseCrawlerOptions);
-    }
-
-    /**
-     * @deprecated Use {@see RequestOptions::getUserAgent()} instead. Will be removed in v5.0.
-     */
-    public function getUserAgent(): string
-    {
-        trigger_error(
-            \sprintf(
-                'Method "%s()" is deprecated and will be removed in v5.0. ' .
-                'Access User-Agent header via "%s::getUserAgent()" method instead.',
-                __METHOD__,
-                Http\Message\Request\RequestOptions::class,
-            ),
-            E_USER_DEPRECATED,
-        );
-
-        return $this->requestOptions->getUserAgent();
     }
 
     private function getCrawlerFactory(): CacheWarmup\Crawler\CrawlerFactory
