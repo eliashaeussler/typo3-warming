@@ -25,41 +25,6 @@ services:
         description: 'Show custom "User-Agent" header to be used for Frontend requests by default crawlers.'
         schedulable: false
 
-  # @todo Remove once support for TYPO3 v12 is dropped
-  EliasHaeussler\Typo3Warming\EventListener\ClientOptionsListener:
-    tags:
-      - name: event.listener
-        identifier: eliashaeussler/typo3-warming/client-options/process-config
-        method: processConfig
-      - name: event.listener
-        identifier: eliashaeussler/typo3-warming/client-options/process-client
-        method: processClient
-
-  # @todo Remove once support for TYPO3 v12 is dropped
-  EliasHaeussler\Typo3Warming\EventListener\LoggingCrawlerListener:
-    tags:
-      - name: event.listener
-        identifier: eliashaeussler/typo3-warming/logging-crawler
-
-  # @todo Remove once support for TYPO3 v12 is dropped
-  EliasHaeussler\Typo3Warming\EventListener\UrlMetadataListener:
-    tags:
-      - name: event.listener
-        identifier: eliashaeussler/typo3-warming/url-metadata/on-success
-        method: onSuccess
-      - name: event.listener
-        identifier: eliashaeussler/typo3-warming/url-metadata/on-failure
-        method: onFailure
-
-  # @todo Remove once support for Symfony < 7.1 is dropped
-  EliasHaeussler\Typo3Warming\Http\Message\PageUriBuilder:
-    arguments:
-      $pageRepository: '@core.page_repository.lazy'
-
-  core.page_repository.lazy:
-    class: 'TYPO3\CMS\Core\Domain\Repository\PageRepository'
-    lazy: true
-
   # External services
   CuyZ\Valinor\Mapper\TreeMapper:
     factory: ['@EliasHaeussler\Typo3Warming\Mapper\MapperFactory', 'get']

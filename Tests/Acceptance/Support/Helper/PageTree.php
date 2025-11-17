@@ -65,11 +65,6 @@ final class PageTree extends TestingFramework\Core\Acceptance\Helper\AbstractPag
             $contextMenu = $this->ensureTreeNodeIsOpen($pageName, $context);
         }
 
-        // @todo Remove once support for TYPO3 v12 is dropped
-        if ($this->typo3Version->getMajorVersion() < 13) {
-            $contextMenu = $contextMenu->findElement(WebDriver\WebDriverBy::cssSelector(self::$treeItemAnchorSelector));
-        }
-
         $I->executeInSelenium(function (WebDriver\Remote\RemoteWebDriver $webDriver) use ($contextMenu): void {
             $webDriver->getMouse()->contextClick($contextMenu->getCoordinates());
         });
@@ -126,22 +121,16 @@ final class PageTree extends TestingFramework\Core\Acceptance\Helper\AbstractPag
         WebDriver\Remote\RemoteWebElement $context,
     ): WebDriver\Remote\RemoteWebElement {
         $I = $this->tester;
-        // @todo Remove fallback once support for TYPO3 v12 is dropped
-        $I->see($nodeText, $this->typo3Version->getMajorVersion() >= 13 ? 'div.nodes-list > .node' : self::$treeItemAnchorSelector);
+        $I->see($nodeText, 'div.nodes-list > .node');
 
-        // @todo Simplify once support for TYPO3 v12 is dropped
-        $xpath = './/*[text()=\'' . $nodeText . '\']/..';
-        if ($this->typo3Version->getMajorVersion() >= 13) {
-            $xpath .= '/../..';
-        }
+        $xpath = './/*[text()=\'' . $nodeText . '\']/../../..';
 
         /** @var WebDriver\Remote\RemoteWebElement $context */
         $context = $I->executeInSelenium(
             static fn() => $context->findElement(WebDriver\WebDriverBy::xpath($xpath)),
         );
 
-        // @todo Remove "true" once support for TYPO3 v12 is dropped
-        if (\in_array($context->getAttribute('aria-expanded'), ['1', 'true'], true)) {
+        if ($context->getAttribute('aria-expanded') === '1') {
             return $context;
         }
 

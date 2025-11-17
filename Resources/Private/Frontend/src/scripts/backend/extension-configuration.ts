@@ -34,15 +34,7 @@ class ExtensionConfiguration {
   initializeModalListener(nonce: string, strategies: string[]): void {
     document.addEventListener('typo3-modal-shown', (event: CustomEvent) => {
       const target: HTMLElement = event.target as HTMLElement;
-      let form: Element|null = target.querySelector('.t3js-extensionConfiguration-form[data-extension-key="warming"]');
-      let injectScripts: boolean = true;
-
-      // TYPO3 v12: Use different selector for outer form
-      // @todo Remove once support for TYPO3 v12 is dropped
-      if (form === null) {
-        form = target.querySelector('.t3js-extensionConfiguration-form[data-extensionkey="warming"]');
-        injectScripts = false;
-      }
+      const form: Element|null = target.querySelector('.t3js-extensionConfiguration-form[data-extension-key="warming"]');
 
       // Early return if extension configuration modal is *not* shown
       if (form === null) {
@@ -50,9 +42,7 @@ class ExtensionConfiguration {
       }
 
       // Replace all <script> tags in modal to enable them
-      if (injectScripts) {
-        form.querySelectorAll('script').forEach((script: HTMLScriptElement) => this.activateScript(script, nonce));
-      }
+      form.querySelectorAll('script').forEach((script: HTMLScriptElement) => this.activateScript(script, nonce));
 
       // Inject all available crawling strategies
       const strategySelect: HTMLSelectElement|null = form.querySelector('[name="strategy"]');

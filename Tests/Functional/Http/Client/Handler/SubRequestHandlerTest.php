@@ -64,7 +64,7 @@ final class SubRequestHandlerTest extends TestingFramework\Core\Functional\Funct
         $this->setUpBackendUser(3);
 
         $this->applicationMock = $this->createMock(Frontend\Http\Application::class);
-        $this->urlMetadataFactory = new Src\Http\Message\UrlMetadataFactory();
+        $this->urlMetadataFactory = $this->get(Src\Http\Message\UrlMetadataFactory::class);
         $this->subject = new Src\Http\Client\Handler\SubRequestHandler(
             $this->applicationMock,
             $this->urlMetadataFactory,

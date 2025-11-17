@@ -26,11 +26,9 @@ use Rector\Config\RectorConfig;
 use Rector\Php80\Rector\Class_\AnnotationToAttributeRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 use Rector\PHPUnit\CodeQuality\Rector\MethodCall\ScalarArgumentToExpectedParamTypeRector;
-use Rector\Renaming\Rector\Name\RenameClassRector;
 use Rector\Symfony\DependencyInjection\Rector\Trait_\TraitGetByTypeToInjectRector;
 use Rector\Symfony\Symfony73\Rector\Class_\CommandHelpToAttributeRector;
 use Rector\ValueObject\PhpVersion;
-use Ssch\TYPO3Rector\TYPO313\v0\MigrateExtbaseHashServiceToUseCoreHashServiceRector;
 
 return static function (RectorConfig $rectorConfig): void {
     $rootPath = dirname(__DIR__, 2);
@@ -74,18 +72,6 @@ return static function (RectorConfig $rectorConfig): void {
         ])
         ->skip(CommandHelpToAttributeRector::class, [
             $rootPath . '/Classes/Command/WarmupCommand.php',
-        ])
-        // @todo Remove once support for TYPO3 v12 is dropped
-        ->skip(MigrateExtbaseHashServiceToUseCoreHashServiceRector::class, [
-            $rootPath . '/Classes/Http/Message/Request/RequestOptions.php',
-            $rootPath . '/Classes/Http/Message/UrlMetadataFactory.php',
-            $rootPath . '/Tests/Functional/Http/Message/UrlMetadataFactoryTest.php',
-        ])
-        // @todo Remove once support for TYPO3 v12 is dropped
-        ->skip(RenameClassRector::class, [
-            $rootPath . '/Classes/Http/Message/Request/RequestOptions.php',
-            $rootPath . '/Classes/Http/Message/UrlMetadataFactory.php',
-            $rootPath . '/Tests/Functional/Http/Message/UrlMetadataFactoryTest.php',
         ])
         // @todo Remove once bug is fixed within Rector
         ->skip(ScalarArgumentToExpectedParamTypeRector::class, [

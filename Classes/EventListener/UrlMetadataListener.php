@@ -44,8 +44,7 @@ final readonly class UrlMetadataListener
         private Http\Message\UrlMetadataFactory $urlMetadataFactory,
     ) {}
 
-    // @todo Enable attribute once support for TYPO3 v12 is dropped
-    // #[\TYPO3\CMS\Core\Attribute\AsEventListener('eliashaeussler/typo3-warming/url-metadata/on-success')]
+    #[Core\Attribute\AsEventListener('eliashaeussler/typo3-warming/url-metadata/on-success')]
     public function onSuccess(CacheWarmup\Event\Crawler\UrlCrawlingSucceeded $event): void
     {
         $metadata = $this->urlMetadataFactory->createFromResponse($event->response());
@@ -60,8 +59,7 @@ final readonly class UrlMetadataListener
         }
     }
 
-    // @todo Enable attribute once support for TYPO3 v12 is dropped
-    // #[\TYPO3\CMS\Core\Attribute\AsEventListener('eliashaeussler/typo3-warming/url-metadata/on-failure')]
+    #[Core\Attribute\AsEventListener('eliashaeussler/typo3-warming/url-metadata/on-failure')]
     public function onFailure(CacheWarmup\Event\Crawler\UrlCrawlingFailed $event): void
     {
         $metadata = null;
@@ -162,19 +160,12 @@ final readonly class UrlMetadataListener
             );
         }
 
-        if ((new Core\Information\Typo3Version())->getMajorVersion() >= 13) {
-            $systemLogModuleIdentifier = 'system_log';
-        } else {
-            // @todo Remove once support for TYPO3 v12 is dropped
-            $systemLogModuleIdentifier = 'system_BelogLog';
-        }
-
         // Add uri to view logs for current page
         if (Core\Utility\ExtensionManagementUtility::isLoaded('belog') &&
-            $this->moduleProvider->accessGranted($systemLogModuleIdentifier, $backendUser)
+            $this->moduleProvider->accessGranted('system_log', $backendUser)
         ) {
             $actions['viewLog'] = (string)$this->uriBuilder->buildUriFromRoute(
-                $systemLogModuleIdentifier . '.BackendLog_list',
+                'system_log.BackendLog_list',
                 [
                     'constraint' => [
                         'pageId' => $pageTranslationId,

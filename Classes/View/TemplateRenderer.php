@@ -38,6 +38,7 @@ final readonly class TemplateRenderer
 
     public function __construct(
         private Fluid\Core\Rendering\RenderingContextFactory $renderingContextFactory,
+        private Core\View\ViewFactoryInterface $viewFactory,
     ) {
         $this->renderingContext = $this->createRenderingContext();
     }
@@ -47,21 +48,14 @@ final readonly class TemplateRenderer
      */
     public function render(string $templatePath, array $variables = []): string
     {
-        if ((new Core\Information\Typo3Version())->getMajorVersion() >= 13) {
-            $templatePaths = $this->renderingContext->getTemplatePaths();
-            $data = new Core\View\ViewFactoryData(
+        $templatePaths = $this->renderingContext->getTemplatePaths();
+        $view = $this->viewFactory->create(
+            new Core\View\ViewFactoryData(
                 templateRootPaths: $templatePaths->getTemplateRootPaths(),
                 partialRootPaths: $templatePaths->getPartialRootPaths(),
                 layoutRootPaths: $templatePaths->getLayoutRootPaths(),
-            );
-            $viewFactory = Core\Utility\GeneralUtility::makeInstance(Core\View\ViewFactoryInterface::class);
-            $view = $viewFactory->create($data);
-        } else {
-            // @todo Remove once support for TYPO3 v12 is dropped
-            /* @phpstan-ignore classConstant.deprecatedClass */
-            $view = Core\Utility\GeneralUtility::makeInstance(Fluid\View\StandaloneView::class, $this->renderingContext);
-        }
-
+            ),
+        );
         $view->assignMultiple($variables);
 
         return $view->render($templatePath);

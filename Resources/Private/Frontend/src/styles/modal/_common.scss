@@ -29,11 +29,9 @@
         font-weight: bold;
         line-height: inherit;
         padding: 0 0 var(--typo3-list-item-padding-y);
-        /* @todo Use current fallback as default once support for TYPO3 v12 is dropped */
-        border-bottom: 1px solid var(--typo3-light-border-color, var(--typo3-component-border-color));
+        border-bottom: 1px solid var(--typo3-component-border-color);
         margin-bottom: var(--typo3-list-item-padding-y);
-        /* ´@todo Remove fallback once support for TYPO3 v12 is dropped */
-        background-color: var(--typo3-modal-bg, var(--typo3-light-bg));
+        background-color: var(--typo3-modal-bg);
         position: sticky;
         top: 0;
         z-index: 20;

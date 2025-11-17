@@ -39,6 +39,7 @@ use TYPO3\CMS\Core;
 #[TypedExtConf\Attribute\ExtensionConfig(extensionKey: Extension::KEY)]
 final class Configuration
 {
+    private Http\Message\Request\RequestOptions $requestOptions;
     private ?CacheWarmup\Crawler\CrawlerFactory $crawlerFactory = null;
 
     /**
@@ -78,6 +79,11 @@ final class Configuration
         #[TypedExtConf\Attribute\ExtConfProperty(path: 'enableToolbar')]
         public readonly bool $enabledInToolbar = true,
     ) {}
+
+    public function injectRequestOptions(Http\Message\Request\RequestOptions $requestOptions): void
+    {
+        $this->requestOptions = $requestOptions;
+    }
 
     /**
      * @param array{} $arguments
@@ -150,7 +156,7 @@ final class Configuration
             E_USER_DEPRECATED,
         );
 
-        return (new Http\Message\Request\RequestOptions())->getUserAgent();
+        return $this->requestOptions->getUserAgent();
     }
 
     private function getCrawlerFactory(): CacheWarmup\Crawler\CrawlerFactory

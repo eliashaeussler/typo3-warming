@@ -23,70 +23,70 @@ declare const TYPO3: any;
 declare const nothing: any;
 
 /**
- * @see https://github.com/TYPO3/typo3/blob/v12.4.0/Build/Sources/TypeScript/backend/action-button/immediate-action.ts
+ * @see https://github.com/TYPO3/typo3/blob/v13.4.3/Build/Sources/TypeScript/backend/action-button/immediate-action.ts
  */
 declare module '@typo3/backend/action-button/immediate-action.js' {
   export default nothing;
 }
 
 /**
- * @see https://github.com/TYPO3/typo3/blob/v12.4.0/Build/Sources/TypeScript/backend/icons.ts
+ * @see https://github.com/TYPO3/typo3/blob/v13.4.3/Build/Sources/TypeScript/backend/icons.ts
  */
 declare module '@typo3/backend/icons.js' {
   export default nothing;
 }
 
 /**
- * @see https://github.com/TYPO3/typo3/blob/v12.4.0/Build/Sources/TypeScript/backend/info-window.ts
+ * @see https://github.com/TYPO3/typo3/blob/v13.4.3/Build/Sources/TypeScript/backend/info-window.ts
  */
 declare module '@typo3/backend/info-window.js' {
   export default nothing;
 }
 
 /**
- * @see https://github.com/TYPO3/typo3/blob/v12.4.0/Build/Sources/TypeScript/backend/modal.ts
+ * @see https://github.com/TYPO3/typo3/blob/v13.4.3/Build/Sources/TypeScript/backend/modal.ts
  */
 declare module '@typo3/backend/modal.js' {
   export default nothing;
 }
 
 /**
- * @see https://github.com/TYPO3/typo3/blob/v12.4.0/Build/Sources/TypeScript/backend/notification.ts
+ * @see https://github.com/TYPO3/typo3/blob/v13.4.3/Build/Sources/TypeScript/backend/notification.ts
  */
 declare module '@typo3/backend/notification.js' {
   export default nothing;
 }
 
 /**
- * @see https://github.com/TYPO3/typo3/blob/v12.4.0/Build/Sources/TypeScript/core/ajax/ajax-request.ts
+ * @see https://github.com/TYPO3/typo3/blob/v13.4.3/Build/Sources/TypeScript/core/ajax/ajax-request.ts
  */
 declare module '@typo3/core/ajax/ajax-request.js' {
   export default nothing;
 }
 
 /**
- * @see https://github.com/TYPO3/typo3/blob/v12.4.0/Build/Sources/TypeScript/core/ajax/ajax-response.ts
+ * @see https://github.com/TYPO3/typo3/blob/v13.4.3/Build/Sources/TypeScript/core/ajax/ajax-response.ts
  */
 declare module '@typo3/core/ajax/ajax-response.js' {
   export default nothing;
 }
 
 /**
- * @see https://github.com/TYPO3/typo3/blob/v12.4.0/Build/Sources/TypeScript/core/document-service.ts
+ * @see https://github.com/TYPO3/typo3/blob/v13.4.3/Build/Sources/TypeScript/core/document-service.ts
  */
 declare module '@typo3/core/document-service.js' {
   export default nothing;
 }
 
 /**
- * @see https://github.com/TYPO3/typo3/blob/v12.4.0/Build/Sources/TypeScript/core/event/regular-event.ts
+ * @see https://github.com/TYPO3/typo3/blob/v13.4.3/Build/Sources/TypeScript/core/event/regular-event.ts
  */
 declare module '@typo3/core/event/regular-event.js' {
   export default nothing;
 }
 
 /**
- * @see https://github.com/TYPO3/typo3/blob/v12.4.0/Build/Sources/TypeScript/core/lit-helper.ts
+ * @see https://github.com/TYPO3/typo3/blob /v13.4.3/Build/Sources/TypeScript/core/lit-helper.ts
  */
 declare module '@typo3/core/lit-helper.js' {
   const lll: any;

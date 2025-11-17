@@ -37,10 +37,6 @@ $configuration
         $rootPath . '/Tests/Build',
         $rootPath . '/Tests/CGL',
     ])
-    ->ignoreErrorsOnPath(
-        $rootPath . '/Classes/DataProcessing/ExtensionConfigurationProcessor.php',
-        [ComposerDependencyAnalyser\Config\ErrorType::UNKNOWN_CLASS],
-    )
 ;
 
 return $configuration;

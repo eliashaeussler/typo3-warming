@@ -39,8 +39,7 @@ final readonly class LoggingCrawlerListener
         private Core\Log\LogManager $logManager,
     ) {}
 
-    // @todo Enable attribute once support for TYPO3 v12 is dropped
-    // #[\TYPO3\CMS\Core\Attribute\AsEventListener('eliashaeussler/typo3-warming/logging-crawler')]
+    #[Core\Attribute\AsEventListener('eliashaeussler/typo3-warming/logging-crawler')]
     public function __invoke(CacheWarmup\Event\Crawler\CrawlerConstructed $event): void
     {
         $crawler = $event->crawler();

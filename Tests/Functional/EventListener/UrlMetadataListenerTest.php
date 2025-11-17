@@ -60,7 +60,7 @@ final class UrlMetadataListenerTest extends TestingFramework\Core\Functional\Fun
         $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/be_users.csv');
         $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/pages.csv');
 
-        $this->urlMetadataFactory = new Src\Http\Message\UrlMetadataFactory();
+        $this->urlMetadataFactory = $this->get(Src\Http\Message\UrlMetadataFactory::class);
         $this->subject = $this->get(Src\EventListener\UrlMetadataListener::class);
 
         $serverRequest = new Core\Http\ServerRequest('https://typo3-testing.local');
