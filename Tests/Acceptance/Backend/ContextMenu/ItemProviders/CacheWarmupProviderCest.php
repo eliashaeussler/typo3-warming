@@ -39,13 +39,13 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('admin');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule->value);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule);
         $I->switchToIFrame();
 
         $pageTree->openContextMenu(['EXT:warming']);
 
-        $I->dontSee('Warmup cache for this page', Tests\Acceptance\Support\Enums\Selectors::ContextMenu->value);
-        $I->dontSee('Warmup all caches', Tests\Acceptance\Support\Enums\Selectors::ContextMenu->value);
+        $I->dontSee('Warmup cache for this page', Tests\Acceptance\Support\Enums\Selectors::ContextMenu);
+        $I->dontSee('Warmup all caches', Tests\Acceptance\Support\Enums\Selectors::ContextMenu);
     }
 
     public function canSeeContextMenuItemsAsAdmin(
@@ -54,13 +54,13 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('admin');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule->value);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule);
         $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Main']);
 
-        $I->see('Warmup cache for this page', Tests\Acceptance\Support\Enums\Selectors::ContextMenu->value);
-        $I->see('Warmup all caches', Tests\Acceptance\Support\Enums\Selectors::ContextMenu->value);
+        $I->see('Warmup cache for this page', Tests\Acceptance\Support\Enums\Selectors::ContextMenu);
+        $I->see('Warmup all caches', Tests\Acceptance\Support\Enums\Selectors::ContextMenu);
     }
 
     public function cannotSeeContextMenuItemsAsNonPermittedUser(
@@ -69,13 +69,13 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('editor.1');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule->value);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule);
         $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Main']);
 
-        $I->dontSee('Warmup cache for this page', Tests\Acceptance\Support\Enums\Selectors::ContextMenu->value);
-        $I->dontSee('Warmup all caches', Tests\Acceptance\Support\Enums\Selectors::ContextMenu->value);
+        $I->dontSee('Warmup cache for this page', Tests\Acceptance\Support\Enums\Selectors::ContextMenu);
+        $I->dontSee('Warmup all caches', Tests\Acceptance\Support\Enums\Selectors::ContextMenu);
     }
 
     public function canSeeContextMenuItemsAsPermittedUser(
@@ -84,13 +84,13 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('editor.2');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule->value);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule);
         $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Main']);
 
-        $I->see('Warmup cache for this page', Tests\Acceptance\Support\Enums\Selectors::ContextMenu->value);
-        $I->see('Warmup all caches', Tests\Acceptance\Support\Enums\Selectors::ContextMenu->value);
+        $I->see('Warmup cache for this page', Tests\Acceptance\Support\Enums\Selectors::ContextMenu);
+        $I->see('Warmup all caches', Tests\Acceptance\Support\Enums\Selectors::ContextMenu);
     }
 
     public function cannotSeeContextMenuItemsIfDisabledInExtensionConfiguration(
@@ -102,13 +102,13 @@ final class CacheWarmupProviderCest
 
         $I->loginAs('admin');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule->value);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule);
         $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Main']);
 
-        $I->dontSee('Warmup cache for this page', Tests\Acceptance\Support\Enums\Selectors::ContextMenu->value);
-        $I->dontSee('Warmup all caches', Tests\Acceptance\Support\Enums\Selectors::ContextMenu->value);
+        $I->dontSee('Warmup cache for this page', Tests\Acceptance\Support\Enums\Selectors::ContextMenu);
+        $I->dontSee('Warmup all caches', Tests\Acceptance\Support\Enums\Selectors::ContextMenu);
 
         $extensionConfiguration->write('enablePageTree', true);
     }
@@ -119,13 +119,13 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('admin');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule->value);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule);
         $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Root 2']);
 
-        $I->see('Warmup cache for this page', Tests\Acceptance\Support\Enums\Selectors::ContextMenu->value);
-        $I->dontSee('Warmup all caches', Tests\Acceptance\Support\Enums\Selectors::ContextMenu->value);
+        $I->see('Warmup cache for this page', Tests\Acceptance\Support\Enums\Selectors::ContextMenu);
+        $I->dontSee('Warmup all caches', Tests\Acceptance\Support\Enums\Selectors::ContextMenu);
     }
 
     public function cannotSeeContextMenuItemForSiteIfNoSiteIsConfiguredForRootPage(
@@ -134,12 +134,12 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('admin');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule->value);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule);
         $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Root 3']);
 
-        $I->dontSee('Warmup cache for this page', Tests\Acceptance\Support\Enums\Selectors::ContextMenu->value);
+        $I->dontSee('Warmup cache for this page', Tests\Acceptance\Support\Enums\Selectors::ContextMenu);
     }
 
     public function cannotSeeContextMenuItemsIfNoLanguagesAreAllowed(
@@ -148,13 +148,13 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('editor.3');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule->value);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule);
         $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Main']);
 
-        $I->dontSee('Warmup cache for this page', Tests\Acceptance\Support\Enums\Selectors::ContextMenu->value);
-        $I->dontSee('Warmup all caches', Tests\Acceptance\Support\Enums\Selectors::ContextMenu->value);
+        $I->dontSee('Warmup cache for this page', Tests\Acceptance\Support\Enums\Selectors::ContextMenu);
+        $I->dontSee('Warmup all caches', Tests\Acceptance\Support\Enums\Selectors::ContextMenu);
     }
 
     public function canSeeAllLanguagesAsAdmin(
@@ -163,14 +163,14 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('admin');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule->value);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule);
         $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Main']);
         $pageTree->selectInContextMenu(['Warmup cache for this page']);
 
-        $I->see('English', Tests\Acceptance\Support\Enums\Selectors::ContextMenuSubmenu->value);
-        $I->see('German', Tests\Acceptance\Support\Enums\Selectors::ContextMenuSubmenu->value);
+        $I->see('English', Tests\Acceptance\Support\Enums\Selectors::ContextMenuSubmenu);
+        $I->see('German', Tests\Acceptance\Support\Enums\Selectors::ContextMenuSubmenu);
     }
 
     public function canSeeOnlyPermittedLanguagesAsPermittedUser(
@@ -179,14 +179,14 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('editor.2');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule->value);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule);
         $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Main']);
         $pageTree->selectInContextMenu(['Warmup cache for this page']);
 
-        $I->see('English', Tests\Acceptance\Support\Enums\Selectors::ContextMenuSubmenu->value);
-        $I->dontSee('German', Tests\Acceptance\Support\Enums\Selectors::ContextMenuSubmenu->value);
+        $I->see('English', Tests\Acceptance\Support\Enums\Selectors::ContextMenuSubmenu);
+        $I->dontSee('German', Tests\Acceptance\Support\Enums\Selectors::ContextMenuSubmenu);
     }
 
     public function canSeeLanguageSelectionForSite(
@@ -195,13 +195,13 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('admin');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule->value);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule);
         $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Main']);
         $pageTree->selectInContextMenu(['Warmup all caches']);
 
-        $I->see('Select…', Tests\Acceptance\Support\Enums\Selectors::ContextMenuSubmenu->value);
+        $I->see('Select…', Tests\Acceptance\Support\Enums\Selectors::ContextMenuSubmenu);
     }
 
     public function canSelectLanguagesForSite(
@@ -211,7 +211,7 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('admin');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule->value);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule);
         $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Main']);
@@ -219,8 +219,8 @@ final class CacheWarmupProviderCest
 
         $modalDialog->canSeeDialog();
 
-        $I->canSee('Cache warmup', Tests\Acceptance\Support\Enums\Selectors::ModalTitle->value);
-        $I->canSee('Sites (filtered)', Tests\Acceptance\Support\Enums\Selectors::ModalHeader->value);
+        $I->canSee('Cache warmup', Tests\Acceptance\Support\Enums\Selectors::ModalTitle);
+        $I->canSee('Sites (filtered)', Tests\Acceptance\Support\Enums\Selectors::ModalHeader);
     }
 
     public function canSwitchToAllSitesInFilteredSitesModal(
@@ -230,7 +230,7 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('admin');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule->value);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule);
         $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Main']);
@@ -238,12 +238,12 @@ final class CacheWarmupProviderCest
 
         $modalDialog->canSeeDialog();
 
-        $I->click(Tests\Acceptance\Support\Enums\Selectors::ShowAllButton->value);
+        $I->click(Tests\Acceptance\Support\Enums\Selectors::ShowAllButton);
 
         $modalDialog->canSeeDialog();
 
-        $I->seeElement(Tests\Acceptance\Support\Enums\Selectors::SelectAllCheckbox->value);
-        $I->dontSee('Sites (filtered)', Tests\Acceptance\Support\Enums\Selectors::ModalHeader->value);
+        $I->seeElement(Tests\Acceptance\Support\Enums\Selectors::SelectAllCheckbox);
+        $I->dontSee('Sites (filtered)', Tests\Acceptance\Support\Enums\Selectors::ModalHeader);
     }
 
     public function canRunCacheWarmupForSite(
@@ -253,7 +253,7 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('admin');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule->value);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule);
         $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Main']);
@@ -261,8 +261,8 @@ final class CacheWarmupProviderCest
 
         $modalDialog->canSeeDialog();
 
-        $I->canSee('Cache warmup failed', Tests\Acceptance\Support\Enums\Selectors::ModalTitle->value);
-        $I->waitForElementNotVisible(Tests\Acceptance\Support\Enums\Selectors::ProgressPlaceholder->value);
+        $I->canSee('Cache warmup failed', Tests\Acceptance\Support\Enums\Selectors::ModalTitle);
+        $I->waitForElementNotVisible(Tests\Acceptance\Support\Enums\Selectors::ProgressPlaceholder);
 
         $modalDialog->clickButtonInDialog('Close');
     }
@@ -274,7 +274,7 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('admin');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule->value);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule);
         $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Main', 'Subsite 1']);
@@ -282,8 +282,8 @@ final class CacheWarmupProviderCest
 
         $modalDialog->canSeeDialog();
 
-        $I->canSee('Cache warmup failed', Tests\Acceptance\Support\Enums\Selectors::ModalTitle->value);
-        $I->waitForElementNotVisible(Tests\Acceptance\Support\Enums\Selectors::ProgressPlaceholder->value);
+        $I->canSee('Cache warmup failed', Tests\Acceptance\Support\Enums\Selectors::ModalTitle);
+        $I->waitForElementNotVisible(Tests\Acceptance\Support\Enums\Selectors::ProgressPlaceholder);
 
         $modalDialog->clickButtonInDialog('Close');
     }

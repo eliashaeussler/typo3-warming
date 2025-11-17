@@ -39,7 +39,7 @@ final class SimulateLogPageRowCest
         $I->runShellCommand('typo3 warming:cachewarmup -s 1 --limit 10');
 
         $I->loginAs('admin');
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendListModule->value);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendListModule);
 
         $numberOfLogs = $I->grabNumRecords(Src\Domain\Model\Log::TABLE_NAME);
         $randomLogNumber = random_int(1, $numberOfLogs);

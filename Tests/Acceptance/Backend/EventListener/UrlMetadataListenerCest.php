@@ -44,7 +44,7 @@ final class UrlMetadataListenerCest
 
         $this->proceedToReportModal($I, $modalDialog);
 
-        $I->dontSeeElementInDOM(Tests\Acceptance\Support\Enums\Selectors::ReportPanelActionButtonViewLogs->value);
+        $I->dontSeeElementInDOM(Tests\Acceptance\Support\Enums\Selectors::ReportPanelActionButtonViewLogs);
     }
 
     public function canViewLogsForWarmedUpPageAsAdmin(
@@ -55,8 +55,8 @@ final class UrlMetadataListenerCest
 
         $this->proceedToReportModal($I, $modalDialog);
 
-        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ReportPanelActionButtonViewLogs->value);
-        $I->click(Tests\Acceptance\Support\Enums\Selectors::ReportPanelActionButtonViewLogs->value);
+        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ReportPanelActionButtonViewLogs);
+        $I->click(Tests\Acceptance\Support\Enums\Selectors::ReportPanelActionButtonViewLogs);
 
         $I->switchToNextTab();
         $I->switchToFrame();
@@ -72,7 +72,7 @@ final class UrlMetadataListenerCest
 
         $this->proceedToReportModal($I, $modalDialog);
 
-        $I->dontSeeElementInDOM(Tests\Acceptance\Support\Enums\Selectors::ReportPanelActionButtonEditRecord->value);
+        $I->dontSeeElementInDOM(Tests\Acceptance\Support\Enums\Selectors::ReportPanelActionButtonEditRecord);
     }
 
     public function canEditRecordOfWarmedUpPageAsAdmin(
@@ -83,8 +83,8 @@ final class UrlMetadataListenerCest
 
         $this->proceedToReportModal($I, $modalDialog);
 
-        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ReportPanelActionButtonEditRecord->value);
-        $I->click(Tests\Acceptance\Support\Enums\Selectors::ReportPanelActionButtonEditRecord->value);
+        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ReportPanelActionButtonEditRecord);
+        $I->click(Tests\Acceptance\Support\Enums\Selectors::ReportPanelActionButtonEditRecord);
 
         $I->switchToNextTab();
         $I->switchToFrame(Typo3CodeceptionHelper\Enums\Selectors::BackendContentFrame->value);
@@ -105,27 +105,27 @@ final class UrlMetadataListenerCest
 
         $this->proceedToReportModal($I, $modalDialog);
 
-        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ReportPanelActionButtonShowInfo->value);
-        $I->click(Tests\Acceptance\Support\Enums\Selectors::ReportPanelActionButtonShowInfo->value);
+        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ReportPanelActionButtonShowInfo);
+        $I->click(Tests\Acceptance\Support\Enums\Selectors::ReportPanelActionButtonShowInfo);
 
-        $I->seeElement(Tests\Acceptance\Support\Enums\Selectors::InformationModal->value);
+        $I->seeElement(Tests\Acceptance\Support\Enums\Selectors::InformationModal);
     }
 
     private function proceedToReportModal(
         Tests\Acceptance\Support\AcceptanceTester $I,
         Tests\Acceptance\Support\Helper\ModalDialog $modalDialog,
     ): void {
-        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
-        $I->click(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
+        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem);
+        $I->click(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem);
 
         $modalDialog->canSeeDialog();
 
-        $I->checkOption(Tests\Acceptance\Support\Enums\Selectors::SelectAllCheckbox->value);
+        $I->checkOption(Tests\Acceptance\Support\Enums\Selectors::SelectAllCheckbox);
         $I->click('Start', Tests\Acceptance\Support\Helper\ModalDialog::$openedModalButtonContainerSelector);
 
         $modalDialog->canSeeDialog();
 
-        $I->waitForElementNotVisible(Tests\Acceptance\Support\Enums\Selectors::ProgressPlaceholder->value);
+        $I->waitForElementNotVisible(Tests\Acceptance\Support\Enums\Selectors::ProgressPlaceholder);
         $I->click('Show report', Tests\Acceptance\Support\Helper\ModalDialog::$openedModalButtonContainerSelector);
     }
 }
