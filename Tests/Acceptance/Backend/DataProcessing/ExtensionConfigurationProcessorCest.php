@@ -38,32 +38,32 @@ final class ExtensionConfigurationProcessorCest
     {
         $I->loginAs('admin');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendSettingsModule->value);
-        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ConfigureExtensionsButton->value);
-        $I->click(Tests\Acceptance\Support\Enums\Selectors::ConfigureExtensionsButton->value);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendSettingsModule);
+        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ConfigureExtensionsButton);
+        $I->click(Tests\Acceptance\Support\Enums\Selectors::ConfigureExtensionsButton);
 
         $I->switchToFrame();
 
-        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ExtensionConfigurationModalCollapseHeader->value);
-        $I->click(Tests\Acceptance\Support\Enums\Selectors::ExtensionConfigurationModalCollapseHeader->value);
+        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ExtensionConfigurationModalCollapseHeader);
+        $I->click(Tests\Acceptance\Support\Enums\Selectors::ExtensionConfigurationModalCollapseHeader);
     }
 
     public function canSeeProcessedJsonInExtensionConfigurationModal(Tests\Acceptance\Support\AcceptanceTester $I): void
     {
         $I->seeElementInDOM(
-            Tests\Acceptance\Support\Enums\Selectors::CodeMirrorWrapper->value,
+            Tests\Acceptance\Support\Enums\Selectors::CodeMirrorWrapper,
             ['name' => 'crawlerOptions'],
         );
         $I->seeElementInDOM(
-            Tests\Acceptance\Support\Enums\Selectors::CodeMirrorWrapper->value,
+            Tests\Acceptance\Support\Enums\Selectors::CodeMirrorWrapper,
             ['name' => 'verboseCrawlerOptions'],
         );
         $I->seeElementInDOM(
-            Tests\Acceptance\Support\Enums\Selectors::CodeMirrorWrapper->value,
+            Tests\Acceptance\Support\Enums\Selectors::CodeMirrorWrapper,
             ['name' => 'parserOptions'],
         );
         $I->seeElementInDOM(
-            Tests\Acceptance\Support\Enums\Selectors::CodeMirrorWrapper->value,
+            Tests\Acceptance\Support\Enums\Selectors::CodeMirrorWrapper,
             ['name' => 'clientOptions'],
         );
     }

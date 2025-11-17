@@ -37,19 +37,19 @@ final class CacheWarmupToolbarItemCest
     public function canSeeToolbarItemAsAdmin(Tests\Acceptance\Support\AcceptanceTester $I): void
     {
         $I->loginAs('admin');
-        $I->seeElement(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
+        $I->seeElement(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem);
     }
 
     public function cannotSeeToolbarItemAsNonPermittedUser(Tests\Acceptance\Support\AcceptanceTester $I): void
     {
         $I->loginAs('editor.1');
-        $I->dontSeeElement(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
+        $I->dontSeeElement(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem);
     }
 
     public function canSeeToolbarItemAsPermittedUser(Tests\Acceptance\Support\AcceptanceTester $I): void
     {
         $I->loginAs('editor.2');
-        $I->seeElement(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
+        $I->seeElement(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem);
     }
 
     public function cannotSeeToolbarItemIfDisabledInExtensionConfiguration(
@@ -60,7 +60,7 @@ final class CacheWarmupToolbarItemCest
 
         $I->wait(2);
         $I->loginAs('admin');
-        $I->dontSeeElement(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
+        $I->dontSeeElement(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem);
 
         $extensionConfiguration->write('enableToolbar', true);
     }
@@ -71,12 +71,12 @@ final class CacheWarmupToolbarItemCest
     ): void {
         $I->loginAs('admin');
 
-        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
-        $I->click(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
+        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem);
+        $I->click(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem);
 
         $modalDialog->canSeeDialog();
 
-        $I->canSee('Cache warmup', Tests\Acceptance\Support\Enums\Selectors::ModalTitle->value);
+        $I->canSee('Cache warmup', Tests\Acceptance\Support\Enums\Selectors::ModalTitle);
     }
 
     public function canSeeAllSitesAndLanguagesInCacheWarmupModalAsAdmin(
@@ -85,15 +85,15 @@ final class CacheWarmupToolbarItemCest
     ): void {
         $I->loginAs('admin');
 
-        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
-        $I->click(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
+        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem);
+        $I->click(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem);
 
         $modalDialog->canSeeDialog();
 
-        $I->seeElement(Tests\Acceptance\Support\Enums\Selectors::CheckboxMainGroup->value);
-        $I->seeElement(Tests\Acceptance\Support\Enums\Selectors::CheckboxMainLanguage0->value);
-        $I->seeElement(Tests\Acceptance\Support\Enums\Selectors::CheckboxMainLanguage1->value);
-        $I->seeElement(Tests\Acceptance\Support\Enums\Selectors::CheckboxRoot2->value);
+        $I->seeElement(Tests\Acceptance\Support\Enums\Selectors::CheckboxMainGroup);
+        $I->seeElement(Tests\Acceptance\Support\Enums\Selectors::CheckboxMainLanguage0);
+        $I->seeElement(Tests\Acceptance\Support\Enums\Selectors::CheckboxMainLanguage1);
+        $I->seeElement(Tests\Acceptance\Support\Enums\Selectors::CheckboxRoot2);
     }
 
     public function canSeeOnlyPermittedSitesAndLanguagesInCacheWarmupModalAsPermittedUser(
@@ -102,15 +102,15 @@ final class CacheWarmupToolbarItemCest
     ): void {
         $I->loginAs('editor.2');
 
-        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
-        $I->click(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
+        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem);
+        $I->click(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem);
 
         $modalDialog->canSeeDialog();
 
-        $I->seeElement(Tests\Acceptance\Support\Enums\Selectors::CheckboxMainGroup->value);
-        $I->seeElement(Tests\Acceptance\Support\Enums\Selectors::CheckboxMainLanguage0->value);
-        $I->dontSeeElement(Tests\Acceptance\Support\Enums\Selectors::CheckboxMainLanguage1->value);
-        $I->dontSeeElement(Tests\Acceptance\Support\Enums\Selectors::CheckboxRoot2->value);
+        $I->seeElement(Tests\Acceptance\Support\Enums\Selectors::CheckboxMainGroup);
+        $I->seeElement(Tests\Acceptance\Support\Enums\Selectors::CheckboxMainLanguage0);
+        $I->dontSeeElement(Tests\Acceptance\Support\Enums\Selectors::CheckboxMainLanguage1);
+        $I->dontSeeElement(Tests\Acceptance\Support\Enums\Selectors::CheckboxRoot2);
     }
 
     public function canRunCacheWarmupFromModal(
@@ -119,18 +119,18 @@ final class CacheWarmupToolbarItemCest
     ): void {
         $I->loginAs('admin');
 
-        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
-        $I->click(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
+        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem);
+        $I->click(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem);
 
         $modalDialog->canSeeDialog();
 
-        $I->checkOption(Tests\Acceptance\Support\Enums\Selectors::SelectAllCheckbox->value);
+        $I->checkOption(Tests\Acceptance\Support\Enums\Selectors::SelectAllCheckbox);
         $I->click('Start', Tests\Acceptance\Support\Helper\ModalDialog::$openedModalButtonContainerSelector);
 
         $modalDialog->canSeeDialog();
 
-        $I->canSee('Cache warmup failed', Tests\Acceptance\Support\Enums\Selectors::ModalTitle->value);
-        $I->waitForElementNotVisible(Tests\Acceptance\Support\Enums\Selectors::ProgressPlaceholder->value);
+        $I->canSee('Cache warmup failed', Tests\Acceptance\Support\Enums\Selectors::ModalTitle);
+        $I->waitForElementNotVisible(Tests\Acceptance\Support\Enums\Selectors::ProgressPlaceholder);
 
         $modalDialog->clickButtonInDialog('Close');
     }
@@ -142,30 +142,30 @@ final class CacheWarmupToolbarItemCest
     ): void {
         $I->loginAs('admin');
 
-        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
-        $I->click(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
+        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem);
+        $I->click(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem);
 
         $modalDialog->canSeeDialog();
 
         $configuredLimit = $extensionConfiguration->read('limit');
         $configuredStrategy = $extensionConfiguration->read('strategy');
 
-        $I->seeInField(Tests\Acceptance\Support\Enums\Selectors::SettingsLimit->value, $configuredLimit);
-        $I->fillField(Tests\Acceptance\Support\Enums\Selectors::SettingsLimit->value, 1);
+        $I->seeInField(Tests\Acceptance\Support\Enums\Selectors::SettingsLimit, $configuredLimit);
+        $I->fillField(Tests\Acceptance\Support\Enums\Selectors::SettingsLimit, 1);
 
-        $I->seeOptionIsSelected(Tests\Acceptance\Support\Enums\Selectors::SettingsStrategy->value, $configuredStrategy);
+        $I->seeOptionIsSelected(Tests\Acceptance\Support\Enums\Selectors::SettingsStrategy, $configuredStrategy);
         $I->selectOption(
-            Tests\Acceptance\Support\Enums\Selectors::SettingsStrategy->value,
+            Tests\Acceptance\Support\Enums\Selectors::SettingsStrategy,
             CacheWarmup\Crawler\Strategy\SortByPriorityStrategy::getName(),
         );
 
-        $I->checkOption(Tests\Acceptance\Support\Enums\Selectors::SelectAllCheckbox->value);
+        $I->checkOption(Tests\Acceptance\Support\Enums\Selectors::SelectAllCheckbox);
         $I->click('Start', Tests\Acceptance\Support\Helper\ModalDialog::$openedModalButtonContainerSelector);
 
         $modalDialog->canSeeDialog();
 
-        $I->waitForElementNotVisible(Tests\Acceptance\Support\Enums\Selectors::ProgressPlaceholder->value);
-        $I->see('1', Tests\Acceptance\Support\Enums\Selectors::ProgressCounterTotal->value);
+        $I->waitForElementNotVisible(Tests\Acceptance\Support\Enums\Selectors::ProgressPlaceholder);
+        $I->see('1', Tests\Acceptance\Support\Enums\Selectors::ProgressCounterTotal);
 
         $modalDialog->clickButtonInDialog('Close');
     }
@@ -176,13 +176,13 @@ final class CacheWarmupToolbarItemCest
     ): void {
         $I->loginAs('admin');
 
-        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
-        $I->click(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem->value);
+        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem);
+        $I->click(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem);
 
         $modalDialog->canSeeDialog();
 
         $I->click('Copy to clipboard');
-        $I->waitForText('Copied', 5, Tests\Acceptance\Support\Enums\Selectors::UserAgentCopyButton->value);
+        $I->waitForText('Copied', 5, Tests\Acceptance\Support\Enums\Selectors::UserAgentCopyButton);
 
         $clipboard = $I->executeJS('return await navigator.clipboard.readText();');
 
