@@ -86,7 +86,6 @@ final class ConfigurationTest extends TestingFramework\Core\Functional\Functiona
             ],
             false,
         );
-        $this->subject->injectRequestOptions($this->get(Src\Http\Message\Request\RequestOptions::class));
     }
 
     #[Framework\Attributes\Test]
@@ -105,131 +104,6 @@ final class ConfigurationTest extends TestingFramework\Core\Functional\Functiona
 
         self::assertInstanceOf(Tests\Functional\Fixtures\Classes\DummyVerboseCrawler::class, $actual);
         self::assertSame(['another' => 'foo'], $actual::$options);
-    }
-
-    /**
-     * @todo Remove with v5.0
-     */
-    #[Framework\Attributes\Test]
-    public function getUserAgentTriggersDeprecationNotice(): void
-    {
-        $deprecationMessage = null;
-
-        set_error_handler(
-            static function (int $severity, string $message) use (&$deprecationMessage) {
-                $deprecationMessage = $message;
-
-                return true;
-            },
-            E_USER_DEPRECATED,
-        );
-
-        try {
-            /* @phpstan-ignore method.deprecated */
-            $this->subject->getUserAgent();
-        } finally {
-            restore_error_handler();
-        }
-
-        self::assertSame(
-            \sprintf(
-                'Method "%s::getUserAgent()" is deprecated and will be removed in v5.0. Access User-Agent header via "%s::getUserAgent()" method instead.',
-                Src\Configuration\Configuration::class,
-                Src\Http\Message\Request\RequestOptions::class,
-            ),
-            $deprecationMessage,
-        );
-    }
-
-    /**
-     * @todo Remove with v5.0
-     */
-    #[Framework\Attributes\Test]
-    public function getUserAgentReturnsCorrectlyGeneratedUserAgent(): void
-    {
-        // Silence deprecations
-        set_error_handler(
-            static fn(int $severity, string $message) => true,
-            E_USER_DEPRECATED,
-        );
-
-        if ((new Core\Information\Typo3Version())->getMajorVersion() >= 13) {
-            $expected = 'TYPO3/tx_warming_crawleref503f61d0e736e783384fd63c5ea03da19f23a4';
-        } else {
-            $expected = 'TYPO3/tx_warming_crawler2cdfe0c134f3796954daf9395c034c39b542ca57';
-        }
-
-        try {
-            /* @phpstan-ignore method.deprecated */
-            self::assertSame($expected, $this->subject->getUserAgent());
-        } finally {
-            restore_error_handler();
-        }
-    }
-
-    /**
-     * @todo Remove with v5.0
-     */
-    #[Framework\Attributes\Test]
-    #[Framework\Attributes\DataProvider('deprecatedMethodCallTriggersDeprecationNoticeDataProvider')]
-    public function deprecatedMethodCallTriggersDeprecationNotice(string $methodName, string $expected): void
-    {
-        $deprecationMessage = null;
-
-        set_error_handler(
-            static function (int $severity, string $message) use (&$deprecationMessage) {
-                $deprecationMessage = $message;
-
-                return true;
-            },
-            E_USER_DEPRECATED,
-        );
-
-        try {
-            /* @phpstan-ignore argument.type */
-            call_user_func([$this->subject, $methodName]);
-        } finally {
-            restore_error_handler();
-        }
-
-        self::assertSame($expected, $deprecationMessage);
-    }
-
-    /**
-     * @todo Remove with v5.0
-     */
-    #[Framework\Attributes\Test]
-    #[Framework\Attributes\DataProvider('deprecatedMethodCallReturnsPropertyValueDataProvider')]
-    public function deprecatedMethodCallReturnsPropertyValue(string $methodName, mixed $expected): void
-    {
-        // Silence deprecations
-        set_error_handler(
-            static fn(int $severity, string $message) => true,
-            E_USER_DEPRECATED,
-        );
-
-        try {
-            /* @phpstan-ignore argument.type */
-            $actual = call_user_func([$this->subject, $methodName]);
-        } finally {
-            restore_error_handler();
-        }
-
-        self::assertEquals($expected, $actual);
-    }
-
-    /**
-     * @todo Remove with v5.0
-     */
-    #[Framework\Attributes\Test]
-    public function unsupportedMethodCallThrowsException(): void
-    {
-        $this->expectExceptionObject(
-            new \BadMethodCallException('Unknown method "foo".', 1753475960),
-        );
-
-        /* @phpstan-ignore method.notFound */
-        $this->subject->foo();
     }
 
     /**
