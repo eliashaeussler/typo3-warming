@@ -24,7 +24,6 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Tests\Acceptance\Backend\Middleware;
 
 use EliasHaeussler\Typo3Warming\Tests;
-use TYPO3\CMS\Core;
 
 /**
  * InjectExtensionConfigurationScriptMiddlewareCest
@@ -34,32 +33,14 @@ use TYPO3\CMS\Core;
  */
 final class InjectExtensionConfigurationScriptMiddlewareCest
 {
-    public function cannotSeeInjectedScriptOnTypo3V12(Tests\Acceptance\Support\AcceptanceTester $I): void
-    {
-        if ((new Core\Information\Typo3Version())->getMajorVersion() >= 12) {
-            $I->markTestSkipped('This test is only relevant on TYPO3 v12.');
-        }
-
-        $I->loginAs('admin');
-        $I->dontSeeElementInDOM('#tx-warming-script-inject');
-    }
-
     public function cannotSeeInjectedScriptOnInsufficientPrivileges(Tests\Acceptance\Support\AcceptanceTester $I): void
     {
-        if ((new Core\Information\Typo3Version())->getMajorVersion() < 13) {
-            $I->markTestSkipped('This test is only relevant on TYPO3 v13.');
-        }
-
         $I->loginAs('editor.1');
         $I->dontSeeElementInDOM('#tx-warming-script-inject');
     }
 
     public function canSeeInjectedScriptOnTypo3V13(Tests\Acceptance\Support\AcceptanceTester $I): void
     {
-        if ((new Core\Information\Typo3Version())->getMajorVersion() < 13) {
-            $I->markTestSkipped('This test is only relevant on TYPO3 v13.');
-        }
-
         $I->loginAs('admin');
         $I->seeElementInDOM('#tx-warming-script-inject');
     }

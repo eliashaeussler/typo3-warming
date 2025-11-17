@@ -43,7 +43,6 @@ enum Selectors: string
     case ContextMenu = '.context-menu';
     case ContextMenuGroup = '.context-menu .context-menu-group';
     case ContextMenuSubmenu = '.context-menu[data-contextmenu-parent]';
-    case ContextMenuSubmenuLegacy = '.context-menu[data-parent]';
     case ExtensionConfigurationModalCollapseHeader = '#heading-warming';
     case InformationModal = 'typo3-backend-modal[content^="/typo3/record/info"]';
     case ModalHeader = '.tx-warming-modal-header';

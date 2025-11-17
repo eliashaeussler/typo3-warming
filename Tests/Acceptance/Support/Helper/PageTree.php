@@ -25,7 +25,6 @@ namespace EliasHaeussler\Typo3Warming\Tests\Acceptance\Support\Helper;
 
 use EliasHaeussler\Typo3Warming\Tests;
 use Facebook\WebDriver;
-use TYPO3\CMS\Core;
 use TYPO3\TestingFramework;
 
 /**
@@ -41,12 +40,9 @@ final class PageTree extends TestingFramework\Core\Acceptance\Helper\AbstractPag
      */
     protected $tester;
 
-    private readonly Core\Information\Typo3Version $typo3Version;
-
     public function __construct(Tests\Acceptance\Support\AcceptanceTester $tester)
     {
         $this->tester = $tester;
-        $this->typo3Version = new Core\Information\Typo3Version();
     }
 
     /**
@@ -79,9 +75,7 @@ final class PageTree extends TestingFramework\Core\Acceptance\Helper\AbstractPag
         $I = $this->tester;
 
         $remaining = \count($path);
-        $contextMenuIdentifier = $this->usesNewContextMenuIdentifiers()
-            ? '[data-contextmenu-parent="root"]'
-            : '#contentMenu0';
+        $contextMenuIdentifier = '[data-contextmenu-parent="root"]';
 
         foreach ($path as $depth => $selector) {
             --$remaining;
@@ -96,7 +90,7 @@ final class PageTree extends TestingFramework\Core\Acceptance\Helper\AbstractPag
                         if ($item->getText() === $selector) {
                             $webDriver->getMouse()->click($item->getCoordinates());
 
-                            if ($this->usesNewContextMenuIdentifiers() && $remaining > 0) {
+                            if ($remaining > 0) {
                                 $button = $item->findElement(WebDriver\WebDriverBy::tagName('button'));
                                 $contextMenuIdentifier = \sprintf(
                                     '[data-contextmenu-parent="%s"]',
@@ -109,10 +103,6 @@ final class PageTree extends TestingFramework\Core\Acceptance\Helper\AbstractPag
                     }
                 },
             );
-
-            if (!$this->usesNewContextMenuIdentifiers()) {
-                $contextMenuIdentifier = \sprintf('#contentMenu%d', $depth + 1);
-            }
         }
     }
 
@@ -143,13 +133,5 @@ final class PageTree extends TestingFramework\Core\Acceptance\Helper\AbstractPag
         }
 
         return $context;
-    }
-
-    /**
-     * @see https://review.typo3.org/c/Packages/TYPO3.CMS/+/87887
-     */
-    public function usesNewContextMenuIdentifiers(): bool
-    {
-        return \version_compare($this->typo3Version->getVersion(), '13.4.5', '>=');
     }
 }

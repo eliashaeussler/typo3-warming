@@ -30,8 +30,8 @@ $EM_CONF[$_EXTKEY] = [
     'author_email' => 'elias@haeussler.dev',
     'constraints' => [
         'depends' => [
-            'typo3' => '13.4.3-13.4.99',
             'php' => '8.2.0-8.4.99',
+            'typo3' => '13.4.5-13.4.99',
             'sitemap_locator' => '0.2.0-0.2.99',
             'typed_extconf' => '0.2.0-0.2.99',
         ],
