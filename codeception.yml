@@ -47,12 +47,15 @@ extensions:
     - EliasHaeussler\Typo3CodeceptionHelper\Codeception\Extension\ApplicationEntrypointModifier:
         entrypoints:
           - web-dir: .Build/web
+          # @todo Remove below entrypoints once support for TYPO3 v13 is dropped
           - web-dir: .Build/web/typo3
             main-entrypoint: index.php
             app-entrypoint: app-index.php
+            optional: true
           - web-dir: .Build/web/typo3
             main-entrypoint: install.php
             app-entrypoint: app-install.php
+            optional: true
     - EliasHaeussler\Typo3Warming\Tests\Acceptance\Support\Extension\EnvironmentExtension
 
 coverage:
