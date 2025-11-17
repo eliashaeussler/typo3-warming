@@ -25,7 +25,6 @@ use EliasHaeussler\RectorConfig\Config\Config;
 use Rector\Config\RectorConfig;
 use Rector\Php80\Rector\Class_\AnnotationToAttributeRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
-use Rector\PHPUnit\CodeQuality\Rector\MethodCall\ScalarArgumentToExpectedParamTypeRector;
 use Rector\Symfony\DependencyInjection\Rector\Trait_\TraitGetByTypeToInjectRector;
 use Rector\Symfony\Symfony73\Rector\Class_\CommandHelpToAttributeRector;
 use Rector\ValueObject\PhpVersion;
@@ -72,10 +71,6 @@ return static function (RectorConfig $rectorConfig): void {
         ])
         ->skip(CommandHelpToAttributeRector::class, [
             $rootPath . '/Classes/Command/WarmupCommand.php',
-        ])
-        // @todo Remove once bug is fixed within Rector
-        ->skip(ScalarArgumentToExpectedParamTypeRector::class, [
-            $rootPath . '/Tests/Functional/Domain/Repository/SiteRepositoryTest.php',
         ])
         ->skip(TraitGetByTypeToInjectRector::class, [
             $rootPath . '/Tests/Functional/SiteTrait.php',
