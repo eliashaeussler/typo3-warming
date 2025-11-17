@@ -33,7 +33,7 @@ enum Selectors: string
 {
     public const BackendListModule = '[data-moduleroute-identifier="web_list"]';
     public const BackendPageModule = '[data-moduleroute-identifier="web_layout"]';
-    public const BackendSettingsModule = '[data-moduleroute-identifier="tools_toolssettings"]';
+    public const BackendSettingsModule = '[data-moduleroute-identifier="system_settings"]';
     public const CheckboxMainGroup = '#tx-warming-checkbox-main-group';
     public const CheckboxMainLanguage0 = '#tx-warming-checkbox-main-0';
     public const CheckboxMainLanguage1 = '#tx-warming-checkbox-main-1';
@@ -46,7 +46,7 @@ enum Selectors: string
     public const ExtensionConfigurationModalCollapseHeader = '#heading-warming';
     public const InformationModal = 'typo3-backend-modal[content^="/typo3/record/info"]';
     public const ModalHeader = '.tx-warming-modal-header';
-    public const ModalTitle = '.modal .modal-title';
+    public const ModalTitle = '.t3js-modal[open] .modal-header-title';
     public const ProgressCounterTotal = '.tx-warming-progress-modal .tx-warming-progress-modal-counter > div:nth-child(1) > strong:nth-child(2)';
     public const ProgressPlaceholder = '.tx-warming-progress-modal .tx-warming-progress-placeholder';
     public const ReportPanelActionButtonViewLogs = 'warming-report-panel .panel-collapse a[href*="/BackendLog/"]';
@@ -59,4 +59,8 @@ enum Selectors: string
     public const SiteGroupSelector = '.tx-warming-sites-group-selector';
     public const ToolbarItem = '#eliashaeussler-typo3warming-backend-toolbaritems-cachewarmuptoolbaritem';
     public const UserAgentCopyButton = '.tx-warming-sites-modal .tx-warming-user-agent-copy-action';
+
+    // @todo Remove once support for TYPO3 v13 is dropped
+    public const BackendSettingsModuleLegacy = '[data-moduleroute-identifier="tools_toolssettings"]';
+    public const ModalTitleLegacy = '.modal .modal-title';
 }

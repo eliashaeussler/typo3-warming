@@ -200,6 +200,13 @@ export class ProgressModal extends LitElement {
    * @returns {HTMLElement} Title of current modal
    */
   private getTitle(): HTMLElement {
+    const title: HTMLElement|null = this.modal.querySelector('.modal-header-title');
+
+    if (title !== null) {
+      return title;
+    }
+
+    // @todo Remove once support for TYPO3 v13 is dropped
     return this.modal.querySelector('.modal-title');
   }
 

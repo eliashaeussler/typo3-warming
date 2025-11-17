@@ -25,6 +25,7 @@ namespace EliasHaeussler\Typo3Warming\Tests\Acceptance\Backend\DataProcessing;
 
 use EliasHaeussler\Typo3Warming\Tests;
 use Facebook\WebDriver\WebDriverBy;
+use TYPO3\CMS\Core;
 
 /**
  * ExtensionConfigurationProcessorCest
@@ -38,7 +39,14 @@ final class ExtensionConfigurationProcessorCest
     {
         $I->loginAs('admin');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendSettingsModule);
+        if ((new Core\Information\Typo3Version())->getMajorVersion() >= 14) {
+            $settingsModuleIdentifier = Tests\Acceptance\Support\Enums\Selectors::BackendSettingsModule;
+        } else {
+            // @todo Remove once support for TYPO3 v13 is dropped
+            $settingsModuleIdentifier = Tests\Acceptance\Support\Enums\Selectors::BackendSettingsModuleLegacy;
+        }
+
+        $I->openModule($settingsModuleIdentifier);
         $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ConfigureExtensionsButton);
         $I->click(Tests\Acceptance\Support\Enums\Selectors::ConfigureExtensionsButton);
 

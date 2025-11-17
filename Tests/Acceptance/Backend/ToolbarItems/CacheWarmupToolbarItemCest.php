@@ -25,6 +25,7 @@ namespace EliasHaeussler\Typo3Warming\Tests\Acceptance\Backend\ToolbarItems;
 
 use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3Warming\Tests;
+use TYPO3\CMS\Core;
 
 /**
  * CacheWarmupToolbarItem
@@ -76,7 +77,14 @@ final class CacheWarmupToolbarItemCest
 
         $modalDialog->canSeeDialog();
 
-        $I->canSee('Cache warmup', Tests\Acceptance\Support\Enums\Selectors::ModalTitle);
+        if ((new Core\Information\Typo3Version())->getMajorVersion() >= 14) {
+            $modalTitleSelector = Tests\Acceptance\Support\Enums\Selectors::ModalTitle;
+        } else {
+            // @todo Remove once support for TYPO3 v13 is dropped
+            $modalTitleSelector = Tests\Acceptance\Support\Enums\Selectors::ModalTitleLegacy;
+        }
+
+        $I->canSee('Cache warmup', $modalTitleSelector);
     }
 
     public function canSeeAllSitesAndLanguagesInCacheWarmupModalAsAdmin(
@@ -129,7 +137,14 @@ final class CacheWarmupToolbarItemCest
 
         $modalDialog->canSeeDialog();
 
-        $I->canSee('Cache warmup failed', Tests\Acceptance\Support\Enums\Selectors::ModalTitle);
+        if ((new Core\Information\Typo3Version())->getMajorVersion() >= 14) {
+            $modalTitleSelector = Tests\Acceptance\Support\Enums\Selectors::ModalTitle;
+        } else {
+            // @todo Remove once support for TYPO3 v13 is dropped
+            $modalTitleSelector = Tests\Acceptance\Support\Enums\Selectors::ModalTitleLegacy;
+        }
+
+        $I->canSee('Cache warmup failed', $modalTitleSelector);
         $I->waitForElementNotVisible(Tests\Acceptance\Support\Enums\Selectors::ProgressPlaceholder);
 
         $modalDialog->clickButtonInDialog('Close');

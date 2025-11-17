@@ -19,7 +19,9 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-return [
+use TYPO3\CMS\Core;
+
+$tca = [
     'ctrl' => [
         'title' => 'LLL:EXT:warming/Resources/Private/Language/locallang_db.xlf:tx_warming_domain_model_log',
         'label' => 'url',
@@ -35,7 +37,6 @@ return [
             \EliasHaeussler\Typo3Warming\Enums\WarmupState::Failed->value => 'overlay-missing',
         ],
         'typeicon_column' => 'state',
-        'searchFields' => 'request_id, date, url, message, state, sitemap, site, site_language',
     ],
     'columns' => [
         'request_id' => [
@@ -158,3 +159,10 @@ return [
         ],
     ],
 ];
+
+// @todo Remove once support for TYPO3 v13 is dropped
+if ((new Core\Information\Typo3Version())->getMajorVersion() < 14) {
+    $tca['ctrl']['searchFields'] = 'request_id, date, url, message, state, sitemap, site, site_language';
+}
+
+return $tca;
