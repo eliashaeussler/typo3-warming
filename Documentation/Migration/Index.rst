@@ -25,6 +25,16 @@ Removal of deprecated functionality
 -   Several getter methods in :php:`\EliasHaeussler\Typo3Warming\Configuration\Configuration`
     are now finally removed (see :ref:`deprecation notices <version-4.2.0>`).
 
+Use of a different secret for :php:`User-Agent` header value
+------------------------------------------------------------
+
+-   The additional secret used to HMAC-hash the generated :php:`User-Agent` header value has
+    been changed.
+-   Values of the :php:`User-Agent` header are now different compared to their previous
+    representation.
+-   Make sure to adapt all places that rely on the :php:`User-Agent` header (e.g. exclusions
+    in stats software like Matomo).
+
 ..  _version-4.2.0:
 
 Version 4.2.0
