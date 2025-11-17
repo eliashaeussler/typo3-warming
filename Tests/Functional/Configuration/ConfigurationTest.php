@@ -86,6 +86,7 @@ final class ConfigurationTest extends TestingFramework\Core\Functional\Functiona
             ],
             false,
         );
+        $this->subject->injectRequestOptions($this->get(Src\Http\Message\Request\RequestOptions::class));
     }
 
     #[Framework\Attributes\Test]

@@ -89,15 +89,7 @@ final readonly class ConfigurationMapperFactory implements TypedExtConf\Mapper\M
      */
     private function mapIntegerList(string $list): array
     {
-        $list = Core\Utility\GeneralUtility::intExplode(',', $list, true);
-
-        // @todo Remove once support for TYPO3 v12 is dropped
-        /* @phpstan-ignore function.alreadyNarrowedType */
-        if (!\array_is_list($list)) {
-            $list = \array_values($list);
-        }
-
-        return $list;
+        return Core\Utility\GeneralUtility::intExplode(',', $list, true);
     }
 
     /**

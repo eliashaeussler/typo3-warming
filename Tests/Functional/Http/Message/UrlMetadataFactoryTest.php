@@ -26,7 +26,6 @@ namespace EliasHaeussler\Typo3Warming\Tests\Functional\Http\Message;
 use EliasHaeussler\Typo3Warming as Src;
 use PHPUnit\Framework;
 use TYPO3\CMS\Core;
-use TYPO3\CMS\Extbase;
 use TYPO3\TestingFramework;
 
 /**
@@ -38,6 +37,12 @@ use TYPO3\TestingFramework;
 #[Framework\Attributes\CoversClass(Src\Http\Message\UrlMetadataFactory::class)]
 final class UrlMetadataFactoryTest extends TestingFramework\Core\Functional\FunctionalTestCase
 {
+    protected array $testExtensionsToLoad = [
+        'sitemap_locator',
+        'typed_extconf',
+        'warming',
+    ];
+
     protected bool $initializeDatabase = false;
 
     private Src\Http\Message\UrlMetadataFactory $subject;
@@ -46,7 +51,7 @@ final class UrlMetadataFactoryTest extends TestingFramework\Core\Functional\Func
     {
         parent::setUp();
 
-        $this->subject = new Src\Http\Message\UrlMetadataFactory();
+        $this->subject = $this->get(Src\Http\Message\UrlMetadataFactory::class);
     }
 
     #[Framework\Attributes\Test]
@@ -106,7 +111,7 @@ final class UrlMetadataFactoryTest extends TestingFramework\Core\Functional\Func
     #[Framework\Attributes\Test]
     public function createFromResponseReturnsNullOnInvalidResponse(): void
     {
-        $headerValue = $this->appendHmac('{"foo":"baz"}');
+        $headerValue = $this->buildExpectedHeaderValue('{"foo":"baz"}');
         $response = new Core\Http\Response(headers: [
             'X-Warming-Url-Metadata' => \base64_encode($headerValue),
         ]);
@@ -142,7 +147,7 @@ final class UrlMetadataFactoryTest extends TestingFramework\Core\Functional\Func
     #[Framework\Attributes\Test]
     public function createFromResponseHeadersReturnsNullOnInvalidResponseHeader(): void
     {
-        $headerValue = $this->appendHmac('{"foo":"baz"}');
+        $headerValue = $this->buildExpectedHeaderValue('{"foo":"baz"}');
         $headers = [
             'X-Warming-Url-Metadata: ' . \base64_encode($headerValue),
         ];
@@ -167,7 +172,7 @@ final class UrlMetadataFactoryTest extends TestingFramework\Core\Functional\Func
     {
         $requestUrl = 'https://typo3-testing.local';
         $request = new Core\Http\ServerRequest($requestUrl);
-        $headerValue = $this->appendHmac($requestUrl);
+        $headerValue = $this->buildExpectedHeaderValue($requestUrl);
 
         $expected = $request->withHeader(
             'X-Warming-Request-Claim',
@@ -183,7 +188,7 @@ final class UrlMetadataFactoryTest extends TestingFramework\Core\Functional\Func
     {
         $urlMetadata = new Src\Http\Message\UrlMetadata(1, '0', 1);
         $response = new Core\Http\Response();
-        $headerValue = $this->appendHmac(\json_encode($urlMetadata, JSON_THROW_ON_ERROR));
+        $headerValue = $this->buildExpectedHeaderValue(\json_encode($urlMetadata, JSON_THROW_ON_ERROR));
 
         $expected = $response->withHeader(
             'X-Warming-Url-Metadata',
@@ -200,7 +205,7 @@ final class UrlMetadataFactoryTest extends TestingFramework\Core\Functional\Func
         $urlMetadata = new Src\Http\Message\UrlMetadata(1, '0', 1);
         $response = new Core\Http\Response();
         $exception = new Core\Http\ImmediateResponseException($response);
-        $headerValue = $this->appendHmac(\json_encode($urlMetadata, JSON_THROW_ON_ERROR));
+        $headerValue = $this->buildExpectedHeaderValue(\json_encode($urlMetadata, JSON_THROW_ON_ERROR));
 
         $expected = $response->withHeader(
             'X-Warming-Url-Metadata',
@@ -218,7 +223,7 @@ final class UrlMetadataFactoryTest extends TestingFramework\Core\Functional\Func
     {
         $urlMetadata = new Src\Http\Message\UrlMetadata(1, '0', 1);
         $exception = new Core\Error\Http\StatusException([], ' Something went wrong');
-        $headerValue = $this->appendHmac(\json_encode($urlMetadata, JSON_THROW_ON_ERROR));
+        $headerValue = $this->buildExpectedHeaderValue(\json_encode($urlMetadata, JSON_THROW_ON_ERROR));
 
         $expected = [
             'X-Warming-Url-Metadata: ' . \base64_encode($headerValue),
@@ -230,18 +235,10 @@ final class UrlMetadataFactoryTest extends TestingFramework\Core\Functional\Func
         self::assertEquals($urlMetadata, $this->subject->createFromResponseHeaders($exception->getStatusHeaders()));
     }
 
-    private function appendHmac(string $value): string
+    private function buildExpectedHeaderValue(string $value): string
     {
-        if (class_exists(Core\Crypto\HashService::class)) {
-            return Core\Utility\GeneralUtility::makeInstance(Core\Crypto\HashService::class)
-                ->appendHmac($value, Src\Http\Message\UrlMetadataFactory::class)
-            ;
-        }
-
-        // @todo Remove once support for TYPO3 v12 is dropped
-        /* @phpstan-ignore classConstant.deprecatedClass, method.deprecatedClass */
-        return Core\Utility\GeneralUtility::makeInstance(Extbase\Security\Cryptography\HashService::class)
-            ->appendHmac($value)
+        return Core\Utility\GeneralUtility::makeInstance(Core\Crypto\HashService::class)
+            ->appendHmac($value, Src\Http\Message\UrlMetadataFactory::class)
         ;
     }
 }

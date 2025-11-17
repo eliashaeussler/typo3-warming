@@ -30,7 +30,6 @@ use GuzzleHttp\RequestOptions;
 use TYPO3\CMS\Backend;
 use TYPO3\CMS\Core;
 use TYPO3\CMS\Fluid;
-use TYPO3\CMS\T3editor;
 
 /**
  * ExtensionConfigurationProcessor
@@ -67,7 +66,8 @@ final class ExtensionConfigurationProcessor
         $this->crawlingStrategyFactory = new CacheWarmup\Crawler\Strategy\CrawlingStrategyFactory();
         $this->extensionConfiguration = Core\Utility\GeneralUtility::makeInstance(Core\Configuration\ExtensionConfiguration::class);
         $this->templateRenderer = new View\TemplateRenderer(
-            Core\Utility\GeneralUtility::makeInstance(Fluid\Core\Rendering\RenderingContextFactory::class)
+            Core\Utility\GeneralUtility::makeInstance(Fluid\Core\Rendering\RenderingContextFactory::class),
+            Core\Utility\GeneralUtility::makeInstance(Core\View\ViewFactoryInterface::class),
         );
     }
 
@@ -86,9 +86,7 @@ final class ExtensionConfigurationProcessor
         // Set flag to avoid loading code editor multiple times
         self::$codeEditorLoaded = true;
 
-        if (class_exists(T3editor\T3editor::class)) {
-            $this->resolveLegacyT3EditorVariables($fieldName, $variables);
-        } elseif (class_exists(Backend\CodeEditor\CodeEditor::class)) {
+        if (class_exists(Backend\CodeEditor\CodeEditor::class)) {
             $this->resolveCodeEditorVariables($fieldName, $variables);
         }
 
@@ -145,50 +143,6 @@ final class ExtensionConfigurationProcessor
             'fieldValue' => $fieldValue,
             'validation' => self::TAG_LIST_VALIDATIONS[$fieldName] ?? null,
         ]);
-    }
-
-    /**
-     * @param array<string, mixed> $variables
-     *
-     * @todo Remove once support for TYPO3 v12 is dropped.
-     */
-    private function resolveLegacyT3EditorVariables(string $fieldName, array &$variables): void
-    {
-        /* @phpstan-ignore class.notFound */
-        $t3editor = Core\Utility\GeneralUtility::makeInstance(T3editor\T3editor::class);
-        /* @phpstan-ignore class.notFound */
-        $t3editor->registerConfiguration();
-
-        /* @phpstan-ignore class.notFound */
-        $addonRegistry = Core\Utility\GeneralUtility::makeInstance(T3editor\Registry\AddonRegistry::class);
-        $addons = [];
-
-        /* @phpstan-ignore class.notFound */
-        $modeRegistry = Core\Utility\GeneralUtility::makeInstance(T3editor\Registry\ModeRegistry::class);
-        /* @phpstan-ignore class.notFound */
-        $mode = $modeRegistry->getByFileExtension('json')->getModule();
-
-        /* @phpstan-ignore class.notFound */
-        foreach ($addonRegistry->getAddons() as $addon) {
-            $module = $addon->getModule();
-            if ($module !== null) {
-                $addons[] = $module;
-            }
-        }
-
-        $jsonSchema = $this->buildJsonSchemaForField($fieldName);
-
-        if ($jsonSchema !== null) {
-            $addons[] = Core\Page\JavaScriptModuleInstruction::create(
-                '@eliashaeussler/typo3-warming/backend/extension-configuration.js',
-            )->invoke('jsonSchema', $jsonSchema);
-        }
-
-        $variables['codeEditor'] = [
-            'mode' => Core\Utility\GeneralUtility::jsonEncodeForHtmlAttribute($mode, false),
-            'addons' => Core\Utility\GeneralUtility::jsonEncodeForHtmlAttribute($addons, false),
-            'jsModule' => '@typo3/t3editor/element/code-mirror-element.js',
-        ];
     }
 
     /**

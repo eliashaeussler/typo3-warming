@@ -26,7 +26,6 @@ namespace EliasHaeussler\Typo3Warming\Http\Message\Request;
 use EliasHaeussler\Typo3Warming\Configuration;
 use Symfony\Component\DependencyInjection;
 use TYPO3\CMS\Core;
-use TYPO3\CMS\Extbase;
 
 /**
  * RequestOptions
@@ -37,22 +36,15 @@ use TYPO3\CMS\Extbase;
 #[DependencyInjection\Attribute\Autoconfigure(public: true)]
 final readonly class RequestOptions
 {
+    public function __construct(
+        private Core\Crypto\HashService $hashService,
+    ) {}
+
     public function getUserAgent(): string
     {
         $string = 'TYPO3/tx_warming_crawler';
 
-        if (class_exists(Core\Crypto\HashService::class)) {
-            return Core\Utility\GeneralUtility::makeInstance(Core\Crypto\HashService::class)->appendHmac(
-                $string,
-                // @todo Change to self::class in v5.0
-                Configuration\Configuration::class,
-            );
-        }
-
-        // @todo Remove once support for TYPO3 v12 is dropped
-        /* @phpstan-ignore classConstant.deprecatedClass, method.deprecatedClass */
-        return Core\Utility\GeneralUtility::makeInstance(Extbase\Security\Cryptography\HashService::class)->appendHmac(
-            $string,
-        );
+        // @todo Change secret to self::class in v5.0
+        return $this->hashService->appendHmac($string, Configuration\Configuration::class);
     }
 }

@@ -41,6 +41,12 @@ final class UrlMetadataEnricherMiddlewareTest extends TestingFramework\Core\Func
 {
     use Tests\Functional\SiteTrait;
 
+    protected array $testExtensionsToLoad = [
+        'sitemap_locator',
+        'typed_extconf',
+        'warming',
+    ];
+
     protected bool $initializeDatabase = false;
 
     private Src\Http\Message\UrlMetadataFactory $urlMetadataFactory;
@@ -52,7 +58,7 @@ final class UrlMetadataEnricherMiddlewareTest extends TestingFramework\Core\Func
     {
         parent::setUp();
 
-        $this->urlMetadataFactory = new Src\Http\Message\UrlMetadataFactory();
+        $this->urlMetadataFactory = $this->get(Src\Http\Message\UrlMetadataFactory::class);
         $this->subject = new Src\Middleware\UrlMetadataEnricherMiddleware($this->urlMetadataFactory);
         $this->request = $this->urlMetadataFactory->enrichRequest(new Core\Http\ServerRequest('https://typo3-testing.local'))
             ->withAttribute('routing', new Core\Routing\PageArguments(1, '0', []))

@@ -25,7 +25,6 @@ namespace EliasHaeussler\Typo3Warming\Tests\Functional\Http\Message\Request;
 
 use EliasHaeussler\Typo3Warming as Src;
 use PHPUnit\Framework;
-use TYPO3\CMS\Core;
 use TYPO3\TestingFramework;
 
 /**
@@ -64,13 +63,9 @@ final class RequestOptionsTest extends TestingFramework\Core\Functional\Function
     #[Framework\Attributes\Test]
     public function getUserAgentReturnsCorrectlyGeneratedUserAgent(): void
     {
-        if ((new Core\Information\Typo3Version())->getMajorVersion() >= 13) {
-            $expected = 'TYPO3/tx_warming_crawleref503f61d0e736e783384fd63c5ea03da19f23a4';
-        } else {
-            // @todo Remove once support for TYPO3 v12 is dropped
-            $expected = 'TYPO3/tx_warming_crawler2cdfe0c134f3796954daf9395c034c39b542ca57';
-        }
-
-        self::assertSame($expected, $this->subject->getUserAgent());
+        self::assertSame(
+            'TYPO3/tx_warming_crawleref503f61d0e736e783384fd63c5ea03da19f23a4',
+            $this->subject->getUserAgent(),
+        );
     }
 }

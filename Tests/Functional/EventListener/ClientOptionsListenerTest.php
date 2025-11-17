@@ -30,7 +30,6 @@ use EliasHaeussler\Typo3Warming as Src;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\RequestOptions;
 use PHPUnit\Framework;
-use TYPO3\CMS\Core;
 use TYPO3\TestingFramework;
 
 /**
@@ -106,17 +105,12 @@ final class ClientOptionsListenerTest extends TestingFramework\Core\Functional\F
             RequestOptions::VERIFY => false,
         ]);
 
-        if ((new Core\Information\Typo3Version())->getMajorVersion() >= 13) {
-            $userAgent = 'TYPO3/tx_warming_crawleref503f61d0e736e783384fd63c5ea03da19f23a4';
-        } else {
-            // @todo Remove once support for TYPO3 v12 is dropped
-            $userAgent = 'TYPO3/tx_warming_crawler2cdfe0c134f3796954daf9395c034c39b542ca57';
-        }
-
         $expected = [
             RequestOptions::VERIFY => false,
             RequestOptions::AUTH => ['username', 'password'],
-            RequestOptions::HEADERS => ['User-Agent' => $userAgent],
+            RequestOptions::HEADERS => [
+                'User-Agent' => 'TYPO3/tx_warming_crawleref503f61d0e736e783384fd63c5ea03da19f23a4',
+            ],
         ];
 
         $this->subject->processClient($event);

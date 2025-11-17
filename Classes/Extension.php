@@ -67,25 +67,6 @@ final class Extension
     }
 
     /**
-     * Register custom PageTsConfig.
-     *
-     * FOR USE IN ext_localconf.php ONLY.
-     *
-     * @todo Remove once support for TYPO3 v12 is dropped
-     */
-    public static function registerPageTsConfig(): void
-    {
-        if ((new Core\Information\Typo3Version())->getMajorVersion() >= 13) {
-            return;
-        }
-
-        /* @phpstan-ignore staticMethod.deprecated */
-        Core\Utility\ExtensionManagementUtility::addPageTSConfig('
-            @import "EXT:warming/Configuration/TSconfig/Page.tsconfig";
-        ');
-    }
-
-    /**
      * Register global TypoScript setup & constants.
      *
      * FOR USE IN ext_localconf.php ONLY.

@@ -45,8 +45,7 @@ final readonly class ClientOptionsListener
         private Http\Message\Request\RequestOptions $requestOptions,
     ) {}
 
-    // @todo Enable attribute once support for TYPO3 v12 is dropped
-    // #[\TYPO3\CMS\Core\Attribute\AsEventListener('eliashaeussler/typo3-warming/client-options/process-config')]
+    #[Core\Attribute\AsEventListener('eliashaeussler/typo3-warming/client-options/process-config')]
     public function processConfig(CacheWarmup\Event\Config\ConfigResolved $event): void
     {
         $clientOptions = $event->config()->getClientOptions();
@@ -63,8 +62,7 @@ final readonly class ClientOptionsListener
         $event->config()->setClientOptions($clientOptions);
     }
 
-    // @todo Enable attribute once support for TYPO3 v12 is dropped
-    // #[\TYPO3\CMS\Core\Attribute\AsEventListener('eliashaeussler/typo3-warming/client-options/process-client')]
+    #[Core\Attribute\AsEventListener('eliashaeussler/typo3-warming/client-options/process-client')]
     public function processClient(Typo3SitemapLocator\Event\BeforeClientConfiguredEvent $event): void
     {
         $options = $event->getOptions();

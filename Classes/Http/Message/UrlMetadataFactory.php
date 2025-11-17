@@ -27,7 +27,6 @@ use CuyZ\Valinor;
 use Psr\Http\Message;
 use Symfony\Component\DependencyInjection;
 use TYPO3\CMS\Core;
-use TYPO3\CMS\Extbase;
 
 /**
  * UrlMetadataFactory
@@ -43,8 +42,9 @@ final readonly class UrlMetadataFactory
 
     private Valinor\Mapper\TreeMapper $mapper;
 
-    public function __construct()
-    {
+    public function __construct(
+        private Core\Crypto\HashService $hashService,
+    ) {
         $this->mapper = $this->createMapper();
     }
 
@@ -161,18 +161,7 @@ final readonly class UrlMetadataFactory
             $value = (string)json_encode($value);
         }
 
-        if (class_exists(Core\Crypto\HashService::class)) {
-            $hashValue = Core\Utility\GeneralUtility::makeInstance(Core\Crypto\HashService::class)->appendHmac(
-                $value,
-                self::class,
-            );
-        } else {
-            // @todo Remove once support for TYPO3 v12 is dropped
-            /* @phpstan-ignore classConstant.deprecatedClass, method.deprecatedClass */
-            $hashValue = Core\Utility\GeneralUtility::makeInstance(Extbase\Security\Cryptography\HashService::class)->appendHmac(
-                $value,
-            );
-        }
+        $hashValue = $this->hashService->appendHmac($value, self::class);
 
         return base64_encode($hashValue);
     }
@@ -186,17 +175,7 @@ final readonly class UrlMetadataFactory
         }
 
         try {
-            if (class_exists(Core\Crypto\HashService::class)) {
-                return Core\Utility\GeneralUtility::makeInstance(Core\Crypto\HashService::class)
-                    ->validateAndStripHmac($value, self::class)
-                ;
-            }
-
-            // @todo Remove once support for TYPO3 v12 is dropped
-            /* @phpstan-ignore classConstant.deprecatedClass, method.deprecatedClass */
-            return Core\Utility\GeneralUtility::makeInstance(Extbase\Security\Cryptography\HashService::class)
-                ->validateAndStripHmac($value)
-            ;
+            return $this->hashService->validateAndStripHmac($value, self::class);
         } catch (Core\Exception) {
             return null;
         }

@@ -44,30 +44,19 @@ trait SiteTrait
     ): Core\Site\Entity\Site {
         $configPath = $this->instancePath . '/typo3conf/sites';
         $eventDispatcher = new Core\EventDispatcher\NoopEventDispatcher();
+        $yamlFileLoader = $this->get(Core\Configuration\Loader\YamlFileLoader::class);
 
-        if ((new Core\Information\Typo3Version())->getMajorVersion() >= 13) {
-            $yamlFileLoader = $this->get(Core\Configuration\Loader\YamlFileLoader::class);
-            $siteConfiguration = new Core\Configuration\SiteConfiguration(
-                $configPath,
-                $this->get(Core\Site\SiteSettingsFactory::class),
-                $this->get(Core\Site\Set\SetRegistry::class),
-                $eventDispatcher,
-                new Core\Cache\Frontend\NullFrontend('core'),
-                $yamlFileLoader,
-                new Core\Cache\Frontend\NullFrontend('runtime'),
-            );
-            $siteWriter = new Core\Configuration\SiteWriter(
-                $configPath,
-                $eventDispatcher,
-                $yamlFileLoader,
-            );
-        } else {
-            // @todo Remove once support for TYPO3 v12 is dropped
-            /* @phpstan-ignore arguments.count, argument.type */
-            $siteConfiguration = $siteWriter = new Core\Configuration\SiteConfiguration($configPath, $eventDispatcher);
-        }
+        $siteConfiguration = new Core\Configuration\SiteConfiguration(
+            $configPath,
+            $this->get(Core\Site\SiteSettingsFactory::class),
+            $this->get(Core\Site\Set\SetRegistry::class),
+            $eventDispatcher,
+            new Core\Cache\Frontend\NullFrontend('core'),
+            $yamlFileLoader,
+            new Core\Cache\Frontend\NullFrontend('runtime'),
+        );
 
-        /* @phpstan-ignore method.notFound */
+        $siteWriter = new Core\Configuration\SiteWriter($configPath, $eventDispatcher, $yamlFileLoader);
         $siteWriter->createNewBasicSite($identifier, $rootPageId, $baseUrl);
 
         $rawConfig = $siteConfiguration->load($identifier);
