@@ -51,7 +51,7 @@
 		"codeception/module-db": "^3.2",
 		"codeception/module-webdriver": "^4.0.3",
 		"eliashaeussler/deep-closure-comparator": "^1.1",
-		"eliashaeussler/transient-logger": "^1.0 || ^2.0",
+		"eliashaeussler/transient-logger": "^2.0",
 		"eliashaeussler/typo3-codeception-helper": "^1.2.1",
 		"eliashaeussler/version-bumper": "^3.0",
 		"guzzlehttp/psr7": "^2.7",
