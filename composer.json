@@ -19,12 +19,12 @@
 		"rss": "https://github.com/eliashaeussler/typo3-warming/releases.atom"
 	},
 	"require": {
-		"php": "~8.2.0 || ~8.3.0 || ~8.4.0",
+		"php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
 		"ext-json": "*",
 		"cuyz/valinor": "^2.0",
 		"eliashaeussler/cache-warmup": "^4.2",
 		"eliashaeussler/sse": "^1.0.1",
-		"eliashaeussler/typo3-sitemap-locator": "^0.2.0",
+		"eliashaeussler/typo3-sitemap-locator": "dev-feature/php-8.5",
 		"guzzlehttp/guzzle": "^7.5",
 		"guzzlehttp/promises": "^1.4 || ^2.0",
 		"mteu/typo3-typed-extconf": "^0.2.0",
@@ -44,7 +44,7 @@
 		"typo3/cms-frontend": "~12.4.25 || ~13.4.3"
 	},
 	"require-dev": {
-		"codeception/codeception": "^5.2",
+		"codeception/codeception": "^5.3.2",
 		"codeception/lib-web": "^1.0.7",
 		"codeception/module-asserts": "^3.0",
 		"codeception/module-cli": "^2.0",
@@ -58,9 +58,11 @@
 		"php-webdriver/webdriver": "^1.15",
 		"phpunit/phpcov": "^9.0 || ^10.0 || ^11.0",
 		"phpunit/phpunit": "^10.5.35 || ^11.5 || ^12.0",
+		"psy/psysh": "^0.12.1",
 		"symfony/config": "^6.4.3 || ^7.0.3",
 		"symfony/css-selector": "^6.4.3 || ^7.0.3",
 		"symfony/event-dispatcher": "^6.4.3 || ^7.0.3",
+		"symfony/event-dispatcher-contracts": "^3.4.2",
 		"typo3/class-alias-loader": "^1.2",
 		"typo3/cms-belog": "~12.4.25 || ~13.4.3",
 		"typo3/cms-install": "~12.4.25 || ~13.4.3",
