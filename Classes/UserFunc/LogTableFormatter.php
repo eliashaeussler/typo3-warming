@@ -38,10 +38,14 @@ final class LogTableFormatter
     private const TEMPLATE = '[%s] @ %s > %s';
 
     /**
-     * @param array{row: array{uid: int}} $parameters
+     * @param array{row: array{uid?: int}} $parameters
      */
     public function formatTitle(array &$parameters): void
     {
+        if (!isset($parameters['row']['uid'])) {
+            return;
+        }
+
         /** @var array{request_id: string, date: int, url: string}|null $record */
         $record = Backend\Utility\BackendUtility::getRecord(Domain\Model\Log::TABLE_NAME, $parameters['row']['uid']);
 
