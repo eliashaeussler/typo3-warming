@@ -52,7 +52,7 @@
 		"codeception/module-webdriver": "^4.0.3",
 		"eliashaeussler/deep-closure-comparator": "^1.1",
 		"eliashaeussler/transient-logger": "^2.0",
-		"eliashaeussler/typo3-codeception-helper": "^1.2.1",
+		"eliashaeussler/typo3-codeception-helper": "^1.2.1 || ^2.0.0",
 		"eliashaeussler/version-bumper": "^3.0",
 		"guzzlehttp/psr7": "^2.7",
 		"php-webdriver/webdriver": "^1.15",
