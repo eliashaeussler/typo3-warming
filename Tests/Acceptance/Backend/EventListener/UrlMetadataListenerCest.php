@@ -60,7 +60,7 @@ final class UrlMetadataListenerCest
 
         $I->switchToNextTab();
         $I->switchToFrame();
-        $I->switchToFrame(Typo3CodeceptionHelper\Enums\Selectors::BackendContentFrame->value);
+        $I->switchToFrame(Typo3CodeceptionHelper\Enums\Selectors::BackendContentFrame);
         $I->waitForText('Administration log');
     }
 
@@ -87,7 +87,7 @@ final class UrlMetadataListenerCest
         $I->click(Tests\Acceptance\Support\Enums\Selectors::ReportPanelActionButtonEditRecord);
 
         $I->switchToNextTab();
-        $I->switchToFrame(Typo3CodeceptionHelper\Enums\Selectors::BackendContentFrame->value);
+        $I->switchToFrame(Typo3CodeceptionHelper\Enums\Selectors::BackendContentFrame);
         $I->waitForText('Edit Page');
     }
 

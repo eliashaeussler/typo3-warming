@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "43767f3b02f52c4724e044abac7327ef",
+    "content-hash": "f59f10fb81025432a9aabea0d92981d1",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7279,27 +7279,27 @@
         },
         {
             "name": "eliashaeussler/typo3-codeception-helper",
-            "version": "1.2.1",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/typo3-codeception-helper.git",
-                "reference": "04a8175b55713b63ebc73f0f2d81d3efcbc99a9f"
+                "reference": "5bf85f8ae32bf836159d6871eb7b7dbe0eaabbba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/typo3-codeception-helper/zipball/04a8175b55713b63ebc73f0f2d81d3efcbc99a9f",
-                "reference": "04a8175b55713b63ebc73f0f2d81d3efcbc99a9f",
+                "url": "https://api.github.com/repos/eliashaeussler/typo3-codeception-helper/zipball/5bf85f8ae32bf836159d6871eb7b7dbe0eaabbba",
+                "reference": "5bf85f8ae32bf836159d6871eb7b7dbe0eaabbba",
                 "shasum": ""
             },
             "require": {
                 "codeception/c3": "^2.8",
                 "codeception/codeception": "^4.1.11 || ^5.0",
                 "composer-runtime-api": "^2.1",
-                "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0",
+                "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
                 "symfony/filesystem": "^5.4 || ^6.0 || ^7.0"
             },
             "require-dev": {
-                "armin/editorconfig-cli": "^1.8 || ^2.0",
+                "armin/editorconfig-cli": "^2.0",
                 "codeception/module-webdriver": "^4.0",
                 "eliashaeussler/php-cs-fixer-config": "^2.0",
                 "eliashaeussler/phpstan-config": "^2.0",
@@ -7307,7 +7307,7 @@
                 "ergebnis/composer-normalize": "^2.30",
                 "phpstan/extension-installer": "^1.2",
                 "phpstan/phpstan-phpunit": "^2.0",
-                "phpunit/phpunit": "^10.2 || ^11.0 || ^12.0",
+                "phpunit/phpunit": "^11.0 || ^12.0",
                 "symfony/finder": "^5.4 || ^6.0 || ^7.0"
             },
             "suggest": {
@@ -7334,9 +7334,9 @@
             "description": "Helper functions for Codeception tests within TYPO3 extensions",
             "support": {
                 "issues": "https://github.com/eliashaeussler/typo3-codeception-helper/issues",
-                "source": "https://github.com/eliashaeussler/typo3-codeception-helper/tree/1.2.1"
+                "source": "https://github.com/eliashaeussler/typo3-codeception-helper/tree/2.0.0"
             },
-            "time": "2025-04-10T18:20:47+00:00"
+            "time": "2025-11-18T14:17:39+00:00"
         },
         {
             "name": "eliashaeussler/version-bumper",
