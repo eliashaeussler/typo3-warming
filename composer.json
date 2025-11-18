@@ -23,7 +23,7 @@
 		"ext-json": "*",
 		"cuyz/valinor": "^2.0",
 		"eliashaeussler/cache-warmup": "^4.2",
-		"eliashaeussler/sse": "^1.0.1",
+		"eliashaeussler/sse": "^2.0",
 		"eliashaeussler/typo3-sitemap-locator": "^0.2.0",
 		"guzzlehttp/guzzle": "^7.5",
 		"guzzlehttp/promises": "^2.0",
