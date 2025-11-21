@@ -68,8 +68,16 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
         private readonly Domain\Repository\SiteRepository $siteRepository,
         private readonly Configuration\Configuration $configuration,
         private readonly Action\WarmupActionsProvider $actionsProvider,
+        Core\Schema\TcaSchemaFactory $tcaSchemaFactory,
+        Backend\Routing\UriBuilder $uriBuilder,
     ) {
-        parent::__construct();
+        if ((new Core\Information\Typo3Version())->getMajorVersion() >= 14) {
+            /* @phpstan-ignore arguments.count */
+            parent::__construct($tcaSchemaFactory, $uriBuilder);
+        } else {
+            // @todo Remove once support for TYPO3 v13 is dropped
+            parent::__construct();
+        }
     }
 
     protected function canRender(string $itemName, string $type): bool

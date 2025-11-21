@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Tests\Acceptance\Support\Helper;
 
 use EliasHaeussler\Typo3Warming\Tests;
+use TYPO3\CMS\Core;
 use TYPO3\TestingFramework;
 
 /**
@@ -42,5 +43,11 @@ final class ModalDialog extends TestingFramework\Core\Acceptance\Helper\Abstract
     public function __construct(Tests\Acceptance\Support\AcceptanceTester $tester)
     {
         $this->tester = $tester;
+
+        // @todo Configure as property values once support for TYPO3 v13 is dropped
+        if ((new Core\Information\Typo3Version())->getMajorVersion() >= 14) {
+            self::$openedModalSelector = '.t3js-modal[open]';
+            self::$openedModalButtonContainerSelector = '.t3js-modal[open] .modal-footer';
+        }
     }
 }
