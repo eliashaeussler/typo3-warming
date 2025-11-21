@@ -24,16 +24,7 @@ declare(strict_types=1);
 use EliasHaeussler\PHPStanConfig;
 use TYPO3\CMS\Backend;
 
-$rootPath = dirname(__DIR__, 2);
-$symfonySet = PHPStanConfig\Set\SymfonySet::create()
-    ->withConsoleApplicationLoader(__DIR__ . '/console-application.php')
-    ->withContainerXmlPath($rootPath . '/var/cache/data/di/DependencyInjectionContainer.xml')
-;
-$typo3Set = PHPStanConfig\Set\TYPO3Set::create()
-    ->withCustomRequestAttribute('route', Backend\Routing\Route::class)
-;
-
-return PHPStanConfig\Config\Config::create($rootPath)
+return PHPStanConfig\Config\Config::create(dirname(__DIR__, 2))
     ->in(
         'Classes',
         'Configuration',
@@ -45,14 +36,20 @@ return PHPStanConfig\Config\Config::create($rootPath)
         'Tests/CGL',
     )
     ->bootstrapFiles(
-        $rootPath . '/.Build/vendor/autoload.php'
+        '.Build/vendor/autoload.php'
     )
-    ->withBaseline()
+    ->withBaseline(__DIR__ . '/phpstan-baseline.neon')
     ->withBleedingEdge([
         'internalTag' => false,
     ])
-    ->with($rootPath . '/.Build/vendor/cuyz/valinor/qa/PHPStan/valinor-phpstan-suppress-pure-errors.php')
+    ->with('.Build/vendor/cuyz/valinor/qa/PHPStan/valinor-phpstan-suppress-pure-errors.php')
     ->level(8)
-    ->withSets($symfonySet, $typo3Set)
+    ->withSet(static function (PHPStanConfig\Set\SymfonySet $set) {
+        $set->withConsoleApplicationLoader(__DIR__ . '/console-application.php');
+        $set->withContainerXmlPath('var/cache/data/di/DependencyInjectionContainer.xml');
+    })
+    ->withSet(static function (PHPStanConfig\Set\TYPO3Set $set) {
+        $set->withCustomRequestAttribute('route', Backend\Routing\Route::class);
+    })
     ->toArray()
 ;
