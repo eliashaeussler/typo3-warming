@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "915c754c140342e5f7a5d618283e7e2c",
+    "content-hash": "4fbc71a0a7eff5fedff638e1cc6a323b",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1556,24 +1556,24 @@
         },
         {
             "name": "mteu/typo3-typed-extconf",
-            "version": "0.2.4",
+            "version": "0.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mteu/typo3-typed-extconf.git",
-                "reference": "9db7a906503a0d0cdd09f5cc57446a8b093b60e5"
+                "reference": "043d991158a3360322fbdb71e0639c2d1a971358"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mteu/typo3-typed-extconf/zipball/9db7a906503a0d0cdd09f5cc57446a8b093b60e5",
-                "reference": "9db7a906503a0d0cdd09f5cc57446a8b093b60e5",
+                "url": "https://api.github.com/repos/mteu/typo3-typed-extconf/zipball/043d991158a3360322fbdb71e0639c2d1a971358",
+                "reference": "043d991158a3360322fbdb71e0639c2d1a971358",
                 "shasum": ""
             },
             "require": {
                 "cuyz/valinor": "^2.0",
                 "ext-filter": "*",
                 "nette/php-generator": "^4.1.6",
-                "php": "~8.2.0 || ~8.3.0 || ~8.4.0",
-                "symfony/console": "^6.4 || ^7.0",
+                "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
+                "symfony/console": "^6.0 || ^7.3",
                 "typo3/cms-core": "~12.4.37 || ~13.4.18"
             },
             "require-dev": {
@@ -1583,7 +1583,7 @@
                 "phpunit/phpcov": "^10.0 || ^11.0.0",
                 "phpunit/phpunit": "^11.5 || ^12.1",
                 "roave/security-advisories": "dev-latest",
-                "symfony/dependency-injection": "^6.4 || ^7.0",
+                "symfony/dependency-injection": "^6.0 || ^7.3",
                 "typo3/testing-framework": "^8.2 || ^9.2"
             },
             "type": "typo3-cms-extension",
@@ -1617,9 +1617,9 @@
             "description": "Aims to provide a type-safe extension configuration management for TYPO3, ensuring proper types instead of string-only values from backend configuration or mixed types from config/system/settings.php",
             "support": {
                 "issues": "https://github.com/mteu/typo3-typed-extconf/issues",
-                "source": "https://github.com/mteu/typo3-typed-extconf/tree/0.2.4"
+                "source": "https://github.com/mteu/typo3-typed-extconf/tree/0.3.0"
             },
-            "time": "2025-09-18T14:21:39+00:00"
+            "time": "2025-11-25T08:08:37+00:00"
         },
         {
             "name": "nette/php-generator",
