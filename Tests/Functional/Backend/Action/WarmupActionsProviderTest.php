@@ -70,10 +70,15 @@ final class WarmupActionsProviderTest extends TestingFramework\Core\Functional\F
         $clientFactoryMock = $this->createMock(Core\Http\Client\GuzzleClientFactory::class);
         $clientFactoryMock->method('getClient')->willReturn($this->createClient());
 
-        $this->cache = new Core\Cache\Frontend\VariableFrontend(
-            'runtime',
-            new Core\Cache\Backend\TransientMemoryBackend('testing'),
-        );
+        if ((new Core\Information\Typo3Version())->getMajorVersion() >= 14) {
+            /* @phpstan-ignore arguments.count */
+            $cacheBackend = new Core\Cache\Backend\TransientMemoryBackend();
+        } else {
+            // @todo Remove once support for TYPO3 v13 is dropped
+            $cacheBackend = new Core\Cache\Backend\TransientMemoryBackend('testing');
+        }
+
+        $this->cache = new Core\Cache\Frontend\VariableFrontend('runtime', $cacheBackend);
         $this->subject = new Src\Backend\Action\WarmupActionsProvider(
             $this->get(Src\Configuration\Configuration::class),
             $this->get(Src\Security\WarmupPermissionGuard::class),

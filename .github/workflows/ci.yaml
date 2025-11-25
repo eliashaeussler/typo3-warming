@@ -86,7 +86,8 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.4
+          # We use the minimum supported PHP version
+          php-version: 8.2
           tools: composer:v2, cs2pr
           coverage: none
       - name: Setup Node
@@ -171,24 +172,8 @@ jobs:
       fail-fast: false
       matrix:
         php-version: ["8.2", "8.3", "8.4"]
-        typo3-version: ["13.4"]
+        typo3-version: ["13.4", "14.0"]
         dependencies: ["highest", "lowest"]
-
-        # Enforce PHPUnit ^11.5 for TYPO3 13.4 & lowest dependencies
-        # since it adds support for doubling readonly classes (SiteFinder in our case)
-        include:
-          - php-version: "8.2"
-            typo3-version: "13.4"
-            dependencies: "lowest"
-            composer-options: "--with=phpunit/phpunit:^11.5"
-          - php-version: "8.3"
-            typo3-version: "13.4"
-            dependencies: "lowest"
-            composer-options: "--with=phpunit/phpunit:^11.5"
-          - php-version: "8.4"
-            typo3-version: "13.4"
-            dependencies: "lowest"
-            composer-options: "--with=phpunit/phpunit:^11.5"
     steps:
       - uses: actions/checkout@v6
         with:
@@ -218,7 +203,7 @@ jobs:
         uses: ramsey/composer-install@v3
         with:
           dependency-versions: ${{ matrix.dependencies }}
-          composer-options: --with=typo3/cms-core:"^${{ matrix.typo3-version }}" ${{ matrix.composer-options }}
+          composer-options: --with=typo3/cms-core:"^${{ matrix.typo3-version }}"
 
       # Run tests
       - name: Run functional and unit tests
