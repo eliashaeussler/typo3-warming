@@ -145,6 +145,10 @@ jobs:
           mkdir -p .Build/docs
           composer docs:build -- --no-progress --fail-on-log
 
+      # Bundler
+      - name: Validate bundler config
+        run: composer validate-bundler-config
+
   crowdin:
     name: Synchronize with Crowdin
     runs-on: ubuntu-latest
