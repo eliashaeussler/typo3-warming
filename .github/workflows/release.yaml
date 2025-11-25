@@ -28,14 +28,25 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.5
-          tools: composer:v2, eliashaeussler/typo3-vendor-bundler, typo3/tailor
+          tools: composer:v2, typo3/tailor
           coverage: none
+
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@v3
+
+      - name: Bundle vendor libraries
+        run: composer bundle -v
+
+      - name: Stash bundled files
+        run: |
+          git add -f Resources/Private/Libs/vendor
+          git stash push -- composer.json Resources/Private/Libs/vendor
 
       - name: Reset files
         run: git reset --hard HEAD && git clean -dfx
 
-      - name: Bundle vendor libraries
-        run: composer bundle -v
+      - name: Restore bundled files
+        run: git stash pop
 
       - name: Create artefact
         run: |

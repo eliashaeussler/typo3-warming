@@ -53,6 +53,7 @@
 		"eliashaeussler/deep-closure-comparator": "^1.1",
 		"eliashaeussler/transient-logger": "^2.0",
 		"eliashaeussler/typo3-codeception-helper": "^2.0",
+		"eliashaeussler/typo3-vendor-bundler": "^2.2",
 		"eliashaeussler/version-bumper": "^3.0",
 		"guzzlehttp/psr7": "^2.7",
 		"php-webdriver/webdriver": "^1.15",
@@ -87,6 +88,7 @@
 	"config": {
 		"allow-plugins": {
 			"codeception/c3": true,
+			"eliashaeussler/typo3-vendor-bundler": true,
 			"eliashaeussler/version-bumper": true,
 			"php-http/discovery": false,
 			"typo3/class-alias-loader": true,
