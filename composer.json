@@ -24,7 +24,7 @@
 		"cuyz/valinor": "^2.0",
 		"eliashaeussler/cache-warmup": "^5.0",
 		"eliashaeussler/sse": "^2.0",
-		"eliashaeussler/typo3-sitemap-locator": "^0.2.0",
+		"eliashaeussler/typo3-sitemap-locator": "^0.2.0 || ^1.0.0",
 		"guzzlehttp/guzzle": "^7.5",
 		"guzzlehttp/promises": "^2.0",
 		"mteu/typo3-typed-extconf": "^0.2.0 || ^0.3.0",
