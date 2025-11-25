@@ -31,7 +31,7 @@ $EM_CONF[$_EXTKEY] = [
     'constraints' => [
         'depends' => [
             'typo3' => '13.4.5-14.0.99',
-            'php' => '8.2.0-8.4.99',
+            'php' => '8.2.0-8.5.99',
             'sitemap_locator' => '1.0.0-1.99.99',
             'typed_extconf' => '1.0.0-1.99.99',
         ],
