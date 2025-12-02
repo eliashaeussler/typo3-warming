@@ -49,8 +49,10 @@ unset($GLOBALS['TCA']);
 // Initialize application and add command
 try {
     $application = new Console\Application();
-    $application->add($container->get(Command\ShowUserAgentCommand::class));
-    $application->add($container->get(Command\WarmupCommand::class));
+    $application->addCommands([
+        $container->get(Command\ShowUserAgentCommand::class),
+        $container->get(Command\WarmupCommand::class),
+    ]);
 } finally {
     // Restore TCA
     $GLOBALS['TCA'] = $tca;
