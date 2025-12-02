@@ -31,8 +31,8 @@ namespace EliasHaeussler\Typo3Warming\Tests\Acceptance\Support\Enums;
  */
 enum Selectors: string
 {
-    public const BackendListModule = '[data-moduleroute-identifier="web_list"]';
-    public const BackendPageModule = '[data-moduleroute-identifier="web_layout"]';
+    public const BackendRecordsModule = '[data-moduleroute-identifier="records"]';
+    public const BackendLayoutModule = '[data-moduleroute-identifier="web_layout"]';
     public const BackendSettingsModule = '[data-moduleroute-identifier="system_settings"]';
     public const CheckboxMainGroup = '#tx-warming-checkbox-main-group';
     public const CheckboxMainLanguage0 = '#tx-warming-checkbox-main-0';
@@ -61,6 +61,7 @@ enum Selectors: string
     public const UserAgentCopyButton = '.tx-warming-sites-modal .tx-warming-user-agent-copy-action';
 
     // @todo Remove once support for TYPO3 v13 is dropped
+    public const BackendRecordsModuleLegacy = '[data-moduleroute-identifier="web_list"]';
     public const BackendSettingsModuleLegacy = '[data-moduleroute-identifier="tools_toolssettings"]';
     public const ModalTitleLegacy = '.modal .modal-title';
 }

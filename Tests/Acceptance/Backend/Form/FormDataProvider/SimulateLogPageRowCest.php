@@ -25,6 +25,7 @@ namespace EliasHaeussler\Typo3Warming\Tests\Acceptance\Backend\Form\FormDataProv
 
 use EliasHaeussler\Typo3Warming as Src;
 use EliasHaeussler\Typo3Warming\Tests;
+use TYPO3\CMS\Core;
 
 /**
  * SimulateLogPageRowCest
@@ -38,8 +39,15 @@ final class SimulateLogPageRowCest
     {
         $I->runShellCommand('typo3 warming:cachewarmup -s 1 --limit 10');
 
+        if ((new Core\Information\Typo3Version())->getMajorVersion() >= 14) {
+            $recordsModuleIdentifier = Tests\Acceptance\Support\Enums\Selectors::BackendRecordsModule;
+        } else {
+            // @todo Remove once support for TYPO3 v13 is dropped
+            $recordsModuleIdentifier = Tests\Acceptance\Support\Enums\Selectors::BackendRecordsModuleLegacy;
+        }
+
         $I->loginAs('admin');
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendListModule);
+        $I->openModule($recordsModuleIdentifier);
 
         $numberOfLogs = $I->grabNumRecords(Src\Domain\Model\Log::TABLE_NAME);
         $randomLogNumber = random_int(1, $numberOfLogs);

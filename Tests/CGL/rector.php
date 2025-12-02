@@ -26,7 +26,6 @@ use Rector\Config\RectorConfig;
 use Rector\Php80\Rector\Class_\AnnotationToAttributeRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 use Rector\Symfony\DependencyInjection\Rector\Trait_\TraitGetByTypeToInjectRector;
-use Rector\Symfony\Symfony73\Rector\Class_\CommandHelpToAttributeRector;
 use Rector\ValueObject\PhpVersion;
 
 return static function (RectorConfig $rectorConfig): void {
@@ -68,9 +67,6 @@ return static function (RectorConfig $rectorConfig): void {
             // We cannot use CPP for properties that are declared in abstract classes
             $rootPath . '/Tests/Acceptance/Support/Helper/ModalDialog.php',
             $rootPath . '/Tests/Acceptance/Support/Helper/PageTree.php',
-        ])
-        ->skip(CommandHelpToAttributeRector::class, [
-            $rootPath . '/Classes/Command/WarmupCommand.php',
         ])
         ->skip(TraitGetByTypeToInjectRector::class, [
             $rootPath . '/Tests/Functional/SiteTrait.php',

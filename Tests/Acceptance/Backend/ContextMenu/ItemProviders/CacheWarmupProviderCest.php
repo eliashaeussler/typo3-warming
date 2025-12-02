@@ -40,7 +40,7 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('admin');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendLayoutModule);
         $I->switchToIFrame();
 
         $pageTree->openContextMenu(['EXT:warming']);
@@ -55,7 +55,7 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('admin');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendLayoutModule);
         $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Main']);
@@ -70,7 +70,7 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('editor.1');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendLayoutModule);
         $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Main']);
@@ -85,7 +85,7 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('editor.2');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendLayoutModule);
         $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Main']);
@@ -103,7 +103,7 @@ final class CacheWarmupProviderCest
 
         $I->loginAs('admin');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendLayoutModule);
         $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Main']);
@@ -120,7 +120,7 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('admin');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendLayoutModule);
         $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Root 2']);
@@ -135,7 +135,7 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('admin');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendLayoutModule);
         $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Root 3']);
@@ -149,7 +149,7 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('editor.3');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendLayoutModule);
         $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Main']);
@@ -164,7 +164,7 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('admin');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendLayoutModule);
         $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Main']);
@@ -180,7 +180,7 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('editor.2');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendLayoutModule);
         $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Main']);
@@ -196,7 +196,7 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('admin');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendLayoutModule);
         $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Main']);
@@ -212,7 +212,7 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('admin');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendLayoutModule);
         $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Main']);
@@ -238,7 +238,7 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('admin');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendLayoutModule);
         $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Main']);
@@ -261,7 +261,7 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('admin');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendLayoutModule);
         $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Main']);
@@ -289,7 +289,7 @@ final class CacheWarmupProviderCest
     ): void {
         $I->loginAs('admin');
 
-        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendPageModule);
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendLayoutModule);
         $I->switchToIFrame();
 
         $pageTree->openContextMenu(['Main', 'Subsite 1']);
