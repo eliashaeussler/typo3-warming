@@ -24,8 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          token: ${{ secrets.REBUILD_ASSETS_TOKEN }}
-          fetch-depth: 0
+          fetch-depth: 2
 
       # Preconditions
       - name: Check modified assets
@@ -79,8 +78,6 @@ jobs:
     needs: assets
     steps:
       - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
 
       # Prepare environment
       - name: Setup PHP
@@ -180,8 +177,6 @@ jobs:
         dependencies: ["highest", "lowest"]
     steps:
       - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
 
       # Prepare environment
       - name: Setup PHP
@@ -243,8 +238,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
 
       # Prepare environment
       - name: Setup PHP
@@ -311,8 +304,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
 
       # Download artifact
       - name: Download coverage artifact
