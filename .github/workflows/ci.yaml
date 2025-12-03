@@ -171,7 +171,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ["8.2", "8.3", "8.4"]
+        php-version: ["8.2", "8.3", "8.4", "8.5"]
         typo3-version: ["12.4", "13.4"]
         dependencies: ["highest", "lowest"]
 
@@ -202,6 +202,8 @@ jobs:
           php-version: ${{ matrix.php-version }}
           tools: composer:v2
           coverage: none
+          # @todo Remove once Codeception fixes PHP 8.5 support
+          ini-values: register_argc_argv=On
 
       # Setup DDEV
       - name: Setup DDEV
@@ -228,6 +230,8 @@ jobs:
           ddev composer test:unit
       - name: Run acceptance tests
         uses: nick-fields/retry@v3
+        # @todo Enable once Codeception fixes support for PHP 8.5
+        if: ${{ matrix.php-version != '8.5' }}
         with:
           max_attempts: 3
           retry_on: error
@@ -258,6 +262,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
+          # @todo Switch to PHP 8.5 once Codeception fixes support for it
           php-version: 8.4
           tools: composer:v2
           coverage: none
