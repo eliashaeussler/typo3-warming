@@ -37,6 +37,8 @@ suites:
               editor.2: password
               editor.3: password
               editor.4: password
+              editor.5: password
+              editor.6: password
 
 actor_suffix: Tester
 extensions:

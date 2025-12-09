@@ -121,15 +121,13 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
             return;
         }
 
-        $site = $this->getCurrentSite();
+        $pageId = $this->getCurrentPageId();
+        $dividerAdded = false;
 
-        // Early return if site cannot be resolved
-        if ($site === null) {
+        // Early return on system root page
+        if ($pageId === null || $pageId === 0) {
             return;
         }
-
-        $pageId = $this->getPreviewPid();
-        $dividerAdded = false;
 
         foreach (self::CONTEXTS as $context) {
             $actions = $this->actionsProvider->provideActions($context, $pageId);
@@ -209,6 +207,20 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
 
     private function getCurrentSite(): ?Core\Site\Entity\Site
     {
+        $pageId = $this->getCurrentPageId();
+
+        if ($pageId === null) {
+            return null;
+        }
+
+        return $this->siteRepository->findOneByPageId($pageId);
+    }
+
+    /**
+     * @return non-negative-int|null
+     */
+    private function getCurrentPageId(): ?int
+    {
         if ($this->record === null) {
             return null;
         }
@@ -216,6 +228,6 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
         /** @var non-negative-int $pageId */
         $pageId = $this->getPreviewPid();
 
-        return $this->siteRepository->findOneByPageId($pageId);
+        return $pageId;
     }
 }

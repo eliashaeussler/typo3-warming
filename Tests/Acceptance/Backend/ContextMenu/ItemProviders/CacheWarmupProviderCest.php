@@ -79,7 +79,7 @@ final class CacheWarmupProviderCest
         $I->dontSee('Warmup all caches', Tests\Acceptance\Support\Enums\Selectors::ContextMenu);
     }
 
-    public function canSeeContextMenuItemsAsPermittedUser(
+    public function canSeeAllContextMenuItemsAsPermittedUser(
         Tests\Acceptance\Support\AcceptanceTester $I,
         Tests\Acceptance\Support\Helper\PageTree $pageTree,
     ): void {
@@ -91,6 +91,36 @@ final class CacheWarmupProviderCest
         $pageTree->openContextMenu(['Main']);
 
         $I->see('Warmup cache for this page', Tests\Acceptance\Support\Enums\Selectors::ContextMenu);
+        $I->see('Warmup all caches', Tests\Acceptance\Support\Enums\Selectors::ContextMenu);
+    }
+
+    public function canSeeOnlyPageContextMenuItemsAsPermittedUser(
+        Tests\Acceptance\Support\AcceptanceTester $I,
+        Tests\Acceptance\Support\Helper\PageTree $pageTree,
+    ): void {
+        $I->loginAs('editor.5');
+
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendLayoutModule);
+        $I->switchToIFrame();
+
+        $pageTree->openContextMenu(['Main']);
+
+        $I->see('Warmup cache for this page', Tests\Acceptance\Support\Enums\Selectors::ContextMenu);
+        $I->dontSee('Warmup all caches', Tests\Acceptance\Support\Enums\Selectors::ContextMenu);
+    }
+
+    public function canSeeOnlySiteContextMenuItemsAsPermittedUser(
+        Tests\Acceptance\Support\AcceptanceTester $I,
+        Tests\Acceptance\Support\Helper\PageTree $pageTree,
+    ): void {
+        $I->loginAs('editor.6');
+
+        $I->openModule(Tests\Acceptance\Support\Enums\Selectors::BackendLayoutModule);
+        $I->switchToIFrame();
+
+        $pageTree->openContextMenu(['Main']);
+
+        $I->dontSee('Warmup cache for this page', Tests\Acceptance\Support\Enums\Selectors::ContextMenu);
         $I->see('Warmup all caches', Tests\Acceptance\Support\Enums\Selectors::ContextMenu);
     }
 
