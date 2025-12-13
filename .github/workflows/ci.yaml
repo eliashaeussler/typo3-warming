@@ -244,7 +244,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           # @todo Switch to PHP 8.5 once Codeception fixes support for it
-          php-version: 8.4
+          php-version: 8.5
           tools: composer:v2
           coverage: none
 
