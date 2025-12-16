@@ -7,6 +7,9 @@ on:
     branches:
       - '**'
 
+env:
+  COMPOSER_NO_SECURITY_BLOCKING: 1
+
 jobs:
   tests:
     name: Tests (PHP ${{ matrix.php-version }}, TYPO3 ${{ matrix.typo3-version }} & ${{ matrix.dependencies }} dependencies)
