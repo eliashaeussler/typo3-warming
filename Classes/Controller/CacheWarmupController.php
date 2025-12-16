@@ -380,7 +380,17 @@ final class CacheWarmupController
                 }
 
                 $pageTitle = $this->getPageTitle($site->getRootPageId());
-                $data['message'] = static::translate('notification.message.site', [$pageTitle, $pageId, $successfulCount, $failedCount]);
+                $siteLanguage = $warmupRequest->getLanguageId() !== null
+                    ? $site->getLanguageById($warmupRequest->getLanguageId())
+                    : $site->getDefaultLanguage();
+                $data['message'] = static::translate('notification.message.site', [
+                    $pageTitle,
+                    $pageId,
+                    $siteLanguage->getTitle(),
+                    $siteLanguage->getLanguageId(),
+                    $successfulCount,
+                    $failedCount,
+                ]);
                 break;
         }
 

@@ -42,9 +42,9 @@
 				<source>Cache warmup finished</source>
 			</trans-unit>
 			<trans-unit id="notification.message.site" resname="notification.message.site">
-				<source>Caches for page "%1$s [%2$d]" have been warmed up with the following result:
+				<source>Caches for site "%1$s [%2$d]" and language "%3$s [%4$d]" have been warmed up with the following result:
 
-%3$d successful, %4$d failed</source>
+%5$d successful, %6$d failed</source>
 			</trans-unit>
 			<trans-unit id="notification.message.page.error" resname="notification.message.page.error">
 				<source>Cache could not be warmed up for "%1$s [%2$d]".</source>
