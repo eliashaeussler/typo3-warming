@@ -70,7 +70,7 @@
 		"typo3/cms-seo": "~13.4.5 || ~14.0.1",
 		"typo3/cms-tstemplate": "~13.4.5 || ~14.0.1",
 		"typo3/testing-framework": "^9.0.3",
-		"webmozart/assert": "^1.11"
+		"webmozart/assert": "^1.11 || ^2.0"
 	},
 	"conflict": {
 		"cuyz/valinor": "2.1.2 || 2.2.0 || 2.2.1"
