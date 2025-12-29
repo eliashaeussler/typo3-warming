@@ -30,6 +30,8 @@ jobs:
           php-version: 8.5
           tools: composer:v2, typo3/tailor
           coverage: none
+          # @todo Remove once Codeception fixes PHP 8.5 support
+          ini-values: register_argc_argv=On
 
       - name: Install Composer dependencies
         uses: ramsey/composer-install@v3
