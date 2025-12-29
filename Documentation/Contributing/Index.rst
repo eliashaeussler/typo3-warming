@@ -71,12 +71,6 @@ Next, install all dependencies:
 
 You can access the DDEV site at https://typo3-ext-warming.ddev.site/.
 
-..  tip::
-
-    There's also a dedicated DDEV command to manage TER libraries located at
-    :file:`Resources/Private/Libs`. Run :bash:`ddev libs <command>` with
-    any available Composer command, e.g. :bash:`ddev libs install`.
-
 ..  _analyze-code:
 
 Analyze code
@@ -107,7 +101,6 @@ TYPO3
 
     # Specific linters
     ddev cgl lint:composer
-    ddev cgl lint:composer-conflicts
     ddev cgl lint:editorconfig
     ddev cgl lint:php
     ddev cgl lint:typoscript
@@ -117,7 +110,6 @@ TYPO3
 
     # Fix specific CGL issues
     ddev cgl fix:composer
-    ddev cgl fix:composer-conflicts
     ddev cgl fix:editorconfig
     ddev cgl fix:php
     ddev cgl fix:typoscript

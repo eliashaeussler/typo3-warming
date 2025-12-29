@@ -2,7 +2,6 @@
 /.ddev                       export-ignore
 /.github                     export-ignore
 /Resources/Private/Frontend  export-ignore
-/Resources/Private/Libs      export-ignore
 /Tests                       export-ignore
 /.crowdin.yaml               export-ignore
 /.editorconfig               export-ignore
