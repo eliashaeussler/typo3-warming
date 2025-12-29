@@ -28,7 +28,6 @@
 				":pinVersions"
 			],
 			"matchFileNames": [
-				"Resources/Private/Libs/composer.*",
 				"Tests/CGL/composer.*"
 			]
 		}
