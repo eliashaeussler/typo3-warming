@@ -25,6 +25,7 @@ namespace EliasHaeussler\Typo3Warming\Tests\Acceptance\Support\Helper;
 
 use EliasHaeussler\Typo3Warming\Tests;
 use Facebook\WebDriver;
+use TYPO3\CMS\Core;
 use TYPO3\TestingFramework;
 
 /**
@@ -43,6 +44,12 @@ final class PageTree extends TestingFramework\Core\Acceptance\Helper\AbstractPag
     public function __construct(Tests\Acceptance\Support\AcceptanceTester $tester)
     {
         $this->tester = $tester;
+
+        // @todo Move to property declarations once support for TYPO3 v13 is dropped
+        if ((new Core\Information\Typo3Version())->getMajorVersion() >= 14) {
+            self::$pageTreeFrameSelector = 'typo3-backend-navigation-component-pagetree';
+            self::$pageTreeSelector = '#typo3-pagetree-tree';
+        }
     }
 
     /**

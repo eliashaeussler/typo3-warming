@@ -37,7 +37,7 @@ Features
 -   Support for :ref:`custom crawlers <crawlers>` and
     :ref:`crawling strategies <crawling-strategies>`
 -   :ref:`Console commands <console-commands>`
--   Compatible with TYPO3 13.4 LTS and 14.0 (see :ref:`version matrix <version-matrix>`)
+-   Compatible with TYPO3 13.4 LTS and 14.1 (see :ref:`version matrix <version-matrix>`)
 
 ..  _support:
 
