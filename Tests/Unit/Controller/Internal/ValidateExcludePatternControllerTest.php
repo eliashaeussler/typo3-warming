@@ -101,7 +101,7 @@ final class ValidateExcludePatternControllerTest extends TestingFramework\Core\U
         ];
         yield 'invalid regular expression' => [
             ['pattern' => '###'],
-            \htmlspecialchars('The string "###" is not a regular expression.'),
+            'The string "###" is not a regular expression.',
         ];
     }
 }

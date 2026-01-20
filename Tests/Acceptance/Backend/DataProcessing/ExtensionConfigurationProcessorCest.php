@@ -103,6 +103,6 @@ final class ExtensionConfigurationProcessorCest
     {
         $I->click('[aria-controls="category-warming-options"]');
         $I->fillField(WebDriverBy::className('tagify__input'), '###,');
-        $I->seeElementInDOM('[title="The string \"###\" is not a regular expression."]');
+        $I->seeElementInDOM('[title="The string \'###\' is not a regular expression."]');
     }
 }

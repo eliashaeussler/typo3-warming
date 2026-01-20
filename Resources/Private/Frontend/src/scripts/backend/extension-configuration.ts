@@ -175,7 +175,7 @@ class ExtensionConfiguration {
     ;
 
     if (!valid) {
-      tagify.replaceTag(tag, {...data, __isValid: error});
+      tagify.replaceTag(tag, {...data, __isValid: error.replaceAll('"', "'")});
     }
   }
 

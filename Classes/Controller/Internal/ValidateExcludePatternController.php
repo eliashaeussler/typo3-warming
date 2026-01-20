@@ -53,7 +53,7 @@ final class ValidateExcludePatternController
                 CacheWarmup\Config\Option\ExcludePattern::create($pattern);
                 $error = null;
             } catch (CacheWarmup\Exception\RegularExpressionIsInvalid $exception) {
-                $error = htmlspecialchars($exception->getMessage());
+                $error = $exception->getMessage();
             }
         }
 
