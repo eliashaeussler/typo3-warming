@@ -111,6 +111,8 @@
 
     > .tx-warming-sites-group-content {
         flex-grow: 1;
+        overflow-wrap: anywhere;
+        /* stylelint-disable-next-line declaration-property-value-keyword-no-deprecated */
         word-break: break-word;
 
         small {
