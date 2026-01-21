@@ -18,12 +18,11 @@
  */
 
 export default {
-  extends: 'stylelint-config-sass-guidelines',
+  extends: 'stylelint-config-standard-scss',
   plugins: [
     'stylelint-header',
   ],
   rules: {
-    '@stylistic/indentation': 4,
     'max-nesting-depth': 2,
     'header/header': [
       './res/license-header.txt',
