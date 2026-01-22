@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a23b71f187b470854e70781e3d0faf8d",
+    "content-hash": "c6c558f0c1e5acc3da31f0b6e398c94d",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1558,16 +1558,16 @@
         },
         {
             "name": "mteu/typo3-typed-extconf",
-            "version": "1.0.2",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mteu/typo3-typed-extconf.git",
-                "reference": "580723e56aebf952ef27d7c6d0683d845f6d033d"
+                "reference": "bf7afd764e18b05b55a2637e3d516b447fcc93fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mteu/typo3-typed-extconf/zipball/580723e56aebf952ef27d7c6d0683d845f6d033d",
-                "reference": "580723e56aebf952ef27d7c6d0683d845f6d033d",
+                "url": "https://api.github.com/repos/mteu/typo3-typed-extconf/zipball/bf7afd764e18b05b55a2637e3d516b447fcc93fb",
+                "reference": "bf7afd764e18b05b55a2637e3d516b447fcc93fb",
                 "shasum": ""
             },
             "require": {
@@ -1576,7 +1576,7 @@
                 "nette/php-generator": "^4.1.6",
                 "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
                 "symfony/console": "^7.3",
-                "typo3/cms-core": "~13.4.18 || ~14.0.0"
+                "typo3/cms-core": "~13.4.18 || ~14.1.0"
             },
             "require-dev": {
                 "composer/class-map-generator": "^1.1",
@@ -1619,9 +1619,9 @@
             "description": "Typed Extension Configuration - Aims to provide a type-safe extension configuration management for TYPO3, ensuring proper types instead of string-only values from backend configuration or mixed types from config/system/settings.php",
             "support": {
                 "issues": "https://github.com/mteu/typo3-typed-extconf/issues",
-                "source": "https://github.com/mteu/typo3-typed-extconf/tree/1.0.2"
+                "source": "https://github.com/mteu/typo3-typed-extconf/tree/1.1.0"
             },
-            "time": "2026-01-20T07:00:23+00:00"
+            "time": "2026-01-22T15:20:44+00:00"
         },
         {
             "name": "nette/php-generator",
