@@ -25,7 +25,7 @@
 		"eliashaeussler/cache-warmup": "^5.0",
 		"eliashaeussler/sse": "^2.0",
 		"eliashaeussler/typo3-sitemap-locator": "^1.0",
-		"guzzlehttp/guzzle": "^7.5",
+		"guzzlehttp/guzzle": "^7.10",
 		"guzzlehttp/promises": "^2.0",
 		"mteu/typo3-typed-extconf": "^1.0",
 		"psr/event-dispatcher": "^1.0",
@@ -44,7 +44,7 @@
 		"typo3/cms-frontend": "~13.4.5 || ~14.1.0"
 	},
 	"require-dev": {
-		"codeception/codeception": "^5.3.2",
+		"codeception/codeception": "^5.3.4",
 		"codeception/lib-web": "^1.0.7",
 		"codeception/module-asserts": "^3.0",
 		"codeception/module-cli": "^2.0",
