@@ -62,7 +62,7 @@ jobs:
           git add Resources/Public
           git diff --exit-code --staged Resources/Public
 
-      # Update PR
+      # Commit updated dist files
       - uses: stefanzweifel/git-auto-commit-action@v7
         if: ${{ github.actor == 'renovate[bot]' && steps.check.outputs.skip_assets != 'true' }}
         id: commit
@@ -313,3 +313,29 @@ jobs:
         uses: coverallsapp/github-action@v2
         with:
           file: ${{ steps.download.outputs.download-path }}/clover.xml
+
+  merge-branch:
+    name: 'Merge Renovate branch'
+    runs-on: ubuntu-latest
+    needs:
+      - assets
+      - cgl
+      - tests
+      - test-coverage
+    if: ${{ needs.assets.outputs.modified == 'false' && github.actor != 'renovate[bot]' && github.event_name == 'push' && startsWith(github.ref_name, 'renovate/') }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.REBUILD_ASSETS_TOKEN }}
+          ref: ${{ github.ref_name }}
+
+      - name: Merge changes into default branch
+        run: |
+          git fetch origin ${{ github.event.repository.default_branch }}:${{ github.event.repository.default_branch }}
+          git checkout ${{ github.event.repository.default_branch }}
+          git merge --no-ff --no-edit ${{ github.ref_name }}
+          git push origin ${{ github.event.repository.default_branch }}
+
+      - name: Delete merged branch
+        run: |
+          git push origin --delete ${{ github.ref_name }}
