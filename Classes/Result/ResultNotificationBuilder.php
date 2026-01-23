@@ -23,9 +23,9 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Result;
 
-use EliasHaeussler\Typo3Warming\Configuration;
 use EliasHaeussler\Typo3Warming\Enums;
 use EliasHaeussler\Typo3Warming\Exception;
+use EliasHaeussler\Typo3Warming\Utility;
 use EliasHaeussler\Typo3Warming\ValueObject;
 use TYPO3\CMS\Backend;
 
@@ -49,7 +49,7 @@ final class ResultNotificationBuilder
     public function buildMessages(ValueObject\Request\WarmupRequest $request, CacheWarmupResult $result): array
     {
         $messages = [];
-        $emptyMessage = Configuration\Localization::translate('notification.message.empty');
+        $emptyMessage = $this->translate('notification.message.empty');
 
         $sites = \array_unique($request->getSites(), SORT_REGULAR);
         $pages = \array_unique($request->getPages(), SORT_REGULAR);
@@ -64,7 +64,7 @@ final class ResultNotificationBuilder
                     $siteLanguage,
                 );
 
-                $messages[] = Configuration\Localization::translate('notification.message.site', [
+                $messages[] = $this->translate('notification.message.site', [
                     $this->getPageTitle($site->getRootPageId(), $languageId),
                     $this->resolvePageId($site->getRootPageId(), $languageId),
                     $siteLanguage->getTitle(),
@@ -90,7 +90,7 @@ final class ResultNotificationBuilder
 
                 $state = Enums\WarmupState::fromCrawlingResults($successful, $failed);
 
-                $messages[] = Configuration\Localization::translate('notification.message.page.' . $state->value, [
+                $messages[] = $this->translate('notification.message.page.' . $state->value, [
                     $this->getPageTitle($pageWarmupRequest->getPage(), $languageId),
                     $this->resolvePageId($pageWarmupRequest->getPage(), $languageId),
                 ]);
@@ -153,5 +153,16 @@ final class ResultNotificationBuilder
         }
 
         return self::$resolvedPageRecords[$cacheIdentifier] = $record;
+    }
+
+    /**
+     * @param list<scalar> $arguments
+     */
+    private function translate(string $key, array $arguments = []): string
+    {
+        $languageService = Utility\BackendUtility::getLanguageService();
+        $translation = $languageService->sL('LLL:EXT:warming/Resources/Private/Language/locallang.xlf:' . $key);
+
+        return vsprintf($translation, $arguments);
     }
 }

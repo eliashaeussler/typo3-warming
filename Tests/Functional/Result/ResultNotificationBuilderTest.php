@@ -176,14 +176,12 @@ final class ResultNotificationBuilderTest extends TestingFramework\Core\Function
     #[Framework\Attributes\Test]
     public function buildMessagesReturnsEmptyMessageIfNoSitesOrPagesWereRequested(): void
     {
-        $message = Src\Configuration\Localization::translate('notification.message.empty');
-
         $actual = $this->subject->buildMessages(
             new Src\ValueObject\Request\WarmupRequest('foo'),
             $this->cacheWarmupResult,
         );
 
-        self::assertSame([$message], $actual);
+        self::assertSame(['No caches were warmed up.'], $actual);
     }
 
     #[Framework\Attributes\Test]

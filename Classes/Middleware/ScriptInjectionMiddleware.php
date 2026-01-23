@@ -24,7 +24,6 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Middleware;
 
 use EliasHaeussler\CacheWarmup;
-use EliasHaeussler\Typo3Warming\Configuration;
 use EliasHaeussler\Typo3Warming\Utility;
 use Psr\Http\Message;
 use Psr\Http\Server;
@@ -106,7 +105,9 @@ final readonly class ScriptInjectionMiddleware implements Server\MiddlewareInter
     {
         $this->pageRenderer->addInlineLanguageLabelArray(
             \array_map(
-                static fn(string $key) => Configuration\Localization::translate($key),
+                static fn(string $key) => Utility\BackendUtility::getLanguageService()->sL(
+                    'LLL:EXT:warming/Resources/Private/Language/locallang.xlf:' . $key,
+                ),
                 self::LANGUAGE_LABELS,
             ),
         );

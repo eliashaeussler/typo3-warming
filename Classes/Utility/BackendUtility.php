@@ -43,9 +43,8 @@ final class BackendUtility
 
     public static function getLanguageService(): Core\Localization\LanguageService
     {
-        /** @var Core\Localization\LanguageService $languageService */
-        $languageService = $GLOBALS['LANG'];
-
-        return $languageService;
+        return Core\Utility\GeneralUtility::makeInstance(Core\Localization\LanguageServiceFactory::class)
+            ->createFromUserPreferences(self::getBackendUser())
+        ;
     }
 }

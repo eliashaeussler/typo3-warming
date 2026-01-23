@@ -25,10 +25,10 @@ namespace EliasHaeussler\Typo3Warming\Http\Message\Event;
 
 use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\SSE;
-use EliasHaeussler\Typo3Warming\Configuration;
 use EliasHaeussler\Typo3Warming\Enums;
 use EliasHaeussler\Typo3Warming\Exception;
 use EliasHaeussler\Typo3Warming\Result;
+use EliasHaeussler\Typo3Warming\Utility;
 use EliasHaeussler\Typo3Warming\ValueObject;
 
 /**
@@ -79,7 +79,9 @@ final readonly class WarmupFinishedEvent implements SSE\Event\Event
 
         return [
             'state' => $state->value,
-            'title' => Configuration\Localization::translate('notification.title.' . $state->value),
+            'title' => Utility\BackendUtility::getLanguageService()->sL(
+                'LLL:EXT:warming/Resources/Private/Language/locallang.xlf:notification.title.' . $state->value,
+            ),
             'progress' => [
                 'current' => \count($failedUrls) + \count($successfulUrls),
                 'total' => \count($failedUrls) + \count($successfulUrls),

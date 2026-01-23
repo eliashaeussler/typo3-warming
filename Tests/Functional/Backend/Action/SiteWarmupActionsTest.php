@@ -21,7 +21,7 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3Warming\Tests\Unit\Backend\Action;
+namespace EliasHaeussler\Typo3Warming\Tests\Functional\Backend\Action;
 
 use EliasHaeussler\Typo3Warming as Src;
 use EliasHaeussler\Typo3Warming\Tests;
@@ -36,9 +36,15 @@ use TYPO3\TestingFramework;
  * @license GPL-2.0-or-later
  */
 #[Framework\Attributes\CoversClass(Src\Backend\Action\SiteWarmupActions::class)]
-final class SiteWarmupActionsTest extends TestingFramework\Core\Unit\UnitTestCase
+final class SiteWarmupActionsTest extends TestingFramework\Core\Functional\FunctionalTestCase
 {
-    use Tests\Unit\SiteTrait;
+    use Tests\Functional\SiteTrait;
+
+    protected array $testExtensionsToLoad = [
+        'sitemap_locator',
+        'typed_extconf',
+        'warming',
+    ];
 
     private Core\Site\Entity\Site $site;
     private Src\Backend\Action\SiteWarmupActions $subject;
@@ -53,8 +59,8 @@ final class SiteWarmupActionsTest extends TestingFramework\Core\Unit\UnitTestCas
             $this->site->getLanguageById(1),
         ]);
 
-        $GLOBALS['LANG'] = $this->createMock(Core\Localization\LanguageService::class);
-        $GLOBALS['LANG']->method('sL')->willReturn('foo');
+        $this->importCSVDataSet(\dirname(__DIR__, 2) . '/Fixtures/Database/be_users.csv');
+        $GLOBALS['BE_USER'] = $this->setUpBackendUser(3);
     }
 
     #[Framework\Attributes\Test]
@@ -69,7 +75,7 @@ final class SiteWarmupActionsTest extends TestingFramework\Core\Unit\UnitTestCas
     public function getActionsReturnsIterableWarmupActionsWithSelectAction(): void
     {
         $expected = [
-            Src\Backend\Action\WarmupAction::special('select', 'foo', 'flags-multiple'),
+            Src\Backend\Action\WarmupAction::special('select', 'Select…', 'flags-multiple'),
             Src\Backend\Action\WarmupAction::fromSiteLanguage($this->site->getLanguageById(0)),
             Src\Backend\Action\WarmupAction::fromSiteLanguage($this->site->getLanguageById(1)),
         ];
@@ -111,7 +117,7 @@ final class SiteWarmupActionsTest extends TestingFramework\Core\Unit\UnitTestCas
     public function subjectIsIterable(): void
     {
         $expected = [
-            Src\Backend\Action\WarmupAction::special('select', 'foo', 'flags-multiple'),
+            Src\Backend\Action\WarmupAction::special('select', 'Select…', 'flags-multiple'),
             Src\Backend\Action\WarmupAction::fromSiteLanguage($this->site->getLanguageById(0)),
             Src\Backend\Action\WarmupAction::fromSiteLanguage($this->site->getLanguageById(1)),
         ];
