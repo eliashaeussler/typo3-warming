@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Backend\Action;
 
-use EliasHaeussler\Typo3Warming\Configuration;
+use EliasHaeussler\Typo3Warming\Utility;
 use TYPO3\CMS\Core;
 
 /**
@@ -52,7 +52,9 @@ final readonly class SiteWarmupActions implements \Countable, \IteratorAggregate
         if ($this->hasSelectAction()) {
             yield WarmupAction::special(
                 'select',
-                Configuration\Localization::translate('cacheWarmupAction.context.site.select'),
+                Utility\BackendUtility::getLanguageService()->sL(
+                    'LLL:EXT:warming/Resources/Private/Language/locallang.xlf:cacheWarmupAction.context.site.select',
+                ),
                 'flags-multiple',
             );
         }
