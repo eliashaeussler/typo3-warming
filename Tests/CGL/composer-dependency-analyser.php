@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
- * Copyright (C) 2021-2025 Elias Häußler <elias@haeussler.dev>
+ * Copyright (C) 2021-2026 Elias Häußler <elias@haeussler.dev>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,6 +34,7 @@ $configuration = new ComposerDependencyAnalyser\Config\Configuration();
 $configuration
     ->addPathToScan($rootPath . '/Configuration', false)
     ->addPathsToExclude([
+        $rootPath . '/Tests/Acceptance/Support/_generated',
         $rootPath . '/Tests/Build',
         $rootPath . '/Tests/CGL',
     ])

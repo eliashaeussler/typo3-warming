@@ -171,9 +171,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ["8.2", "8.3", "8.4"]
+        php-version: ["8.2", "8.3", "8.4", "8.5"]
         typo3-version: ["12.4", "13.4"]
         dependencies: ["highest", "lowest"]
+
+        # TYPO3 12.4 is not compatible with PHP 8.5
+        exclude:
+          - typo3-version: "12.4"
+            php-version: "8.5"
 
         # Enforce PHPUnit ^11.5 for TYPO3 13.4 & lowest dependencies
         # since it adds support for doubling readonly classes (SiteFinder in our case)
@@ -258,7 +263,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.4
+          php-version: 8.5
           tools: composer:v2
           coverage: none
 
@@ -327,16 +332,6 @@ jobs:
         uses: actions/download-artifact@v6
         with:
           name: coverage
-
-      # qlty
-      - name: qlty report
-        uses: qltysh/qlty-action/coverage@v2
-        if: env.QLTY_COVERAGE_TOKEN
-        env:
-          QLTY_COVERAGE_TOKEN: ${{ secrets.QLTY_COVERAGE_TOKEN }}
-        with:
-          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
-          files: ${{ steps.download.outputs.download-path }}/clover.xml
 
       # Coveralls
       - name: Coveralls report

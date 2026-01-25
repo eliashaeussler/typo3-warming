@@ -3,7 +3,7 @@
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
- * Copyright (C) 2021-2025 Elias Häußler <elias@haeussler.dev>
+ * Copyright (C) 2021-2026 Elias Häußler <elias@haeussler.dev>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ $EM_CONF[$_EXTKEY] = [
     'constraints' => [
         'depends' => [
             'typo3' => '12.4.25-13.4.99',
-            'php' => '8.2.0-8.4.99',
+            'php' => '8.2.0-8.5.99',
             'sitemap_locator' => '0.2.0-0.2.99',
             'typed_extconf' => '0.2.0-0.2.99',
         ],

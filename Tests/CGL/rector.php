@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
- * Copyright (C) 2021-2025 Elias Häußler <elias@haeussler.dev>
+ * Copyright (C) 2021-2026 Elias Häußler <elias@haeussler.dev>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,6 @@ use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 use Rector\PHPUnit\CodeQuality\Rector\MethodCall\ScalarArgumentToExpectedParamTypeRector;
 use Rector\Renaming\Rector\Name\RenameClassRector;
 use Rector\Symfony\DependencyInjection\Rector\Trait_\TraitGetByTypeToInjectRector;
-use Rector\Symfony\Symfony73\Rector\Class_\CommandHelpToAttributeRector;
 use Rector\ValueObject\PhpVersion;
 use Ssch\TYPO3Rector\TYPO313\v0\MigrateExtbaseHashServiceToUseCoreHashServiceRector;
 
@@ -71,9 +70,6 @@ return static function (RectorConfig $rectorConfig): void {
             // We cannot use CPP for properties that are declared in abstract classes
             $rootPath . '/Tests/Acceptance/Support/Helper/ModalDialog.php',
             $rootPath . '/Tests/Acceptance/Support/Helper/PageTree.php',
-        ])
-        ->skip(CommandHelpToAttributeRector::class, [
-            $rootPath . '/Classes/Command/WarmupCommand.php',
         ])
         // @todo Remove once support for TYPO3 v12 is dropped
         ->skip(MigrateExtbaseHashServiceToUseCoreHashServiceRector::class, [
