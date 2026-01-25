@@ -1,17 +1,17 @@
 {
 	"require-dev": {
-		"armin/editorconfig-cli": "2.1.1",
-		"eliashaeussler/php-cs-fixer-config": "2.3.0",
-		"eliashaeussler/phpstan-config": "2.9.0",
-		"eliashaeussler/rector-config": "3.1.1",
+		"armin/editorconfig-cli": "2.2.1",
+		"eliashaeussler/php-cs-fixer-config": "2.4.0",
+		"eliashaeussler/phpstan-config": "2.10.0",
+		"eliashaeussler/rector-config": "3.2.0",
 		"ergebnis/composer-normalize": "2.48.2",
 		"helmich/typo3-typoscript-lint": "3.3.0",
 		"phpstan/extension-installer": "1.4.3",
-		"phpstan/phpstan-phpunit": "2.0.7",
-		"phpstan/phpstan-symfony": "2.0.8",
+		"phpstan/phpstan-phpunit": "2.0.12",
+		"phpstan/phpstan-symfony": "2.0.12",
 		"saschaegerer/phpstan-typo3": "2.1.1",
-		"shipmonk/composer-dependency-analyser": "1.8.3",
-		"ssch/typo3-rector": "3.7.0",
+		"shipmonk/composer-dependency-analyser": "1.8.4",
+		"ssch/typo3-rector": "3.11.0",
 		"typo3/coding-standards": "0.8.0"
 	},
 	"replace": {
