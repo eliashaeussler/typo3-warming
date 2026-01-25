@@ -27,7 +27,6 @@ return [
         '.ddev',
         '.git',
         '.github',
-        '.qlty',
         'bin',
         'build',
         'public',

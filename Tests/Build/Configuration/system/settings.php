@@ -129,7 +129,7 @@ return [
         'devIPmask' => '*',
         'displayErrors' => 1,
         'encryptionKey' => '22be11b3acb2d0a7427e9f23c6c1d8d2c19b05312d4961c025b9a8b74bd7f4087ad38eca173788364b3cccf7398ed682',
-        'exceptionalErrors' => 12290,
+        'exceptionalErrors' => 4098,
         'sitename' => 'EXT:warming',
         'systemMaintainers' => [
             1,

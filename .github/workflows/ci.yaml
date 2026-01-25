@@ -207,8 +207,6 @@ jobs:
           php-version: ${{ matrix.php-version }}
           tools: composer:v2
           coverage: none
-          # @todo Remove once Codeception fixes PHP 8.5 support
-          ini-values: register_argc_argv=On
 
       # Setup DDEV
       - name: Setup DDEV
@@ -235,8 +233,6 @@ jobs:
           ddev composer test:unit
       - name: Run acceptance tests
         uses: nick-fields/retry@v3
-        # @todo Enable once Codeception fixes support for PHP 8.5
-        if: ${{ matrix.php-version != '8.5' }}
         with:
           max_attempts: 3
           retry_on: error
@@ -267,8 +263,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          # @todo Switch to PHP 8.5 once Codeception fixes support for it
-          php-version: 8.4
+          php-version: 8.5
           tools: composer:v2
           coverage: none
 
@@ -337,16 +332,6 @@ jobs:
         uses: actions/download-artifact@v6
         with:
           name: coverage
-
-      # qlty
-      - name: qlty report
-        uses: qltysh/qlty-action/coverage@v2
-        if: env.QLTY_COVERAGE_TOKEN
-        env:
-          QLTY_COVERAGE_TOKEN: ${{ secrets.QLTY_COVERAGE_TOKEN }}
-        with:
-          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
-          files: ${{ steps.download.outputs.download-path }}/clover.xml
 
       # Coveralls
       - name: Coveralls report
