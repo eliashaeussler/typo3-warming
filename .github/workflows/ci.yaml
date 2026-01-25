@@ -175,6 +175,11 @@ jobs:
         typo3-version: ["12.4", "13.4"]
         dependencies: ["highest", "lowest"]
 
+        # TYPO3 12.4 is not compatible with PHP 8.5
+        exclude:
+          - typo3-version: "12.4"
+            php-version: "8.5"
+
         # Enforce PHPUnit ^11.5 for TYPO3 13.4 & lowest dependencies
         # since it adds support for doubling readonly classes (SiteFinder in our case)
         include:
