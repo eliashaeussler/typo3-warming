@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
- * Copyright (C) 2021-2025 Elias Häußler <elias@haeussler.dev>
+ * Copyright (C) 2021-2026 Elias Häußler <elias@haeussler.dev>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,8 +49,10 @@ unset($GLOBALS['TCA']);
 // Initialize application and add command
 try {
     $application = new Console\Application();
-    $application->add($container->get(Command\ShowUserAgentCommand::class));
-    $application->add($container->get(Command\WarmupCommand::class));
+    $application->addCommands([
+        $container->get(Command\ShowUserAgentCommand::class),
+        $container->get(Command\WarmupCommand::class),
+    ]);
 } finally {
     // Restore TCA
     $GLOBALS['TCA'] = $tca;
