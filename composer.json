@@ -22,7 +22,7 @@
 		"php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
 		"ext-json": "*",
 		"cuyz/valinor": "^2.0",
-		"eliashaeussler/cache-warmup": "^4.2",
+		"eliashaeussler/cache-warmup": "^4.2 || ^5.0",
 		"eliashaeussler/sse": "^1.0.1",
 		"eliashaeussler/typo3-sitemap-locator": "dev-feature/php-8.5",
 		"guzzlehttp/guzzle": "^7.5",
