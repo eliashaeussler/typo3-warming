@@ -40,6 +40,12 @@ final class WarmupPermissionGuardTest extends TestingFramework\Core\Functional\F
 {
     use Tests\Functional\SiteTrait;
 
+    protected array $testExtensionsToLoad = [
+        'sitemap_locator',
+        'typed_extconf',
+        'warming',
+    ];
+
     private Core\Site\Entity\Site $site;
     private Core\Cache\Frontend\FrontendInterface $cache;
     private Src\Security\WarmupPermissionGuard $subject;
@@ -59,6 +65,7 @@ final class WarmupPermissionGuardTest extends TestingFramework\Core\Functional\F
         $this->subject = new Src\Security\WarmupPermissionGuard(
             $this->cache,
             $this->get(Core\Site\SiteFinder::class),
+            $this->get(Src\Domain\Repository\LocalizationRepository::class),
         );
     }
 
