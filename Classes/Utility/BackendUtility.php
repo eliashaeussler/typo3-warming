@@ -41,6 +41,9 @@ final class BackendUtility
         return $backendUser;
     }
 
+    /**
+     * @todo Drop in favor of TranslatorInterface once support for TYPO3 v13 is dropped
+     */
     public static function getLanguageService(): Core\Localization\LanguageService
     {
         return Core\Utility\GeneralUtility::makeInstance(Core\Localization\LanguageServiceFactory::class)

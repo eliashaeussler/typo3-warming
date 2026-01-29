@@ -30,6 +30,7 @@ use EliasHaeussler\Typo3Warming\Exception;
 use EliasHaeussler\Typo3Warming\Result;
 use EliasHaeussler\Typo3Warming\Utility;
 use EliasHaeussler\Typo3Warming\ValueObject;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * WarmupFinishedEvent
@@ -72,8 +73,9 @@ final readonly class WarmupFinishedEvent implements SSE\Event\Event
      */
     public function getData(): array
     {
-        $state = Enums\WarmupState::fromCacheWarmupResult($this->result);
+        $resultNotificationBuilder = GeneralUtility::makeInstance(Result\ResultNotificationBuilder::class);
 
+        $state = Enums\WarmupState::fromCacheWarmupResult($this->result);
         $failedUrls = $this->result->getResult()->getFailed();
         $successfulUrls = $this->result->getResult()->getSuccessful();
 
@@ -94,7 +96,7 @@ final readonly class WarmupFinishedEvent implements SSE\Event\Event
                 'sitemaps' => array_map(strval(...), $this->result->getExcludedSitemaps()),
                 'urls' => array_map(strval(...), $this->result->getExcludedUrls()),
             ],
-            'messages' => (new Result\ResultNotificationBuilder())->buildMessages($this->request, $this->result),
+            'messages' => $resultNotificationBuilder->buildMessages($this->request, $this->result),
         ];
     }
 

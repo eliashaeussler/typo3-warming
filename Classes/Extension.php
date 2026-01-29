@@ -106,7 +106,7 @@ module.tx_warming {
     /**
      * Register custom styles for Backend.
      *
-     * FOR USE IN ext_tables.php ONLY.
+     * FOR USE IN ext_localconf.php ONLY.
      */
     public static function registerCustomStyles(): void
     {

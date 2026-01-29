@@ -15,7 +15,7 @@ services:
       - '../Classes/Http/Message/Event/*'
       - '../Classes/Http/Message/Handler/*'
       - '../Classes/Log/*'
-      - '../Classes/Result/*'
+      - '../Classes/Result/CacheWarmupResult.php'
       - '../Classes/ValueObject/*'
 
   EliasHaeussler\Typo3Warming\Command\ShowUserAgentCommand:
