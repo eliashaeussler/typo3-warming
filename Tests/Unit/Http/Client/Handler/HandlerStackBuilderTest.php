@@ -53,7 +53,7 @@ final class HandlerStackBuilderTest extends TestingFramework\Core\Unit\UnitTestC
     #[Framework\Attributes\Test]
     public function buildFromClientOrRequestOptionsReturnsDefaultHandlerStackIfNoHandlerIsCurrentlyRegistered(): void
     {
-        $clientStub = $this->createMock(ClientInterface::class);
+        $clientStub = self::createStub(ClientInterface::class);
         $handler = static fn() => new Promise\Promise();
 
         DeepClosureComparator\DeepClosureAssert::assertEquals(
@@ -65,7 +65,7 @@ final class HandlerStackBuilderTest extends TestingFramework\Core\Unit\UnitTestC
     #[Framework\Attributes\Test]
     public function buildFromClientOrRequestOptionsReturnsDefaultHandlerStackIfHandlerFromRequestOptionsIsNotCallable(): void
     {
-        $clientStub = $this->createMock(ClientInterface::class);
+        $clientStub = self::createStub(ClientInterface::class);
         $handler = static fn() => new Promise\Promise();
 
         DeepClosureComparator\DeepClosureAssert::assertEquals(
@@ -105,7 +105,7 @@ final class HandlerStackBuilderTest extends TestingFramework\Core\Unit\UnitTestC
     #[Framework\Attributes\Test]
     public function buildFromClientOrRequestOptionsReturnsDefaultHandlerStackIfHandlerFromRequestOptionsIsNotAHandlerStack(): void
     {
-        $clientStub = $this->createMock(ClientInterface::class);
+        $clientStub = self::createStub(ClientInterface::class);
         $currentHandler = static fn() => new Promise\Promise(static fn() => '');
         $newHandler = static fn() => new Promise\Promise(static fn() => 'foo');
 
