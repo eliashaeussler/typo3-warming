@@ -77,6 +77,9 @@ final readonly class SiteWarmupActions implements \Countable, \IteratorAggregate
         return $count;
     }
 
+    /**
+     * @return \Generator<WarmupAction>
+     */
     public function getIterator(): \Generator
     {
         yield from $this->getActions();

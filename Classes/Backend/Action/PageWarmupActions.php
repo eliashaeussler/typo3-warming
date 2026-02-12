@@ -60,6 +60,9 @@ final readonly class PageWarmupActions implements \Countable, \IteratorAggregate
         return count($this->siteLanguages);
     }
 
+    /**
+     * @return \Generator<WarmupAction>
+     */
     public function getIterator(): \Generator
     {
         yield from $this->getActions();
