@@ -189,7 +189,7 @@ jobs:
       - name: Setup DDEV
         uses: ddev/github-action-setup-ddev@v1
         with:
-          version: '1.25.0'
+          version: '1.25.1'
           autostart: false
       - name: Configure and start DDEV
         run: |
@@ -246,7 +246,7 @@ jobs:
       - name: Setup DDEV
         uses: ddev/github-action-setup-ddev@v1
         with:
-          version: '1.25.0'
+          version: '1.25.1'
           autostart: false
       - name: Configure and start DDEV
         run: |
