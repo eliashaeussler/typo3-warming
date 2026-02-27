@@ -218,7 +218,7 @@ jobs:
           new_command_on_retry: ddev composer test:acceptance -- -g failed
 
       # Save acceptance reports
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           name: acceptance-reports-${{ matrix.php-version }}-${{ matrix.typo3-version }}-${{ matrix.dependencies }}
           path: |
@@ -277,14 +277,14 @@ jobs:
         working-directory: .Build/coverage
         run: sed -i 's#/var/www/html#${{ github.workspace }}#g' clover.xml
       - name: Upload coverage artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: coverage
           path: .Build/coverage/clover.xml
           retention-days: 7
 
       # Save acceptance reports
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: acceptance-reports-coverage
@@ -302,7 +302,7 @@ jobs:
       # Download artifact
       - name: Download coverage artifact
         id: download
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: coverage
 
