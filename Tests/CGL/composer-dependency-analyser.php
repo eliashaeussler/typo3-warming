@@ -22,6 +22,7 @@ declare(strict_types=1);
  */
 
 use Composer\Autoload;
+use PHPUnit\Framework;
 use ShipMonk\ComposerDependencyAnalyser;
 
 $rootPath = dirname(__DIR__, 2);
@@ -37,6 +38,9 @@ $configuration
         $rootPath . '/Tests/Acceptance/Support/_generated',
         $rootPath . '/Tests/Build',
         $rootPath . '/Tests/CGL',
+    ])
+    ->ignoreUnknownClasses([
+        Framework\Attributes\AllowMockObjectsWithoutExpectations::class,
     ])
 ;
 

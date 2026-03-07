@@ -83,6 +83,7 @@ final class SubRequestHandlerTest extends TestingFramework\Core\Functional\Funct
     }
 
     #[Framework\Attributes\Test]
+    #[Framework\Attributes\AllowMockObjectsWithoutExpectations]
     public function invokeReturnsFulfilledPromiseWithResponseFromApplication(): void
     {
         $request = new Core\Http\Request('https://typo3-testing.local/', body: 'php://temp');
@@ -96,6 +97,7 @@ final class SubRequestHandlerTest extends TestingFramework\Core\Functional\Funct
     }
 
     #[Framework\Attributes\Test]
+    #[Framework\Attributes\AllowMockObjectsWithoutExpectations]
     public function invokeReturnsRejectedPromiseWithExceptionFromApplication(): void
     {
         $request = new Core\Http\Request('https://typo3-testing.local/', body: 'php://temp');
@@ -111,6 +113,7 @@ final class SubRequestHandlerTest extends TestingFramework\Core\Functional\Funct
     }
 
     #[Framework\Attributes\Test]
+    #[Framework\Attributes\AllowMockObjectsWithoutExpectations]
     public function invokeReturnsRejectedPromiseWithEnrichedImmediateResponseExceptionFromApplication(): void
     {
         $request = new Core\Http\Request('https://typo3-testing.local/', body: 'php://temp');
@@ -127,6 +130,7 @@ final class SubRequestHandlerTest extends TestingFramework\Core\Functional\Funct
     }
 
     #[Framework\Attributes\Test]
+    #[Framework\Attributes\AllowMockObjectsWithoutExpectations]
     public function invokeReturnsRejectedPromiseWithEnrichedStatusExceptionFromApplication(): void
     {
         $request = new Core\Http\Request('https://typo3-testing.local/', body: 'php://temp');

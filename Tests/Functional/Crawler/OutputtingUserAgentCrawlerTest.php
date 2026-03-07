@@ -53,7 +53,7 @@ final class OutputtingUserAgentCrawlerTest extends TestingFramework\Core\Functio
     ];
 
     private Console\Output\BufferedOutput $output;
-    private Frontend\Http\Application&Framework\MockObject\MockObject $applicationMock;
+    private Frontend\Http\Application&Framework\MockObject\Stub $applicationStub;
     private Src\Crawler\OutputtingUserAgentCrawler $subject;
 
     protected function setUp(): void
@@ -67,12 +67,12 @@ final class OutputtingUserAgentCrawlerTest extends TestingFramework\Core\Functio
         $this->setUpBackendUser(3);
 
         $this->output = new Console\Output\BufferedOutput();
-        $this->applicationMock = $this->createMock(Frontend\Http\Application::class);
+        $this->applicationStub = self::createStub(Frontend\Http\Application::class);
 
         // Mock frontend application for sub request handling tests
         $container = $this->getContainer();
         self::assertInstanceOf(DependencyInjection\ContainerInterface::class, $container);
-        $container->set(Frontend\Http\Application::class, $this->applicationMock);
+        $container->set(Frontend\Http\Application::class, $this->applicationStub);
 
         $this->subject = new Src\Crawler\OutputtingUserAgentCrawler(client: $this->createClient());
         $this->subject->setOutput($this->output);
@@ -193,7 +193,7 @@ final class OutputtingUserAgentCrawlerTest extends TestingFramework\Core\Functio
         ];
         $response = new Core\Http\Response();
 
-        $this->applicationMock->method('handle')->willReturn($response);
+        $this->applicationStub->method('handle')->willReturn($response);
 
         $actual = $this->subject->crawl($urls);
 

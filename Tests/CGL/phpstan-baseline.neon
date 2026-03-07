@@ -41,3 +41,9 @@ parameters:
 			identifier: constructor.missingParentCall
 			count: 1
 			path: ../Functional/Fixtures/Classes/DummyPackageManager.php
+
+		-
+			rawMessage: Attribute class PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations does not exist.
+			identifier: attribute.notFound
+			count: 4
+			path: ../Functional/Http/Client/Handler/SubRequestHandlerTest.php
