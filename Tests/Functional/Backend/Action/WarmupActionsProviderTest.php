@@ -67,8 +67,8 @@ final class WarmupActionsProviderTest extends TestingFramework\Core\Functional\F
         $backendUser = $this->setUpBackendUser(3);
         $GLOBALS['LANG'] = $this->get(Core\Localization\LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
-        $clientFactoryMock = $this->createMock(Core\Http\Client\GuzzleClientFactory::class);
-        $clientFactoryMock->method('getClient')->willReturn($this->createClient());
+        $clientFactoryStub = self::createStub(Core\Http\Client\GuzzleClientFactory::class);
+        $clientFactoryStub->method('getClient')->willReturn($this->createClient());
 
         if ((new Core\Information\Typo3Version())->getMajorVersion() >= 14) {
             /* @phpstan-ignore arguments.count */
@@ -87,7 +87,7 @@ final class WarmupActionsProviderTest extends TestingFramework\Core\Functional\F
             $this->get(Src\Domain\Repository\SiteRepository::class),
             new Typo3SitemapLocator\Sitemap\SitemapLocator(
                 new Typo3SitemapLocator\Http\Client\ClientFactory(
-                    $clientFactoryMock,
+                    $clientFactoryStub,
                     new Core\EventDispatcher\NoopEventDispatcher(),
                 ),
                 $this->get(Typo3SitemapLocator\Cache\SitemapsCache::class),
