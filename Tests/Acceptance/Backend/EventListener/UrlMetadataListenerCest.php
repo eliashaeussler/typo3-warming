@@ -88,7 +88,7 @@ final class UrlMetadataListenerCest
 
         $I->switchToNextTab();
         $I->switchToFrame(Typo3CodeceptionHelper\Enums\Selectors::BackendContentFrame);
-        $I->waitForText('Edit Page');
+        $I->waitForText('URL Segment');
     }
 
     /**
