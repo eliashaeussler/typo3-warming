@@ -209,7 +209,7 @@ jobs:
           ddev composer test:functional
           ddev composer test:unit
       - name: Run acceptance tests
-        uses: nick-fields/retry@v3
+        uses: nick-fields/retry@v4
         with:
           max_attempts: 3
           retry_on: error
@@ -263,7 +263,7 @@ jobs:
           ddev composer test:coverage:functional
           ddev composer test:coverage:unit
       - name: Run acceptance tests
-        uses: nick-fields/retry@v3
+        uses: nick-fields/retry@v4
         with:
           max_attempts: 3
           retry_on: error
