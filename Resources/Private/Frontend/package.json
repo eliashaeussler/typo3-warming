@@ -44,7 +44,7 @@
 		"stylelint-copyright": "^3.2.1",
 		"stylelint-header": "^3.0.0",
 		"tslib": "^2.6.0",
-		"typescript": "^5.0.4",
+		"typescript": "^6.0.0",
 		"typescript-eslint": "^8.0.0"
 	},
 	"dependencies": {
