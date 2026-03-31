@@ -60,7 +60,6 @@ export class ReportModal extends LitElement {
       <div class="card-container">
         ${this.progress.getNumberOfFailedUrls() > 0 ? html`
           <warming-report-summary-card
-            class="col-4"
             title="${lll(LanguageKeys.modalReportPanelFailed)}"
             body="${lll(LanguageKeys.modalReportPanelFailedSummary)}"
             state="danger"
@@ -72,7 +71,6 @@ export class ReportModal extends LitElement {
 
         ${this.progress.getNumberOfSuccessfulUrls() > 0 ? html`
           <warming-report-summary-card
-            class="col-4"
             title="${lll(LanguageKeys.modalReportPanelSuccessful)}"
             body="${lll(LanguageKeys.modalReportPanelSuccessfulSummary)}"
             state="success"
@@ -84,7 +82,6 @@ export class ReportModal extends LitElement {
 
         ${excluded > 0 ? html`
           <warming-report-summary-card
-            class="col-4"
             title="${lll(LanguageKeys.modalReportPanelExcluded)}"
             body="${lll(LanguageKeys.modalReportPanelExcludedSummary)}"
             state="warning"

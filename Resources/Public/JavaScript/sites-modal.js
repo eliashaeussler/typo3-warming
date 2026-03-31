@@ -88,7 +88,6 @@ import{LitElement as t,html as e}from"lit";import r from"@typo3/backend/icons.js
       <div class="card-container">
         ${this.progress.getNumberOfFailedUrls()>0?e`
           <warming-report-summary-card
-            class="col-4"
             title="${n(Ot.modalReportPanelFailed)}"
             body="${n(Ot.modalReportPanelFailedSummary)}"
             state="danger"
@@ -100,7 +99,6 @@ import{LitElement as t,html as e}from"lit";import r from"@typo3/backend/icons.js
 
         ${this.progress.getNumberOfSuccessfulUrls()>0?e`
           <warming-report-summary-card
-            class="col-4"
             title="${n(Ot.modalReportPanelSuccessful)}"
             body="${n(Ot.modalReportPanelSuccessfulSummary)}"
             state="success"
@@ -112,7 +110,6 @@ import{LitElement as t,html as e}from"lit";import r from"@typo3/backend/icons.js
 
         ${t>0?e`
           <warming-report-summary-card
-            class="col-4"
             title="${n(Ot.modalReportPanelExcluded)}"
             body="${n(Ot.modalReportPanelExcludedSummary)}"
             state="warning"

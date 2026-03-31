@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Security;
 
+use EliasHaeussler\Typo3Warming\Domain;
 use Symfony\Component\DependencyInjection;
 use TYPO3\CMS\Backend;
 use TYPO3\CMS\Core;
@@ -39,6 +40,7 @@ final readonly class WarmupPermissionGuard
         #[DependencyInjection\Attribute\Autowire('@cache.runtime')]
         private Core\Cache\Frontend\FrontendInterface $cache,
         private Core\Site\SiteFinder $siteFinder,
+        private Domain\Repository\LocalizationRepository $localizationRepository,
     ) {}
 
     public function canWarmupCacheOfPage(
@@ -81,22 +83,14 @@ final readonly class WarmupPermissionGuard
         // Fetch record localization (if language is given and is not default language),
         // additionally check for available pages by adding hidden=0 as additional WHERE clause
         if ($context->languageId !== null && $context->languageId > 0) {
-            $record = Backend\Utility\BackendUtility::getRecordLocalization('pages', $pageId, $context->languageId, 'hidden = 0');
+            $record = $this->localizationRepository->getPageTranslation(
+                $pageId,
+                $context->languageId,
+                false,
+            )?->toArray();
         }
 
         // Early return if record is inaccessible
-        if (!\is_array($record) || $record === []) {
-            return false;
-        }
-
-        // Select first record inside list of records which is potentially returned by
-        // BackendUtility::getRecordLocalization()
-        if (array_is_list($record)) {
-            $record = reset($record);
-        }
-
-        // Early return if localized record is inaccessible
-        // (this should never happen, but makes PHPStan happy)
         if (!\is_array($record) || $record === []) {
             return false;
         }

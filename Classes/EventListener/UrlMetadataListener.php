@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\EventListener;
 
 use EliasHaeussler\CacheWarmup;
+use EliasHaeussler\Typo3Warming\Domain;
 use EliasHaeussler\Typo3Warming\Http;
 use GuzzleHttp\Exception;
 use Psr\Http\Message;
@@ -42,6 +43,7 @@ final readonly class UrlMetadataListener
         private Backend\Module\ModuleProvider $moduleProvider,
         private Backend\Routing\UriBuilder $uriBuilder,
         private Http\Message\UrlMetadataFactory $urlMetadataFactory,
+        private Domain\Repository\LocalizationRepository $localizationRepository,
     ) {}
 
     #[Core\Attribute\AsEventListener('eliashaeussler/typo3-warming/url-metadata/on-success')]
@@ -123,15 +125,8 @@ final readonly class UrlMetadataListener
 
         // Fetch page translation
         if ($metadata->languageId > 0) {
-            $pageTranslations = Backend\Utility\BackendUtility::getRecordLocalization(
-                'pages',
-                $metadata->pageId,
-                $metadata->languageId,
-            );
-
-            if ($pageTranslations !== false && $pageTranslations !== []) {
-                $pageTranslationId = (int)$pageTranslations[0]['uid'];
-            }
+            $pageTranslation = $this->localizationRepository->getPageTranslation($metadata->pageId, $metadata->languageId);
+            $pageTranslationId = $pageTranslation?->getUid() ?? $metadata->pageId;
         }
 
         // Add uri to edit current page record

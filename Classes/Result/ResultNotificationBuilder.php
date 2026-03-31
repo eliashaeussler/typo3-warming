@@ -23,10 +23,12 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Result;
 
+use EliasHaeussler\Typo3Warming\Domain;
 use EliasHaeussler\Typo3Warming\Enums;
 use EliasHaeussler\Typo3Warming\Exception;
 use EliasHaeussler\Typo3Warming\Utility;
 use EliasHaeussler\Typo3Warming\ValueObject;
+use Symfony\Component\DependencyInjection;
 use TYPO3\CMS\Backend;
 
 /**
@@ -36,12 +38,17 @@ use TYPO3\CMS\Backend;
  * @license GPL-2.0-or-later
  * @internal
  */
+#[DependencyInjection\Attribute\Autoconfigure(public: true)]
 final class ResultNotificationBuilder
 {
     /**
      * @var array<string, array<string, mixed>>
      */
     private static array $resolvedPageRecords = [];
+
+    public function __construct(
+        private readonly Domain\Repository\LocalizationRepository $localizationRepository,
+    ) {}
 
     /**
      * @return array<string>
@@ -137,7 +144,7 @@ final class ResultNotificationBuilder
 
         // Fetch localized page, if requested
         if ($languageId > 0) {
-            $record = Backend\Utility\BackendUtility::getRecordLocalization('pages', $pageId, $languageId);
+            $record = $this->localizationRepository->getPageTranslation($pageId, $languageId)?->toArray();
         } else {
             $record = Backend\Utility\BackendUtility::getRecord('pages', $pageId);
         }
@@ -147,16 +154,13 @@ final class ResultNotificationBuilder
             throw Exception\MissingPageIdException::create();
         }
 
-        // Use first record from list of localized pages
-        if (\array_is_list($record)) {
-            $record = \reset($record);
-        }
-
         return self::$resolvedPageRecords[$cacheIdentifier] = $record;
     }
 
     /**
      * @param list<scalar> $arguments
+     *
+     * @todo Inject and use TranslatorInterface once support for TYPO3 v13 is dropped
      */
     private function translate(string $key, array $arguments = []): string
     {

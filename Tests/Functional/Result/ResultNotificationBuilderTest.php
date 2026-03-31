@@ -60,7 +60,7 @@ final class ResultNotificationBuilderTest extends TestingFramework\Core\Function
         $backendUser = $this->setUpBackendUser(3);
         $GLOBALS['LANG'] = $this->get(Core\Localization\LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
 
-        $this->subject = new Src\Result\ResultNotificationBuilder();
+        $this->subject = $this->get(Src\Result\ResultNotificationBuilder::class);
         $this->cacheWarmupResult = new Src\Result\CacheWarmupResult(
             new CacheWarmup\Result\CacheWarmupResult(),
             [
