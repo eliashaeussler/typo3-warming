@@ -22,7 +22,7 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request.js';
 import type AjaxResponse from '@typo3/core/ajax/ajax-response.js';
 import Tagify, {TagData} from '@yaireo/tagify';
 
-type ValidationState = boolean | 'error';
+type ValidationState = boolean|'error';
 
 /**
  * Process settings in extension configuration.
@@ -65,11 +65,11 @@ class ExtensionConfiguration {
     clone.setAttribute('nonce', nonce);
 
     // Inject cloned <script> node
-    document.head.appendChild(clone).parentNode.removeChild(clone);
+    document.head.appendChild(clone).parentNode?.removeChild(clone);
   }
 
   private injectCrawlingStrategies(select: HTMLSelectElement, strategies: string[]): void {
-    const currentValue: string = select.dataset.currentValue;
+    const currentValue: string|undefined = select.dataset.currentValue;
 
     strategies.forEach((strategy: string) => {
       if (select.querySelector(`option[value="${strategy}"]`) === null) {
@@ -84,19 +84,19 @@ class ExtensionConfiguration {
   }
 
   public initializeCrawlerFqcnListener(fieldName: string, expectedInterface: string): void {
-    const element: HTMLInputElement = document.querySelector(`[name=${fieldName}]`);
+    const element: HTMLInputElement|null = document.querySelector(`[name=${fieldName}]`);
 
-    element.addEventListener('input', (event: InputEvent) => this.validateCrawlerFqcn(event, expectedInterface));
-    element.dispatchEvent(new Event('input'));
+    element?.addEventListener('input', (event: InputEvent) => this.validateCrawlerFqcn(event, expectedInterface));
+    element?.dispatchEvent(new Event('input'));
   }
 
   public async validateCrawlerFqcn(event: InputEvent, expectedInterface: string): Promise<void> {
     const target = event.target as HTMLInputElement;
     const actual: string = target.value;
 
-    const validElement: HTMLElement = target.parentElement.querySelector('.is-valid');
-    const invalidElement: HTMLElement = target.parentElement.querySelector('.is-invalid');
-    const errorElement: HTMLElement = target.parentElement.querySelector('.has-error');
+    const validElement: HTMLElement|null|undefined = target.parentElement?.querySelector('.is-valid');
+    const invalidElement: HTMLElement|null|undefined = target.parentElement?.querySelector('.is-invalid');
+    const errorElement: HTMLElement|null|undefined = target.parentElement?.querySelector('.has-error');
 
     let state: ValidationState;
 
@@ -119,32 +119,41 @@ class ExtensionConfiguration {
 
     switch (state) {
       case true:
-        validElement.classList.remove('hidden');
-        invalidElement.classList.add('hidden');
-        errorElement.classList.add('hidden');
+        validElement?.classList.remove('hidden');
+        invalidElement?.classList.add('hidden');
+        errorElement?.classList.add('hidden');
         break;
       case false:
-        validElement.classList.add('hidden');
-        invalidElement.classList.remove('hidden');
-        errorElement.classList.add('hidden');
+        validElement?.classList.add('hidden');
+        invalidElement?.classList.remove('hidden');
+        errorElement?.classList.add('hidden');
         break;
       case 'error':
-        validElement.classList.add('hidden');
-        invalidElement.classList.add('hidden');
-        errorElement.classList.remove('hidden');
+        validElement?.classList.add('hidden');
+        invalidElement?.classList.add('hidden');
+        errorElement?.classList.remove('hidden');
         break;
     }
   }
 
-  public initializeTagList(fieldName: string, validation: string | undefined = undefined): void {
-    const element: HTMLInputElement = document.querySelector(`[name=${fieldName}]`);
+  public initializeTagList(fieldName: string, validation: string|undefined = undefined): void {
+    const element: HTMLInputElement|null = document.querySelector(`[name=${fieldName}]`);
+
+    if (element === null) {
+      return;
+    }
+
     const tagify = new Tagify(element, {
       originalInputValueFormat: (values) => values.map(item => item.value).join(','),
       createInvalidTags: false,
     });
 
     if (validation) {
-      tagify.on('add', ({detail: {data, tag}}) => this.validateTag(validation, data, tag, tagify));
+      tagify.on('add', ({detail: {data, tag}}) => {
+        if (data) {
+          this.validateTag(validation, data, tag, tagify);
+        }
+      });
     }
   }
 
@@ -157,7 +166,7 @@ class ExtensionConfiguration {
     const {valid, error} = await new AjaxRequest(TYPO3.settings.ajaxUrls[validation])
       .post({pattern: value})
       .then(
-        async (response: typeof AjaxResponse): Promise<{valid: boolean, error: string}> => {
+        async (response: typeof AjaxResponse): Promise<{valid: boolean, error: string|undefined}> => {
           const {valid, error}: {valid: boolean, error?: string} = await response.resolve();
 
           return {valid, error};
@@ -175,7 +184,7 @@ class ExtensionConfiguration {
     ;
 
     if (!valid) {
-      tagify.replaceTag(tag, {...data, __isValid: error.replaceAll('"', "'")});
+      tagify.replaceTag(tag, {...data, __isValid: error?.replaceAll('"', "'")});
     }
   }
 

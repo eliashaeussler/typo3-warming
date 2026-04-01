@@ -47,7 +47,7 @@ export class AjaxRequestHandler implements RequestHandler {
     queryParams: URLSearchParams,
     retryFunction: () => Promise<WarmupProgress>,
   ): Promise<WarmupProgress>  {
-    this.progress = new WarmupProgress(queryParams.get('requestId'));
+    this.progress = new WarmupProgress(queryParams.get('requestId') ?? '');
     this.progressModal = ProgressModal.createModal(this.progress);
     this.request = new AjaxRequest(this.getUrl(queryParams).toString());
 

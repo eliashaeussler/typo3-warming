@@ -28,12 +28,12 @@ import {customElement, property} from 'lit/decorators.js';
  */
 @customElement('warming-report-summary-card')
 export class ReportSummaryCard extends LitElement {
-  @property({ type: String }) title: string;
-  @property({ type: String }) body: string;
-  @property({ type: String }) state: string;
-  @property({ type: String }) icon: string;
-  @property({ type: Number }) currentNumber: number;
-  @property({ type: Number }) totalNumber: number = null;
+  @property({ type: String }) title: string = '';
+  @property({ type: String }) body: string = '';
+  @property({ type: String }) state: string = '';
+  @property({ type: String }) icon: string = '';
+  @property({ type: Number }) currentNumber: number|null = null;
+  @property({ type: Number }) totalNumber: number|null = null;
 
   createRenderRoot(): HTMLElement {
     // Avoid shadow DOM for Bootstrap CSS to be applied
@@ -52,7 +52,7 @@ export class ReportSummaryCard extends LitElement {
             <span class="card-subtitle">${
               this.totalNumber !== null
                 ? html`<strong>${this.currentNumber}</strong>/${this.totalNumber}`
-                : this.currentNumber.toString()
+                : this.currentNumber?.toString()
             }</span>
           </div>
         </div>

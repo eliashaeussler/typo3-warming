@@ -56,10 +56,6 @@ export type WarmingConfiguration = {
   strategy?: string;
 };
 
-type NotificationOpenEvent = CustomEvent<void> & {
-  target: HTMLElement,
-};
-
 /**
  * Perform cache warmup from TYPO3 backend.
  *
@@ -96,7 +92,7 @@ export class CacheWarmer {
       .then(
         // Success
         (progress: WarmupProgress): WarmupProgress => {
-          let action: NotificationAction;
+          let action: NotificationAction|undefined;
 
           // Add option to restart cache warmup if it has been aborted
           if (progress.state === WarmupState.Aborted) {
@@ -161,7 +157,7 @@ export class CacheWarmer {
       queryParams.set(`sites[${index}][site]`, site);
 
       languages.forEach(
-        (language: number, languageIndex: number) => queryParams.set(
+        (language: number|null, languageIndex: number) => queryParams.set(
           `sites[${index}][languageIds][${languageIndex}]`,
           (language ?? 0).toString(),
         ),
@@ -174,7 +170,7 @@ export class CacheWarmer {
       queryParams.set(`pages[${index}][page]`, page.toString());
 
       languages.forEach(
-        (language: number, languageIndex: number) => queryParams.set(
+        (language: number|null, languageIndex: number) => queryParams.set(
           `pages[${index}][languageIds][${languageIndex}]`,
           (language ?? 0).toString(),
         ),
