@@ -24,7 +24,6 @@
  * @license GPL-2.0-or-later
  */
 export enum IconIdentifiers {
-  approved = 'overlay-approved',
   check = 'actions-check',
   exclamationCircle = 'actions-exclamation-circle-alt',
   info = 'actions-info',

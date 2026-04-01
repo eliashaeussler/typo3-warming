@@ -148,7 +148,7 @@ export class ProgressModal extends LitElement {
     const reportButton = this.getReportButton();
     let modalTitle: string;
 
-    reportButton.classList.remove('hidden');
+    reportButton?.classList.remove('hidden');
 
     new RegularEvent('click', () => {
       ReportModal.createModal(progress, retryFunction);
@@ -158,7 +158,7 @@ export class ProgressModal extends LitElement {
     if (progress.state !== WarmupState.Aborted) {
       const retryButton = this.getRetryButton();
 
-      retryButton.classList.remove('hidden');
+      retryButton?.classList.remove('hidden');
 
       new RegularEvent('click', retryFunction).bindTo(retryButton);
     }
@@ -222,18 +222,18 @@ export class ProgressModal extends LitElement {
   /**
    * Get report button within current modal.
    *
-   * @returns {HTMLElement} Report button within current modal
+   * @returns {HTMLElement|null} Report button within current modal
    */
-  private getReportButton(): HTMLElement {
+  private getReportButton(): HTMLElement|null {
     return this.getFooter().querySelector(`button[name=${CacheWarmupProgressModalButtonNames.reportButton}]`);
   }
 
   /**
    * Get retry button within current modal.
    *
-   * @returns {HTMLElement} Retry button within current modal
+   * @returns {HTMLElement|null} Retry button within current modal
    */
-  private getRetryButton(): HTMLElement {
+  private getRetryButton(): HTMLElement|null {
     return this.getFooter().querySelector(`button[name=${CacheWarmupProgressModalButtonNames.retryButton}]`);
   }
 

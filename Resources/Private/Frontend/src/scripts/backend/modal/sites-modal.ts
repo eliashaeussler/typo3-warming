@@ -59,31 +59,31 @@ type FormValues = {
 @customElement('warming-sites-modal')
 export class SitesModal extends LitElement {
   @query(SitesModalSelectors.form)
-  private _form: HTMLFormElement;
+  private _form!: HTMLFormElement;
 
   @query(SitesModalSelectors.showAllButton)
-  private _showAllButton: HTMLButtonElement | null;
+  private _showAllButton!: HTMLButtonElement|null;
 
   @query(SitesModalSelectors.siteCheckboxAll)
-  private _selectAllCheckbox: HTMLInputElement | null;
+  private _selectAllCheckbox!: HTMLInputElement|null;
 
   @queryAll(SitesModalSelectors.siteCheckbox)
-  private _checkboxes: NodeListOf<HTMLInputElement>
+  private _checkboxes!: NodeListOf<HTMLInputElement>
 
   @queryAll(SitesModalSelectors.siteCheckbox + ':enabled')
-  private _enabledCheckboxes: NodeListOf<HTMLInputElement>;
+  private _enabledCheckboxes!: NodeListOf<HTMLInputElement>;
 
   @queryAll(SitesModalSelectors.siteCheckbox + ':enabled:not([data-select-all])')
-  private _enabledCheckboxesWithoutGroupElements: NodeListOf<HTMLInputElement>;
+  private _enabledCheckboxesWithoutGroupElements!: NodeListOf<HTMLInputElement>;
 
   @query(SitesModalSelectors.useragentCopy)
-  private _useragentCopyButton: HTMLButtonElement;
+  private _useragentCopyButton!: HTMLButtonElement;
 
   @query(SitesModalSelectors.useragentCopyIcon)
-  private _useragentCopyIcon: HTMLElement;
+  private _useragentCopyIcon!: HTMLElement;
 
   @query(SitesModalSelectors.useragentCopyText)
-  private _useragentCopyText: HTMLElement;
+  private _useragentCopyText!: HTMLElement;
 
   private cacheWarmer: CacheWarmer;
   private modal: typeof Modal;
@@ -304,8 +304,10 @@ export class SitesModal extends LitElement {
         }
       });
 
-      checkboxGroupRoot.checked = hasChecked && !hasUnchecked;
-      checkboxGroupRoot.indeterminate = hasChecked && hasUnchecked;
+      if (checkboxGroupRoot !== null) {
+        checkboxGroupRoot.checked = hasChecked && !hasUnchecked;
+        checkboxGroupRoot.indeterminate = hasChecked && hasUnchecked;
+      }
     }
   }
 
@@ -347,11 +349,11 @@ export class SitesModal extends LitElement {
   /**
    * Get all checkboxes of given group.
    *
-   * @param groupName {string} Name of the group to query.
+   * @param groupName {string|null} Name of the group to query.
    * @returns {NodeListOf<HTMLInputElement>} List of checkboxes of the given group.
    * @private
    */
-  private getCheckboxesByGroup(groupName: string): NodeListOf<HTMLInputElement> {
+  private getCheckboxesByGroup(groupName: string|null): NodeListOf<HTMLInputElement> {
     return this.renderRoot.querySelectorAll(`input[data-group="${groupName}"]:enabled`);
   }
 
@@ -359,10 +361,10 @@ export class SitesModal extends LitElement {
    * Get root checkbox of given group.
    *
    * @param groupName {string} Name of the group to query.
-   * @returns {HTMLInputElement | undefined} Reference to root checkbox of given group if available, `undefined` otherwise
+   * @returns {HTMLInputElement|null} Reference to root checkbox of given group if available, `null` otherwise
    * @private
    */
-  private getCheckboxGroupRoot(groupName: string): HTMLInputElement | undefined {
+  private getCheckboxGroupRoot(groupName: string|null): HTMLInputElement|null {
     return this.renderRoot.querySelector(`input[data-group-root="${groupName}"]:enabled`);
   }
 
@@ -424,7 +426,7 @@ export class SitesModal extends LitElement {
    * Next to the modal content, a footer with a "start" button is added. The footer
    * is hidden as long as no site is actively selected.
    */
-  public static createModal(limitToSite: string | null = null): void {
+  public static createModal(limitToSite: string|null = null): void {
     const url: URL = new URL(TYPO3.settings.ajaxUrls.tx_warming_fetch_sites, window.location.origin);
 
     if (limitToSite !== null) {

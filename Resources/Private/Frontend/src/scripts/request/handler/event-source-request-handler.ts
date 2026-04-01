@@ -46,7 +46,7 @@ export class EventSourceRequestHandler implements RequestHandler {
     queryParams: URLSearchParams,
     retryFunction: () => Promise<WarmupProgress>,
   ): Promise<WarmupProgress> {
-    this.progress = new WarmupProgress(queryParams.get('requestId'));
+    this.progress = new WarmupProgress(queryParams.get('requestId') ?? '');
     this.progressModal = ProgressModal.createModal(this.progress);
     this.source = new EventSource(this.getUrl(queryParams).toString(), {withCredentials: true});
 

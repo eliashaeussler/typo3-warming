@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
- * Copyright (C) 2021 Elias Häußler <elias@haeussler.dev>
+ * Copyright (C) 2021-2026 Elias Häußler <elias@haeussler.dev>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,15 +10,26 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 declare const TYPO3: any;
 declare const nothing: any;
+
+declare type NotificationOpenEvent = CustomEvent<void> & {
+  target: HTMLElement,
+};
+
+declare interface DocumentEventMap {
+  'typo3-modal-shown': CustomEvent;
+  'typo3-notification-open': NotificationOpenEvent;
+}
 
 /**
  * @see https://github.com/TYPO3/typo3/blob/v13.4.5/Build/Sources/TypeScript/backend/action-button/immediate-action.ts

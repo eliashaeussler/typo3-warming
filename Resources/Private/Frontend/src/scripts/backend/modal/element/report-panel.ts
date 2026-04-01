@@ -34,9 +34,9 @@ import {StringHelper} from '@eliashaeussler/typo3-warming/helper/string-helper';
  */
 @customElement('warming-report-panel')
 export class ReportPanel extends LitElement {
-  @property({ type: String }) title: string;
-  @property({ type: String }) state: string;
-  @property({ type: Array }) urls: CrawlingResult[];
+  @property({ type: String }) title: string = '';
+  @property({ type: String }) state: string = '';
+  @property({ type: Array }) urls: CrawlingResult[] = [];
   @property({ type: Boolean }) show: boolean = false;
   @property({ attribute: false }) id: string;
 
@@ -101,7 +101,7 @@ export class ReportPanel extends LitElement {
                              @click="${(event: MouseEvent) => {
                                event.preventDefault();
 
-                               InfoWindow.showItem('pages', result.data.urlMetadata.pageId);
+                               InfoWindow.showItem('pages', result.data.urlMetadata?.pageId);
                              }}"
                           >
                             <typo3-backend-icon identifier="actions-info" size="small" />

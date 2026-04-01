@@ -37,7 +37,7 @@ export class ContextMenuAction {
    */
   public warmupPageCache(table: string, uid: number, data: object): void {
     if ('pages' === table) {
-      const actionIdentifier: number | null = ContextMenuAction.determineActionIdentifier(data) as number | null;
+      const actionIdentifier: number|null = ContextMenuAction.determineActionIdentifier(data) as number|null;
 
       const pages: PageWarmupRequest = {};
       pages[uid] = [actionIdentifier];
@@ -55,7 +55,7 @@ export class ContextMenuAction {
    */
   public warmupSiteCache(table: string, uid: number, data: object): void {
     if ('pages' === table) {
-      const actionIdentifier: string | number = ContextMenuAction.determineActionIdentifier(data);
+      const actionIdentifier: string|number|null = ContextMenuAction.determineActionIdentifier(data);
       const siteIdentifier: string = ContextMenuAction.determineSiteIdentifier(data);
 
       if (typeof actionIdentifier === 'number') {
@@ -82,7 +82,7 @@ export class ContextMenuAction {
    * @returns {string|null} The resolved action identifier or `NULL`
    * @private
    */
-  private static determineActionIdentifier(data: object): string | number | null {
+  private static determineActionIdentifier(data: object): string|number|null {
     if (!('actionIdentifier' in data) || typeof data.actionIdentifier !== 'string') {
       return null;
     }
