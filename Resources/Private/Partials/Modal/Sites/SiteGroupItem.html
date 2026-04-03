@@ -5,6 +5,7 @@
 <f:section name="checkbox">
     {f:if(condition: group, then: siteIdentifier) -> f:variable(name: 'groupName')}
     {f:if(condition: disabled, then: 'disabled', else: '') -> f:variable(name: 'disabledAttribute')}
+    {f:if(condition: checked, then: 'checked', else: '') -> f:variable(name: 'checkedAttribute')}
 
     <f:if condition="!{all}">
         <f:if condition="{groupName}">
@@ -27,6 +28,7 @@
                                name="site"
                                value="{value}"
                                data-group="{groupName}"
+                               {checkedAttribute}
                                {disabledAttribute} />
                     </f:then>
                     <f:else>
@@ -35,6 +37,7 @@
                                name="site"
                                value="{value}"
                                data-group-root="{groupName}"
+                               {checkedAttribute}
                                {disabledAttribute} />
                     </f:else>
                 </f:if>
@@ -47,6 +50,7 @@
                                name="site"
                                value="{value}"
                                data-select-all="1"
+                               {checkedAttribute}
                                {disabledAttribute} />
                     </f:then>
                     <f:else>
@@ -54,6 +58,7 @@
                                id="{identifier}"
                                name="site"
                                value="{value}"
+                               {checkedAttribute}
                                {disabledAttribute} />
                     </f:else>
                 </f:if>

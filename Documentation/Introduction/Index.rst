@@ -29,8 +29,8 @@ Features
 ========
 
 -   Frontend cache warmup of pages located in XML sitemaps
--   Integration in :ref:`TYPO3 backend toolbar <backend-toolbar>` and
-    :ref:`page tree <page-tree>`
+-   Integration in :ref:`TYPO3 backend toolbar <backend-toolbar>`,
+    :ref:`page tree <page-tree>` and :ref:`live search <live-search>`
 -   Support of various :ref:`sitemap providers <sitemap-providers>`
     (e.g. `robots.txt` or custom location)
 -   Multi-language support of configured sites

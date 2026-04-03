@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Middleware;
 
 use EliasHaeussler\CacheWarmup;
+use EliasHaeussler\Typo3Warming\Configuration;
 use EliasHaeussler\Typo3Warming\Utility;
 use Psr\Http\Message;
 use Psr\Http\Server;
@@ -89,6 +90,7 @@ final readonly class ScriptInjectionMiddleware implements Server\MiddlewareInter
 
     public function __construct(
         private CacheWarmup\Crawler\Strategy\CrawlingStrategyFactory $crawlingStrategyFactory,
+        private Configuration\Configuration $configuration,
         private Core\Page\PageRenderer $pageRenderer,
     ) {}
 
@@ -98,7 +100,13 @@ final readonly class ScriptInjectionMiddleware implements Server\MiddlewareInter
     ): Message\ResponseInterface {
         $this->injectLanguageLabels();
 
-        return $this->injectExtensionConfigurationScript($request, $handler->handle($request));
+        if ($this->configuration->enabledInLiveSearch) {
+            $this->pageRenderer->loadJavaScriptModule('@eliashaeussler/typo3-warming/backend/live-search.js');
+        }
+
+        $this->injectExtensionConfigurationScript($request);
+
+        return $handler->handle($request);
     }
 
     private function injectLanguageLabels(): void
@@ -113,58 +121,39 @@ final readonly class ScriptInjectionMiddleware implements Server\MiddlewareInter
         );
     }
 
-    private function injectExtensionConfigurationScript(
-        Message\ServerRequestInterface $request,
-        Message\ResponseInterface $response,
-    ): Message\ResponseInterface {
+    private function injectExtensionConfigurationScript(Message\ServerRequestInterface $request): void
+    {
         /** @var Backend\Routing\Route|null $route */
         $route = $request->getAttribute('route');
         $backendUser = Utility\BackendUtility::getBackendUser();
 
         // Early return if we're not on main route
         if ($route?->getPath() !== '/main') {
-            return $response;
+            return;
         }
 
         // Early return if EXT:install is not loaded and extension settings module is not available
         if (!Core\Utility\ExtensionManagementUtility::isLoaded('install')) {
-            return $response;
-        }
-
-        // Early return if response is invalid
-        if ($response->getStatusCode() !== 200) {
-            return $response;
+            return;
         }
 
         // Early return on insufficient privileges (only system maintainers can access settings module)
         if (!($backendUser->isSystemMaintainer())) {
-            return $response;
+            return;
         }
 
-        // Inject scripts into <head>
-        $body = $response->getBody();
-        $contents = (string)$body;
-        $body->rewind();
-        $body->write(
-            str_replace('</head>', $this->renderScriptTag($request) . '</head>', $contents),
-        );
-
-        return $response;
-    }
-
-    private function renderScriptTag(Message\ServerRequestInterface $request): string
-    {
         /** @var Core\Security\ContentSecurityPolicy\ConsumableNonce $nonce */
         $nonce = $request->getAttribute('nonce');
-        $nonceValue = $nonce->consume();
-        $strategies = json_encode($this->crawlingStrategyFactory->getAll());
 
-        return <<<JS
-<script async nonce="{$nonceValue}" id="tx-warming-script-inject">
-import('@eliashaeussler/typo3-warming/backend/extension-configuration.js').then(({default: extensionConfiguration}) => {
-    extensionConfiguration.initializeModalListener('{$nonceValue}', {$strategies});
-});
-</script>
-JS;
+        $javaScriptRenderer = $this->pageRenderer->getJavaScriptRenderer();
+        $javaScriptRenderer->addJavaScriptModuleInstruction(
+            Core\Page\JavaScriptModuleInstruction::create(
+                '@eliashaeussler/typo3-warming/backend/extension-configuration.js',
+            )->invoke(
+                'initializeModalListener',
+                $nonce->consume(),
+                $this->crawlingStrategyFactory->getAll(),
+            ),
+        );
     }
 }

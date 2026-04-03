@@ -60,6 +60,13 @@ declare module '@typo3/backend/info-window.js' {
 }
 
 /**
+ * @see https://github.com/TYPO3/typo3/blob/v14.2.0/Build/Sources/TypeScript/backend/live-search/live-search-configurator.ts
+ */
+declare module '@typo3/backend/live-search/live-search-configurator.js' {
+  export default nothing;
+}
+
+/**
  * @see https://github.com/TYPO3/typo3/blob/v14.2.0/Build/Sources/TypeScript/backend/modal.ts
  */
 declare module '@typo3/backend/modal.js' {

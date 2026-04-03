@@ -21,5 +21,6 @@ their page ID.
 
     BackendToolbar
     PageTree
+    LiveSearch
     ConsoleCommands
     UsingTheAPI

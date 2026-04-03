@@ -8,8 +8,9 @@ Permissions
 
 ..  note::
     Cache warmup can also be enabled or disabled globally. Check
-    out the extension configuration for :ref:`page tree <extconf-enablePageTree>`
-    and :ref:`backend toolbar <extconf-enableToolbar>`.
+    out the extension configuration for :ref:`page tree <extconf-enablePageTree>`,
+    :ref:`backend toolbar <extconf-enableToolbar>` and
+    :ref:`live search <extconf-enableLiveSearch>`.
 
 Administrators are able to run cache warmup for all available
 sites and pages. All other users are by default not allowed to
