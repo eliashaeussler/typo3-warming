@@ -37,6 +37,7 @@ final readonly class SiteGroupItem
         private Core\Site\Entity\SiteLanguage $language,
         private bool $defaultLanguage,
         private ?string $url = null,
+        private bool $checked = false,
     ) {}
 
     public function getLanguage(): Core\Site\Entity\SiteLanguage
@@ -52,6 +53,11 @@ final readonly class SiteGroupItem
     public function getUrl(): ?string
     {
         return $this->url;
+    }
+
+    public function isChecked(): bool
+    {
+        return $this->checked;
     }
 
     public function isMissing(): bool

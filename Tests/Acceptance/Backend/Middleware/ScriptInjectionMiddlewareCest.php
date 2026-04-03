@@ -26,22 +26,22 @@ namespace EliasHaeussler\Typo3Warming\Tests\Acceptance\Backend\Middleware;
 use EliasHaeussler\Typo3Warming\Tests;
 
 /**
- * InjectExtensionConfigurationScriptMiddlewareCest
+ * ScriptInjectionMiddlewareCest
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class InjectExtensionConfigurationScriptMiddlewareCest
+final class ScriptInjectionMiddlewareCest
 {
-    public function cannotSeeInjectedScriptOnInsufficientPrivileges(Tests\Acceptance\Support\AcceptanceTester $I): void
+    public function cannotSeeInjectedExtensionConfigurationScriptOnInsufficientPrivileges(Tests\Acceptance\Support\AcceptanceTester $I): void
     {
         $I->loginAs('editor.1');
-        $I->dontSeeElementInDOM('#tx-warming-script-inject');
+        $I->dontSeeInSource('initializeModalListener');
     }
 
-    public function canSeeInjectedScriptOnTypo3V13(Tests\Acceptance\Support\AcceptanceTester $I): void
+    public function canSeeInjectedExtensionConfigurationScriptAsAdministrator(Tests\Acceptance\Support\AcceptanceTester $I): void
     {
         $I->loginAs('admin');
-        $I->seeElementInDOM('#tx-warming-script-inject');
+        $I->seeInSource('initializeModalListener');
     }
 }

@@ -64,6 +64,10 @@ an appropriate class property.
 
         Check whether cache warmup from :ref:`page tree <extconf-enablePageTree>` is enabled.
 
+    ..  php:attr:: enabledInLiveSearch
+
+        Check whether cache warmup from :ref:`live search <extconf-enableLiveSearch>` is enabled.
+
     ..  php:attr:: supportedDoktypes
 
         Get all :ref:`doktypes <t3coreapi:list-of-page-types>` that support cache warmup from

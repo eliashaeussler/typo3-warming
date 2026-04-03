@@ -62,8 +62,15 @@ final readonly class FetchSitesController
     public function __invoke(Message\ServerRequestInterface $request): Message\ResponseInterface
     {
         $limitToSite = $request->getQueryParams()['limitToSite'] ?? null;
+        $preselectLanguage = $request->getQueryParams()['preselectLanguage'] ?? null;
         $crawlingStrategy = $this->configuration->crawlingStrategy;
         $siteGroups = [];
+
+        if (\is_numeric($preselectLanguage)) {
+            $preselectLanguage = (int)$preselectLanguage;
+        } else {
+            $preselectLanguage = null;
+        }
 
         if (\is_string($limitToSite) && $limitToSite !== '') {
             $site = $this->siteRepository->findOneByIdentifier($limitToSite);
@@ -84,7 +91,7 @@ final readonly class FetchSitesController
                 continue;
             }
 
-            $siteGroup = $this->createSiteGroup($site, $row);
+            $siteGroup = $this->createSiteGroup($site, $row, $preselectLanguage);
 
             if ($siteGroup !== null) {
                 $siteGroups[] = $siteGroup;
@@ -109,8 +116,11 @@ final readonly class FetchSitesController
      * @throws Typo3SitemapLocator\Exception\BaseUrlIsNotSupported
      * @throws Typo3SitemapLocator\Exception\SitemapIsMissing
      */
-    private function createSiteGroup(Core\Site\Entity\Site $site, array $page): ?ValueObject\Modal\SiteGroup
-    {
+    private function createSiteGroup(
+        Core\Site\Entity\Site $site,
+        array $page,
+        ?int $preselectedLanguage = null,
+    ): ?ValueObject\Modal\SiteGroup {
         $items = [];
 
         // Check all available languages for possible sitemaps
@@ -137,6 +147,7 @@ final readonly class FetchSitesController
                     $siteLanguage,
                     $siteLanguage === $site->getDefaultLanguage(),
                     $url,
+                    $preselectedLanguage === $siteLanguage->getLanguageId(),
                 );
             }
         }
