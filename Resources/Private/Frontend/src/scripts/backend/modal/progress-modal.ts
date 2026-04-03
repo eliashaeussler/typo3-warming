@@ -17,11 +17,10 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import {html, LitElement, TemplateResult} from 'lit';
-import {classMap, ClassInfo} from 'lit/directives/class-map.js';
+import {html, LitElement, nothing, TemplateResult} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import {styleMap, StyleInfo} from 'lit/directives/style-map.js';
 import {unsafeHTML} from 'lit/directives/unsafe-html.js';
+import '@typo3/backend/element/progress-bar-element.js';
 import Modal from '@typo3/backend/modal.js';
 import RegularEvent from '@typo3/core/event/regular-event.js';
 import {lll} from '@typo3/core/lit-helper.js';
@@ -36,6 +35,17 @@ import {WarmupState} from '@eliashaeussler/typo3-warming/enums/warmup-state';
 enum CacheWarmupProgressModalButtonNames {
   reportButton = 'tx-warming-open-report',
   retryButton = 'tx-warming-retry',
+}
+
+/**
+ * @see https://github.com/TYPO3/typo3/blob/v14.2.0/Build/Sources/TypeScript/backend/enum/severity.ts
+ */
+enum SeverityEnum {
+  notice = -2,
+  info = -1,
+  ok = 0,
+  warning = 1,
+  error = 2,
 }
 
 /**
@@ -70,66 +80,58 @@ export class ProgressModal extends LitElement {
     const failedCount: number = this.progress.getNumberOfFailedUrls();
     const percent: number = this.progress.getProgressInPercent();
 
-    const progressBarClasses: ClassInfo = {
-      'progress-bar': true,
-      'progress-bar-striped': true,
-
-      // Active
-      active: isActive && !this.progress.isFinished(),
-      'progress-bar-animated': isActive && !this.progress.isFinished(),
-
-      // Finished
-      'bg-danger': failedCount > 0 && this.progress.isFinished(),
-      'bg-success': failedCount === 0 && this.progress.isFinished(),
-      'progress-bar-danger': failedCount > 0 && this.progress.isFinished(),
-      'progress-bar-success': failedCount === 0 && this.progress.isFinished(),
-
-      // Failure
-      'bg-warning': failedCount > 0,
-      'progress-bar-warning': failedCount > 0 && !this.progress.isFinished(),
-    };
-    const progressBarStyles: StyleInfo = {
-      width: `${isActive ? percent : 0}%`,
-    };
+    const severity: SeverityEnum = (() => {
+      switch (this.progress.state) {
+        case WarmupState.Failed:
+          return SeverityEnum.error;
+        case WarmupState.Warning:
+          return SeverityEnum.warning;
+        case WarmupState.Success:
+          return isActive ? SeverityEnum.notice : SeverityEnum.ok;
+        case WarmupState.Aborted:
+        case WarmupState.Unknown:
+          return SeverityEnum.notice;
+        default:
+          return failedCount > 0 ? SeverityEnum.error : SeverityEnum.notice;
+      }
+    })();
 
     return html`
       <div class="tx-warming-progress-modal">
-        <div class="tx-warming-progress-modal-progress progress">
-          <div class=${classMap(progressBarClasses)}
-               role="progressbar"
-               aria-valuemin="0"
-               aria-valuemax="${this.progress.progress.total}"
-               aria-valuenow="${this.progress.progress.current}"
-               style=${styleMap(progressBarStyles)}
-          >
-            ${isActive ? `${percent.toFixed(2)}%` : ''}
-          </div>
-        </div>
+        <typo3-backend-progress-bar value="${this.progress.progress.current}"
+                                    max="${this.progress.progress.total}"
+                                    severity="${severity}"
+        ></typo3-backend-progress-bar>
         <div class="tx-warming-progress-modal-counter">
-          ${isActive ? '' : html`
+          ${isActive ? html`<div>${percent.toFixed(2)}%</div>` : html`
             <div class="tx-warming-progress-placeholder">
               ${lll(LanguageKeys.modalProgressPlaceholder)}
             </div>
           `}
-          <div>
-            ${unsafeHTML(
-              StringHelper.formatString(
-                lll(LanguageKeys.modalProgressAllCounter),
-                this.progress.progress.current.toString(),
-                this.progress.progress.total.toString(),
-              ),
-            )}
-          </div>
-          ${failedCount > 0 ? html`
-            <div class="badge badge-danger">
-              ${StringHelper.formatString(
-                lll(LanguageKeys.modalProgressFailedCounter),
-                failedCount.toString(),
-              )}
-            </div>
-          ` : ''}
+          ${failedCount > 0
+            ? html`
+              <div class="badge badge-danger">
+                ${StringHelper.formatString(
+                  lll(LanguageKeys.modalProgressFailedCounter),
+                  failedCount.toString(),
+                  this.progress.progress.total.toString(),
+                )}
+              </div>
+            `
+            : html`
+              <div>
+                ${unsafeHTML(
+                  StringHelper.formatString(
+                    lll(LanguageKeys.modalProgressAllCounter),
+                    this.progress.progress.current.toString(),
+                    this.progress.progress.total.toString(),
+                  ),
+                )}
+              </div>
+            `
+          }
         </div>
-        ${this.progress.isFinished() ? '' : html`
+        ${this.progress.isFinished() ? nothing : html`
           <div class="tx-warming-progress-modal-current-url">
             ${this.progress.getCurrentUrl()}
           </div>

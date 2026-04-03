@@ -180,7 +180,7 @@ final class CacheWarmupToolbarItemCest
         $modalDialog->canSeeDialog();
 
         $I->waitForElementNotVisible(Tests\Acceptance\Support\Enums\Selectors::ProgressPlaceholder);
-        $I->see('1', Tests\Acceptance\Support\Enums\Selectors::ProgressCounterTotal);
+        $I->see('/1', Tests\Acceptance\Support\Enums\Selectors::ProgressCounterTotal);
 
         $modalDialog->clickButtonInDialog('Close');
     }

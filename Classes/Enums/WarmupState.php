@@ -69,8 +69,8 @@ enum WarmupState: string
     }
 
     /**
-     * @param list<CacheWarmup\Result\CrawlingResult> $successful
-     * @param list<CacheWarmup\Result\CrawlingResult> $failed
+     * @param list<mixed> $successful
+     * @param list<mixed> $failed
      */
     public static function fromCrawlingResults(array $successful, array $failed): self
     {
