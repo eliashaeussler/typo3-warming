@@ -74,7 +74,7 @@
 				<source>Close</source>
 			</trans-unit>
 			<trans-unit id="modal.progress.failedCounter" resname="modal.progress.failedCounter">
-				<source>Failed: {0}</source>
+				<source>Failed: {0}/{1}</source>
 			</trans-unit>
 			<trans-unit id="modal.progress.allCounter" resname="modal.progress.allCounter">
 				<source><![CDATA[Processed: <strong>{0}</strong>/<strong>{1}</strong>]]></source>

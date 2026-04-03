@@ -47,7 +47,7 @@ enum Selectors: string
     public const InformationModal = 'typo3-backend-modal[content^="/typo3/record/info"]';
     public const ModalHeader = '.tx-warming-modal-header';
     public const ModalTitle = '.t3js-modal[open] .modal-header-title';
-    public const ProgressCounterTotal = '.tx-warming-progress-modal .tx-warming-progress-modal-counter > div:nth-child(1) > strong:nth-child(2)';
+    public const ProgressCounterTotal = '.tx-warming-progress-modal .tx-warming-progress-modal-counter > div:nth-child(2)';
     public const ProgressPlaceholder = '.tx-warming-progress-modal .tx-warming-progress-placeholder';
     public const ReportPanelActionButtonViewLogs = 'warming-report-panel .panel-collapse a[href*="/BackendLog/"]';
     public const ReportPanelActionButtonEditRecord = 'warming-report-panel .panel-collapse a[href*="/record/edit"]';

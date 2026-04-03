@@ -32,8 +32,17 @@ warming-report-modal {
         flex-grow: 1;
 
         .panel-heading:has(+ .panel-collapse.show, + .panel-collapse.collapsing) {
-            border-bottom-left-radius: 0 !important;
-            border-bottom-right-radius: 0 !important;
+            border-end-start-radius: 0 !important;
+            border-end-end-radius: 0 !important;
+        }
+
+        [role="tabpanel"] {
+            padding: 0;
+        }
+
+        .table-fit {
+            border-start-start-radius: 0 !important;
+            border-start-end-radius: 0 !important;
         }
     }
 

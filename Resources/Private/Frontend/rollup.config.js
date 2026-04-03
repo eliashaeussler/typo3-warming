@@ -76,6 +76,7 @@ export default [
       }),
     ],
     external: [
+      'bootstrap',
       'lit',
       /^@typo3\//,
     ],

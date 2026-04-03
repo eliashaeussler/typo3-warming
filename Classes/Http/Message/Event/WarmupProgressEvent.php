@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Http\Message\Event;
 
 use EliasHaeussler\SSE;
+use EliasHaeussler\Typo3Warming\Enums;
 
 /**
  * WarmupProgressEvent
@@ -52,6 +53,7 @@ final readonly class WarmupProgressEvent implements SSE\Event\Event
 
     /**
      * @return array{
+     *     state: string,
      *     progress: array{
      *         current: int,
      *         total: int,
@@ -65,7 +67,10 @@ final readonly class WarmupProgressEvent implements SSE\Event\Event
      */
     public function getData(): array
     {
+        $state = Enums\WarmupState::fromCrawlingResults($this->successfulUrls, $this->failedUrls);
+
         return [
+            'state' => $state->value,
             'progress' => [
                 'current' => \count($this->successfulUrls) + \count($this->failedUrls),
                 'total' => $this->numberOfUrls,

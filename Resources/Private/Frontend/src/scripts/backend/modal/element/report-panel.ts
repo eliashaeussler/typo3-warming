@@ -19,6 +19,7 @@
 
 import {html, LitElement, TemplateResult} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
+import {Collapse} from 'bootstrap';
 import InfoWindow from '@typo3/backend/info-window.js';
 import {lll} from '@typo3/core/lit-helper.js';
 
@@ -50,79 +51,99 @@ export class ReportPanel extends LitElement {
     return this;
   }
 
+  firstUpdated(): void {
+    const panel: HTMLElement|null = this.querySelector(`#${this.id}`);
+
+    if (panel !== null && this.show) {
+      Collapse.getOrCreateInstance(panel).show();
+    }
+  }
+
   render(): TemplateResult {
     return html`
-      <div class="panel panel-${this.state}">
-        <div class="panel-heading">
-          <h3 class="panel-title">
-            <a class="${this.show ? '' : 'collapsed'}"
-               href="#${this.id}"
-               data-bs-toggle="collapse"
-               aria-controls="${this.id}"
-               aria-expanded="${this.show ? 'true' : 'false'}"
-            ><span class="caret"></span><strong>${this.title} (${this.urls.length})</strong></a>
+      <div class="panel-group">
+        <div class="panel panel-${this.state}">
+          <h3 class="panel-heading" role="tab" id="${this.id}-heading">
+            <div class="panel-heading-row">
+              <button class="panel-button"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#${this.id}"
+                      aria-controls="${this.id}"
+                      aria-expanded="false"
+              >
+                <div class="panel-title">
+                  <strong>${this.title} (${this.urls.length})</strong>
+                </div>
+                <span class="caret"></span>
+              </button>
+            </div>
           </h3>
-        </div>
-        <div id="${this.id}" class="panel-collapse collapse ${this.show ? 'show' : ''}">
-          <div class="table-fit">
-            <table class="table table-striped table-hover">
-              <tbody>
-                ${this.urls.map((result: CrawlingResult) => html`
-                  <tr>
-                    <td>
-                      <a href="${result.url}" target="_blank">${result.url}</a>
-                    </td>
-                    <td class="col-control nowrap">
-                      <div class="btn-group">
-                        ${result.data.pageActions?.viewLog ? html`
-                          <a href="${result.data.pageActions.viewLog}"
-                             class="btn btn-default btn-sm nowrap"
-                             title="${lll(LanguageKeys.modalReportActionLog)}"
+          <div id="${this.id}"
+               class="panel-collapse collapse"
+               aria-labelledby="${this.id}-heading"
+               role="tabpanel"
+          >
+            <div class="table-fit">
+              <table class="table table-striped table-hover">
+                <tbody>
+                  ${this.urls.map((result: CrawlingResult) => html`
+                    <tr>
+                      <td>
+                        <a href="${result.url}" target="_blank">${result.url}</a>
+                      </td>
+                      <td class="col-control nowrap">
+                        <div class="btn-group">
+                          ${result.data.pageActions?.viewLog ? html`
+                            <a href="${result.data.pageActions.viewLog}"
+                               class="btn btn-default btn-sm nowrap"
+                               title="${lll(LanguageKeys.modalReportActionLog)}"
+                               target="_blank"
+                            >
+                              <typo3-backend-icon identifier="actions-list-alternative" size="small" />
+                              ${lll(LanguageKeys.modalReportActionLog)}
+                            </a>
+                          ` : ''}
+
+                          ${result.data.pageActions?.editRecord ? html`
+                            <a href="${result.data.pageActions.editRecord}"
+                               class="btn btn-default btn-sm nowrap"
+                               title="${lll(LanguageKeys.modalReportActionEdit)}"
+                               target="_blank"
+                            >
+                              <typo3-backend-icon identifier="actions-file-edit" size="small" />
+                              ${lll(LanguageKeys.modalReportActionEdit)}
+                            </a>
+                          ` : ''}
+
+                          ${result.data.urlMetadata?.pageId ? html`<button class="btn btn-default btn-sm nowrap"
+                               title="${lll(LanguageKeys.modalReportActionInfo)}"
+                               @click="${(event: MouseEvent) => {
+                                 event.preventDefault();
+
+                                 InfoWindow.showItem('pages', result.data.urlMetadata?.pageId);
+                               }}"
+                            >
+                              <typo3-backend-icon identifier="actions-info" size="small" />
+                              ${lll(LanguageKeys.modalReportActionInfo)}
+                            </button>
+                          ` : ''}
+
+                          <a href="${result.url}"
                              target="_blank"
-                          >
-                            <typo3-backend-icon identifier="actions-list-alternative" size="small" />
-                            ${lll(LanguageKeys.modalReportActionLog)}
-                          </a>
-                        ` : ''}
-
-                        ${result.data.pageActions?.editRecord ? html`
-                          <a href="${result.data.pageActions.editRecord}"
                              class="btn btn-default btn-sm nowrap"
-                             title="${lll(LanguageKeys.modalReportActionEdit)}"
-                             target="_blank"
+                             title="${lll(LanguageKeys.modalReportActionView)}"
                           >
-                            <typo3-backend-icon identifier="actions-file-edit" size="small" />
-                            ${lll(LanguageKeys.modalReportActionEdit)}
+                            <typo3-backend-icon identifier="actions-view-page" size="small" />
+                            ${lll(LanguageKeys.modalReportActionView)}
                           </a>
-                        ` : ''}
-
-                        ${result.data.urlMetadata?.pageId ? html`<button class="btn btn-default btn-sm nowrap"
-                             title="${lll(LanguageKeys.modalReportActionInfo)}"
-                             @click="${(event: MouseEvent) => {
-                               event.preventDefault();
-
-                               InfoWindow.showItem('pages', result.data.urlMetadata?.pageId);
-                             }}"
-                          >
-                            <typo3-backend-icon identifier="actions-info" size="small" />
-                            ${lll(LanguageKeys.modalReportActionInfo)}
-                          </button>
-                        ` : ''}
-
-                        <a href="${result.url}"
-                           target="_blank"
-                           class="btn btn-default btn-sm nowrap"
-                           title="${lll(LanguageKeys.modalReportActionView)}"
-                        >
-                          <typo3-backend-icon identifier="actions-view-page" size="small" />
-                          ${lll(LanguageKeys.modalReportActionView)}
-                        </a>
-                      </div>
-                    </td>
-                  </tr>
-                `)}
-              </tbody>
-            </table>
+                        </div>
+                      </td>
+                    </tr>
+                  `)}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
