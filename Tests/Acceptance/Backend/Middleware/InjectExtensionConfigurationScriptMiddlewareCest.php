@@ -36,12 +36,12 @@ final class InjectExtensionConfigurationScriptMiddlewareCest
     public function cannotSeeInjectedScriptOnInsufficientPrivileges(Tests\Acceptance\Support\AcceptanceTester $I): void
     {
         $I->loginAs('editor.1');
-        $I->dontSeeElementInDOM('#tx-warming-script-inject');
+        $I->dontSeeInSource('initializeModalListener');
     }
 
-    public function canSeeInjectedScriptOnTypo3V13(Tests\Acceptance\Support\AcceptanceTester $I): void
+    public function canSeeInjectedScriptAsAdministrator(Tests\Acceptance\Support\AcceptanceTester $I): void
     {
         $I->loginAs('admin');
-        $I->seeElementInDOM('#tx-warming-script-inject');
+        $I->seeInSource('initializeModalListener');
     }
 }

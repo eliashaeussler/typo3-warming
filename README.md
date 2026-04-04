@@ -18,7 +18,7 @@ It supports multiple languages and custom crawler implementations.
 ## 🚀 Features
 
 * Warmup of Frontend caches from pages or XML sitemap
-* Integration in TYPO3 backend toolbar and page tree
+* Integration in TYPO3 backend toolbar, page tree and live search
 * Support of various sitemap providers (e.g. `robots.txt` or custom location)
 * Multi-language support
 * Support for custom crawlers

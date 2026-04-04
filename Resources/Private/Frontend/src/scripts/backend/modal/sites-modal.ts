@@ -113,10 +113,9 @@ export class SitesModal extends LitElement {
    * @private
    */
   private initializeSites(): void {
-    const modalFooter = this.modal.querySelector('.modal-footer');
-
     // Hide footer until site is selected
-    modalFooter.classList.add('tx-warming-modal-footer', 'visually-hidden');
+    this.getModalFooter()?.classList.add('tx-warming-modal-footer');
+    this.hideModalFooter();
 
     // Run cache warmup
     new RegularEvent('submit', (event: Event): false => {
@@ -127,10 +126,18 @@ export class SitesModal extends LitElement {
       return false;
     }).bindTo(this._form);
 
+    // Handle pre-checked sites
+    this._enabledCheckboxes.forEach((checkbox: HTMLInputElement): void => {
+      if (checkbox.checked) {
+        this.showModalFooter();
+        this.toggleInputs(checkbox);
+      }
+    })
+
     // Handle checked sites
     this._checkboxes.forEach((checkbox: HTMLInputElement): void => {
       new RegularEvent('input', (event: Event): void => {
-        modalFooter.classList.remove('visually-hidden');
+        this.showModalFooter();
         this.toggleInputs(event.target as HTMLInputElement);
       }).bindTo(checkbox);
     })
@@ -378,6 +385,18 @@ export class SitesModal extends LitElement {
     return this.modal.querySelector(`button[name=${SitesModalButtonNames.startButton}]`);
   }
 
+  private getModalFooter(): HTMLElement|null {
+    return this.modal.querySelector('.modal-footer');
+  }
+
+  private hideModalFooter(): void {
+    this.getModalFooter()?.classList.add('visually-hidden');
+  }
+
+  private showModalFooter(): void {
+    this.getModalFooter()?.classList.remove('visually-hidden');
+  }
+
   /**
    * Copy given User-Agent header to clipboard.
    *
@@ -426,11 +445,15 @@ export class SitesModal extends LitElement {
    * Next to the modal content, a footer with a "start" button is added. The footer
    * is hidden as long as no site is actively selected.
    */
-  public static createModal(limitToSite: string|null = null): void {
+  public static createModal(limitToSite: string|null = null, preselectedLanguageId: number|null = null): void {
     const url: URL = new URL(TYPO3.settings.ajaxUrls.tx_warming_fetch_sites, window.location.origin);
 
     if (limitToSite !== null) {
       url.searchParams.set('limitToSite', limitToSite);
+    }
+
+    if (preselectedLanguageId !== null) {
+      url.searchParams.set('preselectLanguage', preselectedLanguageId.toString());
     }
 
     // Ensure all other modals are closed
