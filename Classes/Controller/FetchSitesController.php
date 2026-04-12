@@ -99,7 +99,7 @@ final readonly class FetchSitesController
                 'strategy' => $crawlingStrategy !== null ? $crawlingStrategy::getName() : null,
             ],
             'availableStrategies' => $this->crawlingStrategyFactory->getAll(),
-            'isAdmin' => Utility\BackendUtility::getBackendUser()->isAdmin(),
+            'isAdmin' => Utility\BackendUtility::getBackendUser()?->isAdmin(),
             'isFiltered' => $limitToSite !== null,
         ]);
     }

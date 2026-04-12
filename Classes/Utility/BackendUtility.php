@@ -33,10 +33,13 @@ use TYPO3\CMS\Core;
  */
 final class BackendUtility
 {
-    public static function getBackendUser(): Core\Authentication\BackendUserAuthentication
+    public static function getBackendUser(): ?Core\Authentication\BackendUserAuthentication
     {
-        /** @var Core\Authentication\BackendUserAuthentication $backendUser */
-        $backendUser = $GLOBALS['BE_USER'];
+        $backendUser = $GLOBALS['BE_USER'] ?? null;
+
+        if (!($backendUser instanceof Core\Authentication\BackendUserAuthentication)) {
+            return null;
+        }
 
         return $backendUser;
     }

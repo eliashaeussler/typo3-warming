@@ -78,10 +78,8 @@ final readonly class CacheWarmupService
         ?int $limit = null,
         ?CacheWarmup\Crawler\Strategy\CrawlingStrategy $strategy = null,
     ): Result\CacheWarmupResult {
-        $isAdmin = Utility\BackendUtility::getBackendUser()->isAdmin();
-
         // Deny custom configuration for non-admin users
-        if (!$isAdmin) {
+        if (Utility\BackendUtility::getBackendUser()?->isAdmin() !== true) {
             $limit = null;
             $strategy = null;
         }
