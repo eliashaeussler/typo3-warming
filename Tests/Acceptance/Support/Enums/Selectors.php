@@ -43,6 +43,7 @@ enum Selectors: string
     public const ContextMenu = '.context-menu';
     public const ContextMenuGroup = '.context-menu .context-menu-group';
     public const ContextMenuSubmenu = '.context-menu[data-contextmenu-parent]';
+    public const DatabaseRecordsTableItem = 'tr[data-table="tx_warming_domain_model_log"]:first-child td.col-title a';
     public const ExtensionConfigurationModalCollapseHeader = '#heading-warming';
     public const InformationModal = 'typo3-backend-modal[content^="/typo3/record/info"]';
     public const ModalHeader = '.tx-warming-modal-header';
