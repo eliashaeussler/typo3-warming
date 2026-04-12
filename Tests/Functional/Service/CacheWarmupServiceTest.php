@@ -507,11 +507,24 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
         self::assertSame(50, $actual->getCacheWarmer()->getLimit());
     }
 
+    /**
+     * @todo Remove with EXT:warming v6.0
+     */
     #[Framework\Attributes\Test]
+    #[Framework\Attributes\IgnoreDeprecations]
     public function getCrawlerReturnsGloballyConfiguredCrawler(): void
     {
+        $this->expectUserDeprecationMessage(
+            sprintf(
+                'Accessing the current crawler using %s::getCrawler() is deprecated since v5.3 and will be removed in v6.0. Use %s::getCrawler() instead.',
+                Src\Service\CacheWarmupService::class,
+                Src\Configuration\Configuration::class,
+            ),
+        );
+
         self::assertInstanceOf(
             Tests\Functional\Fixtures\Classes\DummyCrawler::class,
+            /* @phpstan-ignore method.deprecated */
             $this->subject->getCrawler(),
         );
     }
