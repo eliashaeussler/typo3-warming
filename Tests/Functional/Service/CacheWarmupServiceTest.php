@@ -67,6 +67,7 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
     {
         parent::setUp();
 
+        $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/be_groups.csv');
         $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/be_users.csv');
         $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/pages.csv');
 
@@ -90,6 +91,7 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
                 [new Typo3SitemapLocator\Sitemap\Provider\DefaultProvider()],
             ),
             $this->get(Src\Http\Message\PageUriBuilder::class),
+            $this->get(Src\Security\WarmupPermissionGuard::class),
         );
     }
 
@@ -127,8 +129,8 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-1', 0.5, origin: $originEN),
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-2', 0.7, origin: $originEN),
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-2/subsite-2-1', 0.5, origin: $originEN),
-            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/', 1.0, origin: $originDE),
-            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/subsite-1-l-1', 0.5, origin: $originDE),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/', 0.5, origin: $originDE),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/subsite-1-l-1', 1.0, origin: $originDE),
         ];
 
         $cacheWarmupResult = new CacheWarmup\Result\CacheWarmupResult();
@@ -237,11 +239,11 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
 
         $expected = [
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/', 1.0, origin: $originEN),
-            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/', 1.0, origin: $originDE),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/subsite-1-l-1', 1.0, origin: $originDE),
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-2', 0.7, origin: $originEN),
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-1', 0.5, origin: $originEN),
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-2/subsite-2-1', 0.5, origin: $originEN),
-            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/subsite-1-l-1', 0.5, origin: $originDE),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/', 0.5, origin: $originDE),
         ];
 
         $cacheWarmupResult = new CacheWarmup\Result\CacheWarmupResult();
@@ -261,6 +263,174 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
 
         self::assertEquals(new Src\Result\CacheWarmupResult($cacheWarmupResult), $actual);
         self::assertEquals($expected, Tests\Functional\Fixtures\Classes\DummyCrawler::$crawledUrls);
+    }
+
+    #[Framework\Attributes\Test]
+    public function warmupDeniesCustomLimitAndStrategyForNonAdminUsers(): void
+    {
+        // Set up backend user
+        $backendUser = $this->setUpBackendUser(2);
+        $GLOBALS['LANG'] = $this->get(Core\Localization\LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+
+        $this->mockSitemapResponse('de');
+
+        $origin = new Src\Domain\Model\SiteAwareSitemap(
+            new Core\Http\Uri('https://typo3-testing.local/de/sitemap.xml'),
+            $this->site,
+            $this->site->getLanguageById(1),
+        );
+
+        $expected = [
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/', 0.5, origin: $origin),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/subsite-1-l-1', 1.0, origin: $origin),
+        ];
+
+        $cacheWarmupResult = new CacheWarmup\Result\CacheWarmupResult();
+
+        foreach ($expected as $url) {
+            $cacheWarmupResult->addResult(
+                CacheWarmup\Result\CrawlingResult::createSuccessful($url),
+            );
+        }
+
+        $actual = $this->subject->warmup(
+            sites: [
+                new Src\ValueObject\Request\SiteWarmupRequest($this->site, [1]),
+            ],
+            limit: 1,
+            strategy: new CacheWarmup\Crawler\Strategy\SortByPriorityStrategy(),
+        );
+
+        self::assertEquals(new Src\Result\CacheWarmupResult($cacheWarmupResult), $actual);
+        self::assertEquals($expected, Tests\Functional\Fixtures\Classes\DummyCrawler::$crawledUrls);
+    }
+
+    #[Framework\Attributes\Test]
+    public function warmupDeniesWarmingOfInaccessibleSites(): void
+    {
+        // Set up backend user
+        $backendUser = $this->setUpBackendUser(2);
+        $GLOBALS['LANG'] = $this->get(Core\Localization\LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+
+        // Second site
+        $inaccessibleSite = $this->createSite('https://typo3-testing.local/foo/', 'test-site-2');
+        $this->mockSitemapResponse('de_2');
+
+        // Force cache recreation after second site was created
+        $this->get(Core\Site\SiteFinder::class)->getAllSites(false);
+
+        $expected = new Src\Result\CacheWarmupResult(new CacheWarmup\Result\CacheWarmupResult());
+
+        $actual = $this->subject->warmup(
+            sites: [
+                new Src\ValueObject\Request\SiteWarmupRequest($inaccessibleSite, [1]),
+            ],
+            limit: 1,
+            strategy: new CacheWarmup\Crawler\Strategy\SortByPriorityStrategy(),
+        );
+
+        self::assertEquals($expected, $actual);
+        self::assertSame([], Tests\Functional\Fixtures\Classes\DummyCrawler::$crawledUrls);
+    }
+
+    #[Framework\Attributes\Test]
+    public function warmupDeniesWarmingOfInaccessibleSiteLanguages(): void
+    {
+        // Set up backend user
+        $backendUser = $this->setUpBackendUser(2);
+        $GLOBALS['LANG'] = $this->get(Core\Localization\LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+
+        $this->mockSitemapResponse('de');
+
+        $origin = new Src\Domain\Model\SiteAwareSitemap(
+            new Core\Http\Uri('https://typo3-testing.local/de/sitemap.xml'),
+            $this->site,
+            $this->site->getLanguageById(1),
+        );
+
+        $expected = [
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/', 0.5, origin: $origin),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/subsite-1-l-1', 1.0, origin: $origin),
+        ];
+
+        $cacheWarmupResult = new CacheWarmup\Result\CacheWarmupResult();
+
+        foreach ($expected as $url) {
+            $cacheWarmupResult->addResult(
+                CacheWarmup\Result\CrawlingResult::createSuccessful($url),
+            );
+        }
+
+        $actual = $this->subject->warmup(
+            sites: [
+                new Src\ValueObject\Request\SiteWarmupRequest($this->site, [0, 1]),
+            ],
+            limit: 1,
+            strategy: new CacheWarmup\Crawler\Strategy\SortByPriorityStrategy(),
+        );
+
+        self::assertEquals(new Src\Result\CacheWarmupResult($cacheWarmupResult), $actual);
+        self::assertEquals($expected, Tests\Functional\Fixtures\Classes\DummyCrawler::$crawledUrls);
+    }
+
+    #[Framework\Attributes\Test]
+    public function warmupDeniesWarmingOfInaccessiblePages(): void
+    {
+        // Set up backend user
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(Core\Localization\LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+
+        $expected = [
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/'),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-2'),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-2/subsite-2-1'),
+        ];
+
+        $cacheWarmupResult = new CacheWarmup\Result\CacheWarmupResult();
+
+        foreach ($expected as $url) {
+            $cacheWarmupResult->addResult(
+                CacheWarmup\Result\CrawlingResult::createSuccessful($url),
+            );
+        }
+
+        $actual = $this->subject->warmup(
+            pages: [
+                new Src\ValueObject\Request\PageWarmupRequest(1),
+                new Src\ValueObject\Request\PageWarmupRequest(2),
+                new Src\ValueObject\Request\PageWarmupRequest(3),
+                new Src\ValueObject\Request\PageWarmupRequest(4),
+            ],
+        );
+
+        self::assertEquals(new Src\Result\CacheWarmupResult($cacheWarmupResult), $actual);
+        self::assertEquals($expected, Tests\Functional\Fixtures\Classes\DummyCrawler::$crawledUrls);
+    }
+
+    #[Framework\Attributes\Test]
+    public function warmupDeniesWarmingOfInaccessiblePageLanguages(): void
+    {
+        // Set up backend user
+        $backendUser = $this->setUpBackendUser(1);
+        $GLOBALS['LANG'] = $this->get(Core\Localization\LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+
+        $expected = new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-2/subsite-2-1');
+
+        $cacheWarmupResult = new CacheWarmup\Result\CacheWarmupResult();
+        $cacheWarmupResult->addResult(
+            CacheWarmup\Result\CrawlingResult::createSuccessful($expected),
+        );
+
+        $actual = $this->subject->warmup(
+            pages: [
+                new Src\ValueObject\Request\PageWarmupRequest(1, [1]),
+                new Src\ValueObject\Request\PageWarmupRequest(3, [1]),
+                new Src\ValueObject\Request\PageWarmupRequest(4, [0]),
+            ],
+        );
+
+        self::assertEquals(new Src\Result\CacheWarmupResult($cacheWarmupResult), $actual);
+        self::assertEquals([$expected], Tests\Functional\Fixtures\Classes\DummyCrawler::$crawledUrls);
     }
 
     #[Framework\Attributes\Test]

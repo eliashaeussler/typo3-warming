@@ -148,8 +148,8 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-1', 0.5, origin: $originEN),
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-2', 0.7, origin: $originEN),
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-2/subsite-2-1', 0.5, origin: $originEN),
-            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/', 1.0, origin: $originDE),
-            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/subsite-1-l-1', 0.5, origin: $originDE),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/', 0.5, origin: $originDE),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/subsite-1-l-1', 1.0, origin: $originDE),
         ];
 
         $this->commandTester->execute([
@@ -180,8 +180,8 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-1', 0.5, origin: $originEN),
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-2', 0.7, origin: $originEN),
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-2/subsite-2-1', 0.5, origin: $originEN),
-            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/', 1.0, origin: $originDE),
-            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/subsite-1-l-1', 0.5, origin: $originDE),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/', 0.5, origin: $originDE),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/subsite-1-l-1', 1.0, origin: $originDE),
         ];
 
         $this->commandTester->execute([
@@ -368,11 +368,11 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
         );
         $expected = [
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/', 1.0, origin: $originEN),
-            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/', 1.0, origin: $originDE),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/subsite-1-l-1', 1.0, origin: $originDE),
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-2', 0.7, origin: $originEN),
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-1', 0.5, origin: $originEN),
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-2/subsite-2-1', 0.5, origin: $originEN),
-            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/subsite-1-l-1', 0.5, origin: $originDE),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/', 0.5, origin: $originDE),
         ];
 
         $this->commandTester->execute([
@@ -427,11 +427,11 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
         );
         $expected = [
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/', 1.0, origin: $originEN),
-            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/', 1.0, origin: $originDE),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/subsite-1-l-1', 1.0, origin: $originDE),
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-2', 0.7, origin: $originEN),
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-1', 0.5, origin: $originEN),
             new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-2/subsite-2-1', 0.5, origin: $originEN),
-            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/subsite-1-l-1', 0.5, origin: $originDE),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/', 0.5, origin: $originDE),
         ];
 
         $this->commandTester->execute([
