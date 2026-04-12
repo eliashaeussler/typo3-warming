@@ -95,6 +95,7 @@ final class CacheWarmupLegacyControllerTest extends TestingFramework\Core\Functi
                     [new Typo3SitemapLocator\Sitemap\Provider\DefaultProvider()],
                 ),
                 $this->get(Src\Http\Message\PageUriBuilder::class),
+                $this->get(Src\Security\WarmupPermissionGuard::class),
             ),
         );
     }
