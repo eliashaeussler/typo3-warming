@@ -69,9 +69,9 @@ final class PageUriBuilderTest extends TestingFramework\Core\Functional\Function
     }
 
     #[Framework\Attributes\Test]
-    public function buildReturnsNullIfRelatedSiteIsNotAccessible(): void
+    public function buildReturnsNullIfGivenPageIsNotAccessible(): void
     {
-        $this->setUpBackendUser(2);
+        $this->setUpBackendUser(1);
 
         self::assertNull($this->subject->build(2));
     }
@@ -91,6 +91,17 @@ final class PageUriBuilderTest extends TestingFramework\Core\Functional\Function
         self::assertEquals(
             new Core\Http\Uri('https://typo3-testing.local/subsite-1'),
             $this->subject->build(2),
+        );
+    }
+
+    #[Framework\Attributes\Test]
+    public function buildReturnsUriForGivenPageIfNonAdminUserHasPageAccess(): void
+    {
+        $this->setUpBackendUser(1);
+
+        self::assertEquals(
+            new Core\Http\Uri('https://typo3-testing.local/'),
+            $this->subject->build(1),
         );
     }
 

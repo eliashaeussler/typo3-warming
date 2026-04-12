@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Http\Message;
 
-use EliasHaeussler\Typo3Warming\Domain;
+use EliasHaeussler\Typo3Warming\Security;
 use Psr\Http\Message;
 use Symfony\Component\DependencyInjection;
 use TYPO3\CMS\Core;
@@ -39,8 +39,8 @@ final readonly class PageUriBuilder
     public function __construct(
         #[DependencyInjection\Attribute\Lazy]
         private Core\Domain\Repository\PageRepository $pageRepository,
-        private Domain\Repository\SiteRepository $siteRepository,
-        private Domain\Repository\SiteLanguageRepository $siteLanguageRepository,
+        private Security\WarmupPermissionGuard $permissionGuard,
+        private Core\Site\SiteFinder $siteFinder,
     ) {}
 
     /**
@@ -48,6 +48,11 @@ final readonly class PageUriBuilder
      */
     public function build(int $pageId, ?int $languageId = null): ?Message\UriInterface
     {
+        // Early return if page access is denied
+        if (!$this->permissionGuard->canWarmupCacheOfPage($pageId, new Security\Context\PermissionContext($languageId))) {
+            return null;
+        }
+
         $page = $this->pageRepository->getPage($pageId);
 
         // Early return if page does not exist
@@ -60,23 +65,23 @@ final readonly class PageUriBuilder
             return $this->build($page['l10n_parent'], $languageId);
         }
 
-        // Resolve site
-        $site = $this->siteRepository->findOneByPageId($pageId);
-
-        // Early return if site is inaccessible
-        if ($site === null) {
+        try {
+            // We don't use SiteRepository here, because it would return NULL on inaccessible pages,
+            // which is undesirable here, because we're in page context (not site context)
+            $site = $this->siteFinder->getSiteByPageId($pageId);
+        } catch (Core\Exception\SiteNotFoundException) {
             return null;
         }
 
         // Resolve site language
-        $siteLanguage = $this->siteLanguageRepository->findOneByLanguageId(
-            $site,
-            $languageId ?? $site->getDefaultLanguage()->getLanguageId(),
-        );
-
-        // Early return if site language is inaccessible
-        if ($siteLanguage === null) {
-            return null;
+        if ($languageId !== null) {
+            try {
+                $siteLanguage = $site->getLanguageById($languageId);
+            } catch (\InvalidArgumentException) {
+                return null;
+            }
+        } else {
+            $siteLanguage = $site->getDefaultLanguage();
         }
 
         // Check if page is suitable for language
