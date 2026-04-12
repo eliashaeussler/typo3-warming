@@ -23,6 +23,7 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming;
 
+use Psr\Log\LogLevel;
 use TYPO3\CMS\Backend;
 use TYPO3\CMS\Core;
 
@@ -111,5 +112,17 @@ module.tx_warming {
     public static function registerCustomStyles(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['stylesheets'][self::KEY] = 'EXT:warming/Resources/Public/Css';
+    }
+
+    /**
+     * Register custom log processors.
+     *
+     * FOR USE IN ext_localconf.php ONLY.
+     */
+    public static function registerLogProcessors(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['LOG']['EliasHaeussler']['Typo3Warming']['processorConfiguration'][LogLevel::DEBUG][
+            Log\Processor\RequestIdProcessor::class
+        ] = [];
     }
 }
