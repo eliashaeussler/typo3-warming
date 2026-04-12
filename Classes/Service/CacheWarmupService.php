@@ -157,8 +157,21 @@ final readonly class CacheWarmupService
         return $result;
     }
 
+    /**
+     * @deprecated since v5.3, use {@see Configuration\Configuration::getCrawler()} instead.
+     * @todo Remove with EXT:warming v6.0
+     */
     public function getCrawler(): CacheWarmup\Crawler\Crawler
     {
+        \trigger_error(
+            \sprintf(
+                'Accessing the current crawler using %s() is deprecated since v5.3 and will be removed in v6.0. Use %s::getCrawler() instead.',
+                __METHOD__,
+                Configuration\Configuration::class,
+            ),
+            E_USER_DEPRECATED,
+        );
+
         return $this->crawler;
     }
 }
