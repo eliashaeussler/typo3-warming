@@ -23,3 +23,4 @@
 \EliasHaeussler\Typo3Warming\Extension::registerFormDataProviders();
 \EliasHaeussler\Typo3Warming\Extension::registerTypoScript();
 \EliasHaeussler\Typo3Warming\Extension::registerCustomStyles();
+\EliasHaeussler\Typo3Warming\Extension::registerLogProcessors();
