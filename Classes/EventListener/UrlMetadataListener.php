@@ -26,6 +26,7 @@ namespace EliasHaeussler\Typo3Warming\EventListener;
 use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3Warming\Domain;
 use EliasHaeussler\Typo3Warming\Http;
+use EliasHaeussler\Typo3Warming\Utility;
 use GuzzleHttp\Exception;
 use Psr\Http\Message;
 use TYPO3\CMS\Backend;
@@ -113,7 +114,7 @@ final readonly class UrlMetadataListener
             return [];
         }
 
-        $backendUser = $this->getBackendUser();
+        $backendUser = Utility\BackendUtility::getBackendUser();
 
         // Early return if backend user is not available (should never happen, but who knows)
         if ($backendUser === null) {
@@ -182,17 +183,6 @@ final readonly class UrlMetadataListener
         }
 
         return Core\Http\ApplicationType::fromRequest($serverRequest)->isBackend();
-    }
-
-    private function getBackendUser(): ?Core\Authentication\BackendUserAuthentication
-    {
-        $backendUser = $GLOBALS['BE_USER'] ?? null;
-
-        if ($backendUser instanceof Core\Authentication\BackendUserAuthentication) {
-            return $backendUser;
-        }
-
-        return null;
     }
 
     private function getServerRequest(): ?Message\ServerRequestInterface

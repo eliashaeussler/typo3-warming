@@ -21,32 +21,21 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace EliasHaeussler\Typo3Warming\Security\Context;
-
-use EliasHaeussler\Typo3Warming\Exception;
-use EliasHaeussler\Typo3Warming\Utility;
-use TYPO3\CMS\Core;
+namespace EliasHaeussler\Typo3Warming\Exception;
 
 /**
- * PermissionContext
+ * NoBackendUserAuthenticationDetected
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final readonly class PermissionContext
+final class NoBackendUserAuthenticationDetected extends Exception
 {
-    public Core\Authentication\BackendUserAuthentication $backendUser;
-
-    /**
-     * @throws Exception\NoBackendUserAuthenticationDetected
-     */
-    public function __construct(
-        public ?int $languageId = null,
-        ?Core\Authentication\BackendUserAuthentication $backendUser = null,
-    ) {
-        $this->backendUser = $backendUser
-            ?? Utility\BackendUtility::getBackendUser()
-            ?? throw new Exception\NoBackendUserAuthenticationDetected()
-        ;
+    public function __construct()
+    {
+        parent::__construct(
+            'This action requires an action backend user authentication, which could not be detected.',
+            1776017875,
+        );
     }
 }

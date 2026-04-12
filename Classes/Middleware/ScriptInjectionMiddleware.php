@@ -137,7 +137,7 @@ final readonly class ScriptInjectionMiddleware implements Server\MiddlewareInter
         }
 
         // Early return on insufficient privileges (only system maintainers can access settings module)
-        if (!($backendUser->isSystemMaintainer())) {
+        if ($backendUser?->isSystemMaintainer() !== true) {
             return $response;
         }
 
