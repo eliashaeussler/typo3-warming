@@ -39,3 +39,6 @@ supportedDoktypes = 1
 
 # cat=toolbar/enable/10; type=boolean; label=Enable cache warmup from backend toolbar
 enableToolbar = 1
+
+# cat=liveSearch/enable/10; type=boolean; label=Enable cache warmup from live search
+enableLiveSearch = 1

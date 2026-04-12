@@ -207,3 +207,17 @@ Toolbar
 
     Enable cache warmup in the :ref:`backend toolbar <backend-toolbar>`. This setting
     affects all users, including administrators.
+
+..  _extension-configuration-live-search:
+
+Live search
+===========
+
+..  _extconf-enableLiveSearch:
+
+..  confval:: enableLiveSearch
+    :type: boolean
+    :Default: 1
+
+    Enable cache warmup in the :ref:`live search <live-search>`. This setting
+    affects all users, including administrators.

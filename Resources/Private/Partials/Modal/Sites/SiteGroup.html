@@ -48,7 +48,8 @@
             >
                 <f:render partial="Modal/Sites/SiteGroupItem" section="checkbox" arguments="{
                     identifier: 'tx-warming-checkbox-{site.identifier}',
-                    siteIdentifier: site.identifier
+                    siteIdentifier: site.identifier,
+                    checked: '{f:if(condition: item.checked, then: 1)}'
                 }" />
 
                 <f:render partial="Modal/Sites/SiteGroupItem" section="icon" arguments="{
@@ -121,7 +122,8 @@
                         identifier: 'tx-warming-checkbox-{siteGroup.site.identifier}-{iterator.index}',
                         siteIdentifier: siteGroup.site.identifier,
                         languageIdentifier: item.language.languageId,
-                        group: 1
+                        group: 1,
+                        checked: '{f:if(condition: item.checked, then: 1)}'
                     }" />
 
                     <f:render partial="Modal/Sites/SiteGroupItem" section="icon" arguments="{

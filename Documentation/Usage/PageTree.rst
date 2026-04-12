@@ -16,7 +16,7 @@ Next to the item in the backend toolbar, one can also trigger cache
 warmup using the context menu of pages inside the page tree.
 
 ..  image:: ../Images/context-menu.png
-    :alt: Cache warmup context meu items within the page tree
+    :alt: Cache warmup context menu items within the page tree
 
 ..  note::
 

@@ -50,6 +50,9 @@ enum WarmupActionContext: string
         };
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function callbackAction(): string
     {
         return match ($this) {

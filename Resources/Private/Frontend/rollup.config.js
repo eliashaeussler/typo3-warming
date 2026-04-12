@@ -45,6 +45,7 @@ export default [
   {
     input: [
       'src/scripts/backend/context-menu-action.ts',
+      'src/scripts/backend/live-search.ts',
       'src/scripts/backend/toolbar-menu.ts',
     ],
     output: {
