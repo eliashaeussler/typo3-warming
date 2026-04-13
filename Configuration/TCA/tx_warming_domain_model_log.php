@@ -47,7 +47,7 @@ $tca = [
                 'size' => 20,
                 'eval' => 'trim',
                 'required' => true,
-                'max' => 50,
+                'max' => 255,
                 'readOnly' => true,
             ],
         ],
