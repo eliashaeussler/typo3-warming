@@ -85,6 +85,7 @@ final class DatabaseWriterTest extends TestingFramework\Core\Functional\Function
                     new Core\Http\Request($this->site->getBase()),
                     $response,
                 ),
+                'request_id' => '456',
             ],
             '123',
         );
@@ -93,11 +94,28 @@ final class DatabaseWriterTest extends TestingFramework\Core\Functional\Function
     }
 
     #[Framework\Attributes\Test]
+    public function writeUsesLogRecordRequestIdAsFallbackIfNoCustomRequestIdIsGiven(): void
+    {
+        $data = $this->logRecord->getData();
+        unset($data['request_id']);
+
+        $this->logRecord->setData($data);
+
+        $this->subject->writeLog($this->logRecord);
+
+        $this->assertLastLogEquals([
+            'request_id' => '123',
+            'message' => 'Oops, something went wrong.',
+        ]);
+    }
+
+    #[Framework\Attributes\Test]
     public function writeLogUsesInterpolatedLogMessageAsLogMessage(): void
     {
         $exception = new \Exception('That\'s an error.');
 
         $this->logRecord->setData([
+            'request_id' => '456',
             'url' => $this->site->getBase(),
             'exception' => $exception,
         ]);
@@ -105,6 +123,7 @@ final class DatabaseWriterTest extends TestingFramework\Core\Functional\Function
         $this->subject->writeLog($this->logRecord);
 
         $this->assertLastLogEquals([
+            'request_id' => '456',
             'message' => sprintf('Error while crawling URL https://typo3-testing.local/ (exception: %s).', $exception),
         ]);
     }
@@ -115,6 +134,7 @@ final class DatabaseWriterTest extends TestingFramework\Core\Functional\Function
         $this->subject->writeLog($this->logRecord);
 
         $this->assertLastLogEquals([
+            'request_id' => '456',
             'message' => 'Oops, something went wrong.',
         ]);
     }
@@ -127,6 +147,7 @@ final class DatabaseWriterTest extends TestingFramework\Core\Functional\Function
             Log\LogLevel::INFO,
             'URL {url} was successfully crawled (status code: {status_code}).',
             [
+                'request_id' => '456',
                 'url' => new CacheWarmup\Sitemap\Url((string)$this->uri),
                 'status_code' => 200,
             ],
@@ -136,6 +157,7 @@ final class DatabaseWriterTest extends TestingFramework\Core\Functional\Function
         $this->subject->writeLog($logRecord);
 
         $this->assertLastLogEquals([
+            'request_id' => '456',
             'sitemap' => null,
             'site' => null,
             'site_language' => null,
@@ -154,6 +176,7 @@ final class DatabaseWriterTest extends TestingFramework\Core\Functional\Function
         $this->subject->writeLog($this->logRecord);
 
         $this->assertLastLogEquals([
+            'request_id' => '456',
             'sitemap' => 'https://typo3-testing.local/sitemap.xml',
             'site' => null,
             'site_language' => null,
@@ -166,7 +189,7 @@ final class DatabaseWriterTest extends TestingFramework\Core\Functional\Function
         $this->subject->writeLog($this->logRecord);
 
         $this->assertLastLogEquals([
-            'request_id' => '123',
+            'request_id' => '456',
             'url' => 'https://typo3-testing.local/',
             'state' => Src\Enums\WarmupState::Failed->value,
             'sitemap' => 'https://typo3-testing.local/sitemap.xml',

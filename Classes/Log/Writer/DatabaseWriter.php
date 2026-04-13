@@ -54,7 +54,9 @@ final class DatabaseWriter extends Core\Log\Writer\AbstractWriter
 
     public function writeLog(Core\Log\LogRecord $record): self
     {
-        $url = $record->getData()['url'] ?? '';
+        $data = $record->getData();
+        $requestId = $data['request_id'] ?? $record->getRequestId();
+        $url = $data['url'] ?? '';
         /** @var Log\LogLevel::* $level */
         $level = $record->getLevel();
 
@@ -63,7 +65,7 @@ final class DatabaseWriter extends Core\Log\Writer\AbstractWriter
         $this->connection->insert(
             Domain\Model\Log::TABLE_NAME,
             [
-                'request_id' => $record->getRequestId(),
+                'request_id' => $requestId,
                 'date' => number_format($record->getCreated(), thousands_separator: ''),
                 'url' => (string)$url,
                 'message' => $this->formatMessage($record),
