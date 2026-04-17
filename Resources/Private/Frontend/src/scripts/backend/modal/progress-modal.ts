@@ -39,7 +39,7 @@ enum CacheWarmupProgressModalButtonNames {
 }
 
 /**
- * @see https://github.com/TYPO3/typo3/blob/v14.2.0/Build/Sources/TypeScript/backend/enum/severity.ts
+ * @see https://github.com/TYPO3/typo3/blob/v14.3.0/Build/Sources/TypeScript/backend/enum/severity.ts
  */
 enum SeverityEnum {
   notice = -2,
