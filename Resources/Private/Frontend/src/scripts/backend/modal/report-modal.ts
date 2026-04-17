@@ -168,13 +168,13 @@ export class ReportModal extends LitElement {
     // Open modal with crawling report
     const buttons: {text: string, icon?: string, btnClass: string, trigger?: () => void}[] = [
       {
-        text: lll(LanguageKeys.modalProgressButtonRetry),
+        text: lll(LanguageKeys.modalReportButtonRetry),
         icon: IconIdentifiers.refresh,
         btnClass: 'btn-default',
         trigger: retryFunction,
       },
       {
-        text: lll(LanguageKeys.modalProgressButtonClose),
+        text: lll(LanguageKeys.modalReportButtonClose),
         btnClass: 'btn-default',
         trigger: (): void => Modal.dismiss(),
       },

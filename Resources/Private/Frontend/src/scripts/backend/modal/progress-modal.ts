@@ -33,6 +33,7 @@ import {WarmupProgress} from '@eliashaeussler/typo3-warming/request/warmup-progr
 import {WarmupState} from '@eliashaeussler/typo3-warming/enums/warmup-state';
 
 enum CacheWarmupProgressModalButtonNames {
+  closeButton = 'tx-warming-close',
   reportButton = 'tx-warming-open-report',
   retryButton = 'tx-warming-retry',
 }
@@ -88,7 +89,7 @@ export class ProgressModal extends LitElement {
           return SeverityEnum.warning;
         case WarmupState.Success:
           return isActive ? SeverityEnum.notice : SeverityEnum.ok;
-        case WarmupState.Aborted:
+        case WarmupState.Cancelled:
         case WarmupState.Unknown:
           return SeverityEnum.notice;
         default:
@@ -147,8 +148,13 @@ export class ProgressModal extends LitElement {
    * @param retryFunction {() => Promise<WarmupProgress>} Function to retry cache warmup
    */
   public finishProgress(progress: WarmupProgress, retryFunction: () => Promise<WarmupProgress>): void {
+    const closeButton = this.getCloseButton();
     const reportButton = this.getReportButton();
     let modalTitle: string;
+
+    if (closeButton !== null) {
+      closeButton.innerText = lll(LanguageKeys.modalProgressButtonClose);
+    }
 
     reportButton?.classList.remove('hidden');
 
@@ -157,7 +163,7 @@ export class ProgressModal extends LitElement {
     }).bindTo(reportButton);
 
     // Apply trigger function to "retry" button of progress modal
-    if (progress.state !== WarmupState.Aborted) {
+    if (progress.state !== WarmupState.Cancelled) {
       const retryButton = this.getRetryButton();
 
       retryButton?.classList.remove('hidden');
@@ -176,8 +182,8 @@ export class ProgressModal extends LitElement {
       case WarmupState.Success:
         modalTitle = lll(LanguageKeys.modalProgressSuccessTitle);
         break;
-      case WarmupState.Aborted:
-        modalTitle = lll(LanguageKeys.modalProgressAbortedTitle);
+      case WarmupState.Cancelled:
+        modalTitle = lll(LanguageKeys.modalProgressCancelledTitle);
         break;
       case WarmupState.Unknown:
         modalTitle = lll(LanguageKeys.modalProgressUnknownTitle);
@@ -240,6 +246,15 @@ export class ProgressModal extends LitElement {
   }
 
   /**
+   * Get close button within current modal.
+   *
+   * @returns {HTMLElement|null} Close button within current modal
+   */
+  private getCloseButton(): HTMLElement|null {
+    return this.getFooter().querySelector(`button[name=${CacheWarmupProgressModalButtonNames.closeButton}]`);
+  }
+
+  /**
    * Create modal with progress bar.
    *
    * Re-initializes the current modal or creates a new modal and applies initial
@@ -281,8 +296,9 @@ export class ProgressModal extends LitElement {
           name: CacheWarmupProgressModalButtonNames.retryButton,
         },
         {
-          text: lll(LanguageKeys.modalProgressButtonClose),
+          text: lll(LanguageKeys.modalProgressButtonCancel),
           btnClass: 'btn-default',
+          name: CacheWarmupProgressModalButtonNames.closeButton,
           trigger: (): void => Modal.dismiss(),
         },
       ],

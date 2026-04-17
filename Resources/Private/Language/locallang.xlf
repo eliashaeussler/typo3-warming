@@ -58,8 +58,8 @@
 			<trans-unit id="modal.progress.title.success" resname="modal.progress.title.success">
 				<source>Cache warmup successful</source>
 			</trans-unit>
-			<trans-unit id="modal.progress.title.aborted" resname="modal.progress.title.aborted">
-				<source>Cache warmup aborted</source>
+			<trans-unit id="modal.progress.title.cancelled" resname="modal.progress.title.cancelled">
+				<source>Cache warmup cancelled</source>
 			</trans-unit>
 			<trans-unit id="modal.progress.title.unknown" resname="modal.progress.title.unknown">
 				<source>Cache warmup finished</source>
@@ -69,6 +69,9 @@
 			</trans-unit>
 			<trans-unit id="modal.progress.button.retry" resname="modal.progress.button.retry">
 				<source>Run again</source>
+			</trans-unit>
+			<trans-unit id="modal.progress.button.cancel" resname="modal.progress.button.cancel">
+				<source>Cancel</source>
 			</trans-unit>
 			<trans-unit id="modal.progress.button.close" resname="modal.progress.button.close">
 				<source>Close</source>
@@ -130,6 +133,12 @@
 			</trans-unit>
 			<trans-unit id="modal.report.message.noUrlsCrawled" resname="modal.report.message.noUrlsCrawled">
 				<source>No URLs were crawled for cache warmup.</source>
+			</trans-unit>
+			<trans-unit id="modal.report.button.retry" resname="modal.report.button.retry">
+				<source>Run again</source>
+			</trans-unit>
+			<trans-unit id="modal.report.button.close" resname="modal.report.button.close">
+				<source>Close</source>
 			</trans-unit>
 
 			<trans-unit id="modal.sites.title" resname="modal.sites.title">
@@ -210,10 +219,10 @@
 			<trans-unit id="notification.message.empty" resname="notification.message.empty">
 				<source>No caches were warmed up.</source>
 			</trans-unit>
-			<trans-unit id="notification.aborted.title" resname="notification.aborted.title">
-				<source>Cache warmup aborted</source>
+			<trans-unit id="notification.cancelled.title" resname="notification.cancelled.title">
+				<source>Cache warmup cancelled</source>
 			</trans-unit>
-			<trans-unit id="notification.aborted.message" resname="notification.aborted.message">
+			<trans-unit id="notification.cancelled.message" resname="notification.cancelled.message">
 				<source>The cache warmup was stopped prematurely and therefore could not be completed.</source>
 			</trans-unit>
 			<trans-unit id="notification.error.title" resname="notification.error.title">

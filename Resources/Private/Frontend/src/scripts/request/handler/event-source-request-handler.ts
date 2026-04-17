@@ -51,9 +51,9 @@ export class EventSourceRequestHandler implements RequestHandler {
     this.source = new EventSource(this.getUrl(queryParams).toString(), {withCredentials: true});
 
     return new Promise<WarmupProgress>((resolve, reject): void => {
-      // Abort cache warmup if progress modal is closed
+      // Cancel cache warmup if progress modal is closed
       this.progressModal.getModal().addEventListener('typo3-modal-hide', (): void => {
-        this.abortWarmup();
+        this.cancelWarmup();
         resolve(this.progress);
       });
 
@@ -139,14 +139,14 @@ export class EventSourceRequestHandler implements RequestHandler {
   }
 
   /**
-   * Abort current cache warmup request.
+   * Cancel current cache warmup request.
    *
    * @private
    */
-  private abortWarmup(): void {
+  private cancelWarmup(): void {
     this.closeSource();
     this.progress.update({
-      state: WarmupState.Aborted,
+      state: WarmupState.Cancelled,
     });
   }
 
