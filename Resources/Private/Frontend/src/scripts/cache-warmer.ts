@@ -94,8 +94,8 @@ export class CacheWarmer {
         (progress: WarmupProgress): WarmupProgress => {
           let action: NotificationAction|undefined;
 
-          // Add option to restart cache warmup if it has been aborted
-          if (progress.state === WarmupState.Aborted) {
+          // Add option to restart cache warmup if it has been cancelled
+          if (progress.state === WarmupState.Cancelled) {
             action = {
               label: lll(LanguageKeys.notificationActionRetry),
               action: new ImmediateAction(retryFunction),
@@ -226,9 +226,9 @@ export class CacheWarmer {
       case WarmupState.Success:
         Notification.success(title, message, 15, actions);
         break;
-      case WarmupState.Aborted:
-        title = lll(LanguageKeys.notificationAbortedTitle);
-        message = lll(LanguageKeys.notificationAbortedMessage);
+      case WarmupState.Cancelled:
+        title = lll(LanguageKeys.notificationCancelledTitle);
+        message = lll(LanguageKeys.notificationCancelledMessage);
         Notification.info(title, message, 15, actions);
         break;
       case WarmupState.Unknown:

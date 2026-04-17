@@ -27,8 +27,8 @@ export enum LanguageKeys {
   // Notification
   notificationShowReport = 'warming.notification.action.showReport',
   notificationActionRetry = 'warming.notification.action.retry',
-  notificationAbortedTitle = 'warming.notification.aborted.title',
-  notificationAbortedMessage = 'warming.notification.aborted.message',
+  notificationCancelledTitle = 'warming.notification.cancelled.title',
+  notificationCancelledMessage = 'warming.notification.cancelled.message',
   notificationErrorTitle = 'warming.notification.error.title',
   notificationErrorMessage = 'warming.notification.error.message',
   notificationNoSitesSelectedTitle = 'warming.notification.noSitesSelected.title',
@@ -39,10 +39,11 @@ export enum LanguageKeys {
   modalProgressFailedTitle = 'warming.modal.progress.title.failed',
   modalProgressWarningTitle = 'warming.modal.progress.title.warning',
   modalProgressSuccessTitle = 'warming.modal.progress.title.success',
-  modalProgressAbortedTitle = 'warming.modal.progress.title.aborted',
+  modalProgressCancelledTitle = 'warming.modal.progress.title.cancelled',
   modalProgressUnknownTitle = 'warming.modal.progress.title.unknown',
   modalProgressButtonReport = 'warming.modal.progress.button.report',
   modalProgressButtonRetry = 'warming.modal.progress.button.retry',
+  modalProgressButtonCancel = 'warming.modal.progress.button.cancel',
   modalProgressButtonClose = 'warming.modal.progress.button.close',
   modalProgressFailedCounter = 'warming.modal.progress.failedCounter',
   modalProgressAllCounter = 'warming.modal.progress.allCounter',
@@ -65,6 +66,8 @@ export enum LanguageKeys {
   modalReportRequestId = 'warming.modal.report.message.requestId',
   modalReportTotal = 'warming.modal.report.message.total',
   modalReportNoUrlsCrawled = 'warming.modal.report.message.noUrlsCrawled',
+  modalReportButtonRetry = 'warming.modal.report.button.retry',
+  modalReportButtonClose = 'warming.modal.report.button.close',
 
   // Sites Modal
   modalSitesTitle = 'warming.modal.sites.title',

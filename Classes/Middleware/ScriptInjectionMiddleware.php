@@ -40,8 +40,8 @@ final readonly class ScriptInjectionMiddleware implements Server\MiddlewareInter
 {
     private const LANGUAGE_LABELS = [
         // Notification
-        'warming.notification.aborted.title' => 'notification.aborted.title',
-        'warming.notification.aborted.message' => 'notification.aborted.message',
+        'warming.notification.cancelled.title' => 'notification.cancelled.title',
+        'warming.notification.cancelled.message' => 'notification.cancelled.message',
         'warming.notification.error.title' => 'notification.error.title',
         'warming.notification.error.message' => 'notification.error.message',
         'warming.notification.action.showReport' => 'notification.action.showReport',
@@ -54,10 +54,11 @@ final readonly class ScriptInjectionMiddleware implements Server\MiddlewareInter
         'warming.modal.progress.title.failed' => 'modal.progress.title.failed',
         'warming.modal.progress.title.warning' => 'modal.progress.title.warning',
         'warming.modal.progress.title.success' => 'modal.progress.title.success',
-        'warming.modal.progress.title.aborted' => 'modal.progress.title.aborted',
+        'warming.modal.progress.title.cancelled' => 'modal.progress.title.cancelled',
         'warming.modal.progress.title.unknown' => 'modal.progress.title.unknown',
         'warming.modal.progress.button.report' => 'modal.progress.button.report',
         'warming.modal.progress.button.retry' => 'modal.progress.button.retry',
+        'warming.modal.progress.button.cancel' => 'modal.progress.button.cancel',
         'warming.modal.progress.button.close' => 'modal.progress.button.close',
         'warming.modal.progress.failedCounter' => 'modal.progress.failedCounter',
         'warming.modal.progress.allCounter' => 'modal.progress.allCounter',
@@ -80,6 +81,8 @@ final readonly class ScriptInjectionMiddleware implements Server\MiddlewareInter
         'warming.modal.report.message.requestId' => 'modal.report.message.requestId',
         'warming.modal.report.message.total' => 'modal.report.message.total',
         'warming.modal.report.message.noUrlsCrawled' => 'modal.report.message.noUrlsCrawled',
+        'warming.modal.report.button.retry' => 'modal.report.button.retry',
+        'warming.modal.report.button.close' => 'modal.report.button.close',
 
         // Sites Modal
         'warming.modal.sites.title' => 'modal.sites.title',

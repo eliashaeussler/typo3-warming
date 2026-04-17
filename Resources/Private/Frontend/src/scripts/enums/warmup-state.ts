@@ -27,6 +27,6 @@ export enum WarmupState {
   Failed = 'failed',
   Warning = 'warning',
   Success = 'success',
-  Aborted = 'aborted',
+  Cancelled = 'cancelled',
   Unknown = 'unknown',
 }

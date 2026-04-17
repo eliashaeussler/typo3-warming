@@ -51,9 +51,9 @@ export class AjaxRequestHandler implements RequestHandler {
     this.progressModal = ProgressModal.createModal(this.progress);
     this.request = new AjaxRequest(this.getUrl(queryParams).toString());
 
-    // Abort cache warmup if progress modal is closed
+    // Cancel cache warmup if progress modal is closed
     this.progressModal.getModal().addEventListener('typo3-modal-hide', (): void => {
-      this.abortWarmup();
+      this.cancelWarmup();
     });
 
     return this.request
@@ -112,14 +112,14 @@ export class AjaxRequestHandler implements RequestHandler {
   }
 
   /**
-   * Abort current cache warmup request.
+   * Cancel current cache warmup request.
    *
    * @private
    */
-  private abortWarmup(): void {
+  private cancelWarmup(): void {
     this.cancelRequest();
     this.progress.update({
-      state: WarmupState.Aborted,
+      state: WarmupState.Cancelled,
     });
   }
 
