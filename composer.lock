@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "13ec0f5b3850d7caf31717ea6a0f524f",
+    "content-hash": "1136208c4f9dc92c961f24ad7f6a6d71",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -928,16 +928,16 @@
         },
         {
             "name": "eliashaeussler/typo3-sitemap-locator",
-            "version": "1.2.0",
+            "version": "dev-feature/typo3-14.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/typo3-sitemap-locator.git",
-                "reference": "d533dda7be10e66105fa398241e6f1ec4b2210c4"
+                "reference": "8e141a3cf5f2bb3f8c2738340dbd156c372c0ed9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/typo3-sitemap-locator/zipball/d533dda7be10e66105fa398241e6f1ec4b2210c4",
-                "reference": "d533dda7be10e66105fa398241e6f1ec4b2210c4",
+                "url": "https://api.github.com/repos/eliashaeussler/typo3-sitemap-locator/zipball/8e141a3cf5f2bb3f8c2738340dbd156c372c0ed9",
+                "reference": "8e141a3cf5f2bb3f8c2738340dbd156c372c0ed9",
                 "shasum": ""
             },
             "require": {
@@ -947,17 +947,17 @@
                 "psr/http-message": "^1.0 || ^2.0",
                 "symfony/console": "^7.2 || ^8.0",
                 "symfony/dependency-injection": "^7.2 || ^8.0",
-                "typo3/cms-backend": "~13.4.0 || ~14.2.0",
-                "typo3/cms-core": "~13.4.0 || ~14.2.0"
+                "typo3/cms-backend": "~13.4.0 || ~14.3.0",
+                "typo3/cms-core": "~13.4.0 || ~14.3.0"
             },
             "require-dev": {
                 "eliashaeussler/phpunit-attributes": "^1.2 || ^2.0",
                 "eliashaeussler/version-bumper": "^3.0",
-                "phpunit/phpcov": "^10.0 || ^11.0 || ^12.0",
+                "phpunit/phpcov": "^10.0 || ^11.0 || ^12.0 || ^13.0",
                 "phpunit/phpunit": "^11.2 || ^12.0 || ^13.0",
                 "symfony/event-dispatcher": "^7.2 || ^8.0",
-                "typo3/cms-install": "~13.4.0 || ~14.2.0",
-                "typo3/cms-seo": "~13.4.0 || ~14.2.0",
+                "typo3/cms-install": "~13.4.0 || ~14.3.0",
+                "typo3/cms-seo": "~13.4.0 || ~14.3.0",
                 "typo3/testing-framework": "^9.0.3"
             },
             "type": "typo3-cms-extension",
@@ -987,9 +987,9 @@
             "description": "Sitemap Locator - Looks up XML sitemaps as part of a configured site. Supports various sitemap providers, e.g. by configured page type or robots.txt, and allows to implement custom providers.",
             "support": {
                 "issues": "https://github.com/eliashaeussler/typo3-sitemap-locator/issues",
-                "source": "https://github.com/eliashaeussler/typo3-sitemap-locator/tree/1.2.0"
+                "source": "https://github.com/eliashaeussler/typo3-sitemap-locator/tree/feature/typo3-14.3"
             },
-            "time": "2026-03-31T13:00:23+00:00"
+            "time": "2026-04-17T07:34:07+00:00"
         },
         {
             "name": "enshrined/svg-sanitize",
@@ -1560,16 +1560,16 @@
         },
         {
             "name": "mteu/typo3-typed-extconf",
-            "version": "1.2.0",
+            "version": "dev-feature/support-typo3-v14-lts",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mteu/typo3-typed-extconf.git",
-                "reference": "cd8989dceed674da5caa37c7e559780e8fafc785"
+                "reference": "67724b82afc2b2519d3c965458f70b3e6beb661e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mteu/typo3-typed-extconf/zipball/cd8989dceed674da5caa37c7e559780e8fafc785",
-                "reference": "cd8989dceed674da5caa37c7e559780e8fafc785",
+                "url": "https://api.github.com/repos/mteu/typo3-typed-extconf/zipball/67724b82afc2b2519d3c965458f70b3e6beb661e",
+                "reference": "67724b82afc2b2519d3c965458f70b3e6beb661e",
                 "shasum": ""
             },
             "require": {
@@ -1578,7 +1578,7 @@
                 "nette/php-generator": "^4.1.6",
                 "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
                 "symfony/console": "^7.3",
-                "typo3/cms-core": "~13.4.18 || ~14.2.0"
+                "typo3/cms-core": "~13.4.18 || ~14.3.0"
             },
             "require-dev": {
                 "composer/class-map-generator": "^1.1",
@@ -1621,9 +1621,9 @@
             "description": "Typed Extension Configuration - Aims to provide a type-safe extension configuration management for TYPO3, ensuring proper types instead of string-only values from backend configuration or mixed types from config/system/settings.php",
             "support": {
                 "issues": "https://github.com/mteu/typo3-typed-extconf/issues",
-                "source": "https://github.com/mteu/typo3-typed-extconf/tree/1.2.0"
+                "source": "https://github.com/mteu/typo3-typed-extconf/tree/feature/support-typo3-v14-lts"
             },
-            "time": "2026-03-31T17:34:11+00:00"
+            "time": "2026-04-15T06:52:19+00:00"
         },
         {
             "name": "nette/php-generator",
@@ -10532,9 +10532,12 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": {},
-    "prefer-stable": false,
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "eliashaeussler/typo3-sitemap-locator": 20,
+        "mteu/typo3-typed-extconf": 20
+    },
+    "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
