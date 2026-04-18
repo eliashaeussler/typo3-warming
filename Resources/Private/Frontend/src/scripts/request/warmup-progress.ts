@@ -156,12 +156,38 @@ export class WarmupProgress {
   }
 
   /**
+   * Return URLs that failed to be warmed up.
+   *
+   * @returns {CrawlingResult[]} List of failed URLs, either as complete result or as URL-only
+   */
+  public getFailedUrls(): CrawlingResult[] {
+    if (this.results.failed.length > 0) {
+      return this.results.failed;
+    }
+
+    return this.urls.failed.map(this.mapUrlToCrawlingResult);
+  }
+
+  /**
+   * Return successfully warmed up URLs.
+   *
+   * @returns {CrawlingResult[]} List of successful URLs, either as complete result or as URL-only
+   */
+  public getSuccessfulUrls(): CrawlingResult[] {
+    if (this.results.successful.length > 0) {
+      return this.results.successful;
+    }
+
+    return this.urls.successful.map(this.mapUrlToCrawlingResult);
+  }
+
+  /**
    * Get number of URLs that failed to be warmed up.
    *
    * @returns {number} Number of URLs that failed to be warmed up
    */
   public getNumberOfFailedUrls(): number {
-    return this.results.failed.length;
+    return this.getFailedUrls().length;
   }
 
   /**
@@ -170,7 +196,7 @@ export class WarmupProgress {
    * @returns {number} Number of successfully warmed up URLs.
    */
   public getNumberOfSuccessfulUrls(): number {
-    return this.results.successful.length;
+    return this.getSuccessfulUrls().length;
   }
 
   /**
@@ -205,9 +231,9 @@ export class WarmupProgress {
   }
 
   /**
-   Get number of URLs that were excluded from cache warmup.
-
-   @returns {number} Number of URLs excluded from cache warmup.
+   * Get number of URLs that were excluded from cache warmup.
+   *
+   * @returns {number} Number of URLs excluded from cache warmup.
    */
   public getNumberOfExcludedUrls(): number {
     return this.excluded.urls.length;
@@ -220,5 +246,19 @@ export class WarmupProgress {
    */
   public isFinished(): boolean {
     return this.progress.current >= this.progress.total;
+  }
+
+  /**
+   * Map simple URL to a complex crawling result object.
+   *
+   * @param url {string} URL to be mapped
+   * @returns {CrawlingResult} The mapped crawling result object
+   * @private
+   */
+  private mapUrlToCrawlingResult(url: string): CrawlingResult {
+    return {
+      url: url,
+      data: {},
+    };
   }
 }
