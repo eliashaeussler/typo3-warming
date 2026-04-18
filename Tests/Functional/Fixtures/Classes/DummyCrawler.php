@@ -24,6 +24,7 @@ declare(strict_types=1);
 namespace EliasHaeussler\Typo3Warming\Tests\Functional\Fixtures\Classes;
 
 use EliasHaeussler\CacheWarmup;
+use EliasHaeussler\Typo3Warming\Exception;
 use Psr\Http\Message;
 
 /**
@@ -45,25 +46,25 @@ final class DummyCrawler implements CacheWarmup\Crawler\ConfigurableCrawler
      */
     public static array $options = [];
 
-    public static bool $failOnNextIteration = false;
+    public static ?string $throwAfterUrl = null;
 
     public function crawl(array $urls): CacheWarmup\Result\CacheWarmupResult
     {
-        self::$crawledUrls = $urls;
+        self::$crawledUrls = [];
 
         $result = new CacheWarmup\Result\CacheWarmupResult();
 
         foreach ($urls as $url) {
-            if (self::$failOnNextIteration) {
-                $crawlingResult = CacheWarmup\Result\CrawlingResult::createFailed($url);
-            } else {
-                $crawlingResult = CacheWarmup\Result\CrawlingResult::createSuccessful($url);
+            self::$crawledUrls[] = $url;
+
+            $result->addResult(
+                CacheWarmup\Result\CrawlingResult::createSuccessful($url),
+            );
+
+            if (self::$throwAfterUrl === (string)$url) {
+                throw new Exception\ConnectionAborted($result);
             }
-
-            $result->addResult($crawlingResult);
         }
-
-        self::$failOnNextIteration = false;
 
         return $result;
     }
@@ -76,7 +77,7 @@ final class DummyCrawler implements CacheWarmup\Crawler\ConfigurableCrawler
     public static function reset(): void
     {
         self::$crawledUrls = [];
-        self::$failOnNextIteration = false;
+        self::$throwAfterUrl = null;
         self::$options = [];
     }
 }

@@ -28,6 +28,7 @@ use EliasHaeussler\Typo3SitemapLocator;
 use EliasHaeussler\Typo3Warming\Configuration;
 use EliasHaeussler\Typo3Warming\Domain;
 use EliasHaeussler\Typo3Warming\Event;
+use EliasHaeussler\Typo3Warming\Exception;
 use EliasHaeussler\Typo3Warming\Http;
 use EliasHaeussler\Typo3Warming\Result;
 use EliasHaeussler\Typo3Warming\Security;
@@ -144,11 +145,19 @@ final readonly class CacheWarmupService
             new Event\BeforeCacheWarmupEvent($sites, $pages, $strategy, $this->crawler, $cacheWarmer),
         );
 
-        $result = new Result\CacheWarmupResult(
-            $cacheWarmer->run(),
-            $cacheWarmer->getExcludedSitemaps(),
-            $cacheWarmer->getExcludedUrls(),
-        );
+        try {
+            $result = new Result\CacheWarmupResult(
+                $cacheWarmer->run(),
+                $cacheWarmer->getExcludedSitemaps(),
+                $cacheWarmer->getExcludedUrls(),
+            );
+        } catch (Exception\ConnectionAborted $exception) {
+            $result = new Result\CacheWarmupResult(
+                $exception->incompleteResult ?? new CacheWarmup\Result\CacheWarmupResult(),
+                $cacheWarmer->getExcludedSitemaps(),
+                $cacheWarmer->getExcludedUrls(),
+            );
+        }
 
         $this->eventDispatcher->dispatch(
             new Event\AfterCacheWarmupEvent($result, $this->crawler, $cacheWarmer),

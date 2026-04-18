@@ -65,7 +65,10 @@ export enum LanguageKeys {
   modalReportActionView = 'warming.modal.report.action.view',
   modalReportRequestId = 'warming.modal.report.message.requestId',
   modalReportTotal = 'warming.modal.report.message.total',
-  modalReportNoUrlsCrawled = 'warming.modal.report.message.noUrlsCrawled',
+  modalReportNoUrlsCrawledHeader = 'warming.modal.report.message.noUrlsCrawled.header',
+  modalReportNoUrlsCrawledMessage = 'warming.modal.report.message.noUrlsCrawled.message',
+  modalReportIncompleteHeader = 'warming.modal.report.message.incomplete.header',
+  modalReportIncompleteMessage = 'warming.modal.report.message.incomplete.message',
   modalReportButtonRetry = 'warming.modal.report.button.retry',
   modalReportButtonClose = 'warming.modal.report.button.close',
 

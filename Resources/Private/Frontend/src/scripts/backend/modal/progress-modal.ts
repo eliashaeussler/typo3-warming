@@ -23,6 +23,7 @@ import {unsafeHTML} from 'lit/directives/unsafe-html.js';
 import '@typo3/backend/element/progress-bar-element.js';
 import Modal from '@typo3/backend/modal.js';
 import RegularEvent from '@typo3/core/event/regular-event.js';
+import {SeverityEnum} from '@typo3/backend/enum/severity.js';
 import {lll} from '@typo3/core/lit-helper.js';
 
 import {IconIdentifiers} from '@eliashaeussler/typo3-warming/enums/icon-identifiers';
@@ -36,17 +37,6 @@ enum CacheWarmupProgressModalButtonNames {
   closeButton = 'tx-warming-close',
   reportButton = 'tx-warming-open-report',
   retryButton = 'tx-warming-retry',
-}
-
-/**
- * @see https://github.com/TYPO3/typo3/blob/v14.3.0/Build/Sources/TypeScript/backend/enum/severity.ts
- */
-enum SeverityEnum {
-  notice = -2,
-  info = -1,
-  ok = 0,
-  warning = 1,
-  error = 2,
 }
 
 /**

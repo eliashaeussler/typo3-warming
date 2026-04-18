@@ -85,9 +85,19 @@ final readonly class CacheWarmupController
             return $this->responseFactory->badRequest('Invalid request parameters');
         }
 
+        // Don't kill execution on connection abort by user
+        ignore_user_abort(true);
+
         // Open event stream
         $eventStream = SSE\Stream\SelfEmittingEventStream::create($warmupRequest->getId());
         $eventStream->open();
+
+        // Cancel streaming on connection abort by user
+        if (connection_aborted() === 1) {
+            $eventStream->close();
+
+            return $this->responseFactory->ok();
+        }
 
         // Apply event stream to crawler
         $crawler = $this->configuration->getCrawler();
