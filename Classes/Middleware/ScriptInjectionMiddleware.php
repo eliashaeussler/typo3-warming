@@ -81,6 +81,8 @@ final readonly class ScriptInjectionMiddleware implements Server\MiddlewareInter
         'warming.modal.report.message.requestId' => 'modal.report.message.requestId',
         'warming.modal.report.message.total' => 'modal.report.message.total',
         'warming.modal.report.message.noUrlsCrawled' => 'modal.report.message.noUrlsCrawled',
+        'warming.modal.report.message.incomplete.header' => 'modal.report.message.incomplete.header',
+        'warming.modal.report.message.incomplete.message' => 'modal.report.message.incomplete.message',
         'warming.modal.report.button.retry' => 'modal.report.button.retry',
         'warming.modal.report.button.close' => 'modal.report.button.close',
 

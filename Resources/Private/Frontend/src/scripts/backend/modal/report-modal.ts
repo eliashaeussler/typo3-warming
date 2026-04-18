@@ -20,13 +20,16 @@
 import {html, LitElement, TemplateResult} from 'lit';
 import {customElement} from 'lit/decorators.js';
 import Modal from '@typo3/backend/modal.js';
+import {SeverityEnum} from '@typo3/backend/enum/severity.js';
 import {lll} from '@typo3/core/lit-helper.js';
+import '@typo3/backend/element/alert-element.js'
 
 import '@eliashaeussler/typo3-warming/backend/modal/element/report-panel'
 import '@eliashaeussler/typo3-warming/backend/modal/element/report-summary-card'
 import {IconIdentifiers} from '@eliashaeussler/typo3-warming/enums/icon-identifiers';
 import {LanguageKeys} from '@eliashaeussler/typo3-warming/enums/language-keys';
 import {WarmupProgress} from '@eliashaeussler/typo3-warming/request/warmup-progress';
+import {WarmupState} from '@eliashaeussler/typo3-warming/enums/warmup-state';
 
 /**
  * Modal with report about a finished cache warmup.
@@ -57,6 +60,14 @@ export class ReportModal extends LitElement {
     const excluded: number = this.progress.getNumberOfExcludedSitemaps() + this.progress.getNumberOfExcludedUrls();
 
     return html`
+      ${this.progress.state == WarmupState.Cancelled ? html`
+        <typo3-backend-alert severity="${SeverityEnum.warning}"
+                             heading="${lll(LanguageKeys.modalReportIncompleteHeader)}"
+                             message="${lll(LanguageKeys.modalReportIncompleteMessage)}"
+                             show-icon
+        ></typo3-backend-alert>
+      ` : ''}
+
       <div class="card-container">
         ${this.progress.getNumberOfFailedUrls() > 0 ? html`
           <warming-report-summary-card
@@ -96,7 +107,7 @@ export class ReportModal extends LitElement {
           <warming-report-panel
             title="${lll(LanguageKeys.modalReportPanelFailed)}"
             state="danger"
-            urls="${JSON.stringify(this.progress.results.failed)}"
+            urls="${JSON.stringify(this.progress.getFailedUrls())}"
             show="true"
           />
         ` : ''}
@@ -105,7 +116,7 @@ export class ReportModal extends LitElement {
           <warming-report-panel
             title="${lll(LanguageKeys.modalReportPanelSuccessful)}"
             state="success"
-            urls="${JSON.stringify(this.progress.results.successful)}"
+            urls="${JSON.stringify(this.progress.getSuccessfulUrls())}"
           />
         ` : ''}
 

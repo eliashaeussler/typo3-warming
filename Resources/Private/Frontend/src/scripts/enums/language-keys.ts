@@ -66,6 +66,8 @@ export enum LanguageKeys {
   modalReportRequestId = 'warming.modal.report.message.requestId',
   modalReportTotal = 'warming.modal.report.message.total',
   modalReportNoUrlsCrawled = 'warming.modal.report.message.noUrlsCrawled',
+  modalReportIncompleteHeader = 'warming.modal.report.message.incomplete.header',
+  modalReportIncompleteMessage = 'warming.modal.report.message.incomplete.message',
   modalReportButtonRetry = 'warming.modal.report.button.retry',
   modalReportButtonClose = 'warming.modal.report.button.close',
 
