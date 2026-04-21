@@ -83,7 +83,7 @@ final readonly class CacheWarmupToolbarItem implements Backend\Toolbar\ToolbarIt
 
     public function getIndex(): int
     {
-        // Clear cache toolbar item has index=25
+        // Clear cache toolbar item has index=20 (TYPO3 v14) and index=25 (TYPO3 v13)
         return 27;
     }
 }
