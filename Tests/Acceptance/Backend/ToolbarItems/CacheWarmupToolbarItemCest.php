@@ -85,7 +85,7 @@ final class CacheWarmupToolbarItemCest
             $modalTitleSelector = Tests\Acceptance\Support\Enums\Selectors::ModalTitleLegacy;
         }
 
-        $I->canSee('Cache warmup', $modalTitleSelector);
+        $I->see('Cache warmup', $modalTitleSelector);
     }
 
     public function canSeeAllSitesAndLanguagesInCacheWarmupModalAsAdmin(
@@ -145,7 +145,7 @@ final class CacheWarmupToolbarItemCest
             $modalTitleSelector = Tests\Acceptance\Support\Enums\Selectors::ModalTitleLegacy;
         }
 
-        $I->canSee('Cache warmup failed', $modalTitleSelector);
+        $I->see('Cache warmup failed', $modalTitleSelector);
         $I->waitForElementNotVisible(Tests\Acceptance\Support\Enums\Selectors::ProgressPlaceholder);
 
         $modalDialog->clickButtonInDialog('Close');
