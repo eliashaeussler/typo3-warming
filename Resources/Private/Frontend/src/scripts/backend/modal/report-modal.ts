@@ -109,7 +109,7 @@ export class ReportModal extends LitElement {
               body="${lll(LanguageKeys.modalReportPanelExcludedSummary)}"
               state="warning"
               icon="overlay-warning"
-              currentNumber="${this.progress.getNumberOfSuccessfulUrls()}"
+              currentNumber="${excluded}"
             />
           ` : ''}
         </div>
