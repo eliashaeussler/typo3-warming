@@ -25,6 +25,7 @@ namespace EliasHaeussler\Typo3Warming\Tests\Acceptance\Backend\ToolbarItems;
 
 use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\Typo3Warming\Tests;
+use GuzzleHttp\RequestOptions;
 use TYPO3\CMS\Core;
 
 /**
@@ -148,6 +149,42 @@ final class CacheWarmupToolbarItemCest
         $I->waitForElementNotVisible(Tests\Acceptance\Support\Enums\Selectors::ProgressPlaceholder);
 
         $modalDialog->clickButtonInDialog('Close');
+    }
+
+    public function canCancelCacheWarmup(
+        Tests\Acceptance\Support\AcceptanceTester $I,
+        Tests\Acceptance\Support\Helper\ExtensionConfiguration $extensionConfiguration,
+        Tests\Acceptance\Support\Helper\ModalDialog $modalDialog,
+    ): void {
+        $originalCrawlerOptions = $extensionConfiguration->write(
+            'crawlerOptions',
+            json_encode([
+                'concurrency' => 1,
+                'request_options' => [
+                    RequestOptions::DELAY => 5000,
+                ],
+            ]),
+        );
+
+        $I->loginAs('admin');
+
+        $I->waitForElementClickable(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem);
+        $I->click(Tests\Acceptance\Support\Enums\Selectors::ToolbarItem);
+
+        $modalDialog->canSeeDialog();
+
+        $I->checkOption(Tests\Acceptance\Support\Enums\Selectors::SelectAllCheckbox);
+        $I->click('Start', Tests\Acceptance\Support\Helper\ModalDialog::$openedModalButtonContainerSelector);
+        $I->wait(1);
+        $I->click('Cancel', Tests\Acceptance\Support\Helper\ModalDialog::$openedModalButtonContainerSelector);
+        $I->see('Cache warmup cancelled', Tests\Acceptance\Support\Enums\Selectors::Notification);
+        $I->click('View report', Tests\Acceptance\Support\Enums\Selectors::Notification);
+
+        $modalDialog->canSeeDialog();
+
+        $I->see('Incomplete report', Tests\Acceptance\Support\Enums\Selectors::ModalBody);
+
+        $extensionConfiguration->write('crawlerOptions', $originalCrawlerOptions);
     }
 
     public function canChangeCacheWarmupSettings(

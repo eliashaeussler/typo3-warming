@@ -25,6 +25,7 @@ namespace EliasHaeussler\Typo3Warming\Http\Message\Handler;
 
 use EliasHaeussler\CacheWarmup;
 use EliasHaeussler\SSE;
+use EliasHaeussler\Typo3Warming\Exception;
 use EliasHaeussler\Typo3Warming\Http;
 use Psr\Http\Message;
 
@@ -44,6 +45,7 @@ final readonly class StreamResponseHandler implements CacheWarmup\Http\Message\H
 
     /**
      * @throws \JsonException
+     * @throws Exception\ConnectionAborted
      * @throws SSE\Exception\StreamIsClosed
      * @throws SSE\Exception\StreamIsInactive
      */
@@ -54,6 +56,7 @@ final readonly class StreamResponseHandler implements CacheWarmup\Http\Message\H
 
     /**
      * @throws \JsonException
+     * @throws Exception\ConnectionAborted
      * @throws SSE\Exception\StreamIsClosed
      * @throws SSE\Exception\StreamIsInactive
      */
@@ -64,6 +67,7 @@ final readonly class StreamResponseHandler implements CacheWarmup\Http\Message\H
 
     /**
      * @throws \JsonException
+     * @throws Exception\ConnectionAborted
      * @throws SSE\Exception\StreamIsClosed
      * @throws SSE\Exception\StreamIsInactive
      */
@@ -77,5 +81,9 @@ final readonly class StreamResponseHandler implements CacheWarmup\Http\Message\H
         );
 
         $this->stream->sendEvent($event);
+
+        if (connection_aborted() === 1) {
+            throw new Exception\ConnectionAborted($this->result);
+        }
     }
 }

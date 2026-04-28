@@ -46,8 +46,10 @@ enum Selectors: string
     public const DatabaseRecordsTableItem = 'tr[data-table="tx_warming_domain_model_log"]:first-child td.col-title a';
     public const ExtensionConfigurationModalCollapseHeader = '#heading-warming';
     public const InformationModal = 'typo3-backend-modal[content^="/typo3/record/info"]';
+    public const ModalBody = '.modal-body';
     public const ModalHeader = '.tx-warming-modal-header';
     public const ModalTitle = '.t3js-modal[open] .modal-header-title';
+    public const Notification = '.tx-warming-notification';
     public const ProgressCounterTotal = '.tx-warming-progress-modal .tx-warming-progress-modal-counter > div:nth-child(2)';
     public const ProgressPlaceholder = '.tx-warming-progress-modal .tx-warming-progress-placeholder';
     public const ReportPanelActionButtonViewLogs = 'warming-report-panel .panel-collapse a[href*="/BackendLog/"]';

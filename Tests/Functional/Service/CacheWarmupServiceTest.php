@@ -507,6 +507,47 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
         self::assertSame(50, $actual->getCacheWarmer()->getLimit());
     }
 
+    #[Framework\Attributes\Test]
+    public function warmupReturnsIncompleteResultOnConnectionAbort(): void
+    {
+        $this->mockSitemapResponse('en');
+
+        $origin = new Src\Domain\Model\SiteAwareSitemap(
+            new Core\Http\Uri('https://typo3-testing.local/sitemap.xml'),
+            $this->site,
+            $this->site->getDefaultLanguage(),
+        );
+
+        Tests\Functional\Fixtures\Classes\DummyCrawler::$throwAfterUrl = 'https://typo3-testing.local/subsite-2';
+
+        $expected = [
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/', 1.0, origin: $origin),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-2', 0.7, origin: $origin),
+        ];
+
+        $cacheWarmupResult = new CacheWarmup\Result\CacheWarmupResult();
+
+        foreach ($expected as $url) {
+            $cacheWarmupResult->addResult(
+                CacheWarmup\Result\CrawlingResult::createSuccessful($url),
+            );
+        }
+
+        $actual = $this->subject->warmup(
+            [
+                new Src\ValueObject\Request\SiteWarmupRequest($this->site),
+            ],
+            [
+                new Src\ValueObject\Request\PageWarmupRequest(6),
+            ],
+            50,
+            new CacheWarmup\Crawler\Strategy\SortByPriorityStrategy(),
+        );
+
+        self::assertEquals(new Src\Result\CacheWarmupResult($cacheWarmupResult), $actual);
+        self::assertEquals($expected, Tests\Functional\Fixtures\Classes\DummyCrawler::$crawledUrls);
+    }
+
     /**
      * @todo Remove with EXT:warming v6.0
      */

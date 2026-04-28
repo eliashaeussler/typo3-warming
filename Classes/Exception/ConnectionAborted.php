@@ -1,3 +1,7 @@
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS extension "warming".
  *
@@ -17,19 +21,21 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+namespace EliasHaeussler\Typo3Warming\Exception;
+
+use EliasHaeussler\CacheWarmup;
+
 /**
- * Identifiers of several used TYPO3 icons.
+ * ConnectionAborted
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-export enum IconIdentifiers {
-  check = 'actions-check',
-  exclamationCircle = 'actions-exclamation-circle-alt',
-  listAlternative = 'actions-list-alternative',
-  readonly = 'overlay-readonly',
-  refresh = 'actions-refresh',
-  rocket = 'actions-rocket',
-  spinner = 'spinner-circle',
-  warning = 'overlay-warning',
+final class ConnectionAborted extends Exception
+{
+    public function __construct(
+        public readonly ?CacheWarmup\Result\CacheWarmupResult $incompleteResult = null,
+    ) {
+        parent::__construct('The current connection was aborted by the client.', 1776415427);
+    }
 }

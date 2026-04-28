@@ -131,8 +131,17 @@
 			<trans-unit id="modal.report.message.total" resname="modal.report.message.total">
 				<source>Total number of crawled URLs:</source>
 			</trans-unit>
-			<trans-unit id="modal.report.message.noUrlsCrawled" resname="modal.report.message.noUrlsCrawled">
-				<source>No URLs were crawled for cache warmup.</source>
+			<trans-unit id="modal.report.message.noUrlsCrawled.header" resname="modal.report.message.noUrlsCrawled.header">
+				<source>No URLs crawled</source>
+			</trans-unit>
+			<trans-unit id="modal.report.message.noUrlsCrawled.message" resname="modal.report.message.noUrlsCrawled.message">
+				<source>The cache warmup did not crawl any URLs.</source>
+			</trans-unit>
+			<trans-unit id="modal.report.message.incomplete.header" resname="modal.report.message.incomplete.header">
+				<source>Incomplete report</source>
+			</trans-unit>
+			<trans-unit id="modal.report.message.incomplete.message" resname="modal.report.message.incomplete.message">
+				<source>The cache warmup was stopped prematurely, so this report may be incomplete.</source>
 			</trans-unit>
 			<trans-unit id="modal.report.button.retry" resname="modal.report.button.retry">
 				<source>Run again</source>

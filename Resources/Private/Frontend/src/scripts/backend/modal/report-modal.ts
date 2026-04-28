@@ -20,13 +20,23 @@
 import {html, LitElement, TemplateResult} from 'lit';
 import {customElement} from 'lit/decorators.js';
 import Modal from '@typo3/backend/modal.js';
+import {SeverityEnum} from '@typo3/backend/enum/severity.js';
 import {lll} from '@typo3/core/lit-helper.js';
+import '@typo3/backend/element/alert-element.js'
 
 import '@eliashaeussler/typo3-warming/backend/modal/element/report-panel'
 import '@eliashaeussler/typo3-warming/backend/modal/element/report-summary-card'
 import {IconIdentifiers} from '@eliashaeussler/typo3-warming/enums/icon-identifiers';
 import {LanguageKeys} from '@eliashaeussler/typo3-warming/enums/language-keys';
 import {WarmupProgress} from '@eliashaeussler/typo3-warming/request/warmup-progress';
+import {WarmupState} from '@eliashaeussler/typo3-warming/enums/warmup-state';
+
+enum ClassNames {
+  ModalBody = 'tx-warming-report-modal-body',
+  ModalFooter = 'tx-warming-report-modal-footer',
+  ModalHeader = 'tx-warming-report-modal-header',
+  RequestId = 'tx-warming-request-id',
+}
 
 /**
  * Modal with report about a finished cache warmup.
@@ -48,104 +58,146 @@ export class ReportModal extends LitElement {
   }
 
   protected render(): TemplateResult {
+    const [header, footer]: [TemplateResult, TemplateResult] = this.renderHeaderAndFooter();
+
     // Add text if no URLs were crawled
     if (this.progress.getTotalNumberOfCrawledUrls() === 0) {
-      return this.createEmptyCrawlingNotice();
+      return html`
+        ${header}
+
+        <div class="${ClassNames.ModalBody}">
+          ${this.renderEmptyCrawlingAlert()}
+        </div>
+
+        ${footer}
+      `;
     }
 
     // Count all excluded URLs and sitemaps
     const excluded: number = this.progress.getNumberOfExcludedSitemaps() + this.progress.getNumberOfExcludedUrls();
 
     return html`
-      <div class="card-container">
-        ${this.progress.getNumberOfFailedUrls() > 0 ? html`
-          <warming-report-summary-card
-            title="${lll(LanguageKeys.modalReportPanelFailed)}"
-            body="${lll(LanguageKeys.modalReportPanelFailedSummary)}"
-            state="danger"
-            icon="overlay-readonly"
-            currentNumber="${this.progress.getNumberOfFailedUrls()}"
-            totalNumber="${this.progress.progress.current}"
-          />
-        ` : ''}
+      ${header}
 
-        ${this.progress.getNumberOfSuccessfulUrls() > 0 ? html`
-          <warming-report-summary-card
-            title="${lll(LanguageKeys.modalReportPanelSuccessful)}"
-            body="${lll(LanguageKeys.modalReportPanelSuccessfulSummary)}"
-            state="success"
-            icon="overlay-approved"
-            currentNumber="${this.progress.getNumberOfSuccessfulUrls()}"
-            totalNumber="${this.progress.progress.current}"
-          />
-        ` : ''}
+      <div class="${ClassNames.ModalBody}">
+        <div class="card-container">
+          ${this.progress.getNumberOfFailedUrls() > 0 ? html`
+            <warming-report-summary-card
+              title="${lll(LanguageKeys.modalReportPanelFailed)}"
+              body="${lll(LanguageKeys.modalReportPanelFailedSummary)}"
+              state="danger"
+              icon="overlay-readonly"
+              currentNumber="${this.progress.getNumberOfFailedUrls()}"
+              totalNumber="${this.progress.progress.current}"
+            />
+          ` : ''}
 
-        ${excluded > 0 ? html`
-          <warming-report-summary-card
-            title="${lll(LanguageKeys.modalReportPanelExcluded)}"
-            body="${lll(LanguageKeys.modalReportPanelExcludedSummary)}"
-            state="warning"
-            icon="overlay-warning"
-            currentNumber="${this.progress.getNumberOfSuccessfulUrls()}"
-          />
-        ` : ''}
+          ${this.progress.getNumberOfSuccessfulUrls() > 0 ? html`
+            <warming-report-summary-card
+              title="${lll(LanguageKeys.modalReportPanelSuccessful)}"
+              body="${lll(LanguageKeys.modalReportPanelSuccessfulSummary)}"
+              state="success"
+              icon="overlay-approved"
+              currentNumber="${this.progress.getNumberOfSuccessfulUrls()}"
+              totalNumber="${this.progress.progress.current}"
+            />
+          ` : ''}
+
+          ${excluded > 0 ? html`
+            <warming-report-summary-card
+              title="${lll(LanguageKeys.modalReportPanelExcluded)}"
+              body="${lll(LanguageKeys.modalReportPanelExcludedSummary)}"
+              state="warning"
+              icon="overlay-warning"
+              currentNumber="${this.progress.getNumberOfSuccessfulUrls()}"
+            />
+          ` : ''}
+        </div>
+
+        <div class="panel-container">
+          ${this.progress.getNumberOfFailedUrls() > 0 ? html`
+            <warming-report-panel
+              title="${lll(LanguageKeys.modalReportPanelFailed)}"
+              state="danger"
+              urls="${JSON.stringify(this.progress.getFailedUrls())}"
+              show="true"
+            />
+          ` : ''}
+
+          ${this.progress.getNumberOfSuccessfulUrls() > 0 ? html`
+            <warming-report-panel
+              title="${lll(LanguageKeys.modalReportPanelSuccessful)}"
+              state="success"
+              urls="${JSON.stringify(this.progress.getSuccessfulUrls())}"
+            />
+          ` : ''}
+
+          ${this.progress.getNumberOfExcludedSitemaps() > 0 ? html`
+            <warming-report-panel
+              title="${lll(LanguageKeys.modalReportPanelExcludedSitemaps)}"
+              state="warning"
+              urls="${JSON.stringify(this.progress.excluded.sitemaps)}"
+            />
+          ` : ''}
+
+          ${this.progress.getNumberOfExcludedUrls() > 0 ? html`
+            <warming-report-panel
+              title="${lll(LanguageKeys.modalReportPanelExcludedUrls)}"
+              state="warning"
+              urls="${JSON.stringify(this.progress.excluded.urls)}"
+            />
+          ` : ''}
+        </div>
       </div>
 
-      <div class="panel-container">
-        ${this.progress.getNumberOfFailedUrls() > 0 ? html`
-          <warming-report-panel
-            title="${lll(LanguageKeys.modalReportPanelFailed)}"
-            state="danger"
-            urls="${JSON.stringify(this.progress.results.failed)}"
-            show="true"
-          />
-        ` : ''}
-
-        ${this.progress.getNumberOfSuccessfulUrls() > 0 ? html`
-          <warming-report-panel
-            title="${lll(LanguageKeys.modalReportPanelSuccessful)}"
-            state="success"
-            urls="${JSON.stringify(this.progress.results.successful)}"
-          />
-        ` : ''}
-
-        ${this.progress.getNumberOfExcludedSitemaps() > 0 ? html`
-          <warming-report-panel
-            title="${lll(LanguageKeys.modalReportPanelExcludedSitemaps)}"
-            state="warning"
-            urls="${JSON.stringify(this.progress.excluded.sitemaps)}"
-          />
-        ` : ''}
-
-        ${this.progress.getNumberOfExcludedUrls() > 0 ? html`
-          <warming-report-panel
-            title="${lll(LanguageKeys.modalReportPanelExcludedUrls)}"
-            state="warning"
-            urls="${JSON.stringify(this.progress.excluded.urls)}"
-          />
-        ` : ''}
-      </div>
-
-      <small class="tx-warming-request-id">
-        ${lll(LanguageKeys.modalReportRequestId)} <code>${this.progress.requestId}</code
-      ></small>
+      ${footer}
     `;
   }
 
-  private createEmptyCrawlingNotice(): TemplateResult {
-    return html`
-      <div class="callout callout-info">
-        <div class="media">
-          <div class="media-left">
-              <span class="icon-emphasized">
-                <typo3-backend-icon identifier="${IconIdentifiers.info}" />
-              </span>
-          </div>
-          <div class="media-body">
-            ${lll(LanguageKeys.modalReportNoUrlsCrawled)}
-          </div>
+  private renderHeaderAndFooter(): [TemplateResult, TemplateResult] {
+    return [
+      html`
+        <div class="${ClassNames.ModalHeader}">
+          ${this.renderIncompleteCacheWarmupAlert()}
         </div>
-      </div>
+      `,
+      html`
+        <div class="${ClassNames.ModalFooter}">
+          ${this.renderRequestId()}
+        </div>
+      `,
+    ];
+  }
+
+  private renderEmptyCrawlingAlert(): TemplateResult {
+    return html`
+      <typo3-backend-alert severity="${SeverityEnum.info}"
+                           heading="${lll(LanguageKeys.modalReportNoUrlsCrawledHeader)}"
+                           message="${lll(LanguageKeys.modalReportNoUrlsCrawledMessage)}"
+                           show-icon
+      ></typo3-backend-alert>
+    `;
+  }
+
+  private renderIncompleteCacheWarmupAlert(): TemplateResult|null {
+    if (this.progress.state === WarmupState.Cancelled) {
+      return html`
+        <typo3-backend-alert severity="${SeverityEnum.warning}"
+                             heading="${lll(LanguageKeys.modalReportIncompleteHeader)}"
+                             message="${lll(LanguageKeys.modalReportIncompleteMessage)}"
+                             show-icon
+        ></typo3-backend-alert>
+      `;
+    }
+
+    return null;
+  }
+
+  private renderRequestId(): TemplateResult {
+    return html`
+      <small class="${ClassNames.RequestId}">
+        ${lll(LanguageKeys.modalReportRequestId)} <code>${this.progress.requestId}</code
+      ></small>
     `;
   }
 

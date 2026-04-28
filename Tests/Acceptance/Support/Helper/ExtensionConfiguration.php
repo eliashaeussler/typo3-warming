@@ -50,11 +50,15 @@ final readonly class ExtensionConfiguration
     /**
      * @param non-empty-string $path
      */
-    public function write(string $path, mixed $value): void
+    public function write(string $path, mixed $value): mixed
     {
+        $previousValue = $this->read($path);
+
         $this->configurationManager->setLocalConfigurationValueByPath('EXTENSIONS/warming/' . $path, $value);
 
         $I = $this->tester;
         $I->runShellCommand('typo3 cache:flush');
+
+        return $previousValue;
     }
 }

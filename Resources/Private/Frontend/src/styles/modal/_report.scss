@@ -23,24 +23,24 @@ warming-report-modal {
     flex-shrink: 0;
     min-height: 100%;
 
-    > .card-container {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    > .panel-container {
+    > .tx-warming-report-modal-body {
         flex-grow: 1;
 
-        .panel-heading:has(+ .panel-collapse.show, + .panel-collapse.collapsing) {
+        > .card-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        > .panel-container .panel-heading:has(+ .panel-collapse.show, + .panel-collapse.collapsing) {
             border-end-start-radius: 0 !important;
             border-end-end-radius: 0 !important;
         }
 
-        [role="tabpanel"] {
+        > .panel-container [role="tabpanel"] {
             padding: 0;
         }
 
-        .table-fit {
+        > .panel-container .table-fit {
             border-start-start-radius: 0 !important;
             border-start-end-radius: 0 !important;
         }
