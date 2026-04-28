@@ -320,6 +320,7 @@ export class SitesModal extends LitElement {
   private toggleAll(checked: boolean): void {
     this._enabledCheckboxes.forEach((checkbox: HTMLInputElement): void => {
       checkbox.checked = checked;
+      checkbox.indeterminate = false;
     })
   }
 
