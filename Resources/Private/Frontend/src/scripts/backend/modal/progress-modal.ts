@@ -67,7 +67,6 @@ export class ProgressModal extends LitElement {
   }
 
   protected render(): TemplateResult {
-    const isActive = this.progress.progress.current > 0;
     const failedCount: number = this.progress.getNumberOfFailedUrls();
     const percent: number = this.progress.getProgressInPercent();
 
@@ -78,7 +77,7 @@ export class ProgressModal extends LitElement {
         case WarmupState.Warning:
           return SeverityEnum.warning;
         case WarmupState.Success:
-          return isActive ? SeverityEnum.notice : SeverityEnum.ok;
+          return this.progress.started ? SeverityEnum.notice : SeverityEnum.ok;
         case WarmupState.Cancelled:
         case WarmupState.Unknown:
           return SeverityEnum.notice;
@@ -94,7 +93,7 @@ export class ProgressModal extends LitElement {
                                     severity="${severity}"
         ></typo3-backend-progress-bar>
         <div class="tx-warming-progress-modal-counter">
-          ${isActive ? html`<div>${percent.toFixed(2)}%</div>` : html`
+          ${this.progress.started ? html`<div>${percent.toFixed(2)}%</div>` : html`
             <div class="tx-warming-progress-placeholder">
               ${lll(LanguageKeys.modalProgressPlaceholder)}
             </div>

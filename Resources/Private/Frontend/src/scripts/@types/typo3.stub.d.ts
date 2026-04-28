@@ -53,7 +53,7 @@ declare module '@typo3/backend/element/progress-bar-element.js' {
 }
 
 /**
- * @see https://github.com/TYPO3/typo3/blob/v14.2.0/Build/Sources/TypeScript/backend/element/progress-bar-element.ts
+ * @see https://github.com/TYPO3/typo3/blob/v14.3.0/Build/Sources/TypeScript/backend/element/progress-bar-element.ts
  */
 declare module '@typo3/backend/enum/severity.js' {
   export enum SeverityEnum {

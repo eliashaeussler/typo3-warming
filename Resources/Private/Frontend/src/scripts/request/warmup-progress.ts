@@ -110,6 +110,7 @@ export class WarmupProgress {
   public results: CacheWarmupResult = {failed: [], successful: []};
   public excluded: CrawlingExclusionsState = {sitemaps: [], urls: []};
   public response: CrawlingResponse = {title: '', message: ''};
+  public started: boolean = false;
 
   constructor(
     public requestId: string,
@@ -123,6 +124,8 @@ export class WarmupProgress {
    * @returns {WarmupProgress} This instance
    */
   public update(data: WarmupProgressDataObject): this {
+    this.started = true;
+
     if (data.state && Object.values(WarmupState).includes(data.state as WarmupState)) {
       this.state = data.state;
     }
