@@ -60,3 +60,8 @@ for file in "$fixturePath"/*.sql; do
     mysql $dbCredentials "$dbName" < "$file"
     _done
 done
+
+# Clear caches
+_progress "Clearing caches"
+rm -rf "${rootPath}/var/cache"
+_done
