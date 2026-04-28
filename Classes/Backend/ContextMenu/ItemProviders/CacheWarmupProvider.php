@@ -184,7 +184,7 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
     protected function getAdditionalAttributes(string $itemName): array
     {
         $attributes = [
-            'data-callback-module' => '@eliashaeussler/typo3-warming/backend/context-menu-action',
+            'data-callback-module' => '@eliashaeussler/typo3-warming/context-menu-action',
         ];
 
         // Early return if current item is not part of a submenu

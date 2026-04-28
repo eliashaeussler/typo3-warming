@@ -170,7 +170,7 @@ final class ExtensionConfigurationProcessor
 
         if ($jsonSchema !== null) {
             $addons[] = Core\Page\JavaScriptModuleInstruction::create(
-                '@eliashaeussler/typo3-warming/backend/extension-configuration.js',
+                '@eliashaeussler/typo3-warming/extension-configuration.js',
             )->invoke('jsonSchema', $jsonSchema);
         }
 

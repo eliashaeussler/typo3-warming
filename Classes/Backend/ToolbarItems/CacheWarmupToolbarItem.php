@@ -43,7 +43,7 @@ final readonly class CacheWarmupToolbarItem implements Backend\Toolbar\ToolbarIt
         private Domain\Repository\SiteRepository $siteRepository,
         Core\Page\PageRenderer $pageRenderer,
     ) {
-        $pageRenderer->loadJavaScriptModule('@eliashaeussler/typo3-warming/backend/toolbar-menu.js');
+        $pageRenderer->loadJavaScriptModule('@eliashaeussler/typo3-warming/toolbar-menu.js');
     }
 
     public function checkAccess(): bool
