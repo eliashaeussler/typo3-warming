@@ -17,7 +17,9 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-export default {
+import type {Config} from 'stylelint';
+
+const config: Config = {
   extends: 'stylelint-config-standard-scss',
   plugins: [
     'stylelint-header',
@@ -32,3 +34,5 @@ export default {
     ],
   },
 };
+
+export default config;

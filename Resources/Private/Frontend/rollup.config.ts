@@ -19,29 +19,15 @@
 
 import commonjs from '@rollup/plugin-commonjs';
 import del from 'rollup-plugin-delete';
-import multiInput from 'rollup-plugin-multi-input';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import noEmit from 'rollup-plugin-no-emit';
 import postcss from 'rollup-plugin-postcss';
 import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
+import type {RollupOptions} from 'rollup';
 
-// eslint-disable-next-line no-undef
 const isDev = process.env.NODE_ENV !== 'production';
-
-// Options for cssnano on production builds
-const minimizeOptions = {
-  preset: [
-    'default',
-    {
-      discardComments: {
-        removeAll: true,
-      },
-    },
-  ],
-};
-
-export default [
+const config: RollupOptions[] = [
   {
     input: [
       'src/scripts/backend/context-menu-action.ts',
@@ -58,9 +44,7 @@ export default [
       del({
         targets: '../../Public/JavaScript/*',
         force: true,
-      }),
-      multiInput({
-        relative: 'src/scripts',
+        runOnce: true,
       }),
       nodeResolve({
         browser: true,
@@ -84,7 +68,7 @@ export default [
   {
     input: 'src/scripts/backend/extension-configuration.ts',
     output: {
-      dir: '../../Public/JavaScript/backend',
+      dir: '../../Public/JavaScript',
       format: 'esm',
       sourcemap: isDev ? 'inline' : false,
       inlineDynamicImports: true,
@@ -132,13 +116,24 @@ export default [
       }),
       postcss({
         extract: 'backend.css',
-        minimize: isDev ? false : minimizeOptions,
+        minimize: isDev ? false : {
+          preset: [
+            'default',
+            {
+              discardComments: {
+                removeAll: true,
+              },
+            },
+          ],
+        },
         sourceMap: isDev ? 'inline' : false,
         use: ['sass'],
       }),
       noEmit({
-        match: (fileName) => fileName.match(/\.js$/),
+        match: (fileName) => fileName.match(/\.js$/) !== null,
       }),
     ],
   }
 ];
+
+export default config;

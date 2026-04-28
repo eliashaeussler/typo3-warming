@@ -10,10 +10,10 @@
 		"start": "cross-env NODE_ENV=development rollup -c --failAfterWarnings --watch",
 		"lint": "npm-run-all lint:scss lint:ts",
 		"lint:scss": "stylelint 'src/styles/**/*.scss'",
-		"lint:ts": "eslint 'src/scripts/**/*.{ts,tsx}' 'res/*.js' './*.js'",
+		"lint:ts": "eslint 'src/scripts/**/*.{ts,tsx}' 'res/*.js' './*.{js,ts}'",
 		"fix": "npm-run-all fix:scss fix:ts",
 		"fix:scss": "stylelint 'src/styles/**/*.scss' --fix",
-		"fix:ts": "eslint 'src/scripts/**/*.{ts,tsx}' 'res/*.js' './*.js' --fix"
+		"fix:ts": "eslint 'src/scripts/**/*.{ts,tsx}' 'res/*.js' './*.{js,ts}' --fix"
 	},
 	"author": {
 		"name": "Elias Häußler",
@@ -26,6 +26,7 @@
 		"@rollup/plugin-node-resolve": "^16.0.0",
 		"@rollup/plugin-terser": "^1.0.0",
 		"@rollup/plugin-typescript": "^12.0.0",
+		"@types/node": "^25.6.0",
 		"@types/yaireo__tagify": "^4.27.0",
 		"cross-env": "^10.0.0",
 		"eslint": "^10.0.0",
@@ -35,7 +36,6 @@
 		"postcss": "^8.4.24",
 		"rollup": "^4.0.0",
 		"rollup-plugin-delete": "^3.0.0",
-		"rollup-plugin-multi-input": "^1.4.1",
 		"rollup-plugin-no-emit": "^1.0.1",
 		"rollup-plugin-postcss": "^4.0.2",
 		"sass": "^1.63.3",
