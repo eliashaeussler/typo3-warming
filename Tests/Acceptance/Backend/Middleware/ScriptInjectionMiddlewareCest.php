@@ -26,12 +26,12 @@ namespace EliasHaeussler\Typo3Warming\Tests\Acceptance\Backend\Middleware;
 use EliasHaeussler\Typo3Warming\Tests;
 
 /**
- * InjectExtensionConfigurationScriptMiddlewareCest
+ * ScriptInjectionMiddlewareCest
  *
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
-final class InjectExtensionConfigurationScriptMiddlewareCest
+final class ScriptInjectionMiddlewareCest
 {
     public function cannotSeeInjectedScriptOnInsufficientPrivileges(Tests\Acceptance\Support\AcceptanceTester $I): void
     {
