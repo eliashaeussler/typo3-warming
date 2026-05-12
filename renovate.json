@@ -6,7 +6,7 @@
 		"local>eliashaeussler/renovate-config:ddev"
 	],
 	"constraints": {
-		"php": "8.2.*"
+		"php": "8.5.*"
 	},
 	"packageRules": [
 		{
