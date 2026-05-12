@@ -54,7 +54,7 @@
 		"eliashaeussler/transient-logger": "^2.0",
 		"eliashaeussler/typo3-codeception-helper": "^2.0",
 		"eliashaeussler/typo3-vendor-bundler": "^4.0",
-		"eliashaeussler/version-bumper": "^3.0",
+		"eliashaeussler/version-bumper": "^3.3",
 		"guzzlehttp/psr7": "^2.7",
 		"php-webdriver/webdriver": "^1.15",
 		"phpunit/phpcov": "^10.0 || ^11.0 || ^12.0 || ^13.0",
