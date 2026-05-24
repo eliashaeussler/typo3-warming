@@ -785,16 +785,16 @@
         },
         {
             "name": "eliashaeussler/cache-warmup",
-            "version": "5.0.4",
+            "version": "5.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/cache-warmup.git",
-                "reference": "9b9c857e022973f57b89032930f4eb64704d47a9"
+                "reference": "bef4dd08ebcd6b7e93015d4345b4ef12da53d821"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/cache-warmup/zipball/9b9c857e022973f57b89032930f4eb64704d47a9",
-                "reference": "9b9c857e022973f57b89032930f4eb64704d47a9",
+                "url": "https://api.github.com/repos/eliashaeussler/cache-warmup/zipball/bef4dd08ebcd6b7e93015d4345b4ef12da53d821",
+                "reference": "bef4dd08ebcd6b7e93015d4345b4ef12da53d821",
                 "shasum": ""
             },
             "require": {
@@ -825,7 +825,7 @@
                 "eliashaeussler/phpstan-config": "^4.0.0",
                 "eliashaeussler/rector-config": "^4.0",
                 "eliashaeussler/transient-logger": "^2.0",
-                "eliashaeussler/version-bumper": "^3.0",
+                "eliashaeussler/version-bumper": "^4.0",
                 "ergebnis/composer-normalize": "^2.28",
                 "phpstan/extension-installer": "^1.2",
                 "phpstan/phpstan-phpunit": "^2.0",
@@ -865,9 +865,9 @@
             "homepage": "https://cache-warmup.dev/",
             "support": {
                 "issues": "https://github.com/eliashaeussler/cache-warmup/issues",
-                "source": "https://github.com/eliashaeussler/cache-warmup/tree/5.0.4"
+                "source": "https://github.com/eliashaeussler/cache-warmup/tree/5.0.5"
             },
-            "time": "2026-05-20T17:06:11+00:00"
+            "time": "2026-05-23T17:25:39+00:00"
         },
         {
             "name": "eliashaeussler/sse",
@@ -8904,16 +8904,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.12.22",
+            "version": "v0.12.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "3be75d5b9244936dd4ac62ade2bfb004d13acf0f"
+                "reference": "4dcc0f08047d52bbde475eda481146fd8e27e1a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/3be75d5b9244936dd4ac62ade2bfb004d13acf0f",
-                "reference": "3be75d5b9244936dd4ac62ade2bfb004d13acf0f",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/4dcc0f08047d52bbde475eda481146fd8e27e1a4",
+                "reference": "4dcc0f08047d52bbde475eda481146fd8e27e1a4",
                 "shasum": ""
             },
             "require": {
@@ -8977,9 +8977,9 @@
             ],
             "support": {
                 "issues": "https://github.com/bobthecow/psysh/issues",
-                "source": "https://github.com/bobthecow/psysh/tree/v0.12.22"
+                "source": "https://github.com/bobthecow/psysh/tree/v0.12.23"
             },
-            "time": "2026-03-22T23:03:24+00:00"
+            "time": "2026-05-23T13:41:31+00:00"
         },
         {
             "name": "sebastian/cli-parser",
