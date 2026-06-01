@@ -49,7 +49,7 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
      *     type: string,
      *     label: string,
      *     iconIdentifier: string,
-     *     callbackAction: string,
+     *     callbackAction?: string,
      *     childItems?: array<string, array{
      *         label?: string,
      *         iconIdentifier?: string,
