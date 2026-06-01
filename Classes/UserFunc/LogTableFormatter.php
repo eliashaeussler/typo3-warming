@@ -39,6 +39,7 @@ final class LogTableFormatter
 
     /**
      * @param array{row: array{uid?: int}} $parameters
+     * @param-out array{row: array{uid?: int}, title?: string} $parameters
      */
     public function formatTitle(array &$parameters): void
     {
