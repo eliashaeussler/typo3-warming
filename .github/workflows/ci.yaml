@@ -12,7 +12,7 @@ permissions: read-all
 jobs:
   prepare:
     name: Prepare workflow
-    uses: eliashaeussler/.github/.github/workflows/pull-request.yaml@fdc23f43e6ba48018b997f552dd39f9944c17c86 # main
+    uses: eliashaeussler/.github/.github/workflows/pull-request.yaml@5a6d08a067e0528f2b3d66aa168ffdcff8de68f9 # main
 
   assets:
     name: Verify asset integrity
