@@ -1,5 +1,6 @@
 /.Build
 /config
+/packages
 /Resources/Private/Libs
 /Tests/Acceptance/Support/_generated
 /var/
