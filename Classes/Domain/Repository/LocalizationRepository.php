@@ -53,7 +53,6 @@ final readonly class LocalizationRepository
         }
 
         if ($this->typo3Version->getMajorVersion() >= 14) {
-            /* @phpstan-ignore method.notFound */
             $pageTranslations = $this->baseRepository->getPageTranslations($pageId, [$languageId]);
 
             foreach ($pageTranslations as $pageTranslation) {

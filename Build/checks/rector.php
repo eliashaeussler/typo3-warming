@@ -22,6 +22,7 @@ declare(strict_types=1);
  */
 
 use EliasHaeussler\RectorConfig\Config\Config;
+use EliasHaeussler\RectorConfig\Entity\Version;
 use Rector\Config\RectorConfig;
 use Rector\Php80\Rector\Class_\AnnotationToAttributeRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
@@ -40,28 +41,17 @@ return static function (RectorConfig $rectorConfig): void {
             $rootPath . '/Tests',
         )
         ->not(
-            $rootPath . '/.Build/*',
-            $rootPath . '/.ddev/*',
-            $rootPath . '/.github/*',
-            $rootPath . '/config/*',
-            $rootPath . '/Resources/Private/Frontend/*',
-            $rootPath . '/Resources/Private/Libs/*',
             $rootPath . '/Tests/Acceptance/Support/_generated/*',
-            $rootPath . '/Tests/Build/Configuration/*',
-            $rootPath . '/Tests/CGL/vendor/*',
-            $rootPath . '/var/*',
         )
         ->withPHPUnit()
         ->withSymfony()
-        ->withTYPO3()
+        ->withTYPO3(Version::createMajor(13))
         ->skip(AnnotationToAttributeRector::class, [
             $rootPath . '/Classes/Extension.php',
             $rootPath . '/Classes/Sitemap/Provider/DefaultProvider.php',
             $rootPath . '/Classes/Sitemap/Provider/PageTypeProvider.php',
             $rootPath . '/Classes/Sitemap/Provider/RobotsTxtProvider.php',
             $rootPath . '/Classes/Sitemap/Provider/SiteProvider.php',
-            $rootPath . '/Tests/Build/DependencyInjection/CompilerPass/ContainerBuilderDebugDumpPass.php',
-            $rootPath . '/Tests/Build/DependencyInjection/CompilerPass/PublicServicePass.php',
         ])
         ->skip(ClassPropertyAssignToConstructorPromotionRector::class, [
             // We cannot use CPP for properties that are declared in abstract classes

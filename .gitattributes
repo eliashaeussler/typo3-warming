@@ -1,7 +1,7 @@
 *                            text=auto
 /.ddev                       export-ignore
 /.github                     export-ignore
-/Resources/Private/Frontend  export-ignore
+/Build                       export-ignore
 /Tests                       export-ignore
 /.crowdin.yaml               export-ignore
 /.editorconfig               export-ignore
@@ -12,10 +12,5 @@
 /CODEOWNERS                  export-ignore
 /composer.lock               export-ignore
 /CONTRIBUTING.md             export-ignore
-/docker-compose.yml          export-ignore
-/packaging_exclude.php       export-ignore
-/phpunit.functional.xml      export-ignore
-/phpunit.unit.xml            export-ignore
 /renovate.json               export-ignore
 /SECURITY.md                 export-ignore
-/version-bumper.yaml         export-ignore

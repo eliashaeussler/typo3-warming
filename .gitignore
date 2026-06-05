@@ -3,5 +3,5 @@
 /Resources/Private/Libs
 /Tests/Acceptance/Support/_generated
 /var/
-/.phpunit.result.cache
+/.php-cs-fixer.cache
 /c3.php

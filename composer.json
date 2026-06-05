@@ -44,6 +44,7 @@
 		"typo3/cms-frontend": "~13.4.5 || ~14.3.0"
 	},
 	"require-dev": {
+		"armin/editorconfig-cli": "^2.2",
 		"codeception/codeception": "^5.3.4",
 		"codeception/lib-web": "^2.1.0",
 		"codeception/module-asserts": "^3.0",
@@ -51,15 +52,26 @@
 		"codeception/module-db": "^3.2",
 		"codeception/module-webdriver": "^4.0.3",
 		"eliashaeussler/deep-closure-comparator": "^1.1",
+		"eliashaeussler/php-cs-fixer-config": "^3.1",
+		"eliashaeussler/phpstan-config": "^4.0",
+		"eliashaeussler/rector-config": "^4.0",
 		"eliashaeussler/transient-logger": "^2.0",
 		"eliashaeussler/typo3-codeception-helper": "^2.0",
 		"eliashaeussler/typo3-vendor-bundler": "^4.0",
 		"eliashaeussler/version-bumper": "^3.3 || ^4.0",
+		"ergebnis/composer-normalize": "^2.52",
 		"guzzlehttp/psr7": "^2.7",
+		"helmich/typo3-typoscript-lint": "^3.3",
 		"php-webdriver/webdriver": "^1.15",
+		"phpstan/extension-installer": "^1.4",
+		"phpstan/phpstan-phpunit": "^2.0",
+		"phpstan/phpstan-symfony": "^2.0",
 		"phpunit/phpcov": "^10.0 || ^11.0 || ^12.0 || ^13.0",
 		"phpunit/phpunit": "^11.5 || ^12.0 || ^13.0",
 		"psy/psysh": "^0.12.1",
+		"saschaegerer/phpstan-typo3": "^3.0",
+		"shipmonk/composer-dependency-analyser": "^1.8",
+		"ssch/typo3-rector": "^3.14",
 		"symfony/config": "^7.2 || ^8.0",
 		"symfony/css-selector": "^7.2 || ^8.0",
 		"symfony/event-dispatcher": "^7.2 || ^8.0",
@@ -68,6 +80,7 @@
 		"typo3/cms-install": "~13.4.5 || ~14.3.0",
 		"typo3/cms-seo": "~13.4.5 || ~14.3.0",
 		"typo3/cms-tstemplate": "~13.4.5 || ~14.3.0",
+		"typo3/coding-standards": "^0.8.0",
 		"typo3/testing-framework": "^9.0.3",
 		"webmozart/assert": "^1.11 || ^2.0"
 	},
@@ -89,7 +102,9 @@
 			"codeception/c3": true,
 			"eliashaeussler/typo3-vendor-bundler": true,
 			"eliashaeussler/version-bumper": true,
+			"ergebnis/composer-normalize": true,
 			"php-http/discovery": false,
+			"phpstan/extension-installer": true,
 			"typo3/class-alias-loader": true,
 			"typo3/cms-composer-installers": true
 		},
@@ -101,31 +116,73 @@
 		"typo3/cms": {
 			"extension-key": "warming",
 			"web-dir": ".Build/web"
+		},
+		"version-bumper": {
+			"config-file": "Build/release/version-bumper.yaml"
 		}
 	},
 	"scripts": {
-		"post-install-cmd": [
-			"@cgl install"
-		],
 		"post-autoload-dump": [
-			"@environment:prepare"
+			"rm -rf config",
+			"cp -r Build/environment/config .",
+			"[ -f .Build/bin/codecept ] && codecept build || true"
 		],
-		"cgl": "@composer -d Tests/CGL --",
+		"check": [
+			"@check:deps",
+			"@check:refactor",
+			"@check:static",
+			"@check:style"
+		],
+		"check:deps": "composer-dependency-analyser --config Build/checks/composer-dependency-analyser.php",
+		"check:refactor": [
+			"@check:refactor:php"
+		],
+		"check:refactor:php": "@refactor:php --dry-run",
+		"check:static": [
+			"@php Build/checks/phpstan-bootstrap.php",
+			"phpstan analyse -c Build/checks/phpstan.php"
+		],
+		"check:style": [
+			"@check:style:composer",
+			"@check:style:editorconfig",
+			"@check:style:php",
+			"@check:style:typoscript"
+		],
+		"check:style:composer": "@fix:composer --dry-run",
+		"check:style:editorconfig": "ec --finder-config Build/checks/.editorconfig-lint.php",
+		"check:style:php": "@fix:php --dry-run",
+		"check:style:typoscript": "typoscript-lint -c Build/checks/typoscript-lint.yml --fail-on-warnings",
+		"ci": [
+			"@composer validate --strict",
+			"@composer audit",
+			"@check:deps",
+			"@check:refactor",
+			"@check:static --error-format github",
+			"@check:style",
+			"mkdir -p Build/docs/result",
+			"@docs:build --no-progress --fail-on-log"
+		],
 		"docs": [
 			"@docs:cleanup",
 			"@docs:build",
 			"@docs:open"
 		],
-		"docs:build": "docker compose run --rm docs",
-		"docs:cleanup": "rm -rf .Build/docs",
-		"docs:open": "open .Build/docs/Index.html",
-		"environment:prepare": [
-			"rm -rf config",
-			"cp -r Tests/Build/Configuration config",
-			"codecept build"
+		"docs:build": "docker compose -f Build/docs/docker-compose.yml run --rm build",
+		"docs:cleanup": "rm -rf Build/docs/result",
+		"docs:open": "open Build/docs/result/Index.html",
+		"fix": [
+			"@fix:composer",
+			"@fix:editorconfig",
+			"@fix:php"
 		],
+		"fix:composer": "@composer normalize",
+		"fix:editorconfig": "@check:style:editorconfig --fix",
+		"fix:php": "php-cs-fixer fix --config Build/checks/.php-cs-fixer.php",
+		"refactor": [
+			"@refactor:php"
+		],
+		"refactor:php": "rector process -c Build/checks/rector.php",
 		"test": [
-			"@test:acceptance",
 			"@test:functional",
 			"@test:unit"
 		],
@@ -133,21 +190,22 @@
 			".ddev/commands/web/init-typo3",
 			"codecept run --steps"
 		],
-		"test:coverage": [
-			"@test:coverage:acceptance",
-			"@test:coverage:functional",
-			"@test:coverage:unit",
-			"@test:coverage:merge"
-		],
-		"test:coverage:acceptance": [
+		"test:acceptance:coverage": [
 			"@test:acceptance --coverage --coverage-html",
-			"mkdir -p .Build/coverage/php",
-			"cp .Build/log/acceptance-reports/coverage.serialized .Build/coverage/php/acceptance.cov"
+			"mkdir -p Build/tests/coverage/php",
+			"cp Build/tests/log/acceptance-reports/coverage.serialized Build/tests/coverage/php/acceptance.cov"
 		],
-		"test:coverage:functional": "phpunit -c phpunit.functional.xml",
-		"test:coverage:merge": "phpcov merge --html .Build/coverage/html/_merged --clover .Build/coverage/clover.xml --text php://stdout .Build/coverage/php",
-		"test:coverage:unit": "phpunit -c phpunit.unit.xml",
-		"test:functional": "@test:coverage:functional --no-coverage",
-		"test:unit": "@test:coverage:unit --no-coverage"
+		"test:coverage": [
+			"@putenv XDEBUG_MODE=coverage",
+			"@test:acceptance:coverage",
+			"@test:functional:coverage",
+			"@test:unit:coverage",
+			"@test:merge-coverage"
+		],
+		"test:functional": "@test:functional:coverage --no-coverage",
+		"test:functional:coverage": "phpunit -c Build/tests/phpunit.functional.xml",
+		"test:merge-coverage": "phpcov merge --html Build/tests/coverage/html/_merged --clover Build/tests/coverage/clover.xml --text php://stdout Build/tests/coverage/php",
+		"test:unit": "@test:unit:coverage --no-coverage",
+		"test:unit:coverage": "phpunit -c Build/tests/phpunit.unit.xml"
 	}
 }

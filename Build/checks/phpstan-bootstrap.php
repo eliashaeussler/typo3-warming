@@ -21,38 +21,18 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-return [
-    'directories' => [
-        '.build',
-        '.ddev',
-        '.git',
-        '.github',
-        'bin',
-        'build',
-        'public',
-        'resources\\/private\\/frontend',
-        'tailor-version-upload',
-        'tests',
-        'var',
-        'vendor',
-    ],
-    'files' => [
-        'DS_Store',
-        'CODE_OF_CONDUCT.md',
-        'codeception.yml',
-        'CODEOWNERS',
-        'composer.lock',
-        'CONTRIBUTING.md',
-        'crowdin.yaml',
-        'docker-compose.yml',
-        'editorconfig',
-        'gitattributes',
-        'gitignore',
-        'packaging_exclude.php',
-        'phpunit.functional.xml',
-        'phpunit.unit.xml',
-        'renovate.json',
-        'SECURITY.md',
-        'version-bumper.yaml',
-    ],
-];
+use Composer\Autoload;
+use Symfony\Component\Filesystem;
+use TYPO3\CMS\Core;
+
+$rootPath = dirname(__DIR__, 2);
+/** @var Autoload\ClassLoader $classLoader */
+$classLoader = require $rootPath . '/.Build/vendor/autoload.php';
+
+// Make sure no DI container is available before dumping a new one
+$filesystem = new Filesystem\Filesystem();
+$filesystem->remove($rootPath . '/var/cache/code/di');
+
+// Build service container
+Core\Core\SystemEnvironmentBuilder::run(0, Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_CLI);
+Core\Core\Bootstrap::init($classLoader);
