@@ -38,9 +38,11 @@ return [
     'files' => [
         'DS_Store',
         'CODE_OF_CONDUCT.md',
+        'codeception.yml',
         'CODEOWNERS',
         'composer.lock',
         'CONTRIBUTING.md',
+        'crowdin.yaml',
         'editorconfig',
         'gitattributes',
         'gitignore',
