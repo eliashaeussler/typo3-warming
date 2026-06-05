@@ -67,7 +67,7 @@ coverage:
 
 paths:
   tests: Tests/Acceptance
-  output: .Build/log/acceptance-reports
+  output: Build/tests/log/acceptance-reports
   data: Tests/Acceptance/Data
   support: Tests/Acceptance/Support
 

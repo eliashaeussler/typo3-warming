@@ -73,7 +73,6 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
         Backend\Domain\Repository\Localization\LocalizationRepository $localizationRepository,
     ) {
         if ((new Core\Information\Typo3Version())->getMajorVersion() >= 14) {
-            /* @phpstan-ignore arguments.count */
             parent::__construct($tcaSchemaFactory, $uriBuilder, $localizationRepository);
         } else {
             // @todo Remove once support for TYPO3 v13 is dropped

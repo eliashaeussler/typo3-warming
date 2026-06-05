@@ -1,6 +1,6 @@
 paths:
-  - ../../Configuration
-  - ../../ext_conf_template.txt
+  - Configuration
+  - ext_conf_template.txt
 filePatterns:
   - "*.tsconfig"
   - "*.typoscript"

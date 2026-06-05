@@ -21,12 +21,30 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-use Composer\Autoload;
-use TYPO3\CMS\Core;
-
-/** @var Autoload\ClassLoader $classLoader */
-$classLoader = require \dirname(__DIR__, 2) . '/.Build/vendor/autoload.php';
-
-// Build service container
-Core\Core\SystemEnvironmentBuilder::run(0, Core\Core\SystemEnvironmentBuilder::REQUESTTYPE_CLI);
-Core\Core\Bootstrap::init($classLoader);
+return [
+    'directories' => [
+        '.build',
+        '.ddev',
+        '.git',
+        '.github',
+        'bin',
+        'build',
+        'documentation',
+        'public',
+        'tailor-version-upload',
+        'tests',
+        'vendor',
+    ],
+    'files' => [
+        'DS_Store',
+        'CODE_OF_CONDUCT.md',
+        'CODEOWNERS',
+        'composer.lock',
+        'CONTRIBUTING.md',
+        'editorconfig',
+        'gitattributes',
+        'gitignore',
+        'renovate.json',
+        'SECURITY.md',
+    ],
+];

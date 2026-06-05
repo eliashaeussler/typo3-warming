@@ -21,23 +21,15 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-use Composer\Autoload;
 use PHPUnit\Framework;
 use ShipMonk\ComposerDependencyAnalyser;
 
 $rootPath = dirname(__DIR__, 2);
-
-/** @var Autoload\ClassLoader $loader */
-$loader = require $rootPath . '/.Build/vendor/autoload.php';
-$loader->register();
-
 $configuration = new ComposerDependencyAnalyser\Config\Configuration();
 $configuration
     ->addPathToScan($rootPath . '/Configuration', false)
     ->addPathsToExclude([
         $rootPath . '/Tests/Acceptance/Support/_generated',
-        $rootPath . '/Tests/Build',
-        $rootPath . '/Tests/CGL',
     ])
     ->ignoreUnknownClasses([
         Framework\Attributes\AllowMockObjectsWithoutExpectations::class,

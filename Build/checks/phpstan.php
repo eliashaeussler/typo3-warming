@@ -32,11 +32,9 @@ return PHPStanConfig\Config\Config::create(dirname(__DIR__, 2))
     )
     ->not(
         'Tests/Acceptance/Support/_generated/*',
-        'Tests/Build',
-        'Tests/CGL',
     )
     ->bootstrapFiles(
-        '.Build/vendor/autoload.php'
+        '.Build/vendor/autoload.php',
     )
     ->withBaseline(__DIR__ . '/phpstan-baseline.neon')
     ->withBleedingEdge([

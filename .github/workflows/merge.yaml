@@ -1,0 +1,21 @@
+name: 'Merge Renovate branch'
+
+on:
+  workflow_run: # zizmor: ignore[dangerous-triggers]
+    workflows: [CI]
+    types: [completed]
+    branches: ['renovate/*']
+
+permissions:
+  contents: read
+
+jobs:
+  merge:
+    name: 'Merge Renovate branch'
+
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    secrets:
+      MERGE_TOKEN: ${{ secrets.REBUILD_ASSETS_TOKEN }}
+
+    uses: eliashaeussler/gha/.github/workflows/merge.yaml@c330d8c56a96a0eba94c98e8feac29aa9f1d69da # 0.5.2

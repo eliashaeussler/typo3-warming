@@ -51,7 +51,7 @@ _done
 # Apply configuration
 _progress "Applying default system configuration"
 rm -rf "${rootPath}/config"
-cp -r "${rootPath}/Tests/Build/Configuration" "${rootPath}/config"
+cp -r "${rootPath}/Build/environment/config" "${rootPath}/config"
 _done
 
 # Import DB fixtures

@@ -36,13 +36,13 @@ const config: RollupOptions[] = [
     output: {
       // Avoid hashes in chunks
       chunkFileNames: '[name].js',
-      dir: '../../Public/JavaScript',
+      dir: '../../Resources/Public/JavaScript',
       format: 'esm',
       sourcemap: isDev ? 'inline' : false,
     },
     plugins: [
       del({
-        targets: '../../Public/JavaScript/*',
+        targets: '../../Resources/Public/JavaScript/*',
         force: true,
         runOnce: true,
       }),
@@ -68,7 +68,7 @@ const config: RollupOptions[] = [
   {
     input: 'src/scripts/backend/extension-configuration.ts',
     output: {
-      dir: '../../Public/JavaScript',
+      dir: '../../Resources/Public/JavaScript',
       format: 'esm',
       sourcemap: isDev ? 'inline' : false,
       inlineDynamicImports: true,
@@ -104,11 +104,11 @@ const config: RollupOptions[] = [
       '@yaireo/tagify/dist/tagify.css',
     ],
     output: {
-      dir: '../../Public/Css',
+      dir: '../../Resources/Public/Css',
     },
     plugins: [
       del({
-        targets: '../../Public/Css/*',
+        targets: '../../Resources/Public/Css/*',
         force: true,
       }),
       nodeResolve({
