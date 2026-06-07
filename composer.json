@@ -51,7 +51,6 @@
 		"codeception/module-cli": "^2.0",
 		"codeception/module-db": "^3.2",
 		"codeception/module-webdriver": "^4.0.3",
-		"eliashaeussler/deep-closure-comparator": "^1.1",
 		"eliashaeussler/php-cs-fixer-config": "^3.1",
 		"eliashaeussler/phpstan-config": "^4.0",
 		"eliashaeussler/rector-config": "^4.0",
