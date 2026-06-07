@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace EliasHaeussler\Typo3Warming\Tests\Unit\Http\Client\Handler;
 
-use EliasHaeussler\DeepClosureComparator;
 use EliasHaeussler\Typo3Warming as Src;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
@@ -56,7 +55,7 @@ final class HandlerStackBuilderTest extends TestingFramework\Core\Unit\UnitTestC
         $clientStub = self::createStub(ClientInterface::class);
         $handler = static fn() => new Promise\Promise();
 
-        DeepClosureComparator\DeepClosureAssert::assertEquals(
+        self::assertEquals(
             HandlerStack::create($handler),
             $this->subject->buildFromClientOrRequestOptions($clientStub, [], $handler),
         );
@@ -68,7 +67,7 @@ final class HandlerStackBuilderTest extends TestingFramework\Core\Unit\UnitTestC
         $clientStub = self::createStub(ClientInterface::class);
         $handler = static fn() => new Promise\Promise();
 
-        DeepClosureComparator\DeepClosureAssert::assertEquals(
+        self::assertEquals(
             HandlerStack::create($handler),
             $this->subject->buildFromClientOrRequestOptions($clientStub, ['handler' => 'foo'], $handler),
         );
@@ -84,7 +83,7 @@ final class HandlerStackBuilderTest extends TestingFramework\Core\Unit\UnitTestC
         ]);
         $handler = static fn() => new Promise\Promise();
 
-        DeepClosureComparator\DeepClosureAssert::assertEquals(
+        self::assertEquals(
             HandlerStack::create($handler),
             $this->subject->buildFromClientOrRequestOptions($client, [], $handler),
         );
@@ -96,7 +95,7 @@ final class HandlerStackBuilderTest extends TestingFramework\Core\Unit\UnitTestC
         $handler = static fn() => new Promise\Promise();
         $client = new Client(['handler' => $handler]);
 
-        DeepClosureComparator\DeepClosureAssert::assertEquals(
+        self::assertEquals(
             HandlerStack::create($handler),
             $this->subject->buildFromClientOrRequestOptions($client, []),
         );
@@ -109,7 +108,7 @@ final class HandlerStackBuilderTest extends TestingFramework\Core\Unit\UnitTestC
         $currentHandler = static fn() => new Promise\Promise(static fn() => '');
         $newHandler = static fn() => new Promise\Promise(static fn() => 'foo');
 
-        DeepClosureComparator\DeepClosureAssert::assertEquals(
+        self::assertEquals(
             HandlerStack::create($newHandler),
             $this->subject->buildFromClientOrRequestOptions($clientStub, ['handler' => $currentHandler], $newHandler),
         );
@@ -122,7 +121,7 @@ final class HandlerStackBuilderTest extends TestingFramework\Core\Unit\UnitTestC
         $newHandler = static fn() => new Promise\Promise(static fn() => 'foo');
         $client = new Client(['handler' => $currentHandler]);
 
-        DeepClosureComparator\DeepClosureAssert::assertEquals(
+        self::assertEquals(
             HandlerStack::create($newHandler),
             $this->subject->buildFromClientOrRequestOptions($client, [], $newHandler),
         );
