@@ -77,18 +77,17 @@ enum WarmupState: string
         $successfulCount = \count($successful);
         $failedCount = \count($failed);
 
-        if ($failedCount > 0 && $successfulCount === 0) {
-            return self::Failed;
-        }
-
-        if ($failedCount > 0 && $successfulCount > 0) {
-            return self::Warning;
-        }
-
+        // No failures
         if ($failedCount === 0) {
             return self::Success;
         }
 
-        return self::Unknown;
+        // Failures and successes
+        if ($successfulCount > 0) {
+            return self::Warning;
+        }
+
+        // Only failures
+        return self::Failed;
     }
 }
