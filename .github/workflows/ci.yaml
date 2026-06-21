@@ -72,3 +72,16 @@ jobs:
     if: ${{ needs.asset-integrity.outputs.rebuilt == 'false' }}
 
     uses: eliashaeussler/gha/.github/workflows/typo3-test-coverage.yaml@25277ecb47b0e804f4cc464509789a0183cb78fc # 0.7.3
+
+  automerge:
+    name: 'Automerge modified Renovate branch'
+
+    needs: [checks, tests, test-coverage]
+
+    secrets:
+      MERGE_TOKEN: ${{ secrets.REBUILD_ASSETS_TOKEN }}
+
+    permissions:
+      contents: read
+
+    uses: eliashaeussler/gha/.github/workflows/merge.yaml@25277ecb47b0e804f4cc464509789a0183cb78fc # 0.7.3
