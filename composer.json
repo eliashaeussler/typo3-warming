@@ -25,7 +25,7 @@
 		"eliashaeussler/cache-warmup": "^5.0",
 		"eliashaeussler/sse": "^2.0",
 		"eliashaeussler/typo3-sitemap-locator": "^1.0",
-		"guzzlehttp/guzzle": "^7.10",
+		"guzzlehttp/guzzle": "^8.0",
 		"guzzlehttp/promises": "^2.0",
 		"mteu/typo3-typed-extconf": "^1.0",
 		"psr/event-dispatcher": "^1.0",
