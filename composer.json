@@ -26,7 +26,7 @@
 		"eliashaeussler/sse": "^2.0",
 		"eliashaeussler/typo3-sitemap-locator": "^1.0",
 		"guzzlehttp/guzzle": "^7.10",
-		"guzzlehttp/promises": "^2.0",
+		"guzzlehttp/promises": "^2.0 || ^3.0",
 		"mteu/typo3-typed-extconf": "^1.0",
 		"psr/event-dispatcher": "^1.0",
 		"psr/http-message": "^1.1 || ^2.0",
