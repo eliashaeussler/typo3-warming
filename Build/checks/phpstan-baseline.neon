@@ -40,10 +40,98 @@ parameters:
 			path: ../../Classes/Form/FormDataProvider/SimulateLogPageRow.php
 
 		-
+			rawMessage: '''
+				Call to method canSeeDialog() of deprecated class TYPO3\TestingFramework\Core\Acceptance\Helper\AbstractModalDialog:
+				: TYPO3 core v14 and v15 switched from codeception to playwright.
+				             The testing-framework codeception related scaffolding files and
+				             helpers will be removed with testing-framework v10.
+			'''
+			identifier: method.deprecatedClass
+			count: 5
+			path: ../../Tests/Acceptance/Backend/ContextMenu/ItemProviders/CacheWarmupProviderCest.php
+
+		-
+			rawMessage: '''
+				Call to method clickButtonInDialog() of deprecated class TYPO3\TestingFramework\Core\Acceptance\Helper\AbstractModalDialog:
+				: TYPO3 core v14 and v15 switched from codeception to playwright.
+				             The testing-framework codeception related scaffolding files and
+				             helpers will be removed with testing-framework v10.
+			'''
+			identifier: method.deprecatedClass
+			count: 2
+			path: ../../Tests/Acceptance/Backend/ContextMenu/ItemProviders/CacheWarmupProviderCest.php
+
+		-
+			rawMessage: '''
+				Call to method canSeeDialog() of deprecated class TYPO3\TestingFramework\Core\Acceptance\Helper\AbstractModalDialog:
+				: TYPO3 core v14 and v15 switched from codeception to playwright.
+				             The testing-framework codeception related scaffolding files and
+				             helpers will be removed with testing-framework v10.
+			'''
+			identifier: method.deprecatedClass
+			count: 2
+			path: ../../Tests/Acceptance/Backend/EventListener/UrlMetadataListenerCest.php
+
+		-
+			rawMessage: '''
+				Call to method canSeeDialog() of deprecated class TYPO3\TestingFramework\Core\Acceptance\Helper\AbstractModalDialog:
+				: TYPO3 core v14 and v15 switched from codeception to playwright.
+				             The testing-framework codeception related scaffolding files and
+				             helpers will be removed with testing-framework v10.
+			'''
+			identifier: method.deprecatedClass
+			count: 10
+			path: ../../Tests/Acceptance/Backend/ToolbarItems/CacheWarmupToolbarItemCest.php
+
+		-
+			rawMessage: '''
+				Call to method clickButtonInDialog() of deprecated class TYPO3\TestingFramework\Core\Acceptance\Helper\AbstractModalDialog:
+				: TYPO3 core v14 and v15 switched from codeception to playwright.
+				             The testing-framework codeception related scaffolding files and
+				             helpers will be removed with testing-framework v10.
+			'''
+			identifier: method.deprecatedClass
+			count: 2
+			path: ../../Tests/Acceptance/Backend/ToolbarItems/CacheWarmupToolbarItemCest.php
+
+		-
+			rawMessage: '''
+				Class EliasHaeussler\Typo3Warming\Tests\Acceptance\Support\Helper\ModalDialog extends deprecated class TYPO3\TestingFramework\Core\Acceptance\Helper\AbstractModalDialog:
+				: TYPO3 core v14 and v15 switched from codeception to playwright.
+				             The testing-framework codeception related scaffolding files and
+				             helpers will be removed with testing-framework v10.
+			'''
+			identifier: class.extendsDeprecatedClass
+			count: 1
+			path: ../../Tests/Acceptance/Support/Helper/ModalDialog.php
+
+		-
 			rawMessage: PHPDoc type EliasHaeussler\Typo3Warming\Tests\Acceptance\Support\AcceptanceTester of property EliasHaeussler\Typo3Warming\Tests\Acceptance\Support\Helper\ModalDialog::$tester is not the same as PHPDoc type TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester of overridden property TYPO3\TestingFramework\Core\Acceptance\Helper\AbstractModalDialog::$tester.
 			identifier: property.phpDocType
 			count: 1
 			path: ../../Tests/Acceptance/Support/Helper/ModalDialog.php
+
+		-
+			rawMessage: '''
+				Call to method getPageTreeElement() of deprecated class TYPO3\TestingFramework\Core\Acceptance\Helper\AbstractPageTree:
+				: TYPO3 core v14 and v15 switched from codeception to playwright.
+				             The testing-framework codeception related scaffolding files and
+				             helpers will be removed with testing-framework v10.
+			'''
+			identifier: method.deprecatedClass
+			count: 1
+			path: ../../Tests/Acceptance/Support/Helper/PageTree.php
+
+		-
+			rawMessage: '''
+				Class EliasHaeussler\Typo3Warming\Tests\Acceptance\Support\Helper\PageTree extends deprecated class TYPO3\TestingFramework\Core\Acceptance\Helper\AbstractPageTree:
+				: TYPO3 core v14 and v15 switched from codeception to playwright.
+				             The testing-framework codeception related scaffolding files and
+				             helpers will be removed with testing-framework v10.
+			'''
+			identifier: class.extendsDeprecatedClass
+			count: 1
+			path: ../../Tests/Acceptance/Support/Helper/PageTree.php
 
 		-
 			rawMessage: PHPDoc type EliasHaeussler\Typo3Warming\Tests\Acceptance\Support\AcceptanceTester of property EliasHaeussler\Typo3Warming\Tests\Acceptance\Support\Helper\PageTree::$tester is not the same as PHPDoc type AcceptanceTester of overridden property TYPO3\TestingFramework\Core\Acceptance\Helper\AbstractPageTree::$tester.
