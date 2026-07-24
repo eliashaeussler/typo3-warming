@@ -1,257 +1,257 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="EXT:warming/Resources/Private/Language/locallang.xlf" date="2022-04-21T20:54:27Z" product-name="warming">
-		<header/>
-		<body>
-			<trans-unit id="cacheWarmupToolbarItem.title" resname="cacheWarmupToolbarItem.title">
-				<source>Warmup cache</source>
-			</trans-unit>
+  <file source-language="en" datatype="plaintext" original="EXT:warming/Resources/Private/Language/locallang.xlf" date="2022-04-21T20:54:27Z" product-name="warming">
+    <header/>
+    <body>
+      <trans-unit id="cacheWarmupToolbarItem.title" resname="cacheWarmupToolbarItem.title">
+        <source>Warmup cache</source>
+      </trans-unit>
 
-			<trans-unit id="cacheWarmupAction.context.page" resname="cacheWarmupAction.context.page">
-				<source>Warmup cache for this page</source>
-			</trans-unit>
-			<trans-unit id="cacheWarmupAction.context.site" resname="cacheWarmupAction.context.site">
-				<source>Warmup all caches</source>
-			</trans-unit>
-			<trans-unit id="cacheWarmupAction.context.site.select" resname="cacheWarmupAction.context.site.select">
-				<source>Select…</source>
-			</trans-unit>
+      <trans-unit id="cacheWarmupAction.context.page" resname="cacheWarmupAction.context.page">
+        <source>Warmup cache for this page</source>
+      </trans-unit>
+      <trans-unit id="cacheWarmupAction.context.site" resname="cacheWarmupAction.context.site">
+        <source>Warmup all caches</source>
+      </trans-unit>
+      <trans-unit id="cacheWarmupAction.context.site.select" resname="cacheWarmupAction.context.site.select">
+        <source>Select…</source>
+      </trans-unit>
 
-			<trans-unit id="label.limit" resname="label.limit">
-				<source>Limit</source>
-			</trans-unit>
-			<trans-unit id="label.strategy" resname="label.strategy">
-				<source>Strategy</source>
-			</trans-unit>
-			<trans-unit id="label.strategy.none" resname="label.strategy.none">
-				<source>No strategy</source>
-			</trans-unit>
-			<trans-unit id="label.strategy.sort-by-changefreq" resname="label.strategy.sort-by-changefreq">
-				<source>Sort by change frequency</source>
-			</trans-unit>
-			<trans-unit id="label.strategy.sort-by-lastmod" resname="label.strategy.sort-by-lastmod">
-				<source>Sort by last modification date</source>
-			</trans-unit>
-			<trans-unit id="label.strategy.sort-by-priority" resname="label.strategy.sort-by-priority">
-				<source>Sort by priority</source>
-			</trans-unit>
+      <trans-unit id="label.limit" resname="label.limit">
+        <source>Limit</source>
+      </trans-unit>
+      <trans-unit id="label.strategy" resname="label.strategy">
+        <source>Strategy</source>
+      </trans-unit>
+      <trans-unit id="label.strategy.none" resname="label.strategy.none">
+        <source>No strategy</source>
+      </trans-unit>
+      <trans-unit id="label.strategy.sort-by-changefreq" resname="label.strategy.sort-by-changefreq">
+        <source>Sort by change frequency</source>
+      </trans-unit>
+      <trans-unit id="label.strategy.sort-by-lastmod" resname="label.strategy.sort-by-lastmod">
+        <source>Sort by last modification date</source>
+      </trans-unit>
+      <trans-unit id="label.strategy.sort-by-priority" resname="label.strategy.sort-by-priority">
+        <source>Sort by priority</source>
+      </trans-unit>
 
-			<trans-unit id="modal.alert.noSitesConfigured.title" resname="modal.alert.noSitesConfigured.title">
-				<source>No sites configured.</source>
-			</trans-unit>
-			<trans-unit id="modal.alert.noSitesConfigured.message" resname="modal.alert.noSitesConfigured.message">
-				<source>Currently, either no sites are available or none of the existing sites can be used to perform cache warmup. Make sure that there is an XML sitemap for each configured site. If the XML sitemap is accessible via a specific URL, it must be added to the site configuration.</source>
-			</trans-unit>
-			<trans-unit id="modal.alert.noSitesConfigured.button" resname="modal.alert.noSitesConfigured.button">
-				<source>Open site configuration</source>
-			</trans-unit>
+      <trans-unit id="modal.alert.noSitesConfigured.title" resname="modal.alert.noSitesConfigured.title">
+        <source>No sites configured.</source>
+      </trans-unit>
+      <trans-unit id="modal.alert.noSitesConfigured.message" resname="modal.alert.noSitesConfigured.message">
+        <source>Currently, either no sites are available or none of the existing sites can be used to perform cache warmup. Make sure that there is an XML sitemap for each configured site. If the XML sitemap is accessible via a specific URL, it must be added to the site configuration.</source>
+      </trans-unit>
+      <trans-unit id="modal.alert.noSitesConfigured.button" resname="modal.alert.noSitesConfigured.button">
+        <source>Open site configuration</source>
+      </trans-unit>
 
-			<trans-unit id="modal.progress.title" resname="modal.progress.title">
-				<source>Cache warmup is in progress</source>
-			</trans-unit>
-			<trans-unit id="modal.progress.title.failed" resname="modal.progress.title.failed">
-				<source>Cache warmup failed</source>
-			</trans-unit>
-			<trans-unit id="modal.progress.title.warning" resname="modal.progress.title.warning">
-				<source>Cache warmup finished with errors</source>
-			</trans-unit>
-			<trans-unit id="modal.progress.title.success" resname="modal.progress.title.success">
-				<source>Cache warmup successful</source>
-			</trans-unit>
-			<trans-unit id="modal.progress.title.cancelled" resname="modal.progress.title.cancelled">
-				<source>Cache warmup cancelled</source>
-			</trans-unit>
-			<trans-unit id="modal.progress.title.unknown" resname="modal.progress.title.unknown">
-				<source>Cache warmup finished</source>
-			</trans-unit>
-			<trans-unit id="modal.progress.button.report" resname="modal.progress.button.report">
-				<source>Show report</source>
-			</trans-unit>
-			<trans-unit id="modal.progress.button.retry" resname="modal.progress.button.retry">
-				<source>Run again</source>
-			</trans-unit>
-			<trans-unit id="modal.progress.button.cancel" resname="modal.progress.button.cancel">
-				<source>Cancel</source>
-			</trans-unit>
-			<trans-unit id="modal.progress.button.close" resname="modal.progress.button.close">
-				<source>Close</source>
-			</trans-unit>
-			<trans-unit id="modal.progress.failedCounter" resname="modal.progress.failedCounter">
-				<source>Failed: {0}/{1}</source>
-			</trans-unit>
-			<trans-unit id="modal.progress.allCounter" resname="modal.progress.allCounter">
-				<source><![CDATA[Processed: <strong>{0}</strong>/<strong>{1}</strong>]]></source>
-			</trans-unit>
-			<trans-unit id="modal.progress.placeholder" resname="modal.progress.placeholder">
-				<source>Crawling sitemaps...</source>
-			</trans-unit>
+      <trans-unit id="modal.progress.title" resname="modal.progress.title">
+        <source>Cache warmup is in progress</source>
+      </trans-unit>
+      <trans-unit id="modal.progress.title.failed" resname="modal.progress.title.failed">
+        <source>Cache warmup failed</source>
+      </trans-unit>
+      <trans-unit id="modal.progress.title.warning" resname="modal.progress.title.warning">
+        <source>Cache warmup finished with errors</source>
+      </trans-unit>
+      <trans-unit id="modal.progress.title.success" resname="modal.progress.title.success">
+        <source>Cache warmup successful</source>
+      </trans-unit>
+      <trans-unit id="modal.progress.title.cancelled" resname="modal.progress.title.cancelled">
+        <source>Cache warmup cancelled</source>
+      </trans-unit>
+      <trans-unit id="modal.progress.title.unknown" resname="modal.progress.title.unknown">
+        <source>Cache warmup finished</source>
+      </trans-unit>
+      <trans-unit id="modal.progress.button.report" resname="modal.progress.button.report">
+        <source>Show report</source>
+      </trans-unit>
+      <trans-unit id="modal.progress.button.retry" resname="modal.progress.button.retry">
+        <source>Run again</source>
+      </trans-unit>
+      <trans-unit id="modal.progress.button.cancel" resname="modal.progress.button.cancel">
+        <source>Cancel</source>
+      </trans-unit>
+      <trans-unit id="modal.progress.button.close" resname="modal.progress.button.close">
+        <source>Close</source>
+      </trans-unit>
+      <trans-unit id="modal.progress.failedCounter" resname="modal.progress.failedCounter">
+        <source>Failed: {0}/{1}</source>
+      </trans-unit>
+      <trans-unit id="modal.progress.allCounter" resname="modal.progress.allCounter">
+        <source><![CDATA[Processed: <strong>{0}</strong>/<strong>{1}</strong>]]></source>
+      </trans-unit>
+      <trans-unit id="modal.progress.placeholder" resname="modal.progress.placeholder">
+        <source>Crawling sitemaps...</source>
+      </trans-unit>
 
-			<trans-unit id="modal.report.title" resname="modal.report.title">
-				<source>Cache warmup report</source>
-			</trans-unit>
-			<trans-unit id="modal.report.panel.failed" resname="modal.report.panel.failed">
-				<source>Failed</source>
-			</trans-unit>
-			<trans-unit id="modal.report.panel.failed.summary" resname="modal.report.panel.failed.summary">
-				<source>The caches of some URLs could not be warmed up. Open the URLs to identify possible errors and then try the cache warmup again.</source>
-			</trans-unit>
-			<trans-unit id="modal.report.panel.successful" resname="modal.report.panel.successful">
-				<source>Successful</source>
-			</trans-unit>
-			<trans-unit id="modal.report.panel.successful.summary" resname="modal.report.panel.successful.summary">
-				<source>The caches of these pages have been successfully warmed up. Once they are cleared, the cache warmup must be performed again.</source>
-			</trans-unit>
-			<trans-unit id="modal.report.panel.excluded" resname="modal.report.panel.excluded">
-				<source>Excluded</source>
-			</trans-unit>
-			<trans-unit id="modal.report.panel.excluded.summary" resname="modal.report.panel.excluded.summary">
-				<source>Some sitemaps and/or URLs were not warmed up. The associated exclude patterns can be customized in the extension properties.</source>
-			</trans-unit>
-			<trans-unit id="modal.report.panel.excluded.sitemaps" resname="modal.report.panel.excluded.sitemaps">
-				<source>Excluded sitemaps</source>
-			</trans-unit>
-			<trans-unit id="modal.report.panel.excluded.urls" resname="modal.report.panel.excluded.urls">
-				<source>Excluded URLs</source>
-			</trans-unit>
-			<trans-unit id="modal.report.action.edit" resname="modal.report.action.edit">
-				<source>Edit page record</source>
-			</trans-unit>
-			<trans-unit id="modal.report.action.info" resname="modal.report.action.info">
-				<source>Show page information</source>
-			</trans-unit>
-			<trans-unit id="modal.report.action.log" resname="modal.report.action.log">
-				<source>Show logs</source>
-			</trans-unit>
-			<trans-unit id="modal.report.action.view" resname="modal.report.action.view">
-				<source>View page</source>
-			</trans-unit>
-			<trans-unit id="modal.report.message.requestId" resname="modal.report.message.requestId">
-				<source>Request ID:</source>
-			</trans-unit>
-			<trans-unit id="modal.report.message.total" resname="modal.report.message.total">
-				<source>Total number of crawled URLs:</source>
-			</trans-unit>
-			<trans-unit id="modal.report.message.noUrlsCrawled.header" resname="modal.report.message.noUrlsCrawled.header">
-				<source>No URLs crawled</source>
-			</trans-unit>
-			<trans-unit id="modal.report.message.noUrlsCrawled.message" resname="modal.report.message.noUrlsCrawled.message">
-				<source>The cache warmup did not crawl any URLs.</source>
-			</trans-unit>
-			<trans-unit id="modal.report.message.incomplete.header" resname="modal.report.message.incomplete.header">
-				<source>Incomplete report</source>
-			</trans-unit>
-			<trans-unit id="modal.report.message.incomplete.message" resname="modal.report.message.incomplete.message">
-				<source>The cache warmup was stopped prematurely, so this report may be incomplete.</source>
-			</trans-unit>
-			<trans-unit id="modal.report.button.retry" resname="modal.report.button.retry">
-				<source>Run again</source>
-			</trans-unit>
-			<trans-unit id="modal.report.button.close" resname="modal.report.button.close">
-				<source>Close</source>
-			</trans-unit>
+      <trans-unit id="modal.report.title" resname="modal.report.title">
+        <source>Cache warmup report</source>
+      </trans-unit>
+      <trans-unit id="modal.report.panel.failed" resname="modal.report.panel.failed">
+        <source>Failed</source>
+      </trans-unit>
+      <trans-unit id="modal.report.panel.failed.summary" resname="modal.report.panel.failed.summary">
+        <source>The caches of some URLs could not be warmed up. Open the URLs to identify possible errors and then try the cache warmup again.</source>
+      </trans-unit>
+      <trans-unit id="modal.report.panel.successful" resname="modal.report.panel.successful">
+        <source>Successful</source>
+      </trans-unit>
+      <trans-unit id="modal.report.panel.successful.summary" resname="modal.report.panel.successful.summary">
+        <source>The caches of these pages have been successfully warmed up. Once they are cleared, the cache warmup must be performed again.</source>
+      </trans-unit>
+      <trans-unit id="modal.report.panel.excluded" resname="modal.report.panel.excluded">
+        <source>Excluded</source>
+      </trans-unit>
+      <trans-unit id="modal.report.panel.excluded.summary" resname="modal.report.panel.excluded.summary">
+        <source>Some sitemaps and/or URLs were not warmed up. The associated exclude patterns can be customized in the extension properties.</source>
+      </trans-unit>
+      <trans-unit id="modal.report.panel.excluded.sitemaps" resname="modal.report.panel.excluded.sitemaps">
+        <source>Excluded sitemaps</source>
+      </trans-unit>
+      <trans-unit id="modal.report.panel.excluded.urls" resname="modal.report.panel.excluded.urls">
+        <source>Excluded URLs</source>
+      </trans-unit>
+      <trans-unit id="modal.report.action.edit" resname="modal.report.action.edit">
+        <source>Edit page record</source>
+      </trans-unit>
+      <trans-unit id="modal.report.action.info" resname="modal.report.action.info">
+        <source>Show page information</source>
+      </trans-unit>
+      <trans-unit id="modal.report.action.log" resname="modal.report.action.log">
+        <source>Show logs</source>
+      </trans-unit>
+      <trans-unit id="modal.report.action.view" resname="modal.report.action.view">
+        <source>View page</source>
+      </trans-unit>
+      <trans-unit id="modal.report.message.requestId" resname="modal.report.message.requestId">
+        <source>Request ID:</source>
+      </trans-unit>
+      <trans-unit id="modal.report.message.total" resname="modal.report.message.total">
+        <source>Total number of crawled URLs:</source>
+      </trans-unit>
+      <trans-unit id="modal.report.message.noUrlsCrawled.header" resname="modal.report.message.noUrlsCrawled.header">
+        <source>No URLs crawled</source>
+      </trans-unit>
+      <trans-unit id="modal.report.message.noUrlsCrawled.message" resname="modal.report.message.noUrlsCrawled.message">
+        <source>The cache warmup did not crawl any URLs.</source>
+      </trans-unit>
+      <trans-unit id="modal.report.message.incomplete.header" resname="modal.report.message.incomplete.header">
+        <source>Incomplete report</source>
+      </trans-unit>
+      <trans-unit id="modal.report.message.incomplete.message" resname="modal.report.message.incomplete.message">
+        <source>The cache warmup was stopped prematurely, so this report may be incomplete.</source>
+      </trans-unit>
+      <trans-unit id="modal.report.button.retry" resname="modal.report.button.retry">
+        <source>Run again</source>
+      </trans-unit>
+      <trans-unit id="modal.report.button.close" resname="modal.report.button.close">
+        <source>Close</source>
+      </trans-unit>
 
-			<trans-unit id="modal.sites.title" resname="modal.sites.title">
-				<source>Cache warmup</source>
-			</trans-unit>
-			<trans-unit id="modal.sites.button.start" resname="modal.sites.button.start">
-				<source>Start</source>
-			</trans-unit>
-			<trans-unit id="modal.sites.sites.header" resname="modal.sites.sites.header">
-				<source>Sites</source>
-			</trans-unit>
-			<trans-unit id="modal.sites.sites.header.filtered" resname="modal.sites.sites.header.filtered">
-				<source>filtered</source>
-			</trans-unit>
-			<trans-unit id="modal.sites.sites.header.showAll" resname="modal.sites.sites.header.showAll">
-				<source>Show all</source>
-			</trans-unit>
-			<trans-unit id="modal.sites.sites.description" resname="modal.sites.sites.description">
-				<source>Select all sites whose caches should be warmed up.</source>
-			</trans-unit>
-			<trans-unit id="modal.sites.siteGroup.selectAll" resname="modal.sites.siteGroup.selectAll">
-				<source>Select all</source>
-			</trans-unit>
-			<trans-unit id="modal.sites.siteGroup.missing" resname="modal.sites.siteGroup.missing">
-				<source>No XML sitemap found for this site.</source>
-			</trans-unit>
-			<trans-unit id="modal.sites.siteGroupItem.missing" resname="modal.sites.siteGroupItem.missing">
-				<source>No XML sitemap found for this language.</source>
-			</trans-unit>
-			<trans-unit id="modal.sites.userAgent.header" resname="modal.sites.userAgent.header">
-				<source>User-Agent</source>
-			</trans-unit>
-			<trans-unit id="modal.sites.userAgent.description" resname="modal.sites.userAgent.description">
-				<source><![CDATA[A custom <code>User-Agent</code> header is used for cache warmup requests. You can copy it here to exclude the requests from your site statistics, for example.]]></source>
-			</trans-unit>
-			<trans-unit id="modal.sites.userAgent.action" resname="modal.sites.userAgent.action">
-				<source>Copy to clipboard</source>
-			</trans-unit>
-			<trans-unit id="modal.sites.userAgent.action.successful" resname="modal.sites.userAgent.action.successful">
-				<source>Copied</source>
-			</trans-unit>
-			<trans-unit id="modal.sites.settings.header" resname="modal.sites.settings.header">
-				<source>Settings</source>
-			</trans-unit>
-			<trans-unit id="modal.sites.settings.description" resname="modal.sites.settings.description">
-				<source>You can temporarily change some settings for the current cache warmup request.</source>
-			</trans-unit>
+      <trans-unit id="modal.sites.title" resname="modal.sites.title">
+        <source>Cache warmup</source>
+      </trans-unit>
+      <trans-unit id="modal.sites.button.start" resname="modal.sites.button.start">
+        <source>Start</source>
+      </trans-unit>
+      <trans-unit id="modal.sites.sites.header" resname="modal.sites.sites.header">
+        <source>Sites</source>
+      </trans-unit>
+      <trans-unit id="modal.sites.sites.header.filtered" resname="modal.sites.sites.header.filtered">
+        <source>filtered</source>
+      </trans-unit>
+      <trans-unit id="modal.sites.sites.header.showAll" resname="modal.sites.sites.header.showAll">
+        <source>Show all</source>
+      </trans-unit>
+      <trans-unit id="modal.sites.sites.description" resname="modal.sites.sites.description">
+        <source>Select all sites whose caches should be warmed up.</source>
+      </trans-unit>
+      <trans-unit id="modal.sites.siteGroup.selectAll" resname="modal.sites.siteGroup.selectAll">
+        <source>Select all</source>
+      </trans-unit>
+      <trans-unit id="modal.sites.siteGroup.missing" resname="modal.sites.siteGroup.missing">
+        <source>No XML sitemap found for this site.</source>
+      </trans-unit>
+      <trans-unit id="modal.sites.siteGroupItem.missing" resname="modal.sites.siteGroupItem.missing">
+        <source>No XML sitemap found for this language.</source>
+      </trans-unit>
+      <trans-unit id="modal.sites.userAgent.header" resname="modal.sites.userAgent.header">
+        <source>User-Agent</source>
+      </trans-unit>
+      <trans-unit id="modal.sites.userAgent.description" resname="modal.sites.userAgent.description">
+        <source><![CDATA[A custom <code>User-Agent</code> header is used for cache warmup requests. You can copy it here to exclude the requests from your site statistics, for example.]]></source>
+      </trans-unit>
+      <trans-unit id="modal.sites.userAgent.action" resname="modal.sites.userAgent.action">
+        <source>Copy to clipboard</source>
+      </trans-unit>
+      <trans-unit id="modal.sites.userAgent.action.successful" resname="modal.sites.userAgent.action.successful">
+        <source>Copied</source>
+      </trans-unit>
+      <trans-unit id="modal.sites.settings.header" resname="modal.sites.settings.header">
+        <source>Settings</source>
+      </trans-unit>
+      <trans-unit id="modal.sites.settings.description" resname="modal.sites.settings.description">
+        <source>You can temporarily change some settings for the current cache warmup request.</source>
+      </trans-unit>
 
-			<trans-unit id="notification.title.failed" resname="notification.title.failed">
-				<source>Cache warmup failed</source>
-			</trans-unit>
-			<trans-unit id="notification.title.warning" resname="notification.title.warning">
-				<source>Cache warmup finished with errors</source>
-			</trans-unit>
-			<trans-unit id="notification.title.success" resname="notification.title.success">
-				<source>Cache warmup successful</source>
-			</trans-unit>
-			<trans-unit id="notification.title.unknown" resname="notification.title.unknown">
-				<source>Cache warmup finished</source>
-			</trans-unit>
-			<trans-unit id="notification.message.site" resname="notification.message.site" xml:space="preserve">
-				<source>Caches for site "%1$s [%2$d]" and language "%3$s [%4$d]" have been warmed up with the following result:
+      <trans-unit id="notification.title.failed" resname="notification.title.failed">
+        <source>Cache warmup failed</source>
+      </trans-unit>
+      <trans-unit id="notification.title.warning" resname="notification.title.warning">
+        <source>Cache warmup finished with errors</source>
+      </trans-unit>
+      <trans-unit id="notification.title.success" resname="notification.title.success">
+        <source>Cache warmup successful</source>
+      </trans-unit>
+      <trans-unit id="notification.title.unknown" resname="notification.title.unknown">
+        <source>Cache warmup finished</source>
+      </trans-unit>
+      <trans-unit id="notification.message.site" resname="notification.message.site" xml:space="preserve">
+        <source>Caches for site "%1$s [%2$d]" and language "%3$s [%4$d]" have been warmed up with the following result:
 
 %5$d successful, %6$d failed</source>
-			</trans-unit>
-			<trans-unit id="notification.message.page.failed" resname="notification.message.page.failed">
-				<source>Cache could not be warmed up for "%1$s [%2$d]".</source>
-			</trans-unit>
-			<trans-unit id="notification.message.page.success" resname="notification.message.page.success">
-				<source>Cache of page "%1$s [%2$d]" was successfully warmed up.</source>
-			</trans-unit>
-			<trans-unit id="notification.message.page.unknown" resname="notification.message.page.unknown">
-				<source>Warming up the cache for page "%1$s [%2$d]" ended unexpectedly.</source>
-			</trans-unit>
-			<trans-unit id="notification.message.page.warning" resname="notification.message.page.warning">
-				<source>Cache warmup for page "%1$s [%2$d]" finished with warnings.</source>
-			</trans-unit>
-			<trans-unit id="notification.message.empty" resname="notification.message.empty">
-				<source>No caches were warmed up.</source>
-			</trans-unit>
-			<trans-unit id="notification.cancelled.title" resname="notification.cancelled.title">
-				<source>Cache warmup cancelled</source>
-			</trans-unit>
-			<trans-unit id="notification.cancelled.message" resname="notification.cancelled.message">
-				<source>The cache warmup was stopped prematurely and therefore could not be completed.</source>
-			</trans-unit>
-			<trans-unit id="notification.error.title" resname="notification.error.title">
-				<source>An error occurred</source>
-			</trans-unit>
-			<trans-unit id="notification.error.message" resname="notification.error.message">
-				<source>An error occurred while warming up caches. This could be related to an incorrect extension configuration.</source>
-			</trans-unit>
-			<trans-unit id="notification.action.showReport" resname="notification.action.showReport">
-				<source>View report</source>
-			</trans-unit>
-			<trans-unit id="notification.action.retry" resname="notification.action.retry">
-				<source>Run again</source>
-			</trans-unit>
-			<trans-unit id="notification.noSitesSelected.title" resname="notification.noSitesSelected.title">
-				<source>No sites selected</source>
-			</trans-unit>
-			<trans-unit id="notification.noSitesSelected.message" resname="notification.noSitesSelected.message">
-				<source>Please select at least one site whose caches should be warmed up.</source>
-			</trans-unit>
-		</body>
-	</file>
+      </trans-unit>
+      <trans-unit id="notification.message.page.failed" resname="notification.message.page.failed">
+        <source>Cache could not be warmed up for "%1$s [%2$d]".</source>
+      </trans-unit>
+      <trans-unit id="notification.message.page.success" resname="notification.message.page.success">
+        <source>Cache of page "%1$s [%2$d]" was successfully warmed up.</source>
+      </trans-unit>
+      <trans-unit id="notification.message.page.unknown" resname="notification.message.page.unknown">
+        <source>Warming up the cache for page "%1$s [%2$d]" ended unexpectedly.</source>
+      </trans-unit>
+      <trans-unit id="notification.message.page.warning" resname="notification.message.page.warning">
+        <source>Cache warmup for page "%1$s [%2$d]" finished with warnings.</source>
+      </trans-unit>
+      <trans-unit id="notification.message.empty" resname="notification.message.empty">
+        <source>No caches were warmed up.</source>
+      </trans-unit>
+      <trans-unit id="notification.cancelled.title" resname="notification.cancelled.title">
+        <source>Cache warmup cancelled</source>
+      </trans-unit>
+      <trans-unit id="notification.cancelled.message" resname="notification.cancelled.message">
+        <source>The cache warmup was stopped prematurely and therefore could not be completed.</source>
+      </trans-unit>
+      <trans-unit id="notification.error.title" resname="notification.error.title">
+        <source>An error occurred</source>
+      </trans-unit>
+      <trans-unit id="notification.error.message" resname="notification.error.message">
+        <source>An error occurred while warming up caches. This could be related to an incorrect extension configuration.</source>
+      </trans-unit>
+      <trans-unit id="notification.action.showReport" resname="notification.action.showReport">
+        <source>View report</source>
+      </trans-unit>
+      <trans-unit id="notification.action.retry" resname="notification.action.retry">
+        <source>Run again</source>
+      </trans-unit>
+      <trans-unit id="notification.noSitesSelected.title" resname="notification.noSitesSelected.title">
+        <source>No sites selected</source>
+      </trans-unit>
+      <trans-unit id="notification.noSitesSelected.message" resname="notification.noSitesSelected.message">
+        <source>Please select at least one site whose caches should be warmed up.</source>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>
