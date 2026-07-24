@@ -110,7 +110,7 @@ final readonly class ScriptInjectionMiddleware implements Server\MiddlewareInter
     private function injectLanguageLabels(): void
     {
         $this->pageRenderer->addInlineLanguageLabelArray(
-            \array_map(
+            array_map(
                 static fn(string $key) => Utility\BackendUtility::getLanguageService()->sL(
                     'LLL:EXT:warming/Resources/Private/Language/locallang.xlf:' . $key,
                 ),

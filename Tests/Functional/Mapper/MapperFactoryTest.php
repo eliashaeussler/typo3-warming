@@ -53,8 +53,8 @@ final class MapperFactoryTest extends TestingFramework\Core\Functional\Functiona
     {
         parent::setUp();
 
-        $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/be_users.csv');
-        $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/pages.csv');
+        $this->importCSVDataSet(dirname(__DIR__) . '/Fixtures/Database/be_users.csv');
+        $this->importCSVDataSet(dirname(__DIR__) . '/Fixtures/Database/pages.csv');
 
         $this->site = $this->createSite();
 

@@ -85,8 +85,8 @@ final readonly class WarmupFinishedEvent implements SSE\Event\Event
                 'LLL:EXT:warming/Resources/Private/Language/locallang.xlf:notification.title.' . $state->value,
             ),
             'progress' => [
-                'current' => \count($failedUrls) + \count($successfulUrls),
-                'total' => \count($failedUrls) + \count($successfulUrls),
+                'current' => count($failedUrls) + count($successfulUrls),
+                'total' => count($failedUrls) + count($successfulUrls),
             ],
             'results' => [
                 'failed' => array_map($this->decorateResult(...), $failedUrls),

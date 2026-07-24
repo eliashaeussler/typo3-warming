@@ -111,7 +111,7 @@ final class ConfigurationTest extends TestingFramework\Core\Functional\Functiona
      */
     public static function deprecatedMethodCallTriggersDeprecationNoticeDataProvider(): \Generator
     {
-        $message = static fn(string $method, string $property) => \sprintf(
+        $message = static fn(string $method, string $property) => sprintf(
             'Method "%s::%s()" is deprecated and will be removed in v5.0. Access class property "$%s" directly.',
             Src\Configuration\Configuration::class,
             $method,

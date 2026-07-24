@@ -64,7 +64,7 @@ final class WarmupCommand extends Console\Command\Command
     protected function configure(): void
     {
         $v = fn(mixed $value) => $value;
-        $decoratedCrawlingStrategies = \implode(PHP_EOL, array_map(
+        $decoratedCrawlingStrategies = implode(PHP_EOL, array_map(
             static fn(string $strategy) => '  │  * <info>' . $strategy . '</info>',
             $this->crawlingStrategyFactory->getAll(),
         ));
@@ -351,7 +351,7 @@ HELP
             foreach ($normalizedPages as $page) {
                 $languageIds = $languages;
 
-                if (\in_array(self::ALL_LANGUAGES, $languageIds, true)) {
+                if (in_array(self::ALL_LANGUAGES, $languageIds, true)) {
                     $site = $this->siteRepository->findOneByPageId($page);
                     $languageIds = array_keys($site?->getLanguages() ?? []);
                 }
@@ -387,7 +387,7 @@ HELP
         foreach ($sites as $siteList) {
             $requestedSites += Core\Utility\GeneralUtility::trimExplode(',', $siteList, true);
 
-            if (\in_array(self::ALL_SITES, $requestedSites, true)) {
+            if (in_array(self::ALL_SITES, $requestedSites, true)) {
                 $requestedSites = $this->siteRepository->findAll();
 
                 break;
@@ -449,7 +449,7 @@ HELP
         foreach ($languages as $languageList) {
             $normalizedLanguages = Core\Utility\GeneralUtility::intExplode(',', $languageList, true);
 
-            if (\in_array(self::ALL_LANGUAGES, $normalizedLanguages, true)) {
+            if (in_array(self::ALL_LANGUAGES, $normalizedLanguages, true)) {
                 return [self::ALL_LANGUAGES];
             }
 

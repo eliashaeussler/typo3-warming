@@ -68,7 +68,7 @@ final readonly class SiteGroup
 
     public function hasOnlyDefaultLanguage(): bool
     {
-        if (\count($this->items) > 1) {
+        if (count($this->items) > 1) {
             return false;
         }
 

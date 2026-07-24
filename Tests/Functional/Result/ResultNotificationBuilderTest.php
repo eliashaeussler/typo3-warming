@@ -53,8 +53,8 @@ final class ResultNotificationBuilderTest extends TestingFramework\Core\Function
     {
         parent::setUp();
 
-        $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/be_users.csv');
-        $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/pages.csv');
+        $this->importCSVDataSet(dirname(__DIR__) . '/Fixtures/Database/be_users.csv');
+        $this->importCSVDataSet(dirname(__DIR__) . '/Fixtures/Database/pages.csv');
 
         // Set up backend user
         $backendUser = $this->setUpBackendUser(3);

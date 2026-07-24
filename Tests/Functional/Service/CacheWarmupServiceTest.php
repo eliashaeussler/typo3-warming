@@ -67,9 +67,9 @@ final class CacheWarmupServiceTest extends TestingFramework\Core\Functional\Func
     {
         parent::setUp();
 
-        $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/be_groups.csv');
-        $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/be_users.csv');
-        $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/pages.csv');
+        $this->importCSVDataSet(dirname(__DIR__) . '/Fixtures/Database/be_groups.csv');
+        $this->importCSVDataSet(dirname(__DIR__) . '/Fixtures/Database/be_users.csv');
+        $this->importCSVDataSet(dirname(__DIR__) . '/Fixtures/Database/pages.csv');
 
         // Create site configuration
         $this->site = $this->createSite();

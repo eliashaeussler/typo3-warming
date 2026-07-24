@@ -53,8 +53,8 @@ final class WarmupFinishedEventTest extends TestingFramework\Core\Functional\Fun
     {
         parent::setUp();
 
-        $this->importCSVDataSet(\dirname(__DIR__, 3) . '/Fixtures/Database/be_users.csv');
-        $this->importCSVDataSet(\dirname(__DIR__, 3) . '/Fixtures/Database/pages.csv');
+        $this->importCSVDataSet(dirname(__DIR__, 3) . '/Fixtures/Database/be_users.csv');
+        $this->importCSVDataSet(dirname(__DIR__, 3) . '/Fixtures/Database/pages.csv');
 
         // Set up backend user
         $backendUser = $this->setUpBackendUser(3);

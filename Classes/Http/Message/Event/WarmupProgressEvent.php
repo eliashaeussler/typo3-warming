@@ -72,7 +72,7 @@ final readonly class WarmupProgressEvent implements SSE\Event\Event
         return [
             'state' => $state->value,
             'progress' => [
-                'current' => \count($this->successfulUrls) + \count($this->failedUrls),
+                'current' => count($this->successfulUrls) + count($this->failedUrls),
                 'total' => $this->numberOfUrls,
             ],
             'urls' => [

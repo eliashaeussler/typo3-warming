@@ -57,8 +57,8 @@ final class UrlMetadataListenerTest extends TestingFramework\Core\Functional\Fun
     {
         parent::setUp();
 
-        $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/be_users.csv');
-        $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/pages.csv');
+        $this->importCSVDataSet(dirname(__DIR__) . '/Fixtures/Database/be_users.csv');
+        $this->importCSVDataSet(dirname(__DIR__) . '/Fixtures/Database/pages.csv');
 
         $this->urlMetadataFactory = $this->get(Src\Http\Message\UrlMetadataFactory::class);
         $this->subject = $this->get(Src\EventListener\UrlMetadataListener::class);

@@ -68,7 +68,7 @@ final readonly class SiteWarmupActions implements \Countable, \IteratorAggregate
 
     public function count(): int
     {
-        $count = \count($this->siteLanguages);
+        $count = count($this->siteLanguages);
 
         if ($this->hasSelectAction()) {
             $count++;
@@ -87,6 +87,6 @@ final readonly class SiteWarmupActions implements \Countable, \IteratorAggregate
 
     private function hasSelectAction(): bool
     {
-        return \count($this->siteLanguages) > 1;
+        return count($this->siteLanguages) > 1;
     }
 }

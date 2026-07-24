@@ -58,8 +58,8 @@ final class ResultNotificationBuilder
         $messages = [];
         $emptyMessage = $this->translate('notification.message.empty');
 
-        $sites = \array_unique($request->getSites(), SORT_REGULAR);
-        $pages = \array_unique($request->getPages(), SORT_REGULAR);
+        $sites = array_unique($request->getSites(), SORT_REGULAR);
+        $pages = array_unique($request->getPages(), SORT_REGULAR);
 
         foreach ($sites as $siteWarmupRequest) {
             foreach ($siteWarmupRequest->getLanguageIds() as $languageId) {
@@ -76,8 +76,8 @@ final class ResultNotificationBuilder
                     $this->resolvePageId($site->getRootPageId(), $languageId),
                     $siteLanguage->getTitle(),
                     $languageId,
-                    \count($successful),
-                    \count($failed),
+                    count($successful),
+                    count($failed),
                 ]);
             }
         }
@@ -105,7 +105,7 @@ final class ResultNotificationBuilder
         }
 
         // Remove invalid messages
-        $messages = array_filter($messages, static fn(string $message) => \trim($message) !== '');
+        $messages = array_filter($messages, static fn(string $message) => trim($message) !== '');
 
         // Handle no cache warmup
         if ($messages === []) {

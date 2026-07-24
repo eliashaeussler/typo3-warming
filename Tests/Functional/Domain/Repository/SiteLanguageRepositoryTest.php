@@ -54,9 +54,9 @@ final class SiteLanguageRepositoryTest extends TestingFramework\Core\Functional\
     {
         parent::setUp();
 
-        $this->importCSVDataSet(\dirname(__DIR__, 2) . '/Fixtures/Database/be_groups.csv');
-        $this->importCSVDataSet(\dirname(__DIR__, 2) . '/Fixtures/Database/be_users.csv');
-        $this->importCSVDataSet(\dirname(__DIR__, 2) . '/Fixtures/Database/pages.csv');
+        $this->importCSVDataSet(dirname(__DIR__, 2) . '/Fixtures/Database/be_groups.csv');
+        $this->importCSVDataSet(dirname(__DIR__, 2) . '/Fixtures/Database/be_users.csv');
+        $this->importCSVDataSet(dirname(__DIR__, 2) . '/Fixtures/Database/pages.csv');
 
         $this->site = $this->createSite();
         $this->setUpBackendUser(2);

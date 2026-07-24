@@ -57,8 +57,8 @@ final class SubRequestHandlerTest extends TestingFramework\Core\Functional\Funct
     {
         parent::setUp();
 
-        $this->importCSVDataSet(\dirname(__DIR__, 3) . '/Fixtures/Database/be_users.csv');
-        $this->importCSVDataSet(\dirname(__DIR__, 3) . '/Fixtures/Database/pages.csv');
+        $this->importCSVDataSet(dirname(__DIR__, 3) . '/Fixtures/Database/be_users.csv');
+        $this->importCSVDataSet(dirname(__DIR__, 3) . '/Fixtures/Database/pages.csv');
 
         $this->createSite();
         $this->setUpBackendUser(3);
@@ -77,7 +77,7 @@ final class SubRequestHandlerTest extends TestingFramework\Core\Functional\Funct
     {
         $request = new Core\Http\Request('https://typo3-fake.local/', body: 'php://temp');
 
-        $this->applicationMock->expects(self::never())->method('handle');
+        $this->applicationMock->expects($this->never())->method('handle');
 
         ($this->subject)($request, [])->cancel();
     }

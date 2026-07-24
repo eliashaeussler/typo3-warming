@@ -27,7 +27,7 @@ use Symfony\Component\Console;
 use TYPO3\CMS\Core;
 
 /** @var ClassLoader $classLoader */
-$classLoader = require \dirname(__DIR__, 2) . '/.Build/vendor/autoload.php';
+$classLoader = require dirname(__DIR__, 2) . '/.Build/vendor/autoload.php';
 
 // Move project's class loader in front of PHPStan's class loader
 $classLoader->register(true);
