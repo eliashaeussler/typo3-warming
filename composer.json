@@ -56,7 +56,7 @@
 		"eliashaeussler/rector-config": "^4.0",
 		"eliashaeussler/transient-logger": "^2.0",
 		"eliashaeussler/typo3-codeception-helper": "^2.0",
-		"eliashaeussler/typo3-vendor-bundler": "^4.0",
+		"eliashaeussler/typo3-vendor-bundler": "^4.1",
 		"eliashaeussler/version-bumper": "^3.3 || ^4.0",
 		"ergebnis/composer-normalize": "^2.52",
 		"guzzlehttp/psr7": "^2.7",
@@ -113,7 +113,11 @@
 	},
 	"extra": {
 		"typo3/cms": {
+			"Package": {
+				"providesPackages": {}
+			},
 			"extension-key": "warming",
+			"version": "5.3.2",
 			"web-dir": ".Build/web"
 		},
 		"version-bumper": {
