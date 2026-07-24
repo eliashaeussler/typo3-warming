@@ -65,7 +65,7 @@ final readonly class FetchSitesController
         $crawlingStrategy = $this->configuration->crawlingStrategy;
         $siteGroups = [];
 
-        if (\is_string($limitToSite) && $limitToSite !== '') {
+        if (is_string($limitToSite) && $limitToSite !== '') {
             $site = $this->siteRepository->findOneByIdentifier($limitToSite);
 
             if ($site !== null) {
@@ -80,7 +80,7 @@ final readonly class FetchSitesController
         foreach ($sites as $site) {
             $row = Backend\Utility\BackendUtility::getRecord('pages', $site->getRootPageId(), '*', ' AND hidden = 0');
 
-            if (!\is_array($row)) {
+            if (!is_array($row)) {
                 continue;
             }
 
@@ -161,7 +161,7 @@ final readonly class FetchSitesController
     {
         $websiteTitle = $site->getConfiguration()['websiteTitle'] ?? null;
 
-        if (\is_string($websiteTitle) && trim($websiteTitle) !== '') {
+        if (is_string($websiteTitle) && trim($websiteTitle) !== '') {
             return $websiteTitle;
         }
 

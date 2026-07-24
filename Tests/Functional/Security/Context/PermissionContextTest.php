@@ -40,7 +40,7 @@ final class PermissionContextTest extends TestingFramework\Core\Functional\Funct
     {
         parent::setUp();
 
-        $this->importCSVDataSet(\dirname(__DIR__, 2) . '/Fixtures/Database/be_users.csv');
+        $this->importCSVDataSet(dirname(__DIR__, 2) . '/Fixtures/Database/be_users.csv');
     }
 
     #[Framework\Attributes\Test]

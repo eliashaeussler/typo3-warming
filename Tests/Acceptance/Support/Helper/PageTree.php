@@ -81,7 +81,7 @@ final class PageTree extends TestingFramework\Core\Acceptance\Helper\AbstractPag
     {
         $I = $this->tester;
 
-        $remaining = \count($path);
+        $remaining = count($path);
         $contextMenuIdentifier = '[data-contextmenu-parent="root"]';
 
         foreach ($path as $depth => $selector) {
@@ -99,7 +99,7 @@ final class PageTree extends TestingFramework\Core\Acceptance\Helper\AbstractPag
 
                             if ($remaining > 0) {
                                 $button = $item->findElement(WebDriver\WebDriverBy::tagName('button'));
-                                $contextMenuIdentifier = \sprintf(
+                                $contextMenuIdentifier = sprintf(
                                     '[data-contextmenu-parent="%s"]',
                                     (string)$button->getAttribute('data-contextmenu-id'),
                                 );

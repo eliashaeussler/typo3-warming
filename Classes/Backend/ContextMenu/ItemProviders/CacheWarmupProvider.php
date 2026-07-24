@@ -82,7 +82,7 @@ final class CacheWarmupProvider extends Backend\ContextMenu\ItemProviders\PagePr
 
     protected function canRender(string $itemName, string $type): bool
     {
-        if (\in_array($itemName, $this->disabledItems, true)) {
+        if (in_array($itemName, $this->disabledItems, true)) {
             return false;
         }
 

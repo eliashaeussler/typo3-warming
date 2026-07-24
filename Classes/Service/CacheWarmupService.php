@@ -172,8 +172,8 @@ final readonly class CacheWarmupService
      */
     public function getCrawler(): CacheWarmup\Crawler\Crawler
     {
-        \trigger_error(
-            \sprintf(
+        trigger_error(
+            sprintf(
                 'Accessing the current crawler using %s() is deprecated since v5.3 and will be removed in v6.0. Use %s::getCrawler() instead.',
                 __METHOD__,
                 Configuration\Configuration::class,

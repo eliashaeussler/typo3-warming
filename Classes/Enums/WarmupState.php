@@ -74,8 +74,8 @@ enum WarmupState: string
      */
     public static function fromCrawlingResults(array $successful, array $failed): self
     {
-        $successfulCount = \count($successful);
-        $failedCount = \count($failed);
+        $successfulCount = count($successful);
+        $failedCount = count($failed);
 
         // No failures
         if ($failedCount === 0) {

@@ -157,8 +157,8 @@ final readonly class UrlMetadataListener
         }
 
         // Add uri to view logs for current page
-        if (Core\Utility\ExtensionManagementUtility::isLoaded('belog') &&
-            $this->moduleProvider->accessGranted('system_log', $backendUser)
+        if (Core\Utility\ExtensionManagementUtility::isLoaded('belog')
+            && $this->moduleProvider->accessGranted('system_log', $backendUser)
         ) {
             $actions['viewLog'] = (string)$this->uriBuilder->buildUriFromRoute(
                 'system_log.BackendLog_list',

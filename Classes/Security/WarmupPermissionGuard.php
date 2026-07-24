@@ -91,7 +91,7 @@ final readonly class WarmupPermissionGuard
         }
 
         // Early return if record is inaccessible
-        if (!\is_array($record) || $record === []) {
+        if (!is_array($record) || $record === []) {
             return false;
         }
 
@@ -149,7 +149,7 @@ final readonly class WarmupPermissionGuard
             }
 
             // Check if current page is in rootline of configured page id
-            if ($recursiveLookup && \in_array((int)$normalizedPageId, $rootlineIds, true)) {
+            if ($recursiveLookup && in_array((int)$normalizedPageId, $rootlineIds, true)) {
                 return true;
             }
         }

@@ -77,7 +77,7 @@ final class OutputtingUserAgentCrawler extends CacheWarmup\Crawler\AbstractConfi
 
     public function crawl(array $urls): CacheWarmup\Result\CacheWarmupResult
     {
-        $numberOfUrls = \count($urls);
+        $numberOfUrls = count($urls);
         $resultHandler = new CacheWarmup\Http\Message\Handler\ResultCollectorHandler($this->eventDispatcher);
         $logHandler = $this->createLogHandler();
 

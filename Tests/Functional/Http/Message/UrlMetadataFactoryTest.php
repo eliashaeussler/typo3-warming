@@ -113,7 +113,7 @@ final class UrlMetadataFactoryTest extends TestingFramework\Core\Functional\Func
     {
         $headerValue = $this->buildExpectedHeaderValue('{"foo":"baz"}');
         $response = new Core\Http\Response(headers: [
-            'X-Warming-Url-Metadata' => \base64_encode($headerValue),
+            'X-Warming-Url-Metadata' => base64_encode($headerValue),
         ]);
 
         self::assertNull($this->subject->createFromResponse($response));
@@ -149,7 +149,7 @@ final class UrlMetadataFactoryTest extends TestingFramework\Core\Functional\Func
     {
         $headerValue = $this->buildExpectedHeaderValue('{"foo":"baz"}');
         $headers = [
-            'X-Warming-Url-Metadata: ' . \base64_encode($headerValue),
+            'X-Warming-Url-Metadata: ' . base64_encode($headerValue),
         ];
 
         self::assertNull($this->subject->createFromResponseHeaders($headers));
@@ -176,7 +176,7 @@ final class UrlMetadataFactoryTest extends TestingFramework\Core\Functional\Func
 
         $expected = $request->withHeader(
             'X-Warming-Request-Claim',
-            \base64_encode($headerValue),
+            base64_encode($headerValue),
         );
 
         self::assertEquals($expected, $this->subject->enrichRequest($request));
@@ -188,11 +188,11 @@ final class UrlMetadataFactoryTest extends TestingFramework\Core\Functional\Func
     {
         $urlMetadata = new Src\Http\Message\UrlMetadata(1, '0', 1);
         $response = new Core\Http\Response();
-        $headerValue = $this->buildExpectedHeaderValue(\json_encode($urlMetadata, JSON_THROW_ON_ERROR));
+        $headerValue = $this->buildExpectedHeaderValue(json_encode($urlMetadata, JSON_THROW_ON_ERROR));
 
         $expected = $response->withHeader(
             'X-Warming-Url-Metadata',
-            \base64_encode($headerValue),
+            base64_encode($headerValue),
         );
 
         self::assertEquals($expected, $this->subject->enrichResponse($response, $urlMetadata));
@@ -205,11 +205,11 @@ final class UrlMetadataFactoryTest extends TestingFramework\Core\Functional\Func
         $urlMetadata = new Src\Http\Message\UrlMetadata(1, '0', 1);
         $response = new Core\Http\Response();
         $exception = new Core\Http\ImmediateResponseException($response);
-        $headerValue = $this->buildExpectedHeaderValue(\json_encode($urlMetadata, JSON_THROW_ON_ERROR));
+        $headerValue = $this->buildExpectedHeaderValue(json_encode($urlMetadata, JSON_THROW_ON_ERROR));
 
         $expected = $response->withHeader(
             'X-Warming-Url-Metadata',
-            \base64_encode($headerValue),
+            base64_encode($headerValue),
         );
 
         $this->subject->enrichException($exception, $urlMetadata);
@@ -223,10 +223,10 @@ final class UrlMetadataFactoryTest extends TestingFramework\Core\Functional\Func
     {
         $urlMetadata = new Src\Http\Message\UrlMetadata(1, '0', 1);
         $exception = new Core\Error\Http\StatusException([], ' Something went wrong');
-        $headerValue = $this->buildExpectedHeaderValue(\json_encode($urlMetadata, JSON_THROW_ON_ERROR));
+        $headerValue = $this->buildExpectedHeaderValue(json_encode($urlMetadata, JSON_THROW_ON_ERROR));
 
         $expected = [
-            'X-Warming-Url-Metadata: ' . \base64_encode($headerValue),
+            'X-Warming-Url-Metadata: ' . base64_encode($headerValue),
         ];
 
         $this->subject->enrichException($exception, $urlMetadata);

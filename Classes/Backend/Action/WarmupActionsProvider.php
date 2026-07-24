@@ -135,7 +135,7 @@ final readonly class WarmupActionsProvider
         }
 
         $doktype = (int)($record['doktype'] ?? 0);
-        $isValidPage = $doktype > 0 && \in_array($doktype, $this->configuration->supportedDoktypes, true);
+        $isValidPage = $doktype > 0 && in_array($doktype, $this->configuration->supportedDoktypes, true);
 
         // Store page validation in cache to avoid further lookups
         $this->runtimeCache->set($cacheIdentifier, $isValidPage);

@@ -66,8 +66,8 @@ final class CacheWarmupLegacyControllerTest extends TestingFramework\Core\Functi
     {
         parent::setUp();
 
-        $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/be_users.csv');
-        $this->importCSVDataSet(\dirname(__DIR__) . '/Fixtures/Database/pages.csv');
+        $this->importCSVDataSet(dirname(__DIR__) . '/Fixtures/Database/be_users.csv');
+        $this->importCSVDataSet(dirname(__DIR__) . '/Fixtures/Database/pages.csv');
 
         // Create site configuration
         $this->site = $this->createSite();

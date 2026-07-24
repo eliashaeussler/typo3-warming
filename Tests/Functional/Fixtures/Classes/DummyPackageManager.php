@@ -43,6 +43,6 @@ final class DummyPackageManager extends Core\Package\PackageManager
 
     public function isPackageActive($packageKey): bool
     {
-        return \in_array($packageKey, $this->loadedExtensions, true);
+        return in_array($packageKey, $this->loadedExtensions, true);
     }
 }

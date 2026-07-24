@@ -59,7 +59,7 @@ final class SiteWarmupActionsTest extends TestingFramework\Core\Functional\Funct
             $this->site->getLanguageById(1),
         ]);
 
-        $this->importCSVDataSet(\dirname(__DIR__, 2) . '/Fixtures/Database/be_users.csv');
+        $this->importCSVDataSet(dirname(__DIR__, 2) . '/Fixtures/Database/be_users.csv');
         $GLOBALS['BE_USER'] = $this->setUpBackendUser(3);
     }
 

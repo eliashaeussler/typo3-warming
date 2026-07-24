@@ -56,9 +56,9 @@ final class WarmupActionsProviderTest extends TestingFramework\Core\Functional\F
     {
         parent::setUp();
 
-        $this->importCSVDataSet(\dirname(__DIR__, 2) . '/Fixtures/Database/be_groups.csv');
-        $this->importCSVDataSet(\dirname(__DIR__, 2) . '/Fixtures/Database/be_users.csv');
-        $this->importCSVDataSet(\dirname(__DIR__, 2) . '/Fixtures/Database/pages.csv');
+        $this->importCSVDataSet(dirname(__DIR__, 2) . '/Fixtures/Database/be_groups.csv');
+        $this->importCSVDataSet(dirname(__DIR__, 2) . '/Fixtures/Database/be_users.csv');
+        $this->importCSVDataSet(dirname(__DIR__, 2) . '/Fixtures/Database/pages.csv');
 
         // Create site configuration
         $this->site = $this->createSite();

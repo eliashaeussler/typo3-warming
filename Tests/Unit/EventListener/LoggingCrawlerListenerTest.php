@@ -61,7 +61,7 @@ final class LoggingCrawlerListenerTest extends TestingFramework\Core\Unit\UnitTe
         $logger = new Log\NullLogger();
 
         $this->logManagerMock
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getLogger')
             ->willReturn($logger)
         ;
@@ -82,7 +82,7 @@ final class LoggingCrawlerListenerTest extends TestingFramework\Core\Unit\UnitTe
         );
 
         $this->logManagerMock
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('getLogger')
         ;
 
