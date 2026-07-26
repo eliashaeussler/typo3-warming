@@ -73,6 +73,19 @@ jobs:
 
     uses: eliashaeussler/gha/.github/workflows/typo3-test-coverage.yaml@a6093ebd6b0e93dedcb221832dadcb279bff4cbd # 0.9.1
 
+  crowdin:
+    name: 'Synchronize with Crowdin'
+
+    needs: [prepare]
+    if: ${{ needs.prepare.outputs.continue == 'true' }}
+
+    secrets:
+      CROWDIN_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+
+    uses: eliashaeussler/gha/.github/workflows/crowdin.yaml@a6093ebd6b0e93dedcb221832dadcb279bff4cbd # 0.9.1
+    with:
+      project-id: 455196
+
   automerge:
     name: 'Automerge modified Renovate branch'
 
