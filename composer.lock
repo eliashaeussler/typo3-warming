@@ -985,16 +985,16 @@
         },
         {
             "name": "eliashaeussler/typo3-sitemap-locator",
-            "version": "1.3.3",
+            "version": "1.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/typo3-sitemap-locator.git",
-                "reference": "e7e43be5adb0c9a05d696e3340f721c872c34258"
+                "reference": "38314c1abdf5bff57aa26bd524260f025eb8d41d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/typo3-sitemap-locator/zipball/e7e43be5adb0c9a05d696e3340f721c872c34258",
-                "reference": "e7e43be5adb0c9a05d696e3340f721c872c34258",
+                "url": "https://api.github.com/repos/eliashaeussler/typo3-sitemap-locator/zipball/38314c1abdf5bff57aa26bd524260f025eb8d41d",
+                "reference": "38314c1abdf5bff57aa26bd524260f025eb8d41d",
                 "shasum": ""
             },
             "require": {
@@ -1035,7 +1035,7 @@
                     "Package": {
                         "providesPackages": []
                     },
-                    "version": "1.3.3",
+                    "version": "1.3.4",
                     "web-dir": ".Build/web",
                     "extension-key": "sitemap_locator"
                 },
@@ -1063,9 +1063,9 @@
             "description": "Sitemap Locator - Looks up XML sitemaps as part of a configured site. Supports various sitemap providers, e.g. by configured page type or robots.txt, and allows to implement custom providers.",
             "support": {
                 "issues": "https://github.com/eliashaeussler/typo3-sitemap-locator/issues",
-                "source": "https://github.com/eliashaeussler/typo3-sitemap-locator/tree/1.3.3"
+                "source": "https://github.com/eliashaeussler/typo3-sitemap-locator/tree/1.3.4"
             },
-            "time": "2026-07-24T22:02:44+00:00"
+            "time": "2026-07-31T14:15:21+00:00"
         },
         {
             "name": "enshrined/svg-sanitize",
@@ -8504,16 +8504,16 @@
         },
         {
             "name": "eliashaeussler/version-bumper",
-            "version": "4.0.3",
+            "version": "4.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eliashaeussler/version-bumper.git",
-                "reference": "a519b7b12d40c19a9bcec38f7652b923bfb00d03"
+                "reference": "b52c367464306813f9f7484d20559709327d8331"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eliashaeussler/version-bumper/zipball/a519b7b12d40c19a9bcec38f7652b923bfb00d03",
-                "reference": "a519b7b12d40c19a9bcec38f7652b923bfb00d03",
+                "url": "https://api.github.com/repos/eliashaeussler/version-bumper/zipball/b52c367464306813f9f7484d20559709327d8331",
+                "reference": "b52c367464306813f9f7484d20559709327d8331",
                 "shasum": ""
             },
             "require": {
@@ -8569,9 +8569,9 @@
             "description": "Composer plugin to bump project versions during release preparations",
             "support": {
                 "issues": "https://github.com/eliashaeussler/version-bumper/issues",
-                "source": "https://github.com/eliashaeussler/version-bumper/tree/4.0.3"
+                "source": "https://github.com/eliashaeussler/version-bumper/tree/4.0.4"
             },
-            "time": "2026-06-04T05:37:13+00:00"
+            "time": "2026-07-31T13:56:22+00:00"
         },
         {
             "name": "ergebnis/agent-detector",
