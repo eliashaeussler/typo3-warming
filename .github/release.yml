@@ -11,6 +11,9 @@ changelog:
     - title: ⚡ Breaking
       labels:
         - breaking
+    - title: 🚨 Security fixes
+      labels:
+        - security
     - title: 🚀 Improved
       labels:
         - enhancement
