@@ -32,6 +32,12 @@ use Symfony\Component\Console;
  * @author Elias Häußler <elias@haeussler.dev>
  * @license GPL-2.0-or-later
  */
+// @todo Enable once support for TYPO3 v13 is dropped
+//#[Console\Attribute\AsCommand(
+//    name: 'warming:showuseragent',
+//    description: 'Show custom "User-Agent" header to be used for Frontend requests by default crawlers.',
+//)]
+//#[\TYPO3\CMS\Core\Attribute\AsNonSchedulableCommand]
 final class ShowUserAgentCommand extends Console\Command\Command
 {
     private readonly string $userAgent;
