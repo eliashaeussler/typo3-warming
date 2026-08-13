@@ -1,0 +1,22 @@
+Build/checks/rector.php
+  h_a1c258d8beeba3 25-26,28,30-50
+Classes/Command/ShowUserAgentCommand.php
+  h_a1c258d8beeba3 35-40
+Configuration/Services.yaml
+  h_a1c258d8beeba3 21
+composer.json
+  h_a1c258d8beeba3 70
+composer.lock
+  h_a1c258d8beeba3 7,11983,11987,11991-11992,12031,12039
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "064ba369a12bdb475e6109f09e527b4f6ee3e6fe",
+  "prompts": {},
+  "humans": {
+    "h_a1c258d8beeba3": {
+      "author": "Elias Häußler <elias@haeussler.dev>"
+    }
+  }
+}
