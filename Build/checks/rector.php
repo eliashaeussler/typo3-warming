@@ -21,48 +21,30 @@ declare(strict_types=1);
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-use EliasHaeussler\RectorConfig\Config\Config;
-use EliasHaeussler\RectorConfig\Entity\Version;
 use Rector\Config\RectorConfig;
-use Rector\Php80\Rector\Class_\AnnotationToAttributeRector;
-use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
-use Rector\Symfony\DependencyInjection\Rector\Trait_\TraitGetByTypeToInjectRector;
-use Rector\ValueObject\PhpVersion;
+use Rector\Symfony\Symfony61\Rector\Class_\CommandConfigureToAttributeRector;
+use Ssch\TYPO3Rector\Set\Typo3LevelSetList;
 
-return static function (RectorConfig $rectorConfig): void {
-    $rootPath = dirname(__DIR__, 2);
+$rootPath = dirname(__DIR__, 2);
 
-    require $rootPath . '/.Build/vendor/autoload.php';
-
-    Config::create($rectorConfig, PhpVersion::PHP_82)
-        ->in(
-            $rootPath . '/Classes',
-            $rootPath . '/Configuration',
-            $rootPath . '/Tests',
-        )
-        ->not(
-            $rootPath . '/Tests/Acceptance/Support/_generated/*',
-        )
-        ->withPHPUnit()
-        ->withSymfony()
-        ->withTYPO3(Version::createMajor(13))
-        ->skip(AnnotationToAttributeRector::class, [
-            $rootPath . '/Classes/Extension.php',
-            $rootPath . '/Classes/Sitemap/Provider/DefaultProvider.php',
-            $rootPath . '/Classes/Sitemap/Provider/PageTypeProvider.php',
-            $rootPath . '/Classes/Sitemap/Provider/RobotsTxtProvider.php',
-            $rootPath . '/Classes/Sitemap/Provider/SiteProvider.php',
-        ])
-        ->skip(ClassPropertyAssignToConstructorPromotionRector::class, [
-            // We cannot use CPP for properties that are declared in abstract classes
-            $rootPath . '/Tests/Acceptance/Support/Helper/ModalDialog.php',
-            $rootPath . '/Tests/Acceptance/Support/Helper/PageTree.php',
-        ])
-        ->skip(TraitGetByTypeToInjectRector::class, [
-            $rootPath . '/Tests/Functional/SiteTrait.php',
-        ])
-        ->apply()
-    ;
-
-    $rectorConfig->importNames(false, false);
-};
+return RectorConfig::configure()
+    ->withPaths([
+        $rootPath . '/Classes',
+        $rootPath . '/Configuration',
+        $rootPath . '/Tests',
+    ])
+    ->withSkip([
+        $rootPath . '/Tests/Acceptance/Support/_generated',
+    ])
+    ->withPhpSets(php82: true)
+    ->withComposerBased(phpunit: true, symfony: true)
+    ->withSets([
+        Typo3LevelSetList::UP_TO_TYPO3_13,
+    ])
+    ->withSkip([
+        CommandConfigureToAttributeRector::class => [
+            $rootPath . '/Classes/Command/WarmupCommand.php',
+            $rootPath . '/Classes/Command/ShowUserAgentCommand.php',
+        ],
+    ])
+;
