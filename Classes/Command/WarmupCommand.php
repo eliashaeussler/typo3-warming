@@ -282,8 +282,8 @@ HELP
     {
         // Resolve input options
         $languages = $this->resolveLanguages($input->getOption('languages'));
-        $urls = array_unique($this->resolvePages($input->getOption('pages'), $languages));
-        $sitemaps = array_unique($this->resolveSites($input->getOption('sites'), $languages));
+        $urls = array_values(array_unique($this->resolvePages($input->getOption('pages'), $languages)));
+        $sitemaps = array_values(array_unique($this->resolveSites($input->getOption('sites'), $languages)));
         $config = $input->getOption('config');
         $limit = max(0, (int)$input->getOption('limit'));
         $strategy = $input->getOption('strategy');
