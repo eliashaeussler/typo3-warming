@@ -18,6 +18,7 @@ services:
       - '../Classes/Result/CacheWarmupResult.php'
       - '../Classes/ValueObject/*'
 
+  # @todo Remove once support for TYPO3 v13 is dropped
   EliasHaeussler\Typo3Warming\Command\ShowUserAgentCommand:
     tags:
       - name: console.command
