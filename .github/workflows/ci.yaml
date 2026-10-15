@@ -23,7 +23,8 @@ jobs:
     if: ${{ needs.prepare.outputs.continue == 'true' }}
 
     secrets:
-      ASSETS_TOKEN: ${{ secrets.REBUILD_ASSETS_TOKEN }}
+      # Fall back to GitHub token (relevant for fork PRs)
+      ASSETS_TOKEN: ${{ secrets.REBUILD_ASSETS_TOKEN || github.token }}
 
     uses: eliashaeussler/gha/.github/workflows/asset-integrity.yaml@92f522bc65751d9af12baa0969faf3caadd59e92 # 1.1.1
     with:
