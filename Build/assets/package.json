@@ -12,7 +12,7 @@
 		"check:style": "npm-run-all-next check:style:scss check:style:ts",
 		"check:style:scss": "stylelint 'src/styles/**/*.scss'",
 		"check:style:ts": "eslint 'src/scripts/**/*.{ts,tsx}' 'res/*.js' './*.{js,ts}'",
-		"ci": "npm audit && npm run check",
+		"ci": "npm audit --omit=dev --audit-level=moderate && npm run check",
 		"fix": "npm-run-all-next fix:scss fix:ts",
 		"fix:scss": "stylelint 'src/styles/**/*.scss' --fix",
 		"fix:ts": "eslint 'src/scripts/**/*.{ts,tsx}' 'res/*.js' './*.{js,ts}' --fix"

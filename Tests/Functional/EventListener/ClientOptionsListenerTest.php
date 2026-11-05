@@ -76,6 +76,7 @@ final class ClientOptionsListenerTest extends TestingFramework\Core\Functional\F
     }
 
     #[Framework\Attributes\Test]
+    #[Framework\Attributes\IgnorePhpunitWarnings('Comparing closures for equality is problematic because there is no reliable way to determine whether two closures are equal')]
     public function processConfigMergesClientConfigWithTYPO3SpecificClientConfig(): void
     {
         $event = new CacheWarmup\Event\Config\ConfigResolved(

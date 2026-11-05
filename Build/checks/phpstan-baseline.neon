@@ -146,6 +146,12 @@ parameters:
 			path: ../../Tests/Functional/Backend/Action/WarmupActionsProviderTest.php
 
 		-
+			rawMessage: Attribute class PHPUnit\Framework\Attributes\IgnorePhpunitWarnings does not exist.
+			identifier: attribute.notFound
+			count: 1
+			path: ../../Tests/Functional/EventListener/ClientOptionsListenerTest.php
+
+		-
 			rawMessage: 'EliasHaeussler\Typo3Warming\Tests\Functional\Fixtures\Classes\DummyPackageManager::__construct() does not call parent constructor from TYPO3\CMS\Core\Package\PackageManager.'
 			identifier: constructor.missingParentCall
 			count: 1
@@ -156,3 +162,9 @@ parameters:
 			identifier: attribute.notFound
 			count: 4
 			path: ../../Tests/Functional/Http/Client/Handler/SubRequestHandlerTest.php
+
+		-
+			rawMessage: Attribute class PHPUnit\Framework\Attributes\IgnorePhpunitWarnings does not exist.
+			identifier: attribute.notFound
+			count: 6
+			path: ../../Tests/Unit/Http/Client/Handler/HandlerStackBuilderTest.php

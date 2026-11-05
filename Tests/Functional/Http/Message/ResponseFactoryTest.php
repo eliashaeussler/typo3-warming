@@ -80,7 +80,7 @@ final class ResponseFactoryTest extends TestingFramework\Core\Functional\Functio
         $actual = $this->subject->htmlTemplate('Modal/SitesModal');
 
         self::assertInstanceOf(Core\Http\HtmlResponse::class, $actual);
-        self::assertNotEmpty((string)$actual->getBody());
+        self::assertNotSame('', (string)$actual->getBody());
     }
 
     #[Framework\Attributes\Test]

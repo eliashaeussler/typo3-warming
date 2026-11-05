@@ -33,6 +33,7 @@ $configuration
     ])
     ->ignoreUnknownClasses([
         Framework\Attributes\AllowMockObjectsWithoutExpectations::class,
+        Framework\Attributes\IgnorePhpunitWarnings::class,
     ])
 ;
 
