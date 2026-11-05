@@ -129,6 +129,25 @@ final class WarmupCommandTest extends TestingFramework\Core\Functional\Functiona
     }
 
     #[Framework\Attributes\Test]
+    public function executeCrawlsGivenPagesWithDuplicateUrlsOnlyOnce(): void
+    {
+        $expected = [
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/'),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/'),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/fr/'),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/subsite-1'),
+            new CacheWarmup\Sitemap\Url('https://typo3-testing.local/de/subsite-1-l-1'),
+        ];
+
+        $this->commandTester->execute([
+            '--pages' => ['1', '1', '2'],
+        ]);
+
+        self::assertSame(Console\Command\Command::SUCCESS, $this->commandTester->getStatusCode());
+        self::assertEquals($expected, Tests\Functional\Fixtures\Classes\DummyVerboseCrawler::$crawledUrls);
+    }
+
+    #[Framework\Attributes\Test]
     public function executeCrawlsGivenSitesByRootPageId(): void
     {
         $this->mockSitemapResponse('en', 'de', 'fr');
