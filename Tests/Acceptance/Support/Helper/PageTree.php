@@ -84,7 +84,7 @@ final class PageTree extends TestingFramework\Core\Acceptance\Helper\AbstractPag
         $remaining = count($path);
         $contextMenuIdentifier = '[data-contextmenu-parent="root"]';
 
-        foreach ($path as $depth => $selector) {
+        foreach ($path as $selector) {
             --$remaining;
 
             $I->waitForElementVisible($contextMenuIdentifier, 5);
