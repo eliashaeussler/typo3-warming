@@ -50,6 +50,7 @@ final class HandlerStackBuilderTest extends TestingFramework\Core\Unit\UnitTestC
     }
 
     #[Framework\Attributes\Test]
+    #[Framework\Attributes\IgnorePhpunitWarnings('Comparing closures for equality is problematic because there is no reliable way to determine whether two closures are equal')]
     public function buildFromClientOrRequestOptionsReturnsDefaultHandlerStackIfNoHandlerIsCurrentlyRegistered(): void
     {
         $clientStub = self::createStub(ClientInterface::class);
@@ -62,6 +63,7 @@ final class HandlerStackBuilderTest extends TestingFramework\Core\Unit\UnitTestC
     }
 
     #[Framework\Attributes\Test]
+    #[Framework\Attributes\IgnorePhpunitWarnings('Comparing closures for equality is problematic because there is no reliable way to determine whether two closures are equal')]
     public function buildFromClientOrRequestOptionsReturnsDefaultHandlerStackIfHandlerFromRequestOptionsIsNotCallable(): void
     {
         $clientStub = self::createStub(ClientInterface::class);
@@ -74,6 +76,7 @@ final class HandlerStackBuilderTest extends TestingFramework\Core\Unit\UnitTestC
     }
 
     #[Framework\Attributes\Test]
+    #[Framework\Attributes\IgnorePhpunitWarnings('Comparing closures for equality is problematic because there is no reliable way to determine whether two closures are equal')]
     public function buildFromClientOrRequestOptionsReturnsDefaultHandlerStackIfClientHandlerIsNotCallable(): void
     {
         $client = new Client();
@@ -90,6 +93,7 @@ final class HandlerStackBuilderTest extends TestingFramework\Core\Unit\UnitTestC
     }
 
     #[Framework\Attributes\Test]
+    #[Framework\Attributes\IgnorePhpunitWarnings('Comparing closures for equality is problematic because there is no reliable way to determine whether two closures are equal')]
     public function buildFromClientOrRequestOptionsReturnsDefaultHandlerStackIfClientHandlerIsNotAHandlerStack(): void
     {
         $handler = static fn() => new Promise\Promise();
@@ -102,6 +106,7 @@ final class HandlerStackBuilderTest extends TestingFramework\Core\Unit\UnitTestC
     }
 
     #[Framework\Attributes\Test]
+    #[Framework\Attributes\IgnorePhpunitWarnings('Comparing closures for equality is problematic because there is no reliable way to determine whether two closures are equal')]
     public function buildFromClientOrRequestOptionsReturnsDefaultHandlerStackIfHandlerFromRequestOptionsIsNotAHandlerStack(): void
     {
         $clientStub = self::createStub(ClientInterface::class);
@@ -115,6 +120,7 @@ final class HandlerStackBuilderTest extends TestingFramework\Core\Unit\UnitTestC
     }
 
     #[Framework\Attributes\Test]
+    #[Framework\Attributes\IgnorePhpunitWarnings('Comparing closures for equality is problematic because there is no reliable way to determine whether two closures are equal')]
     public function buildFromClientOrRequestOptionsReturnsDefaultHandlerStackWithGivenHandlerIfClientHandlerIsNotAHandlerStack(): void
     {
         $currentHandler = static fn() => new Promise\Promise(static fn() => '');

@@ -83,7 +83,7 @@
 		"webmozart/assert": "^1.11 || ^2.0"
 	},
 	"conflict": {
-		"cuyz/valinor": "2.1.2 || 2.2.0 || 2.2.1"
+		"cuyz/valinor": "2.1.2 || 2.2.0 || 2.2.1 || 2.6.1"
 	},
 	"autoload": {
 		"psr-4": {
