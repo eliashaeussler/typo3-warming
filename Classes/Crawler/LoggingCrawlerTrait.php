@@ -40,12 +40,8 @@ trait LoggingCrawlerTrait
 
     private function createLogHandler(): Http\Message\Handler\LogHandler
     {
-        $logger = $this->logger;
+        $logger = $this->logger ?? $this->createLogger();
         $requestId = null;
-
-        if ($logger === null) {
-            $logger = $this->createLogger();
-        }
 
         if ($this instanceof StreamableCrawler && $this->stream instanceof SSE\Stream\SelfEmittingEventStream) {
             $requestId = $this->stream->getId();

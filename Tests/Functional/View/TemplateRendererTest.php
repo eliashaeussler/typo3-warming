@@ -58,6 +58,6 @@ final class TemplateRendererTest extends TestingFramework\Core\Functional\Functi
     {
         $actual = $this->subject->render('Toolbar/CacheWarmupToolbarItem');
 
-        self::assertNotEmpty($actual);
+        self::assertNotSame('', $actual);
     }
 }
