@@ -1,0 +1,24 @@
+Build/assets/package-lock.json
+  h_a1c258d8beeba3 3,9
+Build/assets/package.json
+  h_a1c258d8beeba3 4
+Documentation/guides.xml
+  h_a1c258d8beeba3 17
+composer.json
+  h_a1c258d8beeba3 119
+composer.lock
+  h_a1c258d8beeba3 7
+ext_emconf.php
+  h_a1c258d8beeba3 30
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "5f682499da300019de786176a44ea5ed2cf00a55",
+  "prompts": {},
+  "humans": {
+    "h_a1c258d8beeba3": {
+      "author": "Elias Häußler <elias@haeussler.dev>"
+    }
+  }
+}
