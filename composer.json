@@ -116,7 +116,7 @@
 				"providesPackages": {}
 			},
 			"extension-key": "warming",
-			"version": "5.3.6",
+			"version": "5.3.7",
 			"web-dir": ".Build/web"
 		},
 		"version-bumper": {
