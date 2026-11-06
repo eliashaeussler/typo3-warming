@@ -14,7 +14,7 @@ permissions:
 jobs:
   prepare:
     name: 'Prepare workflow'
-    uses: eliashaeussler/gha/.github/workflows/preparation.yaml@39e586a21e1090d214aedac2da10dab79c9e9b21 # 1.1.27
+    uses: eliashaeussler/gha/.github/workflows/preparation.yaml@1b958ba337545acb7dd9b3897a0a5fc636f2cdaf # 1.1.28
 
   asset-integrity:
     name: 'Verify asset integrity'
@@ -26,7 +26,7 @@ jobs:
       # Fall back to GitHub token (relevant for fork PRs)
       ASSETS_TOKEN: ${{ secrets.REBUILD_ASSETS_TOKEN || secrets.GITHUB_TOKEN }}
 
-    uses: eliashaeussler/gha/.github/workflows/asset-integrity.yaml@39e586a21e1090d214aedac2da10dab79c9e9b21 # 1.1.27
+    uses: eliashaeussler/gha/.github/workflows/asset-integrity.yaml@1b958ba337545acb7dd9b3897a0a5fc636f2cdaf # 1.1.28
     with:
       base-path: Build/assets
 
@@ -40,7 +40,7 @@ jobs:
       contents: read
       security-events: write
 
-    uses: eliashaeussler/gha/.github/workflows/checks.yaml@39e586a21e1090d214aedac2da10dab79c9e9b21 # 1.1.27
+    uses: eliashaeussler/gha/.github/workflows/checks.yaml@1b958ba337545acb7dd9b3897a0a5fc636f2cdaf # 1.1.28
     with:
       # We use the minimum supported PHP version
       php-version: 8.2 # renovate-ignore
@@ -60,7 +60,7 @@ jobs:
         typo3-version: ["13.4", "14.3"]
         dependencies: ["highest", "lowest"]
 
-    uses: eliashaeussler/gha/.github/workflows/typo3-tests.yaml@39e586a21e1090d214aedac2da10dab79c9e9b21 # 1.1.27
+    uses: eliashaeussler/gha/.github/workflows/typo3-tests.yaml@1b958ba337545acb7dd9b3897a0a5fc636f2cdaf # 1.1.28
     with:
       php-version: ${{ matrix.php-version }}
       typo3-version: ${{ matrix.typo3-version }}
@@ -72,7 +72,7 @@ jobs:
     needs: [asset-integrity]
     if: ${{ needs.asset-integrity.outputs.rebuilt == 'false' }}
 
-    uses: eliashaeussler/gha/.github/workflows/typo3-test-coverage.yaml@39e586a21e1090d214aedac2da10dab79c9e9b21 # 1.1.27
+    uses: eliashaeussler/gha/.github/workflows/typo3-test-coverage.yaml@1b958ba337545acb7dd9b3897a0a5fc636f2cdaf # 1.1.28
 
   crowdin:
     name: 'Synchronize with Crowdin'
@@ -83,7 +83,7 @@ jobs:
     secrets:
       CROWDIN_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
 
-    uses: eliashaeussler/gha/.github/workflows/crowdin.yaml@39e586a21e1090d214aedac2da10dab79c9e9b21 # 1.1.27
+    uses: eliashaeussler/gha/.github/workflows/crowdin.yaml@1b958ba337545acb7dd9b3897a0a5fc636f2cdaf # 1.1.28
     with:
       project-id: 455196
 
@@ -98,4 +98,4 @@ jobs:
     permissions:
       contents: read
 
-    uses: eliashaeussler/gha/.github/workflows/renovate-merge.yaml@39e586a21e1090d214aedac2da10dab79c9e9b21 # 1.1.27
+    uses: eliashaeussler/gha/.github/workflows/renovate-merge.yaml@1b958ba337545acb7dd9b3897a0a5fc636f2cdaf # 1.1.28
