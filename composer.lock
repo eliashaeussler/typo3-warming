@@ -9309,16 +9309,16 @@
         },
         {
             "name": "friendsofphp/php-cs-fixer",
-            "version": "v3.95.28",
+            "version": "v3.95.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer.git",
-                "reference": "de66c41256ad603e63cf033bd153fa4a14ebaca4"
+                "reference": "e85cafc4d861c122839d5409eda3325ac0ec0300"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/de66c41256ad603e63cf033bd153fa4a14ebaca4",
-                "reference": "de66c41256ad603e63cf033bd153fa4a14ebaca4",
+                "url": "https://api.github.com/repos/PHP-CS-Fixer/PHP-CS-Fixer/zipball/e85cafc4d861c122839d5409eda3325ac0ec0300",
+                "reference": "e85cafc4d861c122839d5409eda3325ac0ec0300",
                 "shasum": ""
             },
             "require": {
@@ -9352,12 +9352,12 @@
             "require-dev": {
                 "facile-it/paraunit": "^1.3.1 || ^2.11.0",
                 "infection/infection": "^0.32.7",
-                "justinrainbow/json-schema": "^6.12.0",
+                "justinrainbow/json-schema": "^6.14.0",
                 "keradus/cli-executor": "^2.3",
                 "php-coveralls/php-coveralls": "^2.9.1",
                 "php-cs-fixer/phpunit-constraint-isidenticalstring": "^1.8",
                 "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "^1.8",
-                "phpunit/phpunit": "^9.6.36 || ^10.5.64 || ^11.5.56 || ^12.5.35 || ^13.3.3",
+                "phpunit/phpunit": "^9.6.38 || ^10.5.66 || ^11.5.57 || ^12.5.43 || ^13.4.6",
                 "symfony/polyfill-php85": "^1.43",
                 "symfony/var-dumper": "^5.4.54 || ^6.4.49 || ^7.4.22 || ^8.1.10",
                 "symfony/yaml": "^5.4.56 || ^6.4.50 || ^7.4.23 || ^8.1.11"
@@ -9401,7 +9401,7 @@
             ],
             "support": {
                 "issues": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/issues",
-                "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.95.28"
+                "source": "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/tree/v3.95.30"
             },
             "funding": [
                 {
@@ -9409,8 +9409,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-11-04T13:04:49+00:00",
-            "published-time": "2026-11-04T13:04:58+00:00"
+            "time": "2026-11-09T14:32:19+00:00",
+            "published-time": "2026-11-09T14:32:30+00:00"
         },
         {
             "name": "helmich/typo3-typoscript-lint",
@@ -13410,16 +13410,16 @@
         },
         {
             "name": "ssch/typo3-rector",
-            "version": "v3.16.0",
+            "version": "v3.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabbelasichon/typo3-rector.git",
-                "reference": "55a455f4020c017917f75f3a73217987a14d2f98"
+                "reference": "cb10945312937426546c8abf4e8b12b3d84cc82f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabbelasichon/typo3-rector/zipball/55a455f4020c017917f75f3a73217987a14d2f98",
-                "reference": "55a455f4020c017917f75f3a73217987a14d2f98",
+                "url": "https://api.github.com/repos/sabbelasichon/typo3-rector/zipball/cb10945312937426546c8abf4e8b12b3d84cc82f",
+                "reference": "cb10945312937426546c8abf4e8b12b3d84cc82f",
                 "shasum": ""
             },
             "require": {
@@ -13430,7 +13430,7 @@
                 "nikic/php-parser": "^5.7.0",
                 "php": "^7.4 || ^8.0",
                 "phpstan/phpstan": "^2.1.34",
-                "rector/rector": "^2.5.2",
+                "rector/rector": "^2.8.3",
                 "symfony/console": "^5.4 || ^6.4 || ^7.0",
                 "symfony/filesystem": "^5.4 || ^6.4 || ^7.0",
                 "symfony/finder": "^5.4 || ^6.4 || ^7.0",
@@ -13446,6 +13446,7 @@
                 "phpstan/phpstan-deprecation-rules": "^2.0.1",
                 "phpstan/phpstan-phpunit": "^2.0.1",
                 "phpunit/phpunit": "^9.6.17 || ^10.0",
+                "simonschaufi/rule-doc-generator": "^13.0",
                 "symfony/config": "^5.0 || ^6.0 || ^7.0",
                 "symfony/dependency-injection": "^5.4.36 || ^6.4.2 || ^7.0.2",
                 "symfony/http-kernel": "^5.4.37 || ^6.4.2 || ^7.0.2",
@@ -13522,8 +13523,8 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-09-10T09:35:15+00:00",
-            "published-time": "2026-09-10T09:35:21+00:00"
+            "time": "2026-11-06T21:14:09+00:00",
+            "published-time": "2026-11-06T21:14:15+00:00"
         },
         {
             "name": "staabm/side-effects-detector",
