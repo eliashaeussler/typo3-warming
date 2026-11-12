@@ -28,7 +28,6 @@ $tca = [
         'label_userFunc' => \EliasHaeussler\Typo3Warming\UserFunc\LogTableFormatter::class . '->formatTitle',
         'default_sortby' => 'date DESC',
         'delete' => 'deleted',
-        'languageField' => 'site_language',
         'rootLevel' => 1,
         'iconfile' => 'EXT:warming/Resources/Public/Icons/tx_warming_domain_model_log.svg',
         'typeicon_classes' => [
